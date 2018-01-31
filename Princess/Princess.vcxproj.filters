@@ -38,6 +38,12 @@
     <ClCompile Include="External Dependencies\SimpleJSON\JSONValue.cpp">
       <Filter>ExternalResourceManager</Filter>
     </ClCompile>
+    <ClCompile Include="src\ControlSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\InputHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Component.h">
@@ -75,6 +81,15 @@
     </ClInclude>
     <ClInclude Include="External Dependencies\SimpleJSON\JSONValue.h">
       <Filter>ExternalResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ControlComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ControlSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\InputHandler.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

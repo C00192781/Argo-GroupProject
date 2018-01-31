@@ -4,6 +4,7 @@
 #include "PositionComponent.h"
 #include "SpriteComponent.h"
 #include "RenderSystem.h"
+#include "ControlSystem.h"
 
 int main()
 {
@@ -14,19 +15,36 @@ int main()
 	ResourceManager *resourceManager = new ResourceManager(gameRenderer, "Resources");
 	resourceManager->AddTexture("Demon", "demon.png");
 
+	InputHandler *input = new InputHandler();
+
 	Entity * player = new Entity("Player");
 	player->AddComponent(new SpriteComponent("Demon", 0, 0, 0, 16, 16, 0));
-	player->AddComponent(new PositionComponent());
+	player->AddComponent(new PositionComponent(SDL_Point{100, 300}));
+	player->AddComponent(new ControlComponent(input));
 
 	RenderSystem * r = new RenderSystem(resourceManager, gameRenderer);
 	r->AddEntity(player);
 
+	ControlSystem *c = new ControlSystem();
+	c->AddEntity(player);
+
 	while (1 != 0)
 	{
+		SDL_PollEvent(e);
+
+		c->Update(e);
+
 		SDL_SetRenderDrawColor(gameRenderer, 100, 100, 0, 0);
 		SDL_RenderClear(gameRenderer);
 		r->Update();
 		SDL_RenderPresent(gameRenderer);
 	}
+
+	SDL_DestroyRenderer(gameRenderer);
+	SDL_DestroyWindow(gameWindow);
+
+	IMG_Quit();
+	SDL_Quit();
+
 	return 0;
 }

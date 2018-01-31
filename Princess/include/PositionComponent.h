@@ -8,19 +8,24 @@ public:
 	PositionComponent()
 	{
 		m_type = "PC";
-		m_x = 0;
-		m_y = 0;
+		m_pos = { 0, 0 };
 	};
+
+	PositionComponent(SDL_Point pos)
+	{
+		m_type = "PC";
+		m_pos = pos;
+	};
+
 	~PositionComponent() {};
 
-	int X() { return m_x; };
-	void X(int x) { m_x = x; };
-
-	int Y() { return m_y; };
-	void Y(int x) { m_y = x; };
+	SDL_Point getPosition() { return m_pos; };
+	void setPosition(SDL_Point pos) { m_pos = pos; }
+	void setX(float x) { m_pos.x = x; }
+	void setY(float y) { m_pos.y = y; }
 
 private:
-	int m_x, m_y;
+	SDL_Point m_pos;
 };
 #endif
 
