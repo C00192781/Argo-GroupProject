@@ -4,6 +4,7 @@
 #include "PositionComponent.h"
 #include "SpriteComponent.h"
 #include "RenderSystem.h"
+#include "ProjectileSystem.h"
 
 int main()
 {
@@ -16,16 +17,30 @@ int main()
 
 	Entity * player = new Entity("Player");
 	player->AddComponent(new SpriteComponent("Demon", 0, 0, 0, 16, 16, 0));
-	player->AddComponent(new PositionComponent());
+
+	PositionComponent playerPosition;
+	player->AddComponent(&playerPosition);
+
+	// EXAMPLE PROJECTILE ENTITY
+	Entity * projectile = new Entity("Projectile");
+	projectile->AddComponent(new SpriteComponent("Demon", 0, 0, 0, 16, 16, 0));
+
+	PositionComponent projectilePosition;
+	projectile->AddComponent(&projectilePosition);
 
 	RenderSystem * r = new RenderSystem(resourceManager, gameRenderer);
 	r->AddEntity(player);
+	r->AddEntity(projectile);
+
+	ProjectileSystem * p = new ProjectileSystem(300, 300, 8, 0.8);
+	p->AddEntity(projectile);
 
 	while (1 != 0)
 	{
 		SDL_SetRenderDrawColor(gameRenderer, 100, 100, 0, 0);
 		SDL_RenderClear(gameRenderer);
 		r->Update();
+		p->Update();
 		SDL_RenderPresent(gameRenderer);
 	}
 	return 0;
