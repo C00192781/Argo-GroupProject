@@ -4,6 +4,7 @@
 #include "PositionComponent.h"
 #include "SpriteComponent.h"
 #include "RenderSystem.h"
+#include "AiSystem.h"
 
 int main()
 {
@@ -13,20 +14,38 @@ int main()
 
 	ResourceManager *resourceManager = new ResourceManager(gameRenderer, "Resources");
 	resourceManager->AddTexture("Demon", "demon.png");
+	resourceManager->AddTexture("Princess", "princess.png");
 
 	Entity * player = new Entity("Player");
 	player->AddComponent(new SpriteComponent("Demon", 0, 0, 0, 16, 16, 0));
 	player->AddComponent(new PositionComponent());
 
+	Entity * princess = new Entity("Princess");
+	princess->AddComponent(new SpriteComponent("Princess", 0, 0, 0, 16, 16, 0));
+	princess->AddComponent(new PositionComponent());
+
+
+
+	
+
 	RenderSystem * r = new RenderSystem(resourceManager, gameRenderer);
 	r->AddEntity(player);
+
+	r->AddEntity(princess);
+
+	AISystem * ai = new AISystem();
+	ai->addEntity(princess);
+	
 
 	while (1 != 0)
 	{
 		SDL_SetRenderDrawColor(gameRenderer, 100, 100, 0, 0);
 		SDL_RenderClear(gameRenderer);
 		r->Update();
+		ai->update();
 		SDL_RenderPresent(gameRenderer);
 	}
 	return 0;
 }
+
+

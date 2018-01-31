@@ -38,6 +38,9 @@
     <ClCompile Include="External Dependencies\SimpleJSON\JSONValue.cpp">
       <Filter>ExternalResourceManager</Filter>
     </ClCompile>
+    <ClCompile Include="include\AiSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Component.h">
@@ -75,6 +78,9 @@
     </ClInclude>
     <ClInclude Include="External Dependencies\SimpleJSON\JSONValue.h">
       <Filter>ExternalResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AiSystem.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
