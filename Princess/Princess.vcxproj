@@ -23,7 +23,7 @@
     <ClCompile Include="External Dependencies\ResourceManager\ResourceManager.cpp" />
     <ClCompile Include="External Dependencies\SimpleJSON\JSON.cpp" />
     <ClCompile Include="External Dependencies\SimpleJSON\JSONValue.cpp" />
-    <ClCompile Include="include\AiSystem.cpp" />
+    <ClCompile Include="include\AIsys.cpp" />
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\RenderSystem.cpp" />
@@ -34,7 +34,8 @@
     <ClInclude Include="External Dependencies\ResourceManager\ResourceManager.h" />
     <ClInclude Include="External Dependencies\SimpleJSON\JSON.h" />
     <ClInclude Include="External Dependencies\SimpleJSON\JSONValue.h" />
-    <ClInclude Include="include\AiSystem.h" />
+    <ClInclude Include="include\AiLogicComponent.h" />
+    <ClInclude Include="include\AIsys.h" />
     <ClInclude Include="include\Component.h" />
     <ClInclude Include="include\Entity.h" />
     <ClInclude Include="include\Instance.h" />

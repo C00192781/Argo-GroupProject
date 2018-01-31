@@ -39,6 +39,12 @@ void RenderSystem::Update()
 		}
 		if (pcKey >= 0 && scKey >= 0)
 		{
+			if (m_entities.at(i)->ID() == "Princess")
+			{
+				auto temp = static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->X();
+				int donothing = 0;
+ 				donothing -= 1;
+			}
 			SDL_Rect* holder = new SDL_Rect{ static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->X(), static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->Y(), static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(scKey))->Width() * m_scale, static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(scKey))->Height()*m_scale };
 			SDL_RenderCopy(m_renderer, 
 							m_resourceManager->GetTexture(static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(scKey))->Sheet()), 

@@ -4,7 +4,7 @@
 #include "PositionComponent.h"
 #include "SpriteComponent.h"
 #include "RenderSystem.h"
-#include "AiSystem.h"
+#include "AIsys.h"
 
 int main()
 {
@@ -23,6 +23,7 @@ int main()
 	Entity * princess = new Entity("Princess");
 	princess->AddComponent(new SpriteComponent("Princess", 0, 0, 0, 16, 16, 0));
 	princess->AddComponent(new PositionComponent());
+	princess->AddComponent(new AiLogicComponent());
 
 
 
@@ -33,19 +34,20 @@ int main()
 
 	r->AddEntity(princess);
 
-	AISystem * ai = new AISystem();
-	ai->addEntity(princess);
+	AiSystem * ai = new AiSystem();
+	ai->AddEntity(princess);
 	
 
 	while (1 != 0)
 	{
 		SDL_SetRenderDrawColor(gameRenderer, 100, 100, 0, 0);
 		SDL_RenderClear(gameRenderer);
+
+		ai->Update();
 		r->Update();
-		ai->update();
+
 		SDL_RenderPresent(gameRenderer);
 	}
 	return 0;
 }
-
 
