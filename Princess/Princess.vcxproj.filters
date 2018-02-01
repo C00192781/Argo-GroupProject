@@ -38,7 +38,7 @@
     <ClCompile Include="External Dependencies\SimpleJSON\JSONValue.cpp">
       <Filter>ExternalResourceManager</Filter>
     </ClCompile>
-    <ClCompile Include="include\ProjectileSystem.cpp">
+    <ClCompile Include="src\ProjectileSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -11,15 +11,14 @@ public:
 	ProjectileSystem(float xPos, float yPos, float speed, float orientation);
 	~ProjectileSystem();
 	void Update();
-
+	void velocityHandler(float orientation);
+	void movementHandler(float speed);
+private:
 	const float CONVERSION = 180 / 3.14159265359;
-	int x = 300;
-	int y = 300;
-	float velocityX, velocityY = 0;
+	int x;
+	int y;
+	float velocityX, velocityY;
 	float m_orientation;
 	float m_speed;
-	float tempX, tempY;
-private:
-	
 };
 #endif

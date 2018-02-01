@@ -23,9 +23,9 @@
     <ClCompile Include="External Dependencies\ResourceManager\ResourceManager.cpp" />
     <ClCompile Include="External Dependencies\SimpleJSON\JSON.cpp" />
     <ClCompile Include="External Dependencies\SimpleJSON\JSONValue.cpp" />
-    <ClCompile Include="include\ProjectileSystem.cpp" />
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\ProjectileSystem.cpp" />
     <ClCompile Include="src\RenderSystem.cpp" />
     <ClCompile Include="src\System.cpp" />
   </ItemGroup>
