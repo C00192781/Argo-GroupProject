@@ -30,7 +30,7 @@ int main()
 	Entity *meleeEnemy = new Entity("Melee Enemy");
 	meleeEnemy->AddComponent(new SpriteComponent("Demon", 0, 0, 0, 16, 16, 0));
 	meleeEnemy->AddComponent(new PositionComponent(500, 100 ));
-	meleeEnemy->AddComponent(new MovementComponent(2));
+	meleeEnemy->AddComponent(new MovementComponent(10));
 	meleeEnemy->AddComponent(new SeekComponent(200, 300));
 
 	RenderSystem * r = new RenderSystem(resourceManager, gameRenderer);
