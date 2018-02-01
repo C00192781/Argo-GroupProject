@@ -1,11 +1,15 @@
 #pragma once
 
 #include <SDL.h>
+#include "EventListener.h"
 
 class InputHandler
 {
 public:
-	InputHandler() {}
+	InputHandler(EventListener *e) { m_eventListener = e; };
 
-	void handleInput(SDL_Event &e, SDL_Point &pos);
+	void handleInput(SDL_Event &e);
+
+private:
+	EventListener *m_eventListener;
 };

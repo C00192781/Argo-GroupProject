@@ -31,7 +31,6 @@
     <ClCompile Include="src\System.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="EventListener.h" />
     <ClInclude Include="External Dependencies\ResourceManager\JSONReader.h" />
     <ClInclude Include="External Dependencies\ResourceManager\ResourceManager.h" />
     <ClInclude Include="External Dependencies\SimpleJSON\JSON.h" />
@@ -40,8 +39,10 @@
     <ClInclude Include="include\ControlComponent.h" />
     <ClInclude Include="include\ControlSystem.h" />
     <ClInclude Include="include\Entity.h" />
+    <ClInclude Include="include\EventListener.h" />
     <ClInclude Include="include\InputHandler.h" />
     <ClInclude Include="include\Instance.h" />
+    <ClInclude Include="include\MovementComponent.h" />
     <ClInclude Include="include\PositionComponent.h" />
     <ClInclude Include="include\RenderSystem.h" />
     <ClInclude Include="include\SpriteComponent.h" />

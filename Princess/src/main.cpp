@@ -1,6 +1,7 @@
 #define SDL_MAIN_HANDLED
 #include "ResourceManager.h"
 #include "Entity.h"
+#include "EventListener.h"
 #include "PositionComponent.h"
 #include "SpriteComponent.h"
 #include "RenderSystem.h"
@@ -15,24 +16,29 @@ int main()
 	ResourceManager *resourceManager = new ResourceManager(gameRenderer, "Resources");
 	resourceManager->AddTexture("Demon", "demon.png");
 
-	InputHandler *input = new InputHandler();
+	EventListener *listener = new EventListener();
+
+	InputHandler *input = new InputHandler(listener);
 
 	Entity * player = new Entity("Player");
 	player->AddComponent(new SpriteComponent("Demon", 0, 0, 0, 16, 16, 0));
 	player->AddComponent(new PositionComponent(SDL_Point{100, 300}));
+	player->AddComponent(new MovementComponent(3));
 	player->AddComponent(new ControlComponent(input));
 
 	RenderSystem * r = new RenderSystem(resourceManager, gameRenderer);
 	r->AddEntity(player);
 
-	ControlSystem *c = new ControlSystem();
+	ControlSystem *c = new ControlSystem(listener);
 	c->AddEntity(player);
 
 	while (1 != 0)
 	{
 		SDL_PollEvent(e);
 
-		c->Update(e);
+		input->handleInput(*e);
+
+		c->Update();
 
 		SDL_SetRenderDrawColor(gameRenderer, 100, 100, 0, 0);
 		SDL_RenderClear(gameRenderer);
