@@ -76,7 +76,7 @@
     <ClInclude Include="External Dependencies\SimpleJSON\JSONValue.h">
       <Filter>ExternalResourceManager</Filter>
     </ClInclude>
-    <ClInclude Include="EventListener.h">
+    <ClInclude Include="include\EventListener.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
