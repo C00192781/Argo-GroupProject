@@ -47,6 +47,9 @@
     <ClCompile Include="src\MovementSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\AISystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Component.h">
@@ -101,6 +104,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\MovementSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AISystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SeekComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

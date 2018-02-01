@@ -7,6 +7,7 @@
 #include "RenderSystem.h"
 #include "ControlSystem.h"
 #include "MovementSystem.h"
+#include "AISystem.h"
 
 int main()
 {
@@ -23,17 +24,28 @@ int main()
 
 	Entity * player = new Entity("Player");
 	player->AddComponent(new SpriteComponent("Demon", 0, 0, 0, 16, 16, 0));
-	player->AddComponent(new PositionComponent(SDL_Point{100, 300}));
+	player->AddComponent(new PositionComponent(100, 300));
 	player->AddComponent(new MovementComponent(3));
+
+	Entity *meleeEnemy = new Entity("Melee Enemy");
+	meleeEnemy->AddComponent(new SpriteComponent("Demon", 0, 0, 0, 16, 16, 0));
+	meleeEnemy->AddComponent(new PositionComponent(500, 100 ));
+	meleeEnemy->AddComponent(new MovementComponent(2));
+	meleeEnemy->AddComponent(new SeekComponent(200, 300));
 
 	RenderSystem * r = new RenderSystem(resourceManager, gameRenderer);
 	r->AddEntity(player);
+	r->AddEntity(meleeEnemy);
 
 	ControlSystem *c = new ControlSystem(listener);
 	c->AddEntity(player);
 
 	MovementSystem *m = new MovementSystem();
 	m->AddEntity(player);
+	m->AddEntity(meleeEnemy);
+
+	AISystem *ai = new AISystem();
+	ai->AddEntity(meleeEnemy);
 
 	while (1 != 0)
 	{
@@ -42,6 +54,8 @@ int main()
 		input->handleInput(*e);
 
 		c->Update();
+		ai->Update();
+
 		m->Update();
 
 		SDL_SetRenderDrawColor(gameRenderer, 255, 255, 255, 0);

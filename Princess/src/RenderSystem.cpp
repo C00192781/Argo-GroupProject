@@ -41,7 +41,7 @@ void RenderSystem::Update()
 		{
 			//std::cout << static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getPosition().x << std::endl;
 
-			SDL_Rect* holder = new SDL_Rect{ static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getPosition().x, static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getPosition().y, static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(scKey))->Width() * m_scale, static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(scKey))->Height()*m_scale };
+			SDL_Rect* holder = new SDL_Rect{ (int)static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getX(), (int)static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getY(), static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(scKey))->Width() * m_scale, static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(scKey))->Height()*m_scale };
 			SDL_RenderCopy(m_renderer, 
 							m_resourceManager->GetTexture(static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(scKey))->Sheet()), 
 							&static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(scKey))->GetRect(), holder);
