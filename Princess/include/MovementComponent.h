@@ -13,7 +13,7 @@ public:
 		m_speed = 0;
 	}
 
-	MovementComponent(int speed)
+	MovementComponent(float speed)
 	{
 		m_type = "movement";
 		m_xVel = 0;
@@ -22,7 +22,7 @@ public:
 	}
 
 	void setSpeed(int speed) { m_speed = speed; };
-	int getSpeed() { return m_speed; };
+	float getSpeed() { return m_speed; };
 	
 	void setVelocity(float x, float y)
 	{
@@ -37,7 +37,7 @@ public:
 	void setYVelocity(float yVel) { m_yVel = yVel; }
 
 private:
-	int m_speed;
+	float m_speed;
 
 	float m_xVel;
 	float m_yVel;
