@@ -119,9 +119,14 @@ Vector2f ProjectileSystem::MovementHandler(float velocityX, float velocityY, flo
 	return Vector2f{ velX, velY };
 }
 
+/// <summary>
+///  We use the amount of time that player has pressed the shooting button 
+///  to calculate how fast the projectile will travel
+/// </summary>
 
 float ProjectileSystem::CalculateSpeed(float buttonPressTime, float maxSpeed)
 {
+	// may round up values
 	float modifier = buttonPressTime / maxHoldTime;
 	if (modifier >= 1)
 	{
