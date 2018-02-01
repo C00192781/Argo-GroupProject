@@ -17,18 +17,35 @@ int main()
 
 	ResourceManager *resourceManager = new ResourceManager(gameRenderer, "Resources");
 	resourceManager->AddTexture("Demon", "demon.png");
+	resourceManager->AddTexture("Hearts", "hearts2.png");
+	resourceManager->AddTexture("HeartsHealth", "heartsfull2.png");
+
+	Entity * hearts = new Entity("Hearts");
+	hearts->AddComponent(new PositionComponent());
+	static_cast<PositionComponent*>((hearts)->GetComponents()->at(0))->X(50);
+	static_cast<PositionComponent*>((hearts)->GetComponents()->at(0))->Y(50);
+	hearts->AddComponent(new SpriteComponent("Hearts", 0, 0, 0, 80, 16, 0));
+
+
+	Entity * heartsHealth = new Entity("HeartsHealth");
+	heartsHealth->AddComponent(new PositionComponent());
+	static_cast<PositionComponent*>((heartsHealth)->GetComponents()->at(0))->X(50);
+	static_cast<PositionComponent*>((heartsHealth)->GetComponents()->at(0))->Y(50);
+	heartsHealth->AddComponent(new SpriteComponent("HeartsHealth", 0, 0, 0, 80, 16, 0));
 
 	Entity * player = new Entity("Player");
 	player->AddComponent(new SpriteComponent("Demon", 0, 0, 0, 16, 16, 0));
 	player->AddComponent(new PositionComponent());
-	AttributesComponent * test = new AttributesComponent();
-	player->AddComponent(test);
+	player->AddComponent(new AttributesComponent());
 
 	RenderSystem * r = new RenderSystem(resourceManager, gameRenderer);
 	r->AddEntity(player);
+	r->AddEntity(hearts);
+	r->AddEntity(heartsHealth);
 
 	HealthSystem * h = new HealthSystem();
 	h->AddEntity(player);
+	h->AddEntity(heartsHealth);
 
 	int acKey = -1;
 	for (int i = 0; i < player->GetComponents()->size(); i++)
@@ -41,13 +58,9 @@ int main()
 	if (acKey >= 0)
 	{
 		std::list<Modifer> * modifiers = static_cast<AttributesComponent*>((player)->GetComponents()->at(acKey))->Modifers();
-		Modifer test = Modifer();
-		test.type = ModiferTypes::DAMAGE;
-		test.amount = 10;
-		test.duration = 3;
-		modifiers->push_back(test);
+		modifiers->push_back(Modifer(ModiferTypes::DAMAGE, 115, 0));
 	}
-	//player->AddComponent(new )
+
 
 	while (1 != 0)
 	{
@@ -58,8 +71,7 @@ int main()
 
 		AttributesComponent* component = static_cast<AttributesComponent*>((player)->GetComponents()->at(acKey));
 
-		std::cout << component->Armour() << std::endl;
-		std::cout << "TEST" << test->Armour() << std::endl;
+		std::cout << component->Armour() << " " << component->Health() << std::endl;
 		SDL_RenderPresent(gameRenderer);
 	}
 	return 0;

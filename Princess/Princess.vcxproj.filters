@@ -38,7 +38,7 @@
     <ClCompile Include="External Dependencies\SimpleJSON\JSONValue.cpp">
       <Filter>ExternalResourceManager</Filter>
     </ClCompile>
-    <ClCompile Include="HealthSystem.cpp">
+    <ClCompile Include="src\HealthSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -79,10 +79,10 @@
     <ClInclude Include="External Dependencies\SimpleJSON\JSONValue.h">
       <Filter>ExternalResourceManager</Filter>
     </ClInclude>
-    <ClInclude Include="AttributesComponent.h">
+    <ClInclude Include="include\AttributesComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="HealthSystem.h">
+    <ClInclude Include="include\HealthSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

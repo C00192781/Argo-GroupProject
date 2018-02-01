@@ -3,6 +3,7 @@
 
 #include <list>
 #include "Component.h"
+#include <iostream>
 
 enum class ModiferTypes
 {
@@ -16,9 +17,17 @@ enum class ModiferTypes
 
 struct Modifer
 {
-	ModiferTypes type;
-	int amount;
-	float duration;
+	ModiferTypes m_type;
+	int m_amount;
+	float m_duration;
+	//Modifer() 
+	//{ 
+	//	m_type = ModiferTypes::DAMAGE;
+	//	m_amount = 0;
+	//	m_duration = 0;
+	//};
+
+	Modifer(ModiferTypes type = ModiferTypes::DAMAGE, int amount = 0, float duration = 0) :m_type(type), m_amount(amount), m_duration(duration) {};
 };
 
 class AttributesComponent : public Component
@@ -27,6 +36,8 @@ public:
 	AttributesComponent()
 	{
 		m_type = "AC";
+
+		std::cout << m_type << std::endl;
 
 		m_armour = 50;
 		m_maxArmour = 50;

@@ -3,15 +3,16 @@
 
 #include "System.h"
 #include "AttributesComponent.h"
+#include "SpriteComponent.h"
 class HealthSystem : public System
 {
 public:
 	HealthSystem();
 	~HealthSystem();
 	void Update();
-	void DamageEntity(int damageCaused, int armour, int health);
+
 private:
-
-
+	void DamageEntity(int& damageCaused, int& armour, int& health);
+	
 };
 #endif

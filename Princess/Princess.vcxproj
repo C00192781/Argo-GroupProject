@@ -19,25 +19,25 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="HealthSystem.cpp" />
     <ClCompile Include="External Dependencies\ResourceManager\JSONReader.cpp" />
     <ClCompile Include="External Dependencies\ResourceManager\ResourceManager.cpp" />
     <ClCompile Include="External Dependencies\SimpleJSON\JSON.cpp" />
     <ClCompile Include="External Dependencies\SimpleJSON\JSONValue.cpp" />
     <ClCompile Include="src\Entity.cpp" />
+    <ClCompile Include="src\HealthSystem.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\RenderSystem.cpp" />
     <ClCompile Include="src\System.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AttributesComponent.h" />
-    <ClInclude Include="HealthSystem.h" />
     <ClInclude Include="External Dependencies\ResourceManager\JSONReader.h" />
     <ClInclude Include="External Dependencies\ResourceManager\ResourceManager.h" />
     <ClInclude Include="External Dependencies\SimpleJSON\JSON.h" />
     <ClInclude Include="External Dependencies\SimpleJSON\JSONValue.h" />
+    <ClInclude Include="include\AttributesComponent.h" />
     <ClInclude Include="include\Component.h" />
     <ClInclude Include="include\Entity.h" />
+    <ClInclude Include="include\HealthSystem.h" />
     <ClInclude Include="include\Instance.h" />
     <ClInclude Include="include\PositionComponent.h" />
     <ClInclude Include="include\RenderSystem.h" />
