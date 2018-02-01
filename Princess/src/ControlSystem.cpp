@@ -7,7 +7,7 @@ void ControlSystem::Update()
 	{
 		int mcKey = -1;
 
-		// looks for if there is a position and control component in the entity
+		// looks for if there is a movement component in the entity
 		for (int j = 0; j < m_entities.at(i)->GetComponents()->size(); j++)
 		{
 			for (int j = 0; j < m_entities.at(i)->GetComponents()->size(); j++)
@@ -19,7 +19,7 @@ void ControlSystem::Update()
 			}
 		}
 
-		// makes sure it finds the position in the vector of the position and control components
+		// makes sure it finds a movement component in the entity
 		if (mcKey >= 0) 
 		{
 			SDL_Point holder{ 0, 0 };

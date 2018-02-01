@@ -6,6 +6,7 @@
 #include "SpriteComponent.h"
 #include "RenderSystem.h"
 #include "ControlSystem.h"
+#include "MovementSystem.h"
 
 int main()
 {
@@ -31,6 +32,9 @@ int main()
 	ControlSystem *c = new ControlSystem(listener);
 	c->AddEntity(player);
 
+	MovementSystem *m = new MovementSystem();
+	m->AddEntity(player);
+
 	while (1 != 0)
 	{
 		SDL_PollEvent(e);
@@ -38,10 +42,13 @@ int main()
 		input->handleInput(*e);
 
 		c->Update();
+		m->Update();
 
 		SDL_SetRenderDrawColor(gameRenderer, 255, 255, 255, 0);
 		SDL_RenderClear(gameRenderer);
+
 		r->Update();
+
 		SDL_RenderPresent(gameRenderer);
 	}
 
