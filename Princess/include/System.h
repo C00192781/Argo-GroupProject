@@ -12,8 +12,10 @@ public:
 	void RemoveEntity(std::string id);
 	virtual void Update() = 0;
 
-protected:
 	std::vector<Entity*> m_entities;
+
+protected:
+	//std::vector<Entity*> m_entities;
 };
 #endif
 
