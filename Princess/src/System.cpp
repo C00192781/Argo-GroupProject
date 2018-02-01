@@ -10,11 +10,17 @@ void System::RemoveEntity(std::string id)
 	{
 		if (m_entities.at(i)->ID() == id)
 		{
-			delete m_entities.at(i);
 			m_entities.erase(m_entities.begin() + i);
 			m_entities.shrink_to_fit();
-			return;
 		}
 	}
-	std::cout << "Could not delete " << id << " as it does not exist!" << std::endl;
+}
+void System::ClearEntities()
+{
+	for (int i = 0; i < m_entities.size(); i++)
+	{
+		delete m_entities.at(i);
+	}
+	m_entities.clear();
+	m_entities.shrink_to_fit();
 }

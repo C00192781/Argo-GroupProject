@@ -8,14 +8,17 @@ class System
 {
 public:
 
+	System() {};
+	~System() {};
+
 	void AddEntity(Entity * e);
 	void RemoveEntity(std::string id);
+	void ClearEntities();
 	virtual void Update() = 0;
 
-	std::vector<Entity*> m_entities;
-
 protected:
-	//std::vector<Entity*> m_entities;
+
+	std::vector<Entity*> m_entities;
 };
 #endif
 
