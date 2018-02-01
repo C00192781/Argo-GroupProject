@@ -9,6 +9,8 @@
 #include "MovementSystem.h"
 #include "ProjectileSystem.h"
 #include "ProjectileComponent.h"
+#include "CollisionComponent.h"
+#include "CollisionSystem.h"
 
 int main()
 {
@@ -25,8 +27,9 @@ int main()
 
 	Entity * player = new Entity("Player");
 	player->AddComponent(new SpriteComponent("Demon", 0, 0, 0, 16, 16, 0));
-	player->AddComponent(new PositionComponent(SDL_Point{100, 300}));
+	player->AddComponent(new PositionComponent(SDL_Point{100, 340}));
 	player->AddComponent(new MovementComponent(3));
+	player->AddComponent(new CollisionComponent());
 
 
 
@@ -35,9 +38,11 @@ int main()
 
 	Entity * projectile = new Entity("Projectile");
 	projectile->AddComponent(new SpriteComponent("Demon", 0, 0, 0, 16, 16, 0));
-	projectile->AddComponent(new PositionComponent(SDL_Point{ 400, 500 } ));
-	projectile->AddComponent(new ProjectileComponent(0.5, "Enemy", 5.0f, 2.0f, 15.0f));
+	projectile->AddComponent(new PositionComponent(SDL_Point{ 60, 340 } ));
+	projectile->AddComponent(new ProjectileComponent(1, "Enemy", 5.0f, 2.0f, 2.0f));
 	projectile->AddComponent(new MovementComponent());
+	projectile->AddComponent(new CollisionComponent());
+
 
 
 	Entity * projectile2 = new Entity("Projectile");
@@ -45,6 +50,7 @@ int main()
 	projectile2->AddComponent(new PositionComponent(SDL_Point{ 600, 500 }));
 	projectile2->AddComponent(new ProjectileComponent(0.8, "Enemy", 5.0f, 2.0f, 15.0f));
 	projectile2->AddComponent(new MovementComponent());
+	projectile2->AddComponent(new CollisionComponent());
 
 
 	RenderSystem * r = new RenderSystem(resourceManager, gameRenderer);
@@ -56,6 +62,12 @@ int main()
 	p->AddEntity(projectile);
 	p->AddEntity(projectile2);
 	p->AddEntity(player);
+
+	
+	CollisionSystem * collision = new CollisionSystem();
+	collision->AddEntity(player);
+	collision->AddEntity(projectile);
+	collision->AddEntity(projectile2);
 
 
 	ControlSystem *c = new ControlSystem(listener);
@@ -77,6 +89,7 @@ int main()
 		c->Update();
 		m->Update();
 		p->Update();
+		collision->Update();
 
 		SDL_SetRenderDrawColor(gameRenderer, 255, 255, 255, 0);
 		SDL_RenderClear(gameRenderer);

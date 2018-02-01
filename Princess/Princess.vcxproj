@@ -23,6 +23,7 @@
     <ClCompile Include="External Dependencies\ResourceManager\ResourceManager.cpp" />
     <ClCompile Include="External Dependencies\SimpleJSON\JSON.cpp" />
     <ClCompile Include="External Dependencies\SimpleJSON\JSONValue.cpp" />
+    <ClCompile Include="src\CollisionSystem.cpp" />
     <ClCompile Include="src\ControlSystem.cpp" />
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\InputHandler.cpp" />
@@ -38,6 +39,8 @@
     <ClInclude Include="External Dependencies\SimpleJSON\JSON.h" />
     <ClInclude Include="External Dependencies\SimpleJSON\JSONValue.h" />
     <ClInclude Include="Factory.h" />
+    <ClInclude Include="include\CollisionComponent.h" />
+    <ClInclude Include="include\CollisionSystem.h" />
     <ClInclude Include="include\Component.h" />
     <ClInclude Include="include\ControlComponent.h" />
     <ClInclude Include="include\ControlSystem.h" />
