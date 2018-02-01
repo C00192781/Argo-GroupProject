@@ -13,7 +13,8 @@ public:
 
 	void Update();
 private:
-	void updateVelocity(SDL_Event *e, int entityIndex, int ccKey, int mcKey);
+	void updateVelocity(int entityIndex, int mcKey);
+	void updatePosition(int entityIndex, int mcKey, int pcKey);
 
 	EventListener *m_eventListener;
 

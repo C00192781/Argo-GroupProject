@@ -24,7 +24,6 @@ int main()
 	player->AddComponent(new SpriteComponent("Demon", 0, 0, 0, 16, 16, 0));
 	player->AddComponent(new PositionComponent(SDL_Point{100, 300}));
 	player->AddComponent(new MovementComponent(3));
-	player->AddComponent(new ControlComponent(input));
 
 	RenderSystem * r = new RenderSystem(resourceManager, gameRenderer);
 	r->AddEntity(player);
@@ -40,7 +39,7 @@ int main()
 
 		c->Update();
 
-		SDL_SetRenderDrawColor(gameRenderer, 100, 100, 0, 0);
+		SDL_SetRenderDrawColor(gameRenderer, 255, 255, 255, 0);
 		SDL_RenderClear(gameRenderer);
 		r->Update();
 		SDL_RenderPresent(gameRenderer);
