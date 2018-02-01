@@ -39,11 +39,11 @@ public:
 
 		std::cout << m_type << std::endl;
 
-		m_armour = 50;
-		m_maxArmour = 50;
+		m_armour = 4;
+		m_maxArmour = 4;
 
-		m_health = 100;
-		m_maxHealth = 100;
+		m_health = 26;
+		m_maxHealth = 26;
 
 		m_movementSpeed = 10;
 		m_maxMovementSpeed = 10;

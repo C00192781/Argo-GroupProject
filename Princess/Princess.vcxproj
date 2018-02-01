@@ -38,6 +38,7 @@
     <ClInclude Include="include\Component.h" />
     <ClInclude Include="include\Entity.h" />
     <ClInclude Include="include\HealthSystem.h" />
+    <ClInclude Include="include\HeartComponent.h" />
     <ClInclude Include="include\Instance.h" />
     <ClInclude Include="include\PositionComponent.h" />
     <ClInclude Include="include\RenderSystem.h" />

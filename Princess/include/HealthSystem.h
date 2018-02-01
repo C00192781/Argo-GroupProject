@@ -4,6 +4,9 @@
 #include "System.h"
 #include "AttributesComponent.h"
 #include "SpriteComponent.h"
+#include "PositionComponent.h"
+#include "HeartComponent.h"
+
 class HealthSystem : public System
 {
 public:
@@ -13,6 +16,7 @@ public:
 
 private:
 	void DamageEntity(int& damageCaused, int& armour, int& health);
-	
+	void UpdateHeartsStatus(Entity* player);
+	void UpdateMaxHearts();
 };
 #endif

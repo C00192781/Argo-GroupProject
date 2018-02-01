@@ -6,6 +6,7 @@
 #include "RenderSystem.h"
 #include "AttributesComponent.h"
 #include "HealthSystem.h"
+#include "HeartComponent.h"
 #include <iostream>
 
 
@@ -19,33 +20,49 @@ int main()
 	resourceManager->AddTexture("Demon", "demon.png");
 	resourceManager->AddTexture("Hearts", "hearts2.png");
 	resourceManager->AddTexture("HeartsHealth", "heartsfull2.png");
-
-	Entity * hearts = new Entity("Hearts");
-	hearts->AddComponent(new PositionComponent());
-	static_cast<PositionComponent*>((hearts)->GetComponents()->at(0))->X(50);
-	static_cast<PositionComponent*>((hearts)->GetComponents()->at(0))->Y(50);
-	hearts->AddComponent(new SpriteComponent("Hearts", 0, 0, 0, 80, 16, 0));
-
-
-	Entity * heartsHealth = new Entity("HeartsHealth");
-	heartsHealth->AddComponent(new PositionComponent());
-	static_cast<PositionComponent*>((heartsHealth)->GetComponents()->at(0))->X(50);
-	static_cast<PositionComponent*>((heartsHealth)->GetComponents()->at(0))->Y(50);
-	heartsHealth->AddComponent(new SpriteComponent("HeartsHealth", 0, 0, 0, 80, 16, 0));
+	resourceManager->AddTexture("HeartsSheet", "heartSpriteSheet.png");
 
 	Entity * player = new Entity("Player");
 	player->AddComponent(new SpriteComponent("Demon", 0, 0, 0, 16, 16, 0));
 	player->AddComponent(new PositionComponent());
 	player->AddComponent(new AttributesComponent());
+	int heartNum = (static_cast<AttributesComponent*>((player)->GetComponents()->at(2))->MaxHealth()) / 2;
+
+	std::vector<Entity*>* hearts = new std::vector<Entity*>();
+	for (int i = 0; i < heartNum; i++)
+	{
+		Entity * heart = new Entity("Hearts");
+		heart->AddComponent(new PositionComponent());
+	
+		if (i >= 10)
+		{
+			static_cast<PositionComponent*>((heart)->GetComponents()->at(0))->X(20 * (i-10));
+			static_cast<PositionComponent*>((heart)->GetComponents()->at(0))->Y(20+20);
+		}
+		else
+		{
+			static_cast<PositionComponent*>((heart)->GetComponents()->at(0))->X(20 * i);
+			static_cast<PositionComponent*>((heart)->GetComponents()->at(0))->Y(20);
+		}
+		heart->AddComponent(new SpriteComponent("HeartsSheet", 3, 0, 0, 16, 16, 0));
+		heart->AddComponent(new HeartComponent(hearts));
+		hearts->push_back(heart);
+		static_cast<HeartComponent*>((heart)->GetComponents()->at(2))->Index(hearts->size() - 1);
+	}
 
 	RenderSystem * r = new RenderSystem(resourceManager, gameRenderer);
 	r->AddEntity(player);
-	r->AddEntity(hearts);
-	r->AddEntity(heartsHealth);
+	for (int i = 0; i < hearts->size(); i++)
+	{
+		r->AddEntity(hearts->at(i));
+	}
 
 	HealthSystem * h = new HealthSystem();
 	h->AddEntity(player);
-	h->AddEntity(heartsHealth);
+	for (int i = 0; i < hearts->size(); i++)
+	{
+		h->AddEntity(hearts->at(i));
+	}
 
 	int acKey = -1;
 	for (int i = 0; i < player->GetComponents()->size(); i++)
@@ -58,7 +75,7 @@ int main()
 	if (acKey >= 0)
 	{
 		std::list<Modifer> * modifiers = static_cast<AttributesComponent*>((player)->GetComponents()->at(acKey))->Modifers();
-		modifiers->push_back(Modifer(ModiferTypes::DAMAGE, 115, 0));
+		modifiers->push_back(Modifer(ModiferTypes::DAMAGE, 7, 0));
 	}
 
 
@@ -74,5 +91,7 @@ int main()
 		std::cout << component->Armour() << " " << component->Health() << std::endl;
 		SDL_RenderPresent(gameRenderer);
 	}
+	hearts->clear();
+	hearts->shrink_to_fit();
 	return 0;
 }
