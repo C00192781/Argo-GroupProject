@@ -43,19 +43,6 @@ void ControlSystem::Update()
 			}
 
 			static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setVelocity(holder);
-
-			//updatePosition(i, mcKey, pcKey);
 		}
 	}
 }
-
-//void ControlSystem::updatePosition(int entityIndex, int mcKey, int pcKey)
-//{
-//	SDL_Point position = static_cast<PositionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(pcKey))->getPosition();
-//	SDL_Point velocity = static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->getVelocity();
-//
-//	position.x += velocity.x;
-//	position.y += velocity.y;
-//
-//	static_cast<PositionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(pcKey))->setPosition(position);
-//}
