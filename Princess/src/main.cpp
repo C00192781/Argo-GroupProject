@@ -32,8 +32,9 @@ int main()
 	r->AddEntity(player);
 	r->AddEntity(projectile);
 
-	ProjectileSystem * p = new ProjectileSystem(500, 300, 8, 0.8);
+	ProjectileSystem * p = new ProjectileSystem(500, 300, 8, 5.23);
 	p->AddEntity(projectile);
+	p->AddEntity(player);
 
 	while (1 != 0)
 	{

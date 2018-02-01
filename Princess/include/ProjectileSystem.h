@@ -3,6 +3,7 @@
 
 #include "System.h"
 #include "PositionComponent.h"
+#include "SpriteComponent.h"
 
 #include <iostream>
 class ProjectileSystem : public System
@@ -13,6 +14,7 @@ public:
 	void Update();
 	void velocityHandler(float orientation);
 	void movementHandler(float speed);
+	//void Collisions();
 private:
 	const float CONVERSION = 180 / 3.14159265359;
 	int x;
@@ -20,5 +22,8 @@ private:
 	float velocityX, velocityY;
 	float m_orientation;
 	float m_speed;
+
+	float playerX, playerY;
+	float playerWidth, playerHeight;
 };
 #endif
