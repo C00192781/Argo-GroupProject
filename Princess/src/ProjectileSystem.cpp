@@ -96,7 +96,8 @@ Vector2f ProjectileSystem::MovementHandler(float velocityX, float velocityY, flo
 float ProjectileSystem::CalculateSpeed(float buttonPressTime, float maxSpeed)
 {
 	// may round up values
-	float modifier = buttonPressTime / maxHoldTime;
+	float press = std::ceil(buttonPressTime);
+	float modifier = press / maxHoldTime;
 	if (modifier >= 1)
 	{
 		modifier = 1;

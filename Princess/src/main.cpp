@@ -39,7 +39,7 @@ int main()
 	Entity * projectile = new Entity("Projectile");
 	projectile->AddComponent(new SpriteComponent("Demon", 0, 0, 0, 16, 16, 0));
 	projectile->AddComponent(new PositionComponent(SDL_Point{ 300, 300 } ));
-	projectile->AddComponent(new ProjectileComponent(2, "Enemy", 5.0f, 2.0f, 15.0f));
+	projectile->AddComponent(new ProjectileComponent(2, "Enemy", 5.0f, 3.0f, 10.0f));
 	projectile->AddComponent(new MovementComponent());
 	projectile->AddComponent(new CollisionComponent());
 
@@ -48,7 +48,7 @@ int main()
 	Entity * projectile2 = new Entity("Projectile");
 	projectile2->AddComponent(new SpriteComponent("Demon", 0, 0, 0, 16, 16, 0));
 	projectile2->AddComponent(new PositionComponent(SDL_Point{ 300, 300 }));
-	projectile2->AddComponent(new ProjectileComponent(1.5, "Enemy", 5.0f, 2.0f, 15.0f));
+	projectile2->AddComponent(new ProjectileComponent(3, "Enemy", 5.0f, 2.0f, 15.0f));
 	projectile2->AddComponent(new MovementComponent());
 	projectile2->AddComponent(new CollisionComponent());
 

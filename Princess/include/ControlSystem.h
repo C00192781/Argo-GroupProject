@@ -3,6 +3,7 @@
 #include "System.h"
 #include "ControlComponent.h"
 #include "MovementComponent.h"
+#include "ProjectileComponent.h"
 
 class ControlSystem : public System
 {
