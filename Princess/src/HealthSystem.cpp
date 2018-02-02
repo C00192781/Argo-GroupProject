@@ -199,7 +199,7 @@ void HealthSystem::UpdateHeartsStatus(Entity* player)
 					{
 						int numHearts = (playerAc->MaxHealth() / 2);
 						int numFullHearts = (playerAc->Health() / 2);
-						if (hc->Index() == (numFullHearts))
+						if (hc->Index() >= (numFullHearts - 0.5f) && hc->Index() < (numFullHearts) && hc->Index() != numFullHearts)
 						{
 							if (hc->State() != HeartState::HALF)
 							{
@@ -207,7 +207,7 @@ void HealthSystem::UpdateHeartsStatus(Entity* player)
 								sc->Frame(1);
 							}
 						}
-						else if (hc->Index() > numFullHearts)
+						else if (hc->Index() >= numFullHearts)
 						{
 							if (hc->State() != HeartState::EMPTY)
 							{
@@ -235,6 +235,146 @@ void HealthSystem::UpdateHeartsStatus(Entity* player)
 		}
 	}
 
+}
+
+void HealthSystem::UpdateMaxArmour()
+{
+	for (int a = 0; a < m_entities.size(); a++)
+	{
+		if (m_entities.at(a)->ID() == "Player")
+		{
+			int acKey = -1;
+			for (int k = 0; k < m_entities.at(a)->GetComponents()->size(); k++)
+			{
+				if (m_entities.at(a)->GetComponents()->at(k)->Type() == "AC")
+				{
+					acKey = k;
+				}
+			}
+
+			for (int i = 0; i < m_entities.size(); i++)
+			{
+				if (m_entities.at(i)->ID() == "ArmourDisplay")
+				{
+					int hcKey = -1;
+					for (int k = 0; k < m_entities.at(i)->GetComponents()->size(); k++)
+					{
+						if (m_entities.at(i)->GetComponents()->at(k)->Type() == "HC")
+						{
+							hcKey = k;
+						}
+					}
+					if (hcKey >= 0 && acKey >= 0)
+					{
+						HeartComponent* hc = static_cast<HeartComponent*>(m_entities.at(i)->GetComponents()->at(hcKey));
+						AttributesComponent* ac = static_cast<AttributesComponent*>(m_entities.at(a)->GetComponents()->at(acKey));
+						int numFullHearts = hc->HeartList()->size();
+						for (int i = numFullHearts; i < (ac->MaxArmour() / 2); i++)
+						{
+							Entity * armour = new Entity("ArmourDisplay");
+							armour->AddComponent(new PositionComponent());
+
+							if (i >= 10)
+							{
+								static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->X(20 * (i - 10));
+								static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->Y(60 + 20);
+							}
+							else
+							{
+								static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->X(20 * i);
+								static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->Y(60);
+							}
+							armour->AddComponent(new SpriteComponent("ArmourSheet", 3, 0, 0, 16, 16, 0));
+							armour->AddComponent(new HeartComponent(hc->HeartList()));
+							static_cast<HeartComponent*>((armour)->GetComponents()->at(2))->HeartType(HeartTypes::ARMOUR);
+							hc->HeartList()->push_back(armour);
+							static_cast<HeartComponent*>((armour)->GetComponents()->at(2))->Index(hc->HeartList()->size() - 1);
+						}
+					}
+					return;
+
+				}
+			}
+
+
+
+		}
+	}
+}
+
+void HealthSystem::UpdateArmourStatus(Entity * player)
+{
+	int acKey = -1;
+	for (int k = 0; k < player->GetComponents()->size(); k++)
+	{
+		if (player->GetComponents()->at(k)->Type() == "AC")
+		{
+			acKey = k;
+		}
+	}
+	for (int i = 0; i < m_entities.size(); i++)
+	{
+		if (m_entities.at(i)->ID() == "ArmourDisplay")
+		{
+			int scKey = -1;
+			int hcKey = -1;
+			for (int j = 0; j < m_entities.at(i)->GetComponents()->size(); j++)
+			{
+				if (m_entities.at(i)->GetComponents()->at(j)->Type() == "SC")
+				{
+					scKey = j;
+				}
+				if (m_entities.at(i)->GetComponents()->at(j)->Type() == "HC")
+				{
+					hcKey = j;
+				}
+			}
+			if (acKey >= 0 && scKey >= 0 && hcKey >= 0)
+			{
+				if (static_cast<HeartComponent*>(m_entities.at(i)->GetComponents()->at(hcKey))->HeartType() == HeartTypes::ARMOUR)
+				{
+					HeartComponent* hc = static_cast<HeartComponent*>(m_entities.at(i)->GetComponents()->at(hcKey));
+					SpriteComponent* sc = static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(scKey));
+					AttributesComponent* playerAc = static_cast<AttributesComponent*>(player->GetComponents()->at(acKey));
+					if (hc->Index() < hc->HeartList()->size())
+					{
+						int numArmour = (playerAc->MaxArmour() / 2);
+						float numFullArmour = (playerAc->Armour()/2.0f);
+						if (hc->Index() >= (numFullArmour - 0.5f) && hc->Index() < (numFullArmour) && hc->Index() != numFullArmour)
+						{
+							if (hc->State() != HeartState::HALF)
+							{
+								hc->State(HeartState::HALF);
+								sc->Frame(1);
+							}
+						}
+						else if (hc->Index() >= (numFullArmour))
+						{
+							if (hc->State() != HeartState::EMPTY)
+							{
+								hc->State(HeartState::EMPTY);
+								sc->Frame(2);
+							}
+						}
+						else
+						{
+							if (hc->State() != HeartState::FULL)
+							{
+								hc->State(HeartState::FULL);
+								sc->Frame(0);
+							}
+						}
+					}
+					else
+					{
+						std::cout << "ERROR INDEX LARGER THAN LIST SIZE" << std::endl;
+					}
+
+
+				}
+			}
+		}
+	}
 }
 
 void HealthSystem::UpdateMaxHearts()

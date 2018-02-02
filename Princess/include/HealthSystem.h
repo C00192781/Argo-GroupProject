@@ -15,6 +15,8 @@ public:
 	void Update();
 	void UpdateMaxHearts();
 	void UpdateHeartsStatus(Entity* player);
+	void UpdateMaxArmour();
+	void UpdateArmourStatus(Entity* player);
 
 private:
 	void DamageEntity(int& damageCaused, int& armour, int& health);

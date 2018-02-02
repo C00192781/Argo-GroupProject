@@ -21,12 +21,14 @@ int main()
 	resourceManager->AddTexture("Hearts", "hearts2.png");
 	resourceManager->AddTexture("HeartsHealth", "heartsfull2.png");
 	resourceManager->AddTexture("HeartsSheet", "heartSpriteSheet.png");
+	resourceManager->AddTexture("ArmourSheet", "armourSpriteSheet.png");
 
 	Entity * player = new Entity("Player");
 	player->AddComponent(new SpriteComponent("Demon", 0, 0, 0, 16, 16, 0));
 	player->AddComponent(new PositionComponent());
 	player->AddComponent(new AttributesComponent());
 	int heartNum = (static_cast<AttributesComponent*>((player)->GetComponents()->at(2))->MaxHealth()) / 2;
+	int armourNum = (static_cast<AttributesComponent*>((player)->GetComponents()->at(2))->MaxArmour()) / 2;
 
 	std::vector<Entity*>* hearts = new std::vector<Entity*>();
 	for (int i = 0; i < heartNum; i++)
@@ -50,11 +52,38 @@ int main()
 		static_cast<HeartComponent*>((heart)->GetComponents()->at(2))->Index(hearts->size() - 1);
 	}
 
+	std::vector<Entity*>* armourDisplayVector = new std::vector<Entity*>();
+	for (int i = 0; i < armourNum; i++)
+	{
+		Entity * armour = new Entity("ArmourDisplay");
+		armour->AddComponent(new PositionComponent());
+
+		if (i >= 10)
+		{
+			static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->X(20 * (i - 10));
+			static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->Y(60 + 20);
+		}
+		else
+		{
+			static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->X(20 * i);
+			static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->Y(60);
+		}
+		armour->AddComponent(new SpriteComponent("ArmourSheet", 3, 0, 0, 16, 16, 0));
+		armour->AddComponent(new HeartComponent(armourDisplayVector));
+		static_cast<HeartComponent*>((armour)->GetComponents()->at(2))->HeartType(HeartTypes::ARMOUR);
+		armourDisplayVector->push_back(armour);
+		static_cast<HeartComponent*>((armour)->GetComponents()->at(2))->Index(armourDisplayVector->size() - 1);
+	}
+
 	RenderSystem * r = new RenderSystem(resourceManager, gameRenderer);
 	r->AddEntity(player);
 	for (int i = 0; i < hearts->size(); i++)
 	{
 		r->AddEntity(hearts->at(i));
+	}
+	for (int i = 0; i < armourDisplayVector->size(); i++)
+	{
+		r->AddEntity(armourDisplayVector->at(i));
 	}
 
 	HealthSystem * h = new HealthSystem();
@@ -62,6 +91,10 @@ int main()
 	for (int i = 0; i < hearts->size(); i++)
 	{
 		h->AddEntity(hearts->at(i));
+	}
+	for (int i = 0; i < armourDisplayVector->size(); i++)
+	{
+		h->AddEntity(armourDisplayVector->at(i));
 	}
 
 	int acKey = -1;
@@ -75,10 +108,12 @@ int main()
 	if (acKey >= 0)
 	{
 		std::list<Modifer> * modifiers = static_cast<AttributesComponent*>((player)->GetComponents()->at(acKey))->Modifers();
-		modifiers->push_back(Modifer(ModiferTypes::DAMAGE, 7, 0));
+		//modifiers->push_back(Modifer(ModiferTypes::DAMAGE, 7, 0));
 	}
 
 	bool heartTest = true;
+
+
 	while (1 != 0)
 	{
 		SDL_SetRenderDrawColor(gameRenderer, 100, 100, 0, 0);
@@ -91,6 +126,8 @@ int main()
 
 		if (heartTest == true)
 		{
+
+			//Health
 			component->MaxHealth(40);
 			int size = hearts->size();
 			h->UpdateMaxHearts();
@@ -102,15 +139,37 @@ int main()
 					h->AddEntity(hearts->at(i));
 				}
 			}
-			heartTest = false;
 			h->UpdateHeartsStatus(player);
+
+
+			//Armour
+			component->MaxArmour(8);
+			size = armourDisplayVector->size();
+			h->UpdateMaxArmour();
+			if (size < armourDisplayVector->size())
+			{
+				for (int i = size; i < armourDisplayVector->size(); i++)
+				{
+					r->AddEntity(armourDisplayVector->at(i));
+					h->AddEntity(armourDisplayVector->at(i));
+				}
+			}
+			h->UpdateArmourStatus(player);
+
+			heartTest = false;
+
 		}
 
 
 		std::cout << component->Armour() << " " << component->Health() << std::endl;
 		SDL_RenderPresent(gameRenderer);
 	}
+
 	hearts->clear();
 	hearts->shrink_to_fit();
+
+	armourDisplayVector->clear();
+	armourDisplayVector->shrink_to_fit();
+
 	return 0;
 }

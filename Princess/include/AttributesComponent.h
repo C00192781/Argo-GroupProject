@@ -39,8 +39,8 @@ public:
 
 		std::cout << m_type << std::endl;
 
-		m_armour = 4;
-		m_maxArmour = 4;
+		m_armour = 5;
+		m_maxArmour = 6;
 
 		m_health = 26;
 		m_maxHealth = 26;
