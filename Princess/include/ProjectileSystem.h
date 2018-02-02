@@ -24,17 +24,9 @@ public:
 	Vector2f VelocityHandler(float orientation);
 	Vector2f MovementHandler(float velocityX, float VelocityY, float speed);
 	float CalculateSpeed(float buttonPressTime, float maxSpeed);
-	//void Collisions();
+
 private:
 	const float CONVERSION = 180 / 3.14159265359;
 	const float maxHoldTime = 3.0f;
-	int x;
-	int y;
-	float velocityX, velocityY;
-	//float m_orientation;
-	float m_speed;
-
-	float playerX, playerY;
-	float playerWidth, playerHeight;
 };
 #endif

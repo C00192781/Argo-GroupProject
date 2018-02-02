@@ -42,38 +42,7 @@ void ProjectileSystem::Update()
 			{
 				mcKey = j;
 			}
-			//if (m_entities.at(i)->GetComponents()->at(j)->Type() == "PC" && m_entities.at(i)->ID() == playerCheck)
-			//{
-			//	pcKey = j;
-			//}
-			//if (m_entities.at(i)->GetComponents()->at(j)->Type() == "SC" && m_entities.at(i)->ID() == playerCheck)
-			//{
-			//	scKey = j;
-			//}
 		}
-
-
-		//if (pcKey >= 0 && scKey >= 0)
-		//{
-
-		//	int playerWidth = static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(scKey))->Width();
-		//	int playerHeight = static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(scKey))->Height();
-
-		//	playerX = static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getPosition().x;
-		//	playerY = static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getPosition().y;
-
-
-		//	///////////////////static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->X(44);
-
-		//	// EXTREMELY BASIC COLLISION DETECTION
-		//	if ((x >= playerX) && (x <= (playerX + playerWidth))
-		//		&& (y >= playerY && y <= (playerY + playerHeight)))
-		//	{
-		//		//std::cout << "COLLISION!!!" << std::endl;
-		//	}
-
-
-		//}
 
 
 		if (pjKey >= 0 && pcKey >= 0 && mcKey >= 0)
