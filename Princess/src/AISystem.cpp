@@ -77,6 +77,8 @@ void AISystem::seek(int entityIndex, int pcKey, int mcKey, int seekKey)
 
 void AISystem::attack(int entityIndex, int attackKey, int mcKey)
 {
+	
+
 	static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setXVelocity(0);
 	static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setYVelocity(0);
 }
