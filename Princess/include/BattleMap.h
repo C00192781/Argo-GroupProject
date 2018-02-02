@@ -6,8 +6,7 @@
 class BattleMap : public Instance
 {
 public:
-	BattleMap() {};
-	BattleMap(ResourceManager * r, SDL_Renderer * sdlr, EventListener * e, StateManager * s, int scale);
+	BattleMap(SystemManager * sm, SDL_Renderer * sdlr, StateManager * s);
 	~BattleMap();
 
 	void Generate(std::string type);

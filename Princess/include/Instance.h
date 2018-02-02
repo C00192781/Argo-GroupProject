@@ -2,14 +2,9 @@
 #define _INSTANCE_H
 
 #include <string>
-#include "ResourceManager.h"
-#include "RenderSystem.h"
-#include "ControlSystem.h"
-#include "MovementSystem.h"
-#include "PositionComponent.h"
-#include "SpriteComponent.h"
 #include "GrassTileFactory.h"
 #include "StateManager.h"
+#include "SystemManager.h"
 #include "Entity.h"
 #include "stdafx.h"
 
@@ -29,11 +24,9 @@ protected:
 
 	std::vector<Entity*> m_entities;
 
-	RenderSystem * m_renderSystem;
-	MovementSystem * m_movementSystem;
-	ControlSystem * m_controlSystem;
-
 	TileFactory * m_factory;
+
+	SystemManager * m_systemManager;
 
 	StateManager * m_stateManager;
 };

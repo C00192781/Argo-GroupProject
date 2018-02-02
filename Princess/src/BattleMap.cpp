@@ -2,12 +2,9 @@
 
 
 
-BattleMap::BattleMap(ResourceManager * r, SDL_Renderer * sdlr, EventListener * e, StateManager * s, int scale)
+BattleMap::BattleMap(SystemManager * sm, SDL_Renderer * sdlr, StateManager * s)
 {
-	m_renderSystem = new RenderSystem(r, sdlr);
-	m_controlSystem = new ControlSystem(e);
-	m_movementSystem = new MovementSystem();
-	m_renderSystem->SetScale(scale);
+	m_systemManager = sm;
 	m_stateManager = s;
 }
 
@@ -23,9 +20,9 @@ void BattleMap::Generate(std::string type)
 	}
 	m_entities.clear();
 	m_entities.shrink_to_fit();
-	m_renderSystem->ClearEntities();
-	m_controlSystem->ClearEntities();
-	m_movementSystem->ClearEntities();
+	m_systemManager->ControlSystem->ClearEntities();
+	m_systemManager->RenderSystem->ClearEntities();
+	m_systemManager->MovementSystem->ClearEntities();
 
 	delete m_factory;
 
@@ -38,33 +35,32 @@ void BattleMap::Generate(std::string type)
 	{
 		for (int j = 0; j < 13; j++)
 		{
-			int rando = rand() % 15;
+			int rando = rand() % 100;
 			if (rando <= 6)
 			{
-				m_entities.push_back(m_factory->GroundA("Turf", i * (16 * m_renderSystem->GetScale()), j * (16 * m_renderSystem->GetScale())));
+				m_entities.push_back(m_factory->GroundA("Turf", i * (16 * m_systemManager->RenderSystem->GetScale()), j * (16 * m_systemManager->RenderSystem->GetScale())));
 			}
 			else if (rando <= 9)
 			{
-				m_entities.push_back(m_factory->GroundB("Turf", i * (16 * m_renderSystem->GetScale()), j * (16 * m_renderSystem->GetScale())));
+				m_entities.push_back(m_factory->GroundB("Turf", i * (16 * m_systemManager->RenderSystem->GetScale()), j * (16 * m_systemManager->RenderSystem->GetScale())));
 			}																			
 			else if (rando <= 13)														
 			{																			
-				m_entities.push_back(m_factory->GroundC("Turf", i * (16 * m_renderSystem->GetScale()), j * (16 * m_renderSystem->GetScale())));
+				m_entities.push_back(m_factory->GroundC("Turf", i * (16 * m_systemManager->RenderSystem->GetScale()), j * (16 * m_systemManager->RenderSystem->GetScale())));
 			}																			
 			else																		
 			{																			
-				m_entities.push_back(m_factory->GroundD("Turf", i * (16 * m_renderSystem->GetScale()), j * (16 * m_renderSystem->GetScale())));
+				m_entities.push_back(m_factory->GroundD("Turf", i * (16 * m_systemManager->RenderSystem->GetScale()), j * (16 * m_systemManager->RenderSystem->GetScale())));
 			}
-			m_renderSystem->AddEntity(m_entities.back());
+			m_systemManager->RenderSystem->AddEntity(m_entities.back());
 		}
 	}
-
 }
 void BattleMap::Update()
 {
-	m_controlSystem->Update();
+
 }
 void BattleMap::Render()
 {
-	m_renderSystem->Update();
+
 }
