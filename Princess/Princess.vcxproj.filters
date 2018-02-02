@@ -65,6 +65,9 @@
     <ClCompile Include="src\SystemManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\AISystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Component.h">
@@ -158,6 +161,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\SystemManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AiLogicComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AISystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

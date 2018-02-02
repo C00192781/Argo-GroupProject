@@ -17,6 +17,7 @@
 #include "AttributesComponent.h"
 #include "HealthSystem.h"
 #include "HeartComponent.h"
+#include "AIsystem.h"
 
 #include "SystemManager.h"
 
@@ -53,6 +54,24 @@ int main()
 
 	BattleMap map1 = BattleMap(&systemManager, gameRenderer, &state);
 	map1.Generate("Grassland");
+
+
+	////$$$$$$$$$$
+
+	//Entity * princess = new Entity("Princess");
+	//princess->AddComponent(new SpriteComponent("Princess", 0, 0, 0, 16, 16, 0));
+	//princess->AddComponent(new PositionComponent());
+	//princess->AddComponent(new AiLogicComponent());
+	//RenderSystem * r = new RenderSystem(resourceManager, gameRenderer);
+
+	//AiSystem * ai = new AiSystem();
+	//ai->AddEntity(princess);
+
+
+	//r->AddEntity(princess);
+	//ai->Update(); 
+
+	////$$$$$$$$$$$$$
 
 	//Entity * player = new Entity("Player");
 	//player->AddComponent(new SpriteComponent("Demon", 1, 0, 0, 0, 16, 16, 0));
