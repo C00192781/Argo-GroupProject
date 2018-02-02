@@ -1,6 +1,6 @@
 #include "MovementSystem.h"
 
-void MovementSystem::Update()
+void MovementSystem::Update(float deltaTime)
 {
 	// looks for if there is a position and movement component in the entity
 	for (int i = 0; i < m_entities.size(); i++)
@@ -29,8 +29,8 @@ void MovementSystem::Update()
 			float xVel = static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->getXVelocity();
 			float yVel = static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->getYVelocity();
 
-			xPos += xVel;
-			yPos += yVel;
+			xPos += xVel * deltaTime;
+			yPos += yVel * deltaTime;
 
 			static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->setPosition(xPos, yPos);
 		}

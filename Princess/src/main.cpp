@@ -9,12 +9,17 @@
 #include "MovementSystem.h"
 #include "AISystem.h"
 #include "AttackComponent.h"
+#include <chrono>
 
 int main()
 {
 	SDL_Window* gameWindow = SDL_CreateWindow("TEST", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
 	SDL_Renderer* gameRenderer = SDL_CreateRenderer(gameWindow, -1, SDL_RENDERER_PRESENTVSYNC);
 	SDL_Event *e = new SDL_Event();
+
+	unsigned int lastTime = 0;
+	float deltaTime = 0;
+	unsigned int currentTime = 0;
 
 	ResourceManager *resourceManager = new ResourceManager(gameRenderer, "Resources");
 	resourceManager->AddTexture("Demon", "demon.png");
@@ -26,12 +31,12 @@ int main()
 	Entity * player = new Entity("Player");
 	player->AddComponent(new SpriteComponent("Demon", 0, 0, 0, 16, 16, 0));
 	player->AddComponent(new PositionComponent(100, 300));
-	player->AddComponent(new MovementComponent(3));
+	player->AddComponent(new MovementComponent(180));
 
 	Entity *meleeEnemy = new Entity("Melee Enemy");
 	meleeEnemy->AddComponent(new SpriteComponent("Demon", 0, 0, 0, 16, 16, 0));
 	meleeEnemy->AddComponent(new PositionComponent(500, 100 ));
-	meleeEnemy->AddComponent(new MovementComponent(2));
+	meleeEnemy->AddComponent(new MovementComponent(240));
 	meleeEnemy->AddComponent(new SeekComponent(200, 300));
 	meleeEnemy->AddComponent(new AttackComponent(100, 1, 1));
 
@@ -51,14 +56,23 @@ int main()
 
 	while (1 != 0)
 	{
+		currentTime = SDL_GetTicks();
+
 		SDL_PollEvent(e);
 
-		input->handleInput(*e);
+		if (currentTime > lastTime) 
+		{
+			deltaTime = ((float)(currentTime - lastTime)) / 1000;
 
-		c->Update();
-		ai->Update();
+			input->handleInput(*e);
 
-		m->Update();
+			c->Update();
+			ai->Update();
+
+			m->Update(deltaTime);
+
+			lastTime = currentTime;
+		}
 
 		SDL_SetRenderDrawColor(gameRenderer, 255, 255, 255, 0);
 		SDL_RenderClear(gameRenderer);
