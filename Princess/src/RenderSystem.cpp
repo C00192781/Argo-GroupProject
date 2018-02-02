@@ -32,6 +32,8 @@ void RenderSystem::Update()
 		{
 			if (m_entities.at(i)->GetComponents()->at(j)->Type() == "SC")
 			{
+				std::cout << static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(j))->Layer() << std::endl;
+
 				if (static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(j))->Layer() == 0)
 				{
 					backgroundHolder.push_back(i);
@@ -70,6 +72,7 @@ void RenderSystem::Update()
 		}
 		if (pcKey >= 0 && scKey >= 0)
 		{
+//<<<<<<< HEAD
 			SDL_Rect* holderRect = new SDL_Rect{ 
 				static_cast<PositionComponent*>(m_entities.at(holder.at(i))->GetComponents()->at(pcKey))->getPosition().x, 
 				static_cast<PositionComponent*>(m_entities.at(holder.at(i))->GetComponents()->at(pcKey))->getPosition().y, 
@@ -77,6 +80,13 @@ void RenderSystem::Update()
 				static_cast<SpriteComponent*>(m_entities.at(holder.at(i))->GetComponents()->at(scKey))->Height() * (int)m_scale };
 			SDL_RenderCopy(m_renderer, m_resourceManager->GetTexture(static_cast<SpriteComponent*>(m_entities.at(holder.at(i))->GetComponents()->at(scKey))->Sheet()), &static_cast<SpriteComponent*>(m_entities.at(holder.at(i))->GetComponents()->at(scKey))->GetRect(), holderRect);
 			delete holderRect;
+//=======
+//			SDL_Rect* holder = new SDL_Rect{ static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getPosition().x, static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getPosition().y, static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(scKey))->Width() * m_scale, static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(scKey))->Height()*m_scale };
+//			SDL_RenderCopy(m_renderer, 
+//							m_resourceManager->GetTexture(static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(scKey))->Sheet()), 
+//							&static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(scKey))->GetRect(), holder);
+//			delete holder;
+//>>>>>>> master
 		}
 	}
 }

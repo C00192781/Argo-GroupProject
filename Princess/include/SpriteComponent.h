@@ -1,6 +1,8 @@
 #ifndef _SPRITECOMPONENT_H
 #define _SPRITECOMPONENT_H
 
+#include <iostream>
+
 #include "Component.h"
 class SpriteComponent : public Component
 {
