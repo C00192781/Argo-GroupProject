@@ -35,6 +35,7 @@
     <ClCompile Include="src\ProjectileSystem.cpp" />
     <ClCompile Include="src\RenderSystem.cpp" />
     <ClCompile Include="src\System.cpp" />
+    <ClCompile Include="src\SystemManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External Dependencies\ResourceManager\JSONReader.h" />

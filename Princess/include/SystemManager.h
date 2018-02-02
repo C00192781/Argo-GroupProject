@@ -16,6 +16,8 @@ public:
 	MovementSystem * MovementSystem;
 	ControlSystem *  ControlSystem;
 
+	void Update();
+
 };
 #endif
 

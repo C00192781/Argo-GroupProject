@@ -44,8 +44,11 @@ int main()
 
 	SystemManager systemManager;
 	systemManager.ControlSystem = new ControlSystem(listener);
+	systemManager.ControlSystem->Active(true);
 	systemManager.MovementSystem = new MovementSystem();
+	systemManager.MovementSystem->Active(true);
 	systemManager.RenderSystem = new RenderSystem(resourceManager, gameRenderer);
+	systemManager.RenderSystem->Active(true);
 	systemManager.RenderSystem->SetScale(3);
 
 	BattleMap map1 = BattleMap(&systemManager, gameRenderer, &state);
@@ -179,9 +182,6 @@ int main()
 
 		input->handleInput(*e);
 
-		systemManager.ControlSystem->Update();
-		systemManager.MovementSystem->Update();
-
 		map1.Update();
 		//c->Update();
 		//m->Update();
@@ -191,7 +191,7 @@ int main()
 		SDL_SetRenderDrawColor(gameRenderer, 255, 255, 255, 0);
 		SDL_RenderClear(gameRenderer);
 
-		systemManager.RenderSystem->Update();
+		systemManager.Update();
 
 		SDL_RenderPresent(gameRenderer);
 	

@@ -20,9 +20,9 @@ void BattleMap::Generate(std::string type)
 	}
 	m_entities.clear();
 	m_entities.shrink_to_fit();
-	m_systemManager->ControlSystem->ClearEntities();
-	m_systemManager->RenderSystem->ClearEntities();
-	m_systemManager->MovementSystem->ClearEntities();
+	m_systemManager->ControlSystem->SelectiveClear();
+	m_systemManager->RenderSystem->SelectiveClear();
+	m_systemManager->MovementSystem->SelectiveClear();
 
 	delete m_factory;
 
@@ -36,15 +36,15 @@ void BattleMap::Generate(std::string type)
 		for (int j = 0; j < 13; j++)
 		{
 			int rando = rand() % 100;
-			if (rando <= 6)
+			if (rando <= 80)
 			{
 				m_entities.push_back(m_factory->GroundA("Turf", i * (16 * m_systemManager->RenderSystem->GetScale()), j * (16 * m_systemManager->RenderSystem->GetScale())));
 			}
-			else if (rando <= 9)
+			else if (rando <= 90)
 			{
 				m_entities.push_back(m_factory->GroundB("Turf", i * (16 * m_systemManager->RenderSystem->GetScale()), j * (16 * m_systemManager->RenderSystem->GetScale())));
 			}																			
-			else if (rando <= 13)														
+			else if (rando <= 95)														
 			{																			
 				m_entities.push_back(m_factory->GroundC("Turf", i * (16 * m_systemManager->RenderSystem->GetScale()), j * (16 * m_systemManager->RenderSystem->GetScale())));
 			}																			
