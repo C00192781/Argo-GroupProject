@@ -4,6 +4,7 @@
 #include "EventListener.h"
 #include "BattleMap.h"
 #include "StateManager.h"
+#include <time.h>
 
 int main()
 {
@@ -11,7 +12,7 @@ int main()
 	SDL_Renderer* gameRenderer = SDL_CreateRenderer(gameWindow, -1, SDL_RENDERER_PRESENTVSYNC);
 	SDL_Event *e = new SDL_Event();
 
-	srand(NULL);
+	srand(time(NULL));
 
 	ResourceManager *resourceManager = new ResourceManager(gameRenderer, "Resources");
 	resourceManager->AddTexture("Demon", "demon.png");
