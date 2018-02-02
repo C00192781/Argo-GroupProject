@@ -23,9 +23,12 @@
     <ClCompile Include="External Dependencies\ResourceManager\ResourceManager.cpp" />
     <ClCompile Include="External Dependencies\SimpleJSON\JSON.cpp" />
     <ClCompile Include="External Dependencies\SimpleJSON\JSONValue.cpp" />
+    <ClCompile Include="src\ControlSystem.cpp" />
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\HealthSystem.cpp" />
+    <ClCompile Include="src\InputHandler.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\MovementSystem.cpp" />
     <ClCompile Include="src\RenderSystem.cpp" />
     <ClCompile Include="src\System.cpp" />
   </ItemGroup>
@@ -34,12 +37,20 @@
     <ClInclude Include="External Dependencies\ResourceManager\ResourceManager.h" />
     <ClInclude Include="External Dependencies\SimpleJSON\JSON.h" />
     <ClInclude Include="External Dependencies\SimpleJSON\JSONValue.h" />
+
     <ClInclude Include="include\AttributesComponent.h" />
+    <ClInclude Include="Factory.h" />
     <ClInclude Include="include\Component.h" />
+    <ClInclude Include="include\ControlComponent.h" />
+    <ClInclude Include="include\ControlSystem.h" />
     <ClInclude Include="include\Entity.h" />
     <ClInclude Include="include\HealthSystem.h" />
     <ClInclude Include="include\HeartComponent.h" />
+    <ClInclude Include="include\EventListener.h" />
+    <ClInclude Include="include\InputHandler.h" />
     <ClInclude Include="include\Instance.h" />
+    <ClInclude Include="include\MovementComponent.h" />
+    <ClInclude Include="include\MovementSystem.h" />
     <ClInclude Include="include\PositionComponent.h" />
     <ClInclude Include="include\RenderSystem.h" />
     <ClInclude Include="include\SpriteComponent.h" />

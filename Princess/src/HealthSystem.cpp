@@ -276,13 +276,13 @@ void HealthSystem::UpdateMaxArmour()
 
 							if (i >= 10)
 							{
-								static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->X(20 * (i - 10));
-								static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->Y(60 + 20);
+								static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->setX(20 * (i - 10));
+								static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->setY(60 + 20);
 							}
 							else
 							{
-								static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->X(20 * i);
-								static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->Y(60);
+								static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->setX(20 * i);
+								static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->setY(60);
 							}
 							armour->AddComponent(new SpriteComponent("ArmourSheet", 3, 0, 0, 16, 16, 0));
 							armour->AddComponent(new HeartComponent(hc->HeartList()));
@@ -416,13 +416,13 @@ void HealthSystem::UpdateMaxHearts()
 
 							if (i >= 10)
 							{
-								static_cast<PositionComponent*>((heart)->GetComponents()->at(0))->X(20 * (i - 10));
-								static_cast<PositionComponent*>((heart)->GetComponents()->at(0))->Y(20 + 20);
+								static_cast<PositionComponent*>((heart)->GetComponents()->at(0))->setX(20 * (i - 10));
+								static_cast<PositionComponent*>((heart)->GetComponents()->at(0))->setY(20 + 20);
 							}
 							else
 							{
-								static_cast<PositionComponent*>((heart)->GetComponents()->at(0))->X(20 * i);
-								static_cast<PositionComponent*>((heart)->GetComponents()->at(0))->Y(20);
+								static_cast<PositionComponent*>((heart)->GetComponents()->at(0))->setX(20 * i);
+								static_cast<PositionComponent*>((heart)->GetComponents()->at(0))->setY(20);
 							}
 							heart->AddComponent(new SpriteComponent("HeartsSheet", 3, 0, 0, 16, 16, 0));
 							heart->AddComponent(new HeartComponent(hc->HeartList()));

@@ -1,6 +1,7 @@
 #define SDL_MAIN_HANDLED
 #include "ResourceManager.h"
 #include "Entity.h"
+#include "EventListener.h"
 #include "PositionComponent.h"
 #include "SpriteComponent.h"
 #include "RenderSystem.h"
@@ -8,7 +9,8 @@
 #include "HealthSystem.h"
 #include "HeartComponent.h"
 #include <iostream>
-
+#include "ControlSystem.h"
+#include "MovementSystem.h"
 
 int main()
 {
@@ -23,10 +25,16 @@ int main()
 	resourceManager->AddTexture("HeartsSheet", "heartSpriteSheet.png");
 	resourceManager->AddTexture("ArmourSheet", "armourSpriteSheet.png");
 
+	EventListener *listener = new EventListener();
+
+	InputHandler *input = new InputHandler(listener);
+
 	Entity * player = new Entity("Player");
 	player->AddComponent(new SpriteComponent("Demon", 0, 0, 0, 16, 16, 0));
 	player->AddComponent(new PositionComponent());
 	player->AddComponent(new AttributesComponent());
+	player->AddComponent(new PositionComponent(SDL_Point{ 100, 300 }));
+	player->AddComponent(new MovementComponent(3));
 	int heartNum = (static_cast<AttributesComponent*>((player)->GetComponents()->at(2))->MaxHealth()) / 2;
 	int armourNum = (static_cast<AttributesComponent*>((player)->GetComponents()->at(2))->MaxArmour()) / 2;
 
@@ -38,13 +46,13 @@ int main()
 	
 		if (i >= 10)
 		{
-			static_cast<PositionComponent*>((heart)->GetComponents()->at(0))->X(20 * (i-10));
-			static_cast<PositionComponent*>((heart)->GetComponents()->at(0))->Y(20+20);
+			static_cast<PositionComponent*>((heart)->GetComponents()->at(0))->setX(20 * (i-10));
+			static_cast<PositionComponent*>((heart)->GetComponents()->at(0))->setY(20+20);
 		}
 		else
 		{
-			static_cast<PositionComponent*>((heart)->GetComponents()->at(0))->X(20 * i);
-			static_cast<PositionComponent*>((heart)->GetComponents()->at(0))->Y(20);
+			static_cast<PositionComponent*>((heart)->GetComponents()->at(0))->setX(20 * i);
+			static_cast<PositionComponent*>((heart)->GetComponents()->at(0))->setY(20);
 		}
 		heart->AddComponent(new SpriteComponent("HeartsSheet", 3, 0, 0, 16, 16, 0));
 		heart->AddComponent(new HeartComponent(hearts));
@@ -60,13 +68,13 @@ int main()
 
 		if (i >= 10)
 		{
-			static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->X(20 * (i - 10));
-			static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->Y(60 + 20);
+			static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->setX(20 * (i - 10));
+			static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->setY(60 + 20);
 		}
 		else
 		{
-			static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->X(20 * i);
-			static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->Y(60);
+			static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->setX(20 * i);
+			static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->setY(60);
 		}
 		armour->AddComponent(new SpriteComponent("ArmourSheet", 3, 0, 0, 16, 16, 0));
 		armour->AddComponent(new HeartComponent(armourDisplayVector));
@@ -74,6 +82,7 @@ int main()
 		armourDisplayVector->push_back(armour);
 		static_cast<HeartComponent*>((armour)->GetComponents()->at(2))->Index(armourDisplayVector->size() - 1);
 	}
+
 
 	RenderSystem * r = new RenderSystem(resourceManager, gameRenderer);
 	r->AddEntity(player);
@@ -114,10 +123,24 @@ int main()
 	bool heartTest = true;
 
 
+	ControlSystem *c = new ControlSystem(listener);
+	c->AddEntity(player);
+
+	MovementSystem *m = new MovementSystem();
+	m->AddEntity(player);
+
 	while (1 != 0)
 	{
-		SDL_SetRenderDrawColor(gameRenderer, 100, 100, 0, 0);
+		SDL_PollEvent(e);
+
+		input->handleInput(*e);
+
+		c->Update();
+		m->Update();
+
+		SDL_SetRenderDrawColor(gameRenderer, 255, 255, 255, 0);
 		SDL_RenderClear(gameRenderer);
+
 		r->Update();
 		h->Update();
 
@@ -170,6 +193,13 @@ int main()
 
 	armourDisplayVector->clear();
 	armourDisplayVector->shrink_to_fit();
+
+	SDL_RenderPresent(gameRenderer);
+	SDL_DestroyRenderer(gameRenderer);
+	SDL_DestroyWindow(gameWindow);
+
+	IMG_Quit();
+	SDL_Quit();
 
 	return 0;
 }
