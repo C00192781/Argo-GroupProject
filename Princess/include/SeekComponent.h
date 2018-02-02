@@ -9,6 +9,7 @@ public:
 		m_type = "seek";
 		m_xDest = 0;
 		m_yDest = 0;
+		m_distToDestination = 999999;
 	};
 
 	SeekComponent(float x, float y)
@@ -16,6 +17,7 @@ public:
 		m_type = "seek";
 		m_xDest = x;
 		m_yDest = y;
+		m_distToDestination = 999999;
 	};
 
 	~SeekComponent() {};
@@ -32,7 +34,12 @@ public:
 	void setXDestination(float x) { m_xDest = x; };
 	void setYDestination(float y) { m_yDest = y; };
 
+	void setDistanceToDestination(float dist) { m_distToDestination = dist; };
+	float getDistanceToDestination() { return m_distToDestination; };
+
 private:
 	float m_xDest;
 	float m_yDest;
+
+	float m_distToDestination;
 };

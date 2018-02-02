@@ -7,6 +7,7 @@ void AISystem::Update()
 		int pcKey = -1;
 		int mcKey = -1;
 		int seekKey = -1;
+		int attackKey = -1;
 
 		for (int j = 0; j < m_entities.at(i)->GetComponents()->size(); j++)
 		{
@@ -22,11 +23,29 @@ void AISystem::Update()
 			{
 				seekKey = j;
 			}
+			else if (m_entities.at(i)->GetComponents()->at(j)->Type() == "attack")
+			{
+				attackKey = j;
+			}
 		}
 
 		if (seekKey >= 0 && pcKey >= 0 && mcKey >= 0)
 		{
-			seek(i, pcKey, mcKey, seekKey);
+			if (attackKey >= 0)
+			{
+				if (static_cast<SeekComponent*>(m_entities.at(i)->GetComponents()->at(seekKey))->getDistanceToDestination() < static_cast<AttackComponent*>(m_entities.at(i)->GetComponents()->at(attackKey))->getRange())
+				{
+					attack(i, attackKey, mcKey);
+				}
+				else 
+				{
+					seek(i, pcKey, mcKey, seekKey);
+				}
+			}
+			else
+			{
+				seek(i, pcKey, mcKey, seekKey);
+			}
 		}
 	}
 }
@@ -36,7 +55,11 @@ void AISystem::seek(int entityIndex, int pcKey, int mcKey, int seekKey)
 	float x = static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->getXDestination() - static_cast<PositionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(pcKey))->getX();
 	float y = static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->getYDestination() - static_cast<PositionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(pcKey))->getY();
 
-	if (magnitude(x, y) > static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->getSpeed())
+	float dist = magnitude(x, y);
+
+	static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->setDistanceToDestination(dist);
+
+	if (dist > static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->getSpeed())
 	{
 		normalise(x, y);
 		x *= static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->getSpeed();
@@ -50,6 +73,12 @@ void AISystem::seek(int entityIndex, int pcKey, int mcKey, int seekKey)
 		static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setXVelocity(0);
 		static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setYVelocity(0);
 	}
+}
+
+void AISystem::attack(int entityIndex, int attackKey, int mcKey)
+{
+	static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setXVelocity(0);
+	static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setYVelocity(0);
 }
 
 void AISystem::normalise(float &x, float &y)

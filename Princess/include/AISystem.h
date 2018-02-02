@@ -4,6 +4,7 @@
 #include "SeekComponent.h"
 #include "PositionComponent.h"
 #include "MovementComponent.h"
+#include "AttackComponent.h"
 
 class AISystem : public System
 {
@@ -13,6 +14,7 @@ public:
 	void Update();
 private:
 	void seek(int entityIndex, int pcKey, int mcKey, int seekKey);
+	void attack(int entityIndex, int attackKey, int mcKey);
 
 	void normalise(float &x, float &y);
 	float magnitude(float x, float y);

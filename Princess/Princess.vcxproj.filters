@@ -112,5 +112,8 @@
     <ClInclude Include="include\SeekComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\AttackComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

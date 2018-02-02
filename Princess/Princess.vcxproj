@@ -38,6 +38,7 @@
     <ClInclude Include="External Dependencies\SimpleJSON\JSON.h" />
     <ClInclude Include="External Dependencies\SimpleJSON\JSONValue.h" />
     <ClInclude Include="include\AISystem.h" />
+    <ClInclude Include="include\AttackComponent.h" />
     <ClInclude Include="include\Component.h" />
     <ClInclude Include="include\ControlComponent.h" />
     <ClInclude Include="include\ControlSystem.h" />
