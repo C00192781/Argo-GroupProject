@@ -24,6 +24,8 @@ int main()
 	SDL_Event *e = new SDL_Event();
 
 	ResourceManager *resourceManager = new ResourceManager(gameRenderer, "Resources");
+
+	resourceManager->AddTexture("Red", "Sprite_Red.png");
 	resourceManager->AddTexture("Demon", "demon.png");
 	resourceManager->AddTexture("Hearts", "hearts2.png");
 	resourceManager->AddTexture("HeartsHealth", "heartsfull2.png");
@@ -35,8 +37,9 @@ int main()
 	InputHandler *input = new InputHandler(listener);
 
 	Entity * player = new Entity("Player");
-	player->AddComponent(new SpriteComponent("Demon", 0, 0, 0, 16, 16, 0));
-	player->AddComponent(new PositionComponent(SDL_Point{ 300, 300 }));
+
+	player->AddComponent(new SpriteComponent("Red", 1, 0, 0, 16, 16, 0));
+	player->AddComponent(new PositionComponent(SDL_Point{100, 300}));
 	player->AddComponent(new AttributesComponent());
 	player->AddComponent(new MovementComponent(3));
 	player->AddComponent(new CollisionComponent());

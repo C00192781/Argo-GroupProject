@@ -22,6 +22,24 @@ RenderSystem::~RenderSystem()
 
 void RenderSystem::Update()
 {
+	if (m_timer <= 0)
+	{
+		for (int i = 0; i < m_entities.size(); i++)
+		{
+			for (int j = 0; j < m_entities.at(i)->GetComponents()->size(); j++)
+			{
+				if (m_entities.at(i)->GetComponents()->at(j)->Type() == "SC")
+				{
+					static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(j))->Frame(static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(j))->Frame() + 1);
+				}
+			}
+		}
+		m_timer = 60;
+	}
+	else
+	{
+		m_timer--;
+	}
 	for (int i = 0; i < m_entities.size(); i++)
 	{
 		int pcKey = -1;
