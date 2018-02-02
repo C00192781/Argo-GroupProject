@@ -22,7 +22,17 @@ public:
 	void Direction(int dir) { m_direction = dir; };
 	int Direction(){ return m_direction; };
 
-	void Frame(int frame) { m_frame = frame; };
+	void Frame(int frame) { 
+		if (frame < 0)
+		{
+			frame = m_noOfFrames;
+		}
+		else if( frame > m_noOfFrames)
+		{
+			frame = 0;
+		}
+		m_frame = frame; 
+	};
 	int Frame() { return m_frame; };
 
 	void Width(int width) {m_width = width; };

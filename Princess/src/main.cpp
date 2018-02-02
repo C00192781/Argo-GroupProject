@@ -15,14 +15,14 @@ int main()
 	SDL_Event *e = new SDL_Event();
 
 	ResourceManager *resourceManager = new ResourceManager(gameRenderer, "Resources");
-	resourceManager->AddTexture("Demon", "demon.png");
+	resourceManager->AddTexture("Red", "Sprite_Red.png");
 
 	EventListener *listener = new EventListener();
 
 	InputHandler *input = new InputHandler(listener);
 
 	Entity * player = new Entity("Player");
-	player->AddComponent(new SpriteComponent("Demon", 0, 0, 0, 16, 16, 0));
+	player->AddComponent(new SpriteComponent("Red", 1, 0, 0, 16, 16, 0));
 	player->AddComponent(new PositionComponent(SDL_Point{100, 300}));
 	player->AddComponent(new MovementComponent(3));
 

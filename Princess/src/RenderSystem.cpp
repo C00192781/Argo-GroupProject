@@ -22,6 +22,24 @@ RenderSystem::~RenderSystem()
 
 void RenderSystem::Update()
 {
+	if (m_timer <= 0)
+	{
+		for (int i = 0; i < m_entities.size(); i++)
+		{
+			for (int j = 0; j < m_entities.at(i)->GetComponents()->size(); j++)
+			{
+				if (m_entities.at(i)->GetComponents()->at(j)->Type() == "SC")
+				{
+					static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(j))->Frame(static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(j))->Frame() + 1);
+				}
+			}
+		}
+		m_timer = 60;
+	}
+	else
+	{
+		m_timer--;
+	}
 	for (int i = 0; i < m_entities.size(); i++)
 	{
 		int pcKey = -1;
@@ -39,8 +57,6 @@ void RenderSystem::Update()
 		}
 		if (pcKey >= 0 && scKey >= 0)
 		{
-			//std::cout << static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getPosition().x << std::endl;
-
 			SDL_Rect* holder = new SDL_Rect{ static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getPosition().x, static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getPosition().y, static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(scKey))->Width() * m_scale, static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(scKey))->Height()*m_scale };
 			SDL_RenderCopy(m_renderer, 
 							m_resourceManager->GetTexture(static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(scKey))->Sheet()), 
