@@ -5,12 +5,17 @@
 #include "PositionComponent.h"
 #include "SpriteComponent.h"
 #include "RenderSystem.h"
+#include "ControlSystem.h"
+#include "MovementSystem.h"
+#include "ProjectileSystem.h"
+#include "ProjectileComponent.h"
+#include "CollisionComponent.h"
+#include "CollisionSystem.h"
 #include "AttributesComponent.h"
 #include "HealthSystem.h"
 #include "HeartComponent.h"
 #include <iostream>
-#include "ControlSystem.h"
-#include "MovementSystem.h"
+
 
 int main()
 {
@@ -31,12 +36,29 @@ int main()
 
 	Entity * player = new Entity("Player");
 	player->AddComponent(new SpriteComponent("Demon", 0, 0, 0, 16, 16, 0));
-	player->AddComponent(new PositionComponent());
+	player->AddComponent(new PositionComponent(SDL_Point{ 300, 300 }));
 	player->AddComponent(new AttributesComponent());
-	player->AddComponent(new PositionComponent(SDL_Point{ 100, 300 }));
 	player->AddComponent(new MovementComponent(3));
+	player->AddComponent(new CollisionComponent());
 	int heartNum = (static_cast<AttributesComponent*>((player)->GetComponents()->at(2))->MaxHealth()) / 2;
 	int armourNum = (static_cast<AttributesComponent*>((player)->GetComponents()->at(2))->MaxArmour()) / 2;
+
+
+	Entity * projectile = new Entity("Projectile");
+	projectile->AddComponent(new SpriteComponent("Demon", 0, 0, 0, 16, 16, 0));
+	projectile->AddComponent(new PositionComponent(SDL_Point{ 300, 300 } ));
+	projectile->AddComponent(new ProjectileComponent(2, "Enemy", 5.0f, 3.0f, 10.0f));
+	projectile->AddComponent(new MovementComponent());
+	projectile->AddComponent(new CollisionComponent());
+
+
+
+	Entity * projectile2 = new Entity("Projectile");
+	projectile2->AddComponent(new SpriteComponent("Demon", 0, 0, 0, 16, 16, 0));
+	projectile2->AddComponent(new PositionComponent(SDL_Point{ 300, 300 }));
+	projectile2->AddComponent(new ProjectileComponent(3, "Enemy", 5.0f, 2.0f, 15.0f));
+	projectile2->AddComponent(new MovementComponent());
+	projectile2->AddComponent(new CollisionComponent());
 
 	std::vector<Entity*>* hearts = new std::vector<Entity*>();
 	for (int i = 0; i < heartNum; i++)
@@ -84,8 +106,23 @@ int main()
 	}
 
 
+
 	RenderSystem * r = new RenderSystem(resourceManager, gameRenderer);
 	r->AddEntity(player);
+	r->AddEntity(projectile);
+	r->AddEntity(projectile2);
+
+	ProjectileSystem * p = new ProjectileSystem();
+	p->AddEntity(projectile);
+	p->AddEntity(projectile2);
+	p->AddEntity(player);
+
+	
+	CollisionSystem * collision = new CollisionSystem();
+	collision->AddEntity(player);
+	collision->AddEntity(projectile);
+	collision->AddEntity(projectile2);
+
 	for (int i = 0; i < hearts->size(); i++)
 	{
 		r->AddEntity(hearts->at(i));
@@ -122,12 +159,14 @@ int main()
 
 	bool heartTest = true;
 
-
 	ControlSystem *c = new ControlSystem(listener);
 	c->AddEntity(player);
 
 	MovementSystem *m = new MovementSystem();
 	m->AddEntity(player);
+	m->AddEntity(projectile);
+	m->AddEntity(projectile2);
+
 
 	while (1 != 0)
 	{
@@ -137,19 +176,24 @@ int main()
 
 		c->Update();
 		m->Update();
+		p->Update();
+		collision->Update();
 
 		SDL_SetRenderDrawColor(gameRenderer, 255, 255, 255, 0);
 		SDL_RenderClear(gameRenderer);
 
 		r->Update();
+
+		SDL_RenderPresent(gameRenderer);
+	
 		h->Update();
 
-		AttributesComponent* component = static_cast<AttributesComponent*>((player)->GetComponents()->at(acKey));
+		
 
 
 		if (heartTest == true)
 		{
-
+			AttributesComponent* component = static_cast<AttributesComponent*>((player)->GetComponents()->at(acKey));
 			//Health
 			component->MaxHealth(40);
 			int size = hearts->size();
@@ -182,10 +226,6 @@ int main()
 			heartTest = false;
 
 		}
-
-
-		std::cout << component->Armour() << " " << component->Health() << std::endl;
-		SDL_RenderPresent(gameRenderer);
 	}
 
 	hearts->clear();
@@ -195,6 +235,7 @@ int main()
 	armourDisplayVector->shrink_to_fit();
 
 	SDL_RenderPresent(gameRenderer);
+
 	SDL_DestroyRenderer(gameRenderer);
 	SDL_DestroyWindow(gameWindow);
 

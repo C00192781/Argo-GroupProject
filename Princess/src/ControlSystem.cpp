@@ -6,6 +6,7 @@ void ControlSystem::Update()
 	for (int i = 0; i < m_entities.size(); i++) 
 	{
 		int mcKey = -1;
+		int pjKey = -1;
 
 		// looks for if there is a movement component in the entity
 		for (int j = 0; j < m_entities.at(i)->GetComponents()->size(); j++)
@@ -15,6 +16,10 @@ void ControlSystem::Update()
 				if (m_entities.at(i)->GetComponents()->at(j)->Type() == "movement")
 				{
 					mcKey = j;
+				}
+				if (m_entities.at(i)->GetComponents()->at(j)->Type() == "PJ")
+				{
+					pjKey = j;
 				}
 			}
 		}
@@ -43,6 +48,13 @@ void ControlSystem::Update()
 			}
 
 			static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setVelocity(holder);
+		}
+		if (pjKey >= 0)
+		{
+			if (m_eventListener->Space)
+			{
+				
+			}
 		}
 	}
 }
