@@ -257,9 +257,9 @@ void HealthSystem::UpdateMaxHearts()
 				if (m_entities.at(i)->ID() == "Hearts")
 				{
 					int hcKey = -1;
-					for (int k = 0; k < m_entities.at(a)->GetComponents()->size(); k++)
+					for (int k = 0; k < m_entities.at(i)->GetComponents()->size(); k++)
 					{
-						if (m_entities.at(a)->GetComponents()->at(k)->Type() == "HC")
+						if (m_entities.at(i)->GetComponents()->at(k)->Type() == "HC")
 						{
 							hcKey = k;
 						}
@@ -268,8 +268,8 @@ void HealthSystem::UpdateMaxHearts()
 					{
 						HeartComponent* hc = static_cast<HeartComponent*>(m_entities.at(i)->GetComponents()->at(hcKey));
 						AttributesComponent* ac = static_cast<AttributesComponent*>(m_entities.at(a)->GetComponents()->at(acKey));
-						int numFullHearts = (ac->Health() / 2);
-						for (int i = numFullHearts; numFullHearts < hc->HeartList()->size(); i++)
+						int numFullHearts = hc->HeartList()->size();
+						for (int i = numFullHearts; i < (ac->MaxHealth() / 2); i++)
 						{
 							Entity * heart = new Entity("Hearts");
 							heart->AddComponent(new PositionComponent());
@@ -290,6 +290,7 @@ void HealthSystem::UpdateMaxHearts()
 							static_cast<HeartComponent*>((heart)->GetComponents()->at(2))->Index(hc->HeartList()->size() - 1);
 						}
 					}
+					return;
 
 				}
 			}

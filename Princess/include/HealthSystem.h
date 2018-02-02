@@ -13,10 +13,11 @@ public:
 	HealthSystem();
 	~HealthSystem();
 	void Update();
+	void UpdateMaxHearts();
+	void UpdateHeartsStatus(Entity* player);
 
 private:
 	void DamageEntity(int& damageCaused, int& armour, int& health);
-	void UpdateHeartsStatus(Entity* player);
-	void UpdateMaxHearts();
+
 };
 #endif

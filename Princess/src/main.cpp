@@ -78,7 +78,7 @@ int main()
 		modifiers->push_back(Modifer(ModiferTypes::DAMAGE, 7, 0));
 	}
 
-
+	bool heartTest = true;
 	while (1 != 0)
 	{
 		SDL_SetRenderDrawColor(gameRenderer, 100, 100, 0, 0);
@@ -87,6 +87,25 @@ int main()
 		h->Update();
 
 		AttributesComponent* component = static_cast<AttributesComponent*>((player)->GetComponents()->at(acKey));
+
+
+		if (heartTest == true)
+		{
+			component->MaxHealth(40);
+			int size = hearts->size();
+			h->UpdateMaxHearts();
+			if (size < hearts->size())
+			{
+				for (int i = size; i < hearts->size(); i++)
+				{
+					r->AddEntity(hearts->at(i));
+					h->AddEntity(hearts->at(i));
+				}
+			}
+			heartTest = false;
+			h->UpdateHeartsStatus(player);
+		}
+
 
 		std::cout << component->Armour() << " " << component->Health() << std::endl;
 		SDL_RenderPresent(gameRenderer);
