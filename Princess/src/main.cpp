@@ -58,6 +58,8 @@ int main()
 	player->AddComponent(new AttributesComponent());
 	player->AddComponent(new MovementComponent(3));
 	player->AddComponent(new CollisionComponent());
+	player->AddComponent(new WeaponComponent(WeaponType::MELEE));
+
 	RenderSystem * r = new RenderSystem(resourceManager, gameRenderer);
 	r->AddEntity(player);
 

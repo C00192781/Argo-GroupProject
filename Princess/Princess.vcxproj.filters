@@ -65,6 +65,9 @@
     <ClCompile Include="src\SystemManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\AttackSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Component.h">
@@ -158,6 +161,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\TileFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\WeaponComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\WeaponType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AttackSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

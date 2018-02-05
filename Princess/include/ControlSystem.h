@@ -4,6 +4,7 @@
 #include "ControlComponent.h"
 #include "MovementComponent.h"
 #include "ProjectileComponent.h"
+#include "WeaponComponent.h"
 
 class ControlSystem : public System
 {
