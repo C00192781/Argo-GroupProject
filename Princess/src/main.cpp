@@ -143,6 +143,7 @@ int main()
 	{
 		SDL_SetRenderDrawColor(gameRenderer, 100, 100, 0, 0);
 		SDL_RenderClear(gameRenderer);
+
 		r->Update();
 		h->Update();
 
