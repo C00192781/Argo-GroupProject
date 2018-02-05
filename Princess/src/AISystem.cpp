@@ -1,5 +1,5 @@
 #include "AISystem.h"
-
+#include <time.h>
 
 AiSystem::AiSystem()
 {
@@ -83,19 +83,42 @@ void AiSystem::Update()
 
 void AiSystem::Wander(int entityIndex, int pcKey, int mcKey, int seekKey)
 {
-	srand(m_time * 50);
+	time_t t;
+
+	srand((unsigned)time(&t));
 
 	int temp = m_time * 1000;
 
-	if (temp % 13 == 0)
+	int mod1 = rand() % 100;
+
+	int mod2 = rand() % 80;
+
+	if (temp % 22 == 0)
 	{
 
 
-		srand(m_time);
-		static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->setXDestination(rand() % 100);
+	//	srand((unsigned)time(&t));
 
-		srand(m_time + 5);
-		static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->setYDestination(rand() % 100);
+
+		if (mod1 % 2 == 0)
+		{
+			static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->setXDestination(400 + mod1);
+		}
+		else
+		{
+			static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->setXDestination(400 - mod1);
+		}
+
+		if (mod2 % 2 == 0)
+		{
+			static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->setYDestination(300 + mod2);
+		}
+		else
+		{
+			static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->setYDestination(300 - mod2);
+		}
+		//srand((unsigned)time(&t));
+	
 
 		std::cout << "ROLLING  " << std::endl;
 		std::cout << "ROLLING  " << std::endl;
@@ -111,7 +134,10 @@ void AiSystem::Wander(int entityIndex, int pcKey, int mcKey, int seekKey)
 
 
 	}
-	std::cout << "x: "<< static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->getXDestination() << "  y:  " << static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->getYDestination() << std::endl;
+
+
+	std::cout << "X: " << static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->getXDestination() << "  Y: " << static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->getYDestination() << std::endl;
+
 
 	float x = static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->getXDestination() - static_cast<PositionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(pcKey))->getPosition().x;
 	float y = static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->getYDestination() - static_cast<PositionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(pcKey))->getPosition().y;
@@ -120,20 +146,20 @@ void AiSystem::Wander(int entityIndex, int pcKey, int mcKey, int seekKey)
 
 	static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->setDistanceToDestination(dist);
 
-	if (dist > static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->getSpeed() / 60)
-	{
+	//if (dist > static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->getSpeed() )
+	//{
 		normalise(x, y);
 		x *= static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->getSpeed();
 		y *= static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->getSpeed();
 
 		static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setXVelocity(x);
 		static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setYVelocity(y);
-	}
-	else
-	{
-		static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setXVelocity(0);
-		static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setYVelocity(0);
-	}
+	//}
+	//else
+	//{
+	//	static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setXVelocity(0);
+	//	static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setYVelocity(0);
+	//}
 
 
 }

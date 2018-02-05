@@ -70,7 +70,7 @@ int main()
 	meleeEnemy->AddComponent(new SpriteComponent("Demon", 0, 0, 0, 0, 16, 16, 0));
 	meleeEnemy->AddComponent(new PositionComponent(SDL_Point{ 550,500 }));
 	meleeEnemy->AddComponent(new MovementComponent(120));
-	meleeEnemy->AddComponent(new SeekComponent(200, 300));
+	meleeEnemy->AddComponent(new SeekComponent(600, 600));
 	meleeEnemy->AddComponent(new AttackComponent(1, 1, 1));
 
 	systemManager.AiSystems->AddEntity(meleeEnemy);
