@@ -2,6 +2,11 @@
 #define _INSTANCE_H
 
 #include <string>
+#include "GrassTileFactory.h"
+#include "StateManager.h"
+#include "SystemManager.h"
+#include "Entity.h"
+#include "stdafx.h"
 
 class Instance
 {
@@ -14,10 +19,15 @@ public:
 
 	std::string ID() { return m_id; };
 
-private:
-
+protected:
 	std::string m_id;
 
-};
+	std::vector<Entity*> m_entities;
 
+	TileFactory * m_factory;
+
+	SystemManager * m_systemManager;
+
+	StateManager * m_stateManager;
+};
 #endif

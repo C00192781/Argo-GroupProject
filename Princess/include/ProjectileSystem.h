@@ -24,6 +24,7 @@ public:
 	Vector2f VelocityHandler(float orientation);
 	Vector2f MovementHandler(float velocityX, float VelocityY, float speed);
 	float CalculateSpeed(float buttonPressTime, float maxSpeed);
+	std::vector<Entity*>* getEntities();
 
 private:
 	const float CONVERSION = 180 / 3.14159265359;

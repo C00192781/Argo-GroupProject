@@ -1,7 +1,7 @@
 #include "ControlSystem.h"
 #include <iostream>
 
-void ControlSystem::Update() 
+void ControlSystem::Update()
 {
 	for (int i = 0; i < m_entities.size(); i++) 
 	{
@@ -51,10 +51,14 @@ void ControlSystem::Update()
 		}
 		if (pjKey >= 0)
 		{
-			if (m_eventListener->Space)
-			{
-				
-			}
+		
+		}
+		if (m_eventListener->Space)
+		{
+		/*	int x;
+			int y;
+			SDL_GetMouseState(&x, &y);*/
+
 		}
 	}
 }

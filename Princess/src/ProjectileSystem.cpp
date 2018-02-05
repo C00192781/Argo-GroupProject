@@ -18,6 +18,7 @@ ProjectileSystem::~ProjectileSystem()
 
 void ProjectileSystem::Update()
 {
+	//std::cout << m_entities.size() << std::endl;
 	for (int i = 0; i < m_entities.size(); i++)
 	{
 		int pcKey = -1; // POSITION
@@ -43,7 +44,6 @@ void ProjectileSystem::Update()
 				mcKey = j;
 			}
 		}
-
 
 		if (pjKey >= 0 && pcKey >= 0 && mcKey >= 0)
 		{
@@ -104,4 +104,10 @@ float ProjectileSystem::CalculateSpeed(float buttonPressTime, float maxSpeed)
 	}
 	float speed = modifier * maxSpeed;
 	return speed; 
+}
+
+
+std::vector<Entity*>* ProjectileSystem::getEntities()
+{
+	return &m_entities;
 }
