@@ -13,10 +13,13 @@ public:
 		m_hearts = new std::vector<Entity*>();
 		m_type = "HMC";
 	};
-	~HeartManagerComponent() {};
+	~HeartManagerComponent() { delete m_hearts; };
 
 	HeartTypes HeartType() { return m_HeartType; };
 	void HeartType(HeartTypes heartType) { m_HeartType = heartType; };
+
+	std::vector<Entity*>* HeartsVector() { return m_hearts; };
+	void HeartsVector(std::vector<Entity*>* heartVector) { m_hearts = heartVector; };
 
 private:
 	HeartTypes m_HeartType;

@@ -1,161 +1,92 @@
 #define SDL_MAIN_HANDLED
+
+#include <iostream>
+#include <time.h>
+
 #include "ResourceManager.h"
 #include "Entity.h"
+#include "EventListener.h"
+#include "BattleMap.h"
+#include "StateManager.h"
 #include "PositionComponent.h"
 #include "SpriteComponent.h"
-#include "RenderSystem.h"
+#include "ProjectileSystem.h"
+#include "ProjectileComponent.h"
+#include "CollisionComponent.h"
+#include "CollisionSystem.h"
 #include "AttributesComponent.h"
 #include "HealthSystem.h"
 #include "HeartComponent.h"
-#include <iostream>
+#include "AIsystem.h"
+#include "Princess.h"
 
+
+#include "SystemManager.h"
 
 int main()
 {
-	SDL_Window* gameWindow = SDL_CreateWindow("TEST", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
+	SDL_Window* gameWindow = SDL_CreateWindow("TEST", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 816, 624, SDL_WINDOW_SHOWN);
 	SDL_Renderer* gameRenderer = SDL_CreateRenderer(gameWindow, -1, SDL_RENDERER_PRESENTVSYNC);
 	SDL_Event *e = new SDL_Event();
 
+	srand(time(NULL));
+
+	bool debug = false;
+
 	ResourceManager *resourceManager = new ResourceManager(gameRenderer, "Resources");
+
+	resourceManager->AddTexture("Red", "Sprite_Red.png");
 	resourceManager->AddTexture("Demon", "demon.png");
-	resourceManager->AddTexture("Hearts", "hearts2.png");
-	resourceManager->AddTexture("HeartsHealth", "heartsfull2.png");
+	resourceManager->AddTexture("Turf", "Turfs.png");
 	resourceManager->AddTexture("HeartsSheet", "heartSpriteSheet.png");
 	resourceManager->AddTexture("ArmourSheet", "armourSpriteSheet.png");
 
-	Entity * player = new Entity("Player");
-	player->AddComponent(new SpriteComponent("Demon", 0, 0, 0, 16, 16, 0));
-	player->AddComponent(new PositionComponent());
-	player->AddComponent(new AttributesComponent());
-	int heartNum = (static_cast<AttributesComponent*>((player)->GetComponents()->at(2))->MaxHealth()) / 2;
-	int armourNum = (static_cast<AttributesComponent*>((player)->GetComponents()->at(2))->MaxArmour()) / 2;
+	EventListener *listener = new EventListener();
 
-	std::vector<Entity*>* hearts = new std::vector<Entity*>();
-	for (int i = 0; i < heartNum; i++)
-	{
-		Entity * heart = new Entity("Hearts");
-		heart->AddComponent(new PositionComponent());
-	
-		if (i >= 10)
-		{
-			static_cast<PositionComponent*>((heart)->GetComponents()->at(0))->X(20 * (i-10));
-			static_cast<PositionComponent*>((heart)->GetComponents()->at(0))->Y(20+20);
-		}
-		else
-		{
-			static_cast<PositionComponent*>((heart)->GetComponents()->at(0))->X(20 * i);
-			static_cast<PositionComponent*>((heart)->GetComponents()->at(0))->Y(20);
-		}
-		heart->AddComponent(new SpriteComponent("HeartsSheet", 3, 0, 0, 16, 16, 0));
-		heart->AddComponent(new HeartComponent(hearts));
-		hearts->push_back(heart);
-		static_cast<HeartComponent*>((heart)->GetComponents()->at(2))->Index(hearts->size() - 1);
-	}
+	InputHandler *input = new InputHandler(listener);
 
-	std::vector<Entity*>* armourDisplayVector = new std::vector<Entity*>();
-	for (int i = 0; i < armourNum; i++)
-	{
-		Entity * armour = new Entity("ArmourDisplay");
-		armour->AddComponent(new PositionComponent());
+	StateManager state;
 
-		if (i >= 10)
-		{
-			static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->X(20 * (i - 10));
-			static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->Y(60 + 20);
-		}
-		else
-		{
-			static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->X(20 * i);
-			static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->Y(60);
-		}
-		armour->AddComponent(new SpriteComponent("ArmourSheet", 3, 0, 0, 16, 16, 0));
-		armour->AddComponent(new HeartComponent(armourDisplayVector));
-		static_cast<HeartComponent*>((armour)->GetComponents()->at(2))->HeartType(HeartTypes::ARMOUR);
-		armourDisplayVector->push_back(armour);
-		static_cast<HeartComponent*>((armour)->GetComponents()->at(2))->Index(armourDisplayVector->size() - 1);
-	}
-
-	RenderSystem * r = new RenderSystem(resourceManager, gameRenderer);
-	r->AddEntity(player);
-	for (int i = 0; i < hearts->size(); i++)
-	{
-		r->AddEntity(hearts->at(i));
-	}
-	for (int i = 0; i < armourDisplayVector->size(); i++)
-	{
-		r->AddEntity(armourDisplayVector->at(i));
-	}
-
-	HealthSystem * h = new HealthSystem();
-	h->AddEntity(player);
-	for (int i = 0; i < hearts->size(); i++)
-	{
-		h->AddEntity(hearts->at(i));
-	}
-	for (int i = 0; i < armourDisplayVector->size(); i++)
-	{
-		h->AddEntity(armourDisplayVector->at(i));
-	}
-
-	int acKey = -1;
-	for (int i = 0; i < player->GetComponents()->size(); i++)
-	{
-		if (player->GetComponents()->at(i)->Type() == "AC")
-		{
-			acKey = i;
-		}
-	}
-	if (acKey >= 0)
-	{
-		std::list<Modifer> * modifiers = static_cast<AttributesComponent*>((player)->GetComponents()->at(acKey))->Modifers();
-		//modifiers->push_back(Modifer(ModiferTypes::DAMAGE, 7, 0));
-	}
+	SystemManager systemManager;
+	systemManager.ControlSystem = new ControlSystem(listener);
+	systemManager.ControlSystem->Active(true);
+	systemManager.MovementSystem = new MovementSystem();
+	systemManager.MovementSystem->Active(true);
+	systemManager.RenderSystem = new RenderSystem(resourceManager, gameRenderer);
+	systemManager.RenderSystem->Active(true);
+	systemManager.RenderSystem->SetScale(3);
+	systemManager.AiSystem = new AiSystem();
+	systemManager.AiSystem->Active(true);
+	systemManager.healthSystem = new HealthSystem();
+	systemManager.healthSystem->Active(true);
 
 
+	BattleMap map1 = BattleMap(&systemManager, gameRenderer, &state);
+	map1.Generate("Grassland");
 
-	AttributesComponent* component = static_cast<AttributesComponent*>((player)->GetComponents()->at(acKey));
-	//Health
-	component->MaxHealth(40);
-	int size = hearts->size();
-	h->UpdateMaxHearts();
-	if (size < hearts->size())
-	{
-		for (int i = size; i < hearts->size(); i++)
-		{
-			r->AddEntity(hearts->at(i));
-		}
-	}
-
-
-	//Armour
-	component->MaxArmour(8);
-	size = armourDisplayVector->size();
-	h->UpdateMaxArmour();
-	if (size < armourDisplayVector->size())
-	{
-		for (int i = size; i < armourDisplayVector->size(); i++)
-		{
-			r->AddEntity(armourDisplayVector->at(i));
-		}
-	}
-
+	//Add to render system
 	while (1 != 0)
 	{
-		SDL_SetRenderDrawColor(gameRenderer, 100, 100, 0, 0);
+		SDL_SetRenderDrawColor(gameRenderer, 255, 255, 255, 0);
 		SDL_RenderClear(gameRenderer);
 
-		r->Update();
-		h->Update();
+		SDL_PollEvent(e);
 
-		std::cout << component->Armour() << " " << component->Health() << std::endl;
+		input->handleInput(*e);
+
+		map1.Update();
+
+		systemManager.Update();
+
 		SDL_RenderPresent(gameRenderer);
+		
 	}
 
-	hearts->clear();
-	hearts->shrink_to_fit();
+	SDL_DestroyRenderer(gameRenderer);
+	SDL_DestroyWindow(gameWindow);
 
-	armourDisplayVector->clear();
-	armourDisplayVector->shrink_to_fit();
+	IMG_Quit();
+	SDL_Quit();
 
 	return 0;
 }

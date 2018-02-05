@@ -15,10 +15,10 @@ public:
 	~HealthSystem();
 	void Update();
 	void SetUpHearts(Entity* HeartManager, Entity * player);
-	void UpdateMaxHearts();
-	void UpdateHeartsStatus(Entity* player);
-	void UpdateMaxArmour();
-	void UpdateArmourStatus(Entity* player);
+	void UpdateMaxHeartsUI(Entity * HeartManager, Entity* player);
+	void UpdateHeartsUIStatus(Entity * HeartManager, Entity* player);
+	void UpdateMaxArmourUI(Entity * HeartManager, Entity* player);
+	void UpdateArmourUIStatus(Entity * HeartManager, Entity* player);
 
 private:
 	void DamageEntity(int& damageCaused, int& armour, int& health);
