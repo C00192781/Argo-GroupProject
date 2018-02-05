@@ -3,7 +3,7 @@
 
 AiSystem::AiSystem()
 {
-	m_thingy = 1;
+	//m_thingy = 1;
 }
 
 
@@ -46,6 +46,12 @@ void AiSystem::Spawn(std::vector<Entity*> entities)
 
 	
 }
+
+std::vector<Entity*> AiSystem::getEntities()
+{
+	return m_entities;
+}
+
 
 void AiSystem::Update()
 {
@@ -94,6 +100,9 @@ void AiSystem::Update()
 			static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->setPosition(holder);
 
 			std::cout << "x: " << static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getPosition().x << std::endl;
+
+
+
 
 		//	static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->setPosition(holder);
 
