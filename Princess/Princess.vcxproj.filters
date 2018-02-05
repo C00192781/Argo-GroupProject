@@ -71,6 +71,9 @@
     <ClCompile Include="include\Princess.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="include\BasicEnemy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Component.h">
@@ -182,6 +185,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\SeekComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\BasicEnemy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

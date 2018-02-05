@@ -11,6 +11,9 @@ class Princess : public Character
 {
 public:
 	Entity* CharA(std::string ID, SDL_Point pos, int personality);
+	Entity* CharB(std::string ID, SDL_Point pos, int personality);
+	Entity* CharC(std::string ID, SDL_Point pos, int personality);
+	Entity* CharD(std::string ID, SDL_Point pos, int personality);
 };
 #endif
 

@@ -93,7 +93,7 @@ void AiSystem::Wander(int entityIndex, int pcKey, int mcKey, int seekKey)
 
 	int mod2 = rand() % 80;
 
-	if (temp % 22 == 0)
+	if (temp % 22 == 0 || temp % 23 == 0)
 	{
 
 

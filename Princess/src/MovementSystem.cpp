@@ -31,15 +31,19 @@ void MovementSystem::Update(float deltaTime)
 			float xVel = static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->getVelocity().x;
 			float yVel = static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->getVelocity().y;
 
+			//if (m_entities.at(i)->ID() == "Princess")
+			//{
+			//	xVel /= 2.0f;
+			//	yVel /= 2.0f;
+			//	//	std::cout << "x: " << static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getPosition().x << std::endl;
+			//}
+
 			xPos += xVel * deltaTime;
 			yPos += yVel * deltaTime;
 
 			SDL_Point holder{ xPos, yPos };
 
-			if (m_entities.at(i)->ID() == "Princess")
-			{
-			//	std::cout << "x: " << static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getPosition().x << std::endl;
-			}
+		
 			static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->setPosition(holder);
 		}
 	}
