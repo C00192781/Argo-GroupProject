@@ -57,6 +57,7 @@
     <ClInclude Include="include\ControlSystem.h" />
     <ClInclude Include="include\Entity.h" />
     <ClInclude Include="include\GrassTileFactory.h" />
+    <ClInclude Include="include\Factory.h" />
     <ClInclude Include="include\HealthSystem.h" />
     <ClInclude Include="include\HeartComponent.h" />
     <ClInclude Include="include\EventListener.h" />

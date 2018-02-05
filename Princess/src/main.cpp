@@ -34,6 +34,8 @@ int main()
 	bool debug = false;
 
 	ResourceManager *resourceManager = new ResourceManager(gameRenderer, "Resources");
+
+	resourceManager->AddTexture("Red", "Sprite_Red.png");
 	resourceManager->AddTexture("Demon", "demon.png");
 	resourceManager->AddTexture("Turf", "Turfs.png");
 	resourceManager->AddTexture("Hearts", "hearts2.png");
@@ -46,6 +48,17 @@ int main()
 	InputHandler *input = new InputHandler(listener);
 
 	StateManager state;
+//	Entity * player = new Entity("Player");
+
+	//player->AddComponent(new SpriteComponent("Red", 1, 0, 0, 16, 16, 0));
+	//player->AddComponent(new PositionComponent(SDL_Point{100, 300}));
+	//player->AddComponent(new AttributesComponent());
+	//player->AddComponent(new MovementComponent(3));
+	//player->AddComponent(new CollisionComponent());
+
+
+	//int heartNum = (static_cast<AttributesComponent*>((player)->GetComponents()->at(2))->MaxHealth()) / 2;
+	//int armourNum = (static_cast<AttributesComponent*>((player)->GetComponents()->at(2))->MaxArmour()) / 2;
 
 	SystemManager systemManager;
 	systemManager.ControlSystem = new ControlSystem(listener);

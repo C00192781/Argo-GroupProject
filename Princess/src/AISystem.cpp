@@ -28,7 +28,7 @@ void AiSystem::Spawn()
 	SDL_Point p{ 0,0 };
 
 	characterFactory = new Princess();
-	m_entities.push_back(characterFactory->CharA("princessu", p, 0));
+	m_entities.push_back(characterFactory->CharA("Red", p, 0));
 
 	//m_entities.push_back(CharFactory);
 }
