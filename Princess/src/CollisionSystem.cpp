@@ -38,11 +38,9 @@ void CollisionSystem::Update()
 			}
 
 		}
-	}
 
-	//std::cout << "x2 " << posIndex.size() << std::endl;
-	for (int i = 0; i < m_entities.size(); i++)
-	{
+
+
 
 		//	int x1 = static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKeyOne))->getPosition().x;
 		for (int j = 0; j < m_entities.at(i)->GetComponents()->size(); j++)
@@ -73,9 +71,7 @@ void CollisionSystem::Update()
 					h1 = static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(j))->GetRect().h;
 				}
 			}
-		}
-		for (int j = 0; j < m_entities.at(i)->GetComponents()->size(); j++)
-		{
+
 			for (int p = 0; p < posIndex.size(); p++)
 			{
 				int x2 = static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(posIndex[p]))->getPosition().x;
@@ -96,6 +92,7 @@ void CollisionSystem::Update()
 			}
 		}
 	}
+	
 }
 
 
