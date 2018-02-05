@@ -23,9 +23,11 @@
     <ClCompile Include="External Dependencies\ResourceManager\ResourceManager.cpp" />
     <ClCompile Include="External Dependencies\SimpleJSON\JSON.cpp" />
     <ClCompile Include="External Dependencies\SimpleJSON\JSONValue.cpp" />
+    <ClCompile Include="src\BattleMap.cpp" />
     <ClCompile Include="src\CollisionSystem.cpp" />
     <ClCompile Include="src\ControlSystem.cpp" />
     <ClCompile Include="src\Entity.cpp" />
+    <ClCompile Include="src\GrassTileFactory.cpp" />
     <ClCompile Include="src\HealthSystem.cpp" />
     <ClCompile Include="src\InputHandler.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -33,12 +35,14 @@
     <ClCompile Include="src\ProjectileSystem.cpp" />
     <ClCompile Include="src\RenderSystem.cpp" />
     <ClCompile Include="src\System.cpp" />
+    <ClCompile Include="src\SystemManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External Dependencies\ResourceManager\JSONReader.h" />
     <ClInclude Include="External Dependencies\ResourceManager\ResourceManager.h" />
     <ClInclude Include="External Dependencies\SimpleJSON\JSON.h" />
     <ClInclude Include="External Dependencies\SimpleJSON\JSONValue.h" />
+    <ClInclude Include="include\BattleMap.h" />
     <ClInclude Include="include\CollisionComponent.h" />
     <ClInclude Include="include\CollisionSystem.h" />
     <ClInclude Include="include\AttributesComponent.h" />
@@ -47,6 +51,7 @@
     <ClInclude Include="include\ControlSystem.h" />
     <ClInclude Include="include\Entity.h" />
     <ClInclude Include="include\Factory.h" />
+    <ClInclude Include="include\GrassTileFactory.h" />
     <ClInclude Include="include\HealthSystem.h" />
     <ClInclude Include="include\HeartComponent.h" />
     <ClInclude Include="include\EventListener.h" />
@@ -59,8 +64,11 @@
     <ClInclude Include="include\ProjectileSystem.h" />
     <ClInclude Include="include\RenderSystem.h" />
     <ClInclude Include="include\SpriteComponent.h" />
+    <ClInclude Include="include\StateManager.h" />
     <ClInclude Include="include\stdafx.h" />
     <ClInclude Include="include\System.h" />
+    <ClInclude Include="include\SystemManager.h" />
+    <ClInclude Include="include\TileFactory.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

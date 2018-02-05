@@ -284,7 +284,7 @@ void HealthSystem::UpdateMaxArmour()
 								static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->setX(20 * i);
 								static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->setY(60);
 							}
-							armour->AddComponent(new SpriteComponent("ArmourSheet", 3, 0, 0, 16, 16, 0));
+							armour->AddComponent(new SpriteComponent("ArmourSheet", 2, 3, 0, 0, 16, 16, 0));
 							armour->AddComponent(new HeartComponent(hc->HeartList()));
 							static_cast<HeartComponent*>((armour)->GetComponents()->at(2))->HeartType(HeartTypes::ARMOUR);
 							hc->HeartList()->push_back(armour);
@@ -369,8 +369,6 @@ void HealthSystem::UpdateArmourStatus(Entity * player)
 					{
 						std::cout << "ERROR INDEX LARGER THAN LIST SIZE" << std::endl;
 					}
-
-
 				}
 			}
 		}
@@ -424,7 +422,7 @@ void HealthSystem::UpdateMaxHearts()
 								static_cast<PositionComponent*>((heart)->GetComponents()->at(0))->setX(20 * i);
 								static_cast<PositionComponent*>((heart)->GetComponents()->at(0))->setY(20);
 							}
-							heart->AddComponent(new SpriteComponent("HeartsSheet", 3, 0, 0, 16, 16, 0));
+							heart->AddComponent(new SpriteComponent("HeartsSheet", 2, 3, 0, 0, 16, 16, 0));
 							heart->AddComponent(new HeartComponent(hc->HeartList()));
 							hc->HeartList()->push_back(heart);
 							static_cast<HeartComponent*>((heart)->GetComponents()->at(2))->Index(hc->HeartList()->size() - 1);

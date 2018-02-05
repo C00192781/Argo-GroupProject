@@ -1,11 +1,13 @@
 #ifndef _SPRITECOMPONENT_H
 #define _SPRITECOMPONENT_H
 
+#include <iostream>
+
 #include "Component.h"
 class SpriteComponent : public Component
 {
 public:
-	SpriteComponent(std::string sheetID, int noOfFrames, int sheetX, int sheetY, int width, int height, int direction)
+	SpriteComponent(std::string sheetID, int layer, int noOfFrames, int sheetX, int sheetY, int width, int height, int direction)
 	{
 		m_sheetID = sheetID;
 		m_noOfFrames = noOfFrames;
@@ -16,6 +18,7 @@ public:
 		m_direction = direction;
 		m_type = "SC";
 		m_frame = 0;
+		m_layer = layer;
 	 }
 	~SpriteComponent() {};
 
@@ -41,6 +44,10 @@ public:
 	void Height(int height) { m_height = height; };
 	int Height() { return m_height; };
 
+	void Layer(int x) { m_layer = x; };
+	int Layer() { return m_layer; }
+
+	void Sheet(std::string x) { m_sheetID = x; };
 	std::string Sheet() { return m_sheetID; };
 
 	SDL_Rect GetRect() {
@@ -53,6 +60,7 @@ private:
 	int m_frame;
 	int m_width, m_height;
 	int m_direction; // 0 Up, 1 Down, 2 Left, 3 Right
+	int m_layer;
 	std::string m_sheetID;
 
 };

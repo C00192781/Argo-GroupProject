@@ -11,7 +11,8 @@ public:
 	RenderSystem(ResourceManager * rm, SDL_Renderer * r);
 	~RenderSystem();
 	void Update();
-	void SetScale(int x) { m_scale = x; };
+	void SetScale(float x) { m_scale = x; };
+	float GetScale() { return m_scale; };
 private:
 	SDL_Renderer * m_renderer;
 	ResourceManager * m_resourceManager;
