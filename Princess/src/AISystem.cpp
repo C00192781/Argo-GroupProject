@@ -61,11 +61,11 @@ void AiSystem::Update()
 		int ailKey = -1;
 		for (int j = 0; j < m_entities.at(i)->GetComponents()->size(); j++)
 		{
-			if (m_entities.at(i)->GetComponents()->at(j)->Type() == "PC")
+			if (m_entities.at(i)->GetComponents()->at(j)->Type() == "PC") //position comp
 			{
 				pcKey = j;
 			}
-			else if (m_entities.at(i)->GetComponents()->at(j)->Type() == "AIL")
+			else if (m_entities.at(i)->GetComponents()->at(j)->Type() == "AIL") //ai logic comp
 			{
 				ailKey = j;
 			}
@@ -74,43 +74,18 @@ void AiSystem::Update()
 		{
 			if (m_entities.at(i)->ID() == "Princess")
 			{
-				auto temp = static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getPosition().x;
-				int donothing = 0;
-				donothing -= 1;
+				//if it's a princess, do something special
 			}
 
-
-		//	std::cout << "x: " << static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getPosition().x << std::endl;
-
-			static_cast<AiLogicComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->Money(1);
-
-		//	auto tempy = static_cast<AiLogicComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->Speed();
-
-		//	auto temp3 = static_cast<AiLogicComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->Money();
-
-
-
-
+			static_cast<AiLogicComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->Speed(1); //set speed
 
 			SDL_Point holder{ static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getPosition().x, static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getPosition().y };
-
-			holder.x += static_cast<AiLogicComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->Money();
-			holder.y += static_cast<AiLogicComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->Money();
+			//update position with speed
+			holder.x += static_cast<AiLogicComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->Speed();
+			holder.y += static_cast<AiLogicComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->Speed();
 
 			static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->setPosition(holder);
 
-		//	std::cout << "x: " << static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getPosition().x << std::endl;
-
-
-
-
-		//	static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->setPosition(holder);
-
-			//SDL_Rect* holder = new SDL_Rect{ static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->X(), static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->Y(), static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(ailKey))->Width() * m_scale, static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(ailKey))->Height()*m_scale };
-			//SDL_RenderCopy(m_renderer,
-			//	m_resourceManager->GetTexture(static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(ailKey))->Sheet()),
-			//	&static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(ailKey))->GetRect(), holder);
-			//delete holder;
 		}
 	}
 }

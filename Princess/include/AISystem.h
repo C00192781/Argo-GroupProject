@@ -12,12 +12,10 @@ public:
 	AiSystem();
 	~AiSystem();
 	void Update();
-//	void SetThingy(int x) { m_thingy = x; };
 	void Spawn(std::vector<Entity*> entities);
 	void Spawn();
 	std::vector<Entity*> getEntities();
 private:
-	//int m_thingy;
 	std::vector<Character*> CharFactory;
 	Character* characterFactory;
 };
