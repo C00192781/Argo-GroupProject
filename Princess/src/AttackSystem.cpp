@@ -61,6 +61,7 @@ void AttackSystem::Update()
 					{
 						float temp = static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getTimeForAttack();
 
+						// checks for if still attacking
 						if (temp > 0)
 						{
 							temp -= 0.01;
@@ -77,6 +78,7 @@ void AttackSystem::Update()
 
 					float temp = static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getTimeToAllowAttack();
 
+					// checks for if allowed to attack
 					if (temp > 0)
 					{
 						temp -= 0.01;
