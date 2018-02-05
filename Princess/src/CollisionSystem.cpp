@@ -21,8 +21,6 @@ void CollisionSystem::Update()
 	{
 		if (m_entities.at(i)->ID() != "Hearts" && m_entities.at(i)->ID() != "ArmourDisplay")
 		{
-
-
 			int pcKeyOne = -1;
 			int ccKeyOne = -1;
 			int pcKeyTwo = -1;

@@ -5,6 +5,7 @@ void ControlSystem::Update()
 {
 	for (int i = 0; i < m_entities.size(); i++) 
 	{
+		m_input->handleInput();
 		int mcKey = -1;
 		int pjKey = -1;
 

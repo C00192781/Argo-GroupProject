@@ -36,6 +36,8 @@
     <ClCompile Include="src\RenderSystem.cpp" />
     <ClCompile Include="src\System.cpp" />
     <ClCompile Include="src\SystemManager.cpp" />
+    <ClCompile Include="src\WorldMap.cpp" />
+    <ClCompile Include="src\WorldTileFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External Dependencies\ResourceManager\JSONReader.h" />
@@ -69,6 +71,8 @@
     <ClInclude Include="include\System.h" />
     <ClInclude Include="include\SystemManager.h" />
     <ClInclude Include="include\TileFactory.h" />
+    <ClInclude Include="include\WorldMap.h" />
+    <ClInclude Include="include\WorldTileFactory.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

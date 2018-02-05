@@ -2,7 +2,7 @@
 
 
 
-BattleMap::BattleMap(SystemManager * sm, SDL_Renderer * sdlr, StateManager * s)
+BattleMap::BattleMap(SystemManager * sm, StateManager * s)
 {
 	m_systemManager = sm;
 	m_stateManager = s;
@@ -24,11 +24,15 @@ void BattleMap::Generate(std::string type)
 	m_systemManager->RenderSystem->SelectiveClear();
 	m_systemManager->MovementSystem->SelectiveClear();
 
-	delete m_factory;
+	TileFactory * factory;
 
 	if (type == "Grassland")
 	{
-		m_factory = new GrassTileFactory();
+		factory = new GrassTileFactory();
+	}
+	else
+	{
+		factory = new GrassTileFactory();
 	}
 
 	for (int i = 0; i < 17; i++)
@@ -38,23 +42,25 @@ void BattleMap::Generate(std::string type)
 			int rando = rand() % 100;
 			if (rando <= 80)
 			{
-				m_entities.push_back(m_factory->GroundA("Turf", i * (16 * m_systemManager->RenderSystem->GetScale()), j * (16 * m_systemManager->RenderSystem->GetScale())));
+				m_entities.push_back(factory->GroundA("Turf", i * (16 * m_systemManager->RenderSystem->GetScale()), j * (16 * m_systemManager->RenderSystem->GetScale())));
 			}
 			else if (rando <= 90)
 			{
-				m_entities.push_back(m_factory->GroundB("Turf", i * (16 * m_systemManager->RenderSystem->GetScale()), j * (16 * m_systemManager->RenderSystem->GetScale())));
-			}																			
-			else if (rando <= 95)														
-			{																			
-				m_entities.push_back(m_factory->GroundC("Turf", i * (16 * m_systemManager->RenderSystem->GetScale()), j * (16 * m_systemManager->RenderSystem->GetScale())));
-			}																			
-			else																		
-			{																			
-				m_entities.push_back(m_factory->GroundD("Turf", i * (16 * m_systemManager->RenderSystem->GetScale()), j * (16 * m_systemManager->RenderSystem->GetScale())));
+				m_entities.push_back(factory->GroundB("Turf", i * (16 * m_systemManager->RenderSystem->GetScale()), j * (16 * m_systemManager->RenderSystem->GetScale())));
+			}																		
+			else if (rando <= 95)													
+			{																		
+				m_entities.push_back(factory->GroundC("Turf", i * (16 * m_systemManager->RenderSystem->GetScale()), j * (16 * m_systemManager->RenderSystem->GetScale())));
+			}																		
+			else																	
+			{																		
+				m_entities.push_back(factory->GroundD("Turf", i * (16 * m_systemManager->RenderSystem->GetScale()), j * (16 * m_systemManager->RenderSystem->GetScale())));
 			}
 			m_systemManager->RenderSystem->AddEntity(m_entities.back());
 		}
 	}
+
+	delete factory;
 }
 void BattleMap::Update()
 {

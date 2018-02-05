@@ -17,6 +17,7 @@
 #include "AttributesComponent.h"
 #include "HealthSystem.h"
 #include "HeartComponent.h"
+#include "WorldMap.h"
 
 #include "SystemManager.h"
 
@@ -33,24 +34,28 @@ int main()
 	resourceManager->AddTexture("Red", "Sprite_Red.png");
 	resourceManager->AddTexture("Demon", "demon.png");
 	resourceManager->AddTexture("Turf", "Turfs.png");
+	resourceManager->AddTexture("WorldTurf", "World_Turfs.png");
 
 	EventListener *listener = new EventListener();
 
-	InputHandler *input = new InputHandler(listener);
+	InputHandler *input = new InputHandler(listener, e);
 
 	StateManager state;
 
 	SystemManager systemManager;
-	systemManager.ControlSystem = new ControlSystem(listener);
+	systemManager.ControlSystem = new ControlSystem(listener, input);
 	systemManager.ControlSystem->Active(true);
 	systemManager.MovementSystem = new MovementSystem();
 	systemManager.MovementSystem->Active(true);
 	systemManager.RenderSystem = new RenderSystem(resourceManager, gameRenderer);
 	systemManager.RenderSystem->Active(true);
-	systemManager.RenderSystem->SetScale(3);
+	systemManager.RenderSystem->SetScale(1);
 
-	BattleMap map1 = BattleMap(&systemManager, gameRenderer, &state);
-	map1.Generate("Grassland");
+	//BattleMap battleMap = BattleMap(&systemManager, &state);
+	//battleMap.Generate("Grassland");
+
+	WorldMap* m = new WorldMap(&systemManager, &state);
+	m->Generate(25, 25, 100);
 
 	Entity * player = new Entity("Player");
 	player->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
@@ -69,11 +74,9 @@ int main()
 
 	while (1 != 0)
 	{
-		SDL_PollEvent(e);
+		input->handleInput();
 
-		input->handleInput(*e);
-
-		map1.Update();
+		m->Update();
 
 		SDL_SetRenderDrawColor(gameRenderer, 255, 255, 255, 0);
 		SDL_RenderClear(gameRenderer);

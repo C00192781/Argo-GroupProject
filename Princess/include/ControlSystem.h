@@ -8,10 +8,11 @@
 class ControlSystem : public System
 {
 public:
-	ControlSystem(EventListener *e) { m_eventListener = e; };
+	ControlSystem(EventListener *e, InputHandler *input) { m_eventListener = e; m_input = input; };
 
 	void Update();
 private:
 
 	EventListener *m_eventListener;
+	InputHandler *m_input;
 };

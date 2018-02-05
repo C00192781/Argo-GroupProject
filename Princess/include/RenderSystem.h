@@ -18,5 +18,6 @@ private:
 	ResourceManager * m_resourceManager;
 	int m_scale;
 	int m_timer;
+	int m_sizeMemory;
 };
 #endif
