@@ -80,7 +80,7 @@ void AiSystem::Update()
 			}
 
 
-			std::cout << "x: " << static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getPosition().x << std::endl;
+		//	std::cout << "x: " << static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getPosition().x << std::endl;
 
 			static_cast<AiLogicComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->Money(1);
 
@@ -99,7 +99,7 @@ void AiSystem::Update()
 
 			static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->setPosition(holder);
 
-			std::cout << "x: " << static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getPosition().x << std::endl;
+		//	std::cout << "x: " << static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getPosition().x << std::endl;
 
 
 
