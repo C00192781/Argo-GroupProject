@@ -5,6 +5,8 @@
 #include "SpriteComponent.h"
 #include "PositionComponent.h"
 #include "AiLogicComponent.h"
+#include "MovementComponent.h"
+#include "SeekComponent.h"
 class Princess : public Character
 {
 public:

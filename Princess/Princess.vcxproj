@@ -47,6 +47,7 @@
     <ClInclude Include="Factory.h" />
     <ClInclude Include="include\AiLogicComponent.h" />
     <ClInclude Include="include\AISystem.h" />
+    <ClInclude Include="include\AttackComponent.h" />
     <ClInclude Include="include\BattleMap.h" />
     <ClInclude Include="include\Character.h" />
     <ClInclude Include="include\CollisionComponent.h" />
@@ -69,6 +70,7 @@
     <ClInclude Include="include\ProjectileComponent.h" />
     <ClInclude Include="include\ProjectileSystem.h" />
     <ClInclude Include="include\RenderSystem.h" />
+    <ClInclude Include="include\SeekComponent.h" />
     <ClInclude Include="include\SpriteComponent.h" />
     <ClInclude Include="include\StateManager.h" />
     <ClInclude Include="include\stdafx.h" />

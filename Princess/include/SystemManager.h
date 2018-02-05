@@ -16,9 +16,9 @@ public:
 	RenderSystem *   RenderSystem;
 	MovementSystem * MovementSystem;
 	ControlSystem *  ControlSystem;
-	AiSystem * AiSystem;
+	AiSystem * AiSystems;
 
-	void Update();
+	void Update(float deltaTime);
 
 private:
 	bool flag = false;

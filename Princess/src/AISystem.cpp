@@ -20,30 +20,24 @@ AiSystem::~AiSystem()
 
 void AiSystem::Spawn()
 {
-	/*m_entities.clear();
-	m_entities.push_back(m_entities);*/
-	//TileFactory * m_factory;
-	//m_entities.push_back(new Character)
-
 	SDL_Point p{ 0,0 };
 
 	characterFactory = new Princess();
 	m_entities.push_back(characterFactory->CharA("Red", p, 0));
 
-	//m_entities.push_back(CharFactory);
 }
 
 
-void AiSystem::Spawn(std::vector<Entity*> entities)
+void AiSystem::Spawn(std::string id)
 {
-	/*m_entities.clear();
-	m_entities.push_back(m_entities);*/
-	//TileFactory * m_factory;
-
-	//m_entities.push_back(new Princess());
-	//
-	//CharFactory.push_back(new Princess());
-
+	if (id == "1")
+	{
+		//spawn map 1
+	}
+	else if (id == "2")
+	{
+		//spawn map 2
+	}
 	
 }
 
@@ -53,39 +47,218 @@ std::vector<Entity*> AiSystem::getEntities()
 }
 
 
+void AiSystem::seek(int entityIndex, int pcKey, int mcKey, int seekKey)
+{
+	float x = static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->getXDestination() - static_cast<PositionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(pcKey))->getPosition().x;
+	float y = static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->getYDestination() - static_cast<PositionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(pcKey))->getPosition().y;
+
+	float dist = magnitude(x, y);
+
+	static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->setDistanceToDestination(dist);
+
+	if (dist > static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->getSpeed() / 60)
+	{
+		normalise(x, y);
+		x *= static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->getSpeed();
+		y *= static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->getSpeed();
+
+		static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setXVelocity(x);
+		static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setYVelocity(y);
+	}
+	else
+	{
+		static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setXVelocity(0);
+		static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setYVelocity(0);
+	}
+
+
+}
+
+
 void AiSystem::Update()
 {
+
+}
+
+
+void AiSystem::Wander(int entityIndex, int pcKey, int mcKey, int seekKey)
+{
+	srand(m_time * 50);
+
+	int temp = m_time * 1000;
+
+	if (temp % 13 == 0)
+	{
+
+
+		srand(m_time);
+		static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->setXDestination(rand() % 100);
+
+		srand(m_time + 5);
+		static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->setYDestination(rand() % 100);
+
+		std::cout << "ROLLING  " << std::endl;
+		std::cout << "ROLLING  " << std::endl;
+
+		std::cout << "ROLLING  " << std::endl;
+
+		std::cout << "ROLLING  " << std::endl;
+		std::cout << "ROLLING  " << std::endl;
+		std::cout << "ROLLING  " << std::endl;
+		std::cout << "ROLLING  " << std::endl;
+		std::cout << "ROLLING  " << std::endl;
+		std::cout << "ROLLING  " << std::endl;
+
+
+	}
+	std::cout << "x: "<< static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->getXDestination() << "  y:  " << static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->getYDestination() << std::endl;
+
+	float x = static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->getXDestination() - static_cast<PositionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(pcKey))->getPosition().x;
+	float y = static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->getYDestination() - static_cast<PositionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(pcKey))->getPosition().y;
+
+	float dist = magnitude(x, y);
+
+	static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->setDistanceToDestination(dist);
+
+	if (dist > static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->getSpeed() / 60)
+	{
+		normalise(x, y);
+		x *= static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->getSpeed();
+		y *= static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->getSpeed();
+
+		static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setXVelocity(x);
+		static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setYVelocity(y);
+	}
+	else
+	{
+		static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setXVelocity(0);
+		static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setYVelocity(0);
+	}
+
+
+}
+
+
+void AiSystem::attack(int entityIndex, int attackKey, int mcKey)
+{
+	static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setXVelocity(0);
+	static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setYVelocity(0);
+}
+
+void AiSystem::normalise(float &x, float &y)
+{
+	float mag = magnitude(x, y);
+
+	if (mag > 0)
+	{
+		x /= mag;
+		y /= mag;
+	}
+}
+
+float AiSystem::magnitude(float x, float y)
+{
+	//return sqrt(((v2.x - v1.x) * (v2.x - v1.x)) + ((v2.y - v1.y) * (v2.y - v1.y)));
+	return sqrt((x * x) + (y * y));
+}
+
+void AiSystem::Update(float deltaTime)
+{
+	m_time = deltaTime;
+
+	//for (int i = 0; i < m_entities.size(); i++)
+	//{
+	//	int pcKey = -1;
+	//	int ailKey = -1;
+	//	for (int j = 0; j < m_entities.at(i)->GetComponents()->size(); j++)
+	//	{
+	//		if (m_entities.at(i)->GetComponents()->at(j)->Type() == "PC") //position comp
+	//		{
+	//			pcKey = j;
+	//		}
+	//		else if (m_entities.at(i)->GetComponents()->at(j)->Type() == "AIL") //ai logic comp
+	//		{
+	//			ailKey = j;
+	//		}
+	//	}
+	//	if (pcKey >= 0 && ailKey >= 0)
+	//	{
+	//		if (m_entities.at(i)->ID() == "Princess")
+	//		{
+	//			//if it's a princess, do something special
+	//		}
+
+	//		static_cast<AiLogicComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->Speed(1); //set speed
+
+	//		SDL_Point holder{ static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getPosition().x, static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getPosition().y };
+	//		//update position with speed
+	//		holder.x += static_cast<AiLogicComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->Speed();
+	//		holder.y += static_cast<AiLogicComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->Speed();
+
+	//		static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->setPosition(holder);
+
+	//	}
+	//}
+
 	for (int i = 0; i < m_entities.size(); i++)
 	{
 		int pcKey = -1;
-		int ailKey = -1;
+		int mcKey = -1;
+		int seekKey = -1;
+		int attackKey = -1;
+
 		for (int j = 0; j < m_entities.at(i)->GetComponents()->size(); j++)
 		{
-			if (m_entities.at(i)->GetComponents()->at(j)->Type() == "PC") //position comp
+			if (m_entities.at(i)->GetComponents()->at(j)->Type() == "PC")
 			{
 				pcKey = j;
 			}
-			else if (m_entities.at(i)->GetComponents()->at(j)->Type() == "AIL") //ai logic comp
+			else if (m_entities.at(i)->GetComponents()->at(j)->Type() == "movement")
 			{
-				ailKey = j;
+				mcKey = j;
+			}
+			else if (m_entities.at(i)->GetComponents()->at(j)->Type() == "seek")
+			{
+				seekKey = j;
+			}
+			else if (m_entities.at(i)->GetComponents()->at(j)->Type() == "attack")
+			{
+				attackKey = j;
 			}
 		}
-		if (pcKey >= 0 && ailKey >= 0)
+
+
+		if (seekKey >= 0 && pcKey >= 0 && mcKey >= 0)
 		{
+			if (attackKey >= 0)
+			{
+				if (static_cast<SeekComponent*>(m_entities.at(i)->GetComponents()->at(seekKey))->getDistanceToDestination() < static_cast<AttackComponent*>(m_entities.at(i)->GetComponents()->at(attackKey))->getRange())
+				{
+					attack(i, attackKey, mcKey);
+				}
+				else
+				{
+					seek(i, pcKey, mcKey, seekKey);
+				}
+			}
+			else
+			{
+				seek(i, pcKey, mcKey, seekKey);
+			}
+
 			if (m_entities.at(i)->ID() == "Princess")
 			{
-				//if it's a princess, do something special
+				Wander(i, pcKey, mcKey, seekKey);
+				//		std::cout << "x demon: " << static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getPosition().x << std::endl;
 			}
-
-			static_cast<AiLogicComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->Speed(1); //set speed
-
-			SDL_Point holder{ static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getPosition().x, static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getPosition().y };
-			//update position with speed
-			holder.x += static_cast<AiLogicComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->Speed();
-			holder.y += static_cast<AiLogicComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->Speed();
-
-			static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->setPosition(holder);
-
 		}
+		if (m_entities.at(i)->ID() == "Melee Enemy")
+		{
+	//		std::cout << "x demon: " << static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getPosition().x << std::endl;
+		}
+
+		
+
 	}
+
 }
