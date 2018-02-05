@@ -71,6 +71,7 @@ void AttackSystem::Update()
 						{
 							temp = static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getMaxTimeForAttack();
 							static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->setAttacking(false);
+							static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setLockedOrientation(true);
 						}
 
 						static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->setTimeForAttack(temp);
