@@ -68,7 +68,7 @@
     <ClCompile Include="src\AISystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Princess.cpp">
+    <ClCompile Include="include\Princess.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -172,10 +172,10 @@
     <ClInclude Include="include\AISystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Character.h">
+    <ClInclude Include="include\Princess.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Princess.h">
+    <ClInclude Include="include\Character.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

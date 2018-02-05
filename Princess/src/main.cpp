@@ -18,6 +18,8 @@
 #include "HealthSystem.h"
 #include "HeartComponent.h"
 #include "AIsystem.h"
+#include "Princess.h"
+
 
 #include "SystemManager.h"
 
@@ -51,6 +53,10 @@ int main()
 	systemManager.RenderSystem = new RenderSystem(resourceManager, gameRenderer);
 	systemManager.RenderSystem->Active(true);
 	systemManager.RenderSystem->SetScale(3);
+	systemManager.AiSystem = new AiSystem();
+	systemManager.AiSystem->Active(true);
+
+	//systemManager.AiSystem->AddEntity()
 
 	BattleMap map1 = BattleMap(&systemManager, gameRenderer, &state);
 	map1.Generate("Grassland");

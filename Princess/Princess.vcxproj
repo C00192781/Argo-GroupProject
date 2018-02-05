@@ -23,7 +23,7 @@
     <ClCompile Include="External Dependencies\ResourceManager\ResourceManager.cpp" />
     <ClCompile Include="External Dependencies\SimpleJSON\JSON.cpp" />
     <ClCompile Include="External Dependencies\SimpleJSON\JSONValue.cpp" />
-    <ClCompile Include="Princess.cpp" />
+    <ClCompile Include="include\Princess.cpp" />
     <ClCompile Include="src\AISystem.cpp" />
     <ClCompile Include="src\BattleMap.cpp" />
     <ClCompile Include="src\CollisionSystem.cpp" />
@@ -40,7 +40,6 @@
     <ClCompile Include="src\SystemManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Character.h" />
     <ClInclude Include="External Dependencies\ResourceManager\JSONReader.h" />
     <ClInclude Include="External Dependencies\ResourceManager\ResourceManager.h" />
     <ClInclude Include="External Dependencies\SimpleJSON\JSON.h" />
@@ -49,6 +48,7 @@
     <ClInclude Include="include\AiLogicComponent.h" />
     <ClInclude Include="include\AISystem.h" />
     <ClInclude Include="include\BattleMap.h" />
+    <ClInclude Include="include\Character.h" />
     <ClInclude Include="include\CollisionComponent.h" />
     <ClInclude Include="include\CollisionSystem.h" />
     <ClInclude Include="include\AttributesComponent.h" />
@@ -65,6 +65,7 @@
     <ClInclude Include="include\MovementComponent.h" />
     <ClInclude Include="include\MovementSystem.h" />
     <ClInclude Include="include\PositionComponent.h" />
+    <ClInclude Include="include\Princess.h" />
     <ClInclude Include="include\ProjectileComponent.h" />
     <ClInclude Include="include\ProjectileSystem.h" />
     <ClInclude Include="include\RenderSystem.h" />
@@ -74,7 +75,6 @@
     <ClInclude Include="include\System.h" />
     <ClInclude Include="include\SystemManager.h" />
     <ClInclude Include="include\TileFactory.h" />
-    <ClInclude Include="Princess.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

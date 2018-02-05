@@ -8,7 +8,7 @@
 class Princess : public Character
 {
 public:
-	Entity* PrincessEntity(std::string ID, SDL_Point pos, int personality);
+	Entity* CharA(std::string ID, SDL_Point pos, int personality);
 };
 #endif
 

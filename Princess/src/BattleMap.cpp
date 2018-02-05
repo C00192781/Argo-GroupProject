@@ -23,7 +23,7 @@ void BattleMap::Generate(std::string type)
 	m_systemManager->ControlSystem->SelectiveClear();
 	m_systemManager->RenderSystem->SelectiveClear();
 	m_systemManager->MovementSystem->SelectiveClear();
-
+	m_systemManager->AiSystem->SelectiveClear();
 	delete m_factory;
 
 	if (type == "Grassland")

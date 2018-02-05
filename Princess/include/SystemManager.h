@@ -7,6 +7,7 @@
 #include "MovementSystem.h"
 #include "PositionComponent.h"
 #include "SpriteComponent.h"
+#include "AISystem.h"
 
 class SystemManager
 {
@@ -15,8 +16,12 @@ public:
 	RenderSystem *   RenderSystem;
 	MovementSystem * MovementSystem;
 	ControlSystem *  ControlSystem;
+	AiSystem * AiSystem;
 
 	void Update();
+
+private:
+	bool flag = false;
 
 };
 #endif
