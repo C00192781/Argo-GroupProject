@@ -45,19 +45,6 @@ int main()
 
 	StateManager state;
 
-//	Entity * player = new Entity("Player");
-
-	//player->AddComponent(new SpriteComponent("Red", 1, 0, 0, 16, 16, 0));
-	//player->AddComponent(new PositionComponent(SDL_Point{100, 300}));
-	//player->AddComponent(new AttributesComponent());
-	//player->AddComponent(new MovementComponent(3));
-	//player->AddComponent(new CollisionComponent());
-
-
-	//int heartNum = (static_cast<AttributesComponent*>((player)->GetComponents()->at(2))->MaxHealth()) / 2;
-	//int armourNum = (static_cast<AttributesComponent*>((player)->GetComponents()->at(2))->MaxArmour()) / 2;
-
-
 	SystemManager systemManager;
 	systemManager.ControlSystem = new ControlSystem(listener);
 	systemManager.ControlSystem->Active(true);
@@ -69,31 +56,11 @@ int main()
 	systemManager.AiSystem = new AiSystem();
 	systemManager.AiSystem->Active(true);
 
-	/*for (auto i = systemManager.AiSystem->getEntities(), e = systemManager.AiSystem->getEntities(); i != e; i++)
-	{
-		systemManager.RenderSystem->AddEntity(systemManager.AiSystem->getEntities());
-	}
-	*/
-	
-
-
 
 	BattleMap map1 = BattleMap(&systemManager, gameRenderer, &state);
 	map1.Generate("Grassland");
 
-
-	Entity * player = new Entity("Player");
-	player->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
-	player->AddComponent(new PositionComponent(SDL_Point{100, 300}));
-	player->AddComponent(new AttributesComponent());
-	player->AddComponent(new MovementComponent(3));
-	player->AddComponent(new CollisionComponent());
 	RenderSystem * r = new RenderSystem(resourceManager, gameRenderer);
-	r->AddEntity(player);
-
-	systemManager.ControlSystem->AddEntity(player);
-	systemManager.MovementSystem->AddEntity(player);
-	systemManager.RenderSystem->AddEntity(player);
 
 	bool heartTest = true;
 
@@ -107,21 +74,10 @@ int main()
 
 		SDL_SetRenderDrawColor(gameRenderer, 255, 255, 255, 0);
 		SDL_RenderClear(gameRenderer);
-
 		systemManager.Update();
-
-		if (debug == false)
-		{
-			auto mrEntity = systemManager.AiSystem->getEntities();
-			systemManager.RenderSystem->AddEntity(mrEntity.at(0));
-			debug = true;
-		}
-
 		SDL_RenderPresent(gameRenderer);
-
 		
 	}
-
 
 	SDL_DestroyRenderer(gameRenderer);
 	SDL_DestroyWindow(gameWindow);

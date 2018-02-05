@@ -55,6 +55,17 @@ void BattleMap::Generate(std::string type)
 			m_systemManager->RenderSystem->AddEntity(m_entities.back());
 		}
 	}
+
+	m_systemManager->AiSystem->Spawn();
+
+	auto aiEntities = m_systemManager->AiSystem->getEntities(); //get and add AI entities to be rendered
+
+	for (auto i = aiEntities.begin(), end = aiEntities.end(); i != end; i++)
+	{
+		m_systemManager->RenderSystem->AddEntity((*i));
+	}
+	
+
 }
 void BattleMap::Update()
 {
