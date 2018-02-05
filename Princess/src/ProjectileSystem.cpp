@@ -44,7 +44,6 @@ void ProjectileSystem::Update()
 			}
 		}
 
-
 		if (pjKey >= 0 && pcKey >= 0 && mcKey >= 0)
 		{
 			//float tempAngle = 90;

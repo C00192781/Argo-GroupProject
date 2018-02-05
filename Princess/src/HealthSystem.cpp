@@ -369,8 +369,6 @@ void HealthSystem::UpdateArmourStatus(Entity * player)
 					{
 						std::cout << "ERROR INDEX LARGER THAN LIST SIZE" << std::endl;
 					}
-
-
 				}
 			}
 		}
