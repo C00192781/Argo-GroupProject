@@ -37,7 +37,7 @@ public:
 	{
 		m_type = "AC";
 
-		std::cout << m_type << std::endl;
+		//std::cout << m_type << std::endl;
 
 		m_armour = 5;
 		m_maxArmour = 6;

@@ -136,6 +136,9 @@
     <ClInclude Include="include\MovementSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Factory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="include\ProjectileSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -173,8 +176,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Character.h">
-    </ClInclude>
-    <ClInclude Include="include\Factory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

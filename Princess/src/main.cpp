@@ -38,16 +38,13 @@ int main()
 	resourceManager->AddTexture("Red", "Sprite_Red.png");
 	resourceManager->AddTexture("Demon", "demon.png");
 	resourceManager->AddTexture("Turf", "Turfs.png");
-	resourceManager->AddTexture("Hearts", "hearts2.png");
-	resourceManager->AddTexture("HeartsHealth", "heartsfull2.png");
-	resourceManager->AddTexture("HeartsSheet", "heartSpriteSheet.png");
-	resourceManager->AddTexture("ArmourSheet", "armourSpriteSheet.png");
 
 	EventListener *listener = new EventListener();
 
 	InputHandler *input = new InputHandler(listener);
 
 	StateManager state;
+
 //	Entity * player = new Entity("Player");
 
 	//player->AddComponent(new SpriteComponent("Red", 1, 0, 0, 16, 16, 0));
@@ -59,6 +56,7 @@ int main()
 
 	//int heartNum = (static_cast<AttributesComponent*>((player)->GetComponents()->at(2))->MaxHealth()) / 2;
 	//int armourNum = (static_cast<AttributesComponent*>((player)->GetComponents()->at(2))->MaxArmour()) / 2;
+
 
 	SystemManager systemManager;
 	systemManager.ControlSystem = new ControlSystem(listener);
@@ -84,7 +82,20 @@ int main()
 	map1.Generate("Grassland");
 
 
+	Entity * player = new Entity("Player");
+	player->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
+	player->AddComponent(new PositionComponent(SDL_Point{100, 300}));
+	player->AddComponent(new AttributesComponent());
+	player->AddComponent(new MovementComponent(3));
+	player->AddComponent(new CollisionComponent());
+	RenderSystem * r = new RenderSystem(resourceManager, gameRenderer);
+	r->AddEntity(player);
 
+	systemManager.ControlSystem->AddEntity(player);
+	systemManager.MovementSystem->AddEntity(player);
+	systemManager.RenderSystem->AddEntity(player);
+
+	bool heartTest = true;
 
 	while (1 != 0)
 	{
@@ -93,10 +104,6 @@ int main()
 		input->handleInput(*e);
 
 		map1.Update();
-		//c->Update();
-		//m->Update();
-		//p->Update();
-		//collision->Update();
 
 		SDL_SetRenderDrawColor(gameRenderer, 255, 255, 255, 0);
 		SDL_RenderClear(gameRenderer);
@@ -111,12 +118,10 @@ int main()
 		}
 
 		SDL_RenderPresent(gameRenderer);
-	
+
 		
 	}
 
-
-	SDL_RenderPresent(gameRenderer);
 
 	SDL_DestroyRenderer(gameRenderer);
 	SDL_DestroyWindow(gameWindow);

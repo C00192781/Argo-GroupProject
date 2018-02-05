@@ -44,6 +44,7 @@
     <ClInclude Include="External Dependencies\ResourceManager\ResourceManager.h" />
     <ClInclude Include="External Dependencies\SimpleJSON\JSON.h" />
     <ClInclude Include="External Dependencies\SimpleJSON\JSONValue.h" />
+    <ClInclude Include="Factory.h" />
     <ClInclude Include="include\AiLogicComponent.h" />
     <ClInclude Include="include\AISystem.h" />
     <ClInclude Include="include\BattleMap.h" />
@@ -56,7 +57,6 @@
     <ClInclude Include="include\ControlSystem.h" />
     <ClInclude Include="include\Entity.h" />
     <ClInclude Include="include\GrassTileFactory.h" />
-    <ClInclude Include="include\Factory.h" />
     <ClInclude Include="include\HealthSystem.h" />
     <ClInclude Include="include\HeartComponent.h" />
     <ClInclude Include="include\EventListener.h" />
