@@ -111,8 +111,33 @@ int main()
 		//modifiers->push_back(Modifer(ModiferTypes::DAMAGE, 7, 0));
 	}
 
-	bool heartTest = true;
 
+
+	AttributesComponent* component = static_cast<AttributesComponent*>((player)->GetComponents()->at(acKey));
+	//Health
+	component->MaxHealth(40);
+	int size = hearts->size();
+	h->UpdateMaxHearts();
+	if (size < hearts->size())
+	{
+		for (int i = size; i < hearts->size(); i++)
+		{
+			r->AddEntity(hearts->at(i));
+		}
+	}
+
+
+	//Armour
+	component->MaxArmour(8);
+	size = armourDisplayVector->size();
+	h->UpdateMaxArmour();
+	if (size < armourDisplayVector->size())
+	{
+		for (int i = size; i < armourDisplayVector->size(); i++)
+		{
+			r->AddEntity(armourDisplayVector->at(i));
+		}
+	}
 
 	while (1 != 0)
 	{
@@ -120,46 +145,6 @@ int main()
 		SDL_RenderClear(gameRenderer);
 		r->Update();
 		h->Update();
-
-		AttributesComponent* component = static_cast<AttributesComponent*>((player)->GetComponents()->at(acKey));
-
-
-		if (heartTest == true)
-		{
-
-			//Health
-			component->MaxHealth(40);
-			int size = hearts->size();
-			h->UpdateMaxHearts();
-			if (size < hearts->size())
-			{
-				for (int i = size; i < hearts->size(); i++)
-				{
-					r->AddEntity(hearts->at(i));
-					h->AddEntity(hearts->at(i));
-				}
-			}
-			h->UpdateHeartsStatus(player);
-
-
-			//Armour
-			component->MaxArmour(8);
-			size = armourDisplayVector->size();
-			h->UpdateMaxArmour();
-			if (size < armourDisplayVector->size())
-			{
-				for (int i = size; i < armourDisplayVector->size(); i++)
-				{
-					r->AddEntity(armourDisplayVector->at(i));
-					h->AddEntity(armourDisplayVector->at(i));
-				}
-			}
-			h->UpdateArmourStatus(player);
-
-			heartTest = false;
-
-		}
-
 
 		std::cout << component->Armour() << " " << component->Health() << std::endl;
 		SDL_RenderPresent(gameRenderer);

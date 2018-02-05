@@ -6,6 +6,7 @@
 #include "SpriteComponent.h"
 #include "PositionComponent.h"
 #include "HeartComponent.h"
+#include "HeartManagerComponent.h"
 
 class HealthSystem : public System
 {
@@ -13,6 +14,7 @@ public:
 	HealthSystem();
 	~HealthSystem();
 	void Update();
+	void SetUpHearts(Entity* HeartManager, Entity * player);
 	void UpdateMaxHearts();
 	void UpdateHeartsStatus(Entity* player);
 	void UpdateMaxArmour();
