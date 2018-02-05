@@ -5,6 +5,7 @@
 #include "RenderSystem.h"
 #include "ControlSystem.h"
 #include "MovementSystem.h"
+#include "AttackSystem.h"
 #include "PositionComponent.h"
 #include "SpriteComponent.h"
 
@@ -15,6 +16,7 @@ public:
 	RenderSystem *   RenderSystem;
 	MovementSystem * MovementSystem;
 	ControlSystem *  ControlSystem;
+	AttackSystem* AttackSystem;
 
 	void Update();
 

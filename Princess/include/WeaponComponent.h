@@ -33,7 +33,7 @@ public:
 			setAttackSpeed(0.5 + ((float)(rand() % 250) / 100));
 		}
 
-		m_allowAttack = false;
+		m_allowAttack = true;
 		m_attacking = false;
 	}
 

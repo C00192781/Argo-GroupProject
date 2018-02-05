@@ -48,6 +48,8 @@ int main()
 	systemManager.RenderSystem = new RenderSystem(resourceManager, gameRenderer);
 	systemManager.RenderSystem->Active(true);
 	systemManager.RenderSystem->SetScale(3);
+	systemManager.AttackSystem = new AttackSystem();
+	systemManager.AttackSystem->Active(true);
 
 	BattleMap map1 = BattleMap(&systemManager, gameRenderer, &state);
 	map1.Generate("Grassland");
@@ -66,6 +68,7 @@ int main()
 	systemManager.ControlSystem->AddEntity(player);
 	systemManager.MovementSystem->AddEntity(player);
 	systemManager.RenderSystem->AddEntity(player);
+	systemManager.AttackSystem->AddEntity(player);
 
 	bool heartTest = true;
 

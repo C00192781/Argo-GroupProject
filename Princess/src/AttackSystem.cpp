@@ -47,33 +47,59 @@ void AttackSystem::Update()
 			}
 		}
 
-		if (pcKey >= 0 && pjKey >= 0 && mcKey >= 0 && wcKey >= 0)
+		//if (pcKey >= 0 && pjKey >= 0 && mcKey >= 0 && wcKey >= 0)
+		if (pcKey >= 0 && mcKey >= 0 && wcKey >= 0)
 		{
-			if (static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getWeaponType() == WeaponType::MELEE)
+			// if the entity is not allowed to attack
+			if (static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getAllowAttack() == false)
 			{
-				if (static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getAttacking() == true)
+				// if the weapon the entity uses is a melee weapon
+				if (static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getWeaponType() == WeaponType::MELEE)
 				{
-					float temp = static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getTimeForAttack();
+					// if the entity is already attacking
+					if (static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getAttacking() == true)
+					{
+						float temp = static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getTimeForAttack();
+
+						if (temp > 0)
+						{
+							temp -= 0.01;
+							//temp--;
+						}
+						else
+						{
+							temp = static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getMaxTimeForAttack();
+							static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->setAttacking(false);
+						}
+
+						static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->setTimeForAttack(temp);
+					}
+
+					float temp = static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getTimeToAllowAttack();
 
 					if (temp > 0)
 					{
-						temp--;
+						temp -= 0.01;
+						//temp--;
 					}
 					else
 					{
-						temp = static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getMaxTimeForAttack();
-						static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->setAttacking(false);
+						temp = static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getMaxTimeToAllowAttack();
+						static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->setAllowAttack(true);
 					}
-					static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->setTimeForAttack(temp);
+
+					static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->setTimeToAllowAttack(temp);
 				}
-			}
-			else if (static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getWeaponType() == WeaponType::RANGE)
-			{
+				// if the entity has a ranged weapon
+				else if (static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getWeaponType() == WeaponType::RANGE)
+				{
 
-			}
-			else
-			{
+				}
+				// if the entity has a magic weapon
+				else
+				{
 
+				}
 			}
 		}
 	}
