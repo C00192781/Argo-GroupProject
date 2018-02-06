@@ -8,6 +8,7 @@
 #include "MovementComponent.h"
 #include "SeekComponent.h"
 #include "AttackComponent.h"
+#include "BasicEnemy.h"
 
 class AiSystem : public System
 {

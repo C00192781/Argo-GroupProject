@@ -21,9 +21,15 @@ AiSystem::~AiSystem()
 void AiSystem::Spawn()
 {
 	SDL_Point p{ 0,0 };
+	
 
 	characterFactory = new Princess();
 	m_entities.push_back(characterFactory->CharA("Red", p, 0));
+
+	p =  SDL_Point{ 500,500 };
+
+	characterFactory = new BasicEnemy();
+	m_entities.push_back(characterFactory->CharC("Demon", p, 0));
 
 }
 
@@ -275,13 +281,30 @@ void AiSystem::Update(float deltaTime)
 			if (m_entities.at(i)->ID() == "Princess")
 			{
 				Wander(i, pcKey, mcKey, seekKey);
-				//		std::cout << "x demon: " << static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getPosition().x << std::endl;
+				//do Princess things
+			}
+
+			else if (m_entities.at(i)->ID() == "Melee Enemy")
+			{
+				//do melee enemy things
+			}
+
+			else if (m_entities.at(i)->ID() == "Ranged Enemy")
+			{
+				//do ranged enemy things
+			}
+
+			else if (m_entities.at(i)->ID() == "Spellcaster Enemy")
+			{
+				//do Spellcaster enemy things
+			}
+
+			else if (m_entities.at(i)->ID() == "Basic Enemy")
+			{
+				//do basic enemy things
 			}
 		}
-		if (m_entities.at(i)->ID() == "Melee Enemy")
-		{
-	//		std::cout << "x demon: " << static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getPosition().x << std::endl;
-		}
+	
 
 		
 

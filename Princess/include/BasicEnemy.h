@@ -1,5 +1,5 @@
-#ifndef _PRINCESS_H
-#define _PRINCESS_H
+#ifndef _BASICENEMY_H
+#define _BASICENEMY_H
 
 #include "Character.h"
 #include "SpriteComponent.h"
