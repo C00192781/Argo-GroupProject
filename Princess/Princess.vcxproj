@@ -33,6 +33,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MovementSystem.cpp" />
     <ClCompile Include="src\ProjectileSystem.cpp" />
+    <ClCompile Include="src\Quad.cpp" />
     <ClCompile Include="src\RenderSystem.cpp" />
     <ClCompile Include="src\System.cpp" />
     <ClCompile Include="src\SystemManager.cpp" />
@@ -64,6 +65,7 @@
     <ClInclude Include="include\PositionComponent.h" />
     <ClInclude Include="include\ProjectileComponent.h" />
     <ClInclude Include="include\ProjectileSystem.h" />
+    <ClInclude Include="include\Quad.h" />
     <ClInclude Include="include\RenderSystem.h" />
     <ClInclude Include="include\SpriteComponent.h" />
     <ClInclude Include="include\StateManager.h" />

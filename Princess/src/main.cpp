@@ -19,6 +19,8 @@
 #include "HeartComponent.h"
 #include "WorldMap.h"
 
+#include "Quad.h"
+
 #include "SystemManager.h"
 
 int main()
@@ -42,6 +44,8 @@ int main()
 
 	StateManager state;
 
+	Quad quado = Quad(816, 624, 2);
+
 	SystemManager systemManager;
 	systemManager.ControlSystem = new ControlSystem(listener, input);
 	systemManager.ControlSystem->Active(true);
@@ -57,26 +61,33 @@ int main()
 	WorldMap* m = new WorldMap(&systemManager, &state);
 	m->Generate(25, 25, 100);
 
-	Entity * player = new Entity("Player");
-	player->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
-	player->AddComponent(new PositionComponent(SDL_Point{100, 300}));
-	player->AddComponent(new AttributesComponent());
-	player->AddComponent(new MovementComponent(3));
-	player->AddComponent(new CollisionComponent());
-	RenderSystem * r = new RenderSystem(resourceManager, gameRenderer);
-	r->AddEntity(player);
+	std::vector<Entity*> entitys;
 
-	systemManager.ControlSystem->AddEntity(player);
-	systemManager.MovementSystem->AddEntity(player);
-	systemManager.RenderSystem->AddEntity(player);
+	for (int i = 0; i < 10000; i++)
+	{
+		Entity * player = new Entity("Player");
+		player->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
+		player->AddComponent(new PositionComponent(SDL_Point{ rand() % 600, rand() % 600 }));
+		player->AddComponent(new AttributesComponent());
+		player->AddComponent(new MovementComponent(3));
+		player->AddComponent(new CollisionComponent());
+		RenderSystem * r = new RenderSystem(resourceManager, gameRenderer);
+		r->AddEntity(player);
+		entitys.push_back(player);
+		systemManager.ControlSystem->AddEntity(player);
+		systemManager.MovementSystem->AddEntity(player);
+		systemManager.RenderSystem->AddEntity(player);
+	}
 
 	bool heartTest = true;
+	
 
 	while (1 != 0)
 	{
 		input->handleInput();
 
 		m->Update();
+		quado.Fission(&entitys);
 
 		SDL_SetRenderDrawColor(gameRenderer, 255, 255, 255, 0);
 		SDL_RenderClear(gameRenderer);
