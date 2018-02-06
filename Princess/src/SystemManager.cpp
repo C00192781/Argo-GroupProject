@@ -9,4 +9,6 @@ void SystemManager::Update(float deltaTime)
 	if (RenderSystem->Active()) { RenderSystem->Update(); }
 	if (AiSystems->Active()) { AiSystems->Update(deltaTime); }
 
+	
+
 }

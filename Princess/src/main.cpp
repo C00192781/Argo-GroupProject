@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <time.h>
-
+#include "Quad.h"
 #include "ResourceManager.h"
 #include "Entity.h"
 #include "EventListener.h"
@@ -25,6 +25,8 @@
 
 int main()
 {
+
+
 	SDL_Window* gameWindow = SDL_CreateWindow("TEST", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 816, 624, SDL_WINDOW_SHOWN);
 	SDL_Renderer* gameRenderer = SDL_CreateRenderer(gameWindow, -1, SDL_RENDERER_PRESENTVSYNC);
 	SDL_Event *e = new SDL_Event();
@@ -77,6 +79,11 @@ int main()
 	systemManager.RenderSystem->AddEntity(meleeEnemy);
 	systemManager.MovementSystem->AddEntity(meleeEnemy);
 
+
+	Quadtree* quad = new Quadtree(0, SDL_Rect{ 800,800,1,1 });
+	
+	std::vector<Entity*> mommy;
+
 	while (1 != 0)
 	{
 		currentTime = SDL_GetTicks();
@@ -89,6 +96,47 @@ int main()
 
 			lastTime = currentTime;
 		}
+
+		auto daddy = systemManager.AiSystems->getEntities();
+
+		quad->clear();
+		quad->init();
+		for (int i = 0; i < daddy.size(); i++) 
+		{
+			quad->insert(daddy.at(i));
+		}
+
+
+		std::vector<Entity*> entityVec;
+
+		//entityVec.reserve(daddy.size());
+
+		for (int i = 0; i < daddy.size(); i++)
+		{
+			entityVec.clear();
+			 mommy = quad->retrieve(entityVec, daddy.at(i));
+			//entityVec.insert(mommy)'
+	
+		}
+		entityVec = mommy;
+
+		for (int x = 0; x < entityVec.size(); x++)
+		{
+			auto temp = entityVec;
+
+			int q = 5;
+			q -= 5;
+			//collision detection
+		}
+
+		//List returnObjects = new ArrayList();
+		//for (int i = 0; i < allObjects.size(); i++) {
+		//	returnObjects.clear();
+		//	quad.retrieve(returnObjects, objects.get(i));
+
+		//	for (int x = 0; x < returnObjects.size(); x++) {
+		//		// Run collision detection algorithm between objects
+		//	}
 
 		input->handleInput(*e);
 

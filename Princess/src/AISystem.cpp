@@ -126,23 +126,23 @@ void AiSystem::Wander(int entityIndex, int pcKey, int mcKey, int seekKey)
 		//srand((unsigned)time(&t));
 	
 
-		std::cout << "ROLLING  " << std::endl;
-		std::cout << "ROLLING  " << std::endl;
+		//std::cout << "ROLLING  " << std::endl;
+		//std::cout << "ROLLING  " << std::endl;
 
-		std::cout << "ROLLING  " << std::endl;
+		//std::cout << "ROLLING  " << std::endl;
 
-		std::cout << "ROLLING  " << std::endl;
-		std::cout << "ROLLING  " << std::endl;
-		std::cout << "ROLLING  " << std::endl;
-		std::cout << "ROLLING  " << std::endl;
-		std::cout << "ROLLING  " << std::endl;
-		std::cout << "ROLLING  " << std::endl;
+		//std::cout << "ROLLING  " << std::endl;
+		//std::cout << "ROLLING  " << std::endl;
+		//std::cout << "ROLLING  " << std::endl;
+		//std::cout << "ROLLING  " << std::endl;
+		//std::cout << "ROLLING  " << std::endl;
+		//std::cout << "ROLLING  " << std::endl;
 
 
 	}
 
 
-	std::cout << "X: " << static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->getXDestination() << "  Y: " << static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->getYDestination() << std::endl;
+	//std::cout << "X: " << static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->getXDestination() << "  Y: " << static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->getYDestination() << std::endl;
 
 
 	float x = static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->getXDestination() - static_cast<PositionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(pcKey))->getPosition().x;
