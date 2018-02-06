@@ -7,6 +7,7 @@ void ControlSystem::Update()
 	{
 		int mcKey = -1;
 		int pjKey = -1;
+		int acKey = -1;
 
 		// looks for if there is a movement component in the entity
 		for (int j = 0; j < m_entities.at(i)->GetComponents()->size(); j++)
@@ -21,6 +22,10 @@ void ControlSystem::Update()
 				{
 					pjKey = j;
 				}
+				if (m_entities.at(i)->GetComponents()->at(j)->Type() == "AC")
+				{
+					acKey = j;
+				}
 			}
 		}
 
@@ -28,7 +33,7 @@ void ControlSystem::Update()
 		if (mcKey >= 0) 
 		{
 			SDL_Point holder{ 0, 0 };
-			int speed = static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->getSpeed();
+			int speed = static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(acKey))->MovementSpeed();
 
 			if (m_eventListener->W)
 			{

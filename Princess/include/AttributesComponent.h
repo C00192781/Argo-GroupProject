@@ -20,12 +20,6 @@ struct Modifer
 	ModiferTypes m_type;
 	int m_amount;
 	float m_duration;
-	//Modifer() 
-	//{ 
-	//	m_type = ModiferTypes::DAMAGE;
-	//	m_amount = 0;
-	//	m_duration = 0;
-	//};
 
 	Modifer(ModiferTypes type = ModiferTypes::DAMAGE, int amount = 0, float duration = 0) :m_type(type), m_amount(amount), m_duration(duration) {};
 };
@@ -36,8 +30,6 @@ public:
 	AttributesComponent()
 	{
 		m_type = "AC";
-
-		//std::cout << m_type << std::endl;
 
 		m_armour = 5;
 		m_maxArmour = 6;
@@ -60,17 +52,17 @@ public:
 	int Armour() { return m_armour; };
 	void Armour(int armour) { m_armour = armour; };
 
-	int Health() { return m_health; };
-	void Health(int health) { m_health = health; };
-
-	int MovementSpeed() { return m_movementSpeed; };
-	void MovementSpeed(int movementSpeed) { m_movementSpeed = movementSpeed; };
-
 	int MaxArmour() { return m_maxArmour; };
 	void MaxArmour(int armour) { m_maxArmour = armour; };
 
+	int Health() { return m_health; };
+	void Health(int health) { m_health = health; };
+
 	int MaxHealth() { return m_maxHealth; };
 	void MaxHealth(int health) { m_maxHealth = health; };
+
+	int MovementSpeed() { return m_movementSpeed; };
+	void MovementSpeed(int movementSpeed) { m_movementSpeed = movementSpeed; };
 
 	int MaxMovementSpeed() { return m_maxMovementSpeed; };
 	void MaxMovementSpeed(int movementSpeed) { m_maxMovementSpeed = movementSpeed; };
