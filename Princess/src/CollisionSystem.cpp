@@ -23,7 +23,7 @@ void CollisionSystem::Update()
 	std::vector<int> spriteIndex;
 	for (int i = 0; i < m_entities.size(); i++)
 	{
-		if (m_entities.at(i)->ID() == "Projectile" || m_entities.at(i)->ID() != "Player")
+		if (m_entities.at(i)->ID() == "Projectile" && m_entities.at(i)->ID() != "Player")
 		{
 			for (int j = 0; j < m_entities.at(i)->GetComponents()->size(); j++)
 			{
@@ -48,11 +48,11 @@ void CollisionSystem::Update()
 
 			if (m_entities.at(i)->ID() == playerCheck && m_entities.at(i)->GetComponents()->at(j)->Type() == "PC")
 			{
-				if (static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(j))->getPosition().x > -22222)
+				if (static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(j))->getPosition().x > -10000)
 				{
 					x1 = static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(j))->getPosition().x;
 				}
-				if (static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(j))->getPosition().y > -22222)
+				if (static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(j))->getPosition().y > -10000)
 				{
 					y1 = static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(j))->getPosition().y;
 				}
@@ -62,11 +62,11 @@ void CollisionSystem::Update()
 			}
 			if (m_entities.at(i)->ID() == playerCheck && m_entities.at(i)->GetComponents()->at(j)->Type() == "SC")
 			{
-				if (static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(j))->GetRect().w > -22222)
+				if (static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(j))->GetRect().w > -10000)
 				{
 					w1 = static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(j))->GetRect().w;
 				}
-				if (static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(j))->GetRect().h > -22222)
+				if (static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(j))->GetRect().h > -10000)
 				{
 					h1 = static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(j))->GetRect().h;
 				}
