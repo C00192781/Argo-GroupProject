@@ -123,7 +123,7 @@ int main()
 			 }
 			 else if (entityVec.size() == 0)
 			 {
-				 cout << "eine jede kugel de trufte ja nicht" << endl;
+				 cout << "eine jede kugel die trifft ja nicht" << endl;
 			 }
 			// mommy.insert(mommy.end(), something.begin(), something.end());
 			 
@@ -139,15 +139,34 @@ int main()
 
 		for (int x = 0; x < entityVec.size(); x++)
 		{
-			auto temp = entityVec;
+			/*auto temp = entityVec;
 
 			int q = 5;
 			q -= 5;
+*/
+			auto temp1 = entityVec.at(0);
+		//	static_cast<PositionComponent*>(entity->GetComponents()->at(2))->getPosition().y
+			auto rect1 = static_cast<SpriteComponent*>(temp1->GetComponents()->at(1))->GetRect();
 
+			auto temp2 = entityVec.at(1);
+			//	static_cast<PositionComponent*>(entity->GetComponents()->at(2))->getPosition().y
+			auto rect2 = static_cast<SpriteComponent*>(temp1->GetComponents()->at(1))->GetRect();
 
+			rect1.x += static_cast<PositionComponent*>(temp1->GetComponents()->at(2))->getPosition().x;
+			rect1.x += static_cast<PositionComponent*>(temp1->GetComponents()->at(2))->getPosition().y;
 
+			rect2.x += static_cast<PositionComponent*>(temp2->GetComponents()->at(2))->getPosition().x;
+			rect2.x += static_cast<PositionComponent*>(temp2->GetComponents()->at(2))->getPosition().y;
 
+			if (SDL_HasIntersection(&rect1, &rect2))
+			{
+				cout << "hit " << endl;
+			}
 
+			if (!SDL_HasIntersection(&rect1, &rect2))
+			{
+				cout << "miss " << endl;
+			}
 			//collision detection
 		}
 
