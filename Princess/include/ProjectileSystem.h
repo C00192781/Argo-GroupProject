@@ -2,7 +2,7 @@
 #define _PROJECTILESYSTEM_H
 
 #include "System.h"
-#include "PositionComponent.h"
+#include "RectangleComponent.h"
 #include "SpriteComponent.h"
 #include "MovementComponent.h"
 #include "ProjectileComponent.h"

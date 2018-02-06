@@ -4,7 +4,7 @@
 #include "System.h"
 #include "ResourceManager.h"
 #include "SpriteComponent.h"
-#include "PositionComponent.h"
+#include "RectangleComponent.h"
 class RenderSystem : public System
 {
 public:

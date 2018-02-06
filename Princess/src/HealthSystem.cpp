@@ -272,17 +272,17 @@ void HealthSystem::UpdateMaxArmour()
 						for (int i = numFullHearts; i < (ac->MaxArmour() / 2); i++)
 						{
 							Entity * armour = new Entity("ArmourDisplay");
-							armour->AddComponent(new PositionComponent());
+							armour->AddComponent(new RectangleComponent());
 
 							if (i >= 10)
 							{
-								static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->setX(20 * (i - 10));
-								static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->setY(60 + 20);
+								static_cast<RectangleComponent*>((armour)->GetComponents()->at(0))->setX(20 * (i - 10));
+								static_cast<RectangleComponent*>((armour)->GetComponents()->at(0))->setY(60 + 20);
 							}
 							else
 							{
-								static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->setX(20 * i);
-								static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->setY(60);
+								static_cast<RectangleComponent*>((armour)->GetComponents()->at(0))->setX(20 * i);
+								static_cast<RectangleComponent*>((armour)->GetComponents()->at(0))->setY(60);
 							}
 							armour->AddComponent(new SpriteComponent("ArmourSheet", 2, 3, 0, 0, 16, 16, 0));
 							armour->AddComponent(new HeartComponent(hc->HeartList()));
@@ -410,17 +410,17 @@ void HealthSystem::UpdateMaxHearts()
 						for (int i = numFullHearts; i < (ac->MaxHealth() / 2); i++)
 						{
 							Entity * heart = new Entity("Hearts");
-							heart->AddComponent(new PositionComponent());
+							heart->AddComponent(new RectangleComponent());
 
 							if (i >= 10)
 							{
-								static_cast<PositionComponent*>((heart)->GetComponents()->at(0))->setX(20 * (i - 10));
-								static_cast<PositionComponent*>((heart)->GetComponents()->at(0))->setY(20 + 20);
+								static_cast<RectangleComponent*>((heart)->GetComponents()->at(0))->setX(20 * (i - 10));
+								static_cast<RectangleComponent*>((heart)->GetComponents()->at(0))->setY(20 + 20);
 							}
 							else
 							{
-								static_cast<PositionComponent*>((heart)->GetComponents()->at(0))->setX(20 * i);
-								static_cast<PositionComponent*>((heart)->GetComponents()->at(0))->setY(20);
+								static_cast<RectangleComponent*>((heart)->GetComponents()->at(0))->setX(20 * i);
+								static_cast<RectangleComponent*>((heart)->GetComponents()->at(0))->setY(20);
 							}
 							heart->AddComponent(new SpriteComponent("HeartsSheet", 2, 3, 0, 0, 16, 16, 0));
 							heart->AddComponent(new HeartComponent(hc->HeartList()));

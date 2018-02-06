@@ -3,7 +3,7 @@
 
 #include "TileFactory.h"
 #include "SpriteComponent.h"
-#include "PositionComponent.h"
+#include "RectangleComponent.h"
 class GrassTileFactory : public TileFactory
 {
 public:

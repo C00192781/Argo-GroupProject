@@ -73,24 +73,24 @@ void RenderSystem::Update()
 
 	for (int i = 0; i < holder.size(); i++)
 	{
-		int pcKey = -1;
+		int rectangleKey = -1;
 		int scKey = -1;
 		for (int j = 0; j < m_entities.at(holder.at(i))->GetComponents()->size(); j++)
 		{
-			if (m_entities.at(holder.at(i))->GetComponents()->at(j)->Type() == "PC")
+			if (m_entities.at(holder.at(i))->GetComponents()->at(j)->Type() == "rectangle")
 			{
-				pcKey = j;
+				rectangleKey = j;
 			}
 			else if (m_entities.at(holder.at(i))->GetComponents()->at(j)->Type() == "SC")
 			{
 				scKey = j;
 			}
 		}
-		if (pcKey >= 0 && scKey >= 0)
+		if (rectangleKey >= 0 && scKey >= 0)
 		{
 			SDL_Rect* holderRect = new SDL_Rect{ 
-				static_cast<PositionComponent*>(m_entities.at(holder.at(i))->GetComponents()->at(pcKey))->getPosition().x, 
-				static_cast<PositionComponent*>(m_entities.at(holder.at(i))->GetComponents()->at(pcKey))->getPosition().y, 
+				static_cast<RectangleComponent*>(m_entities.at(holder.at(i))->GetComponents()->at(rectangleKey))->getPosition().x, 
+				static_cast<RectangleComponent*>(m_entities.at(holder.at(i))->GetComponents()->at(rectangleKey))->getPosition().y, 
 				static_cast<SpriteComponent*>(m_entities.at(holder.at(i))->GetComponents()->at(scKey))->Width() * (int)m_scale, 
 				static_cast<SpriteComponent*>(m_entities.at(holder.at(i))->GetComponents()->at(scKey))->Height() * (int)m_scale };
 			SDL_RenderCopy(m_renderer, m_resourceManager->GetTexture(static_cast<SpriteComponent*>(m_entities.at(holder.at(i))->GetComponents()->at(scKey))->Sheet()), &static_cast<SpriteComponent*>(m_entities.at(holder.at(i))->GetComponents()->at(scKey))->GetRect(), holderRect);

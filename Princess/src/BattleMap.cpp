@@ -37,7 +37,7 @@ void BattleMap::Generate(std::string type)
 	{
 		Entity* projectile = new Entity("Projectile");
 		projectile->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
-		projectile->AddComponent(new PositionComponent(SDL_Point{ 333, 333 }));
+		projectile->AddComponent(new RectangleComponent(SDL_Point{ 333, 333 }, 16 * 3, 16 * 3));
 		projectile->AddComponent(new ProjectileComponent(4.9, "Enemy", 5.0f, 3.0f, 10.0f));
 		projectile->AddComponent(new MovementComponent());
 		projectile->AddComponent(new CollisionComponent());

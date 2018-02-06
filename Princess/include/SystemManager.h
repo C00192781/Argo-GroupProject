@@ -5,7 +5,7 @@
 #include "RenderSystem.h"
 #include "ControlSystem.h"
 #include "MovementSystem.h"
-#include "PositionComponent.h"
+#include "RectangleComponent.h"
 #include "SpriteComponent.h"
 #include "ProjectileComponent.h"
 #include "ProjectileSystem.h"

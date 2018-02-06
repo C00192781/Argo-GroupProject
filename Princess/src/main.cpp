@@ -8,7 +8,7 @@
 #include "EventListener.h"
 #include "BattleMap.h"
 #include "StateManager.h"
-#include "PositionComponent.h"
+#include "RectangleComponent.h"
 #include "SpriteComponent.h"
 #include "ProjectileSystem.h"
 #include "ProjectileComponent.h"
@@ -53,7 +53,7 @@ int main()
 	systemManager.RenderSystem->SetScale(3);
 	systemManager.ProjectileSystem = new ProjectileSystem();
 	systemManager.ProjectileSystem->Active(true);
-	systemManager.CollisionSystem = new CollisionSystem();
+	systemManager.CollisionSystem = new CollisionSystem(SDL_Rect{ 816, 624 });
 	systemManager.CollisionSystem->Active(true);
 
 	BattleMap map1 = BattleMap(&systemManager, gameRenderer, &state);
@@ -61,7 +61,7 @@ int main()
 
 	Entity * player = new Entity("Player");
 	player->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
-	player->AddComponent(new PositionComponent(SDL_Point{100, 300}));
+	player->AddComponent(new RectangleComponent(SDL_Point{100, 300}, 16 * 3, 16 * 3));
 	player->AddComponent(new AttributesComponent());
 	player->AddComponent(new MovementComponent(3));
 	player->AddComponent(new CollisionComponent());

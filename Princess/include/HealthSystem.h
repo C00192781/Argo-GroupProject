@@ -4,7 +4,7 @@
 #include "System.h"
 #include "AttributesComponent.h"
 #include "SpriteComponent.h"
-#include "PositionComponent.h"
+#include "RectangleComponent.h"
 #include "HeartComponent.h"
 
 class HealthSystem : public System

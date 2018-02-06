@@ -21,7 +21,7 @@ void ProjectileSystem::Update()
 	//std::cout << m_entities.size() << std::endl;
 	for (int i = 0; i < m_entities.size(); i++)
 	{
-		int pcKey = -1; // POSITION
+		int rectangleKey = -1; // POSITION
 		int scKey = -1;
 		int pjKey = -1; // 
 		int mcKey = -1;
@@ -31,9 +31,9 @@ void ProjectileSystem::Update()
 
 		for (int j = 0; j < m_entities.at(i)->GetComponents()->size(); j++)
 		{
-			if (m_entities.at(i)->GetComponents()->at(j)->Type() == "PC" && m_entities.at(i)->ID() == check)
+			if (m_entities.at(i)->GetComponents()->at(j)->Type() == "rectangle" && m_entities.at(i)->ID() == check)
 			{
-				pcKey = j;
+				rectangleKey = j;
 			}
 			if (m_entities.at(i)->GetComponents()->at(j)->Type() == "PJ" && m_entities.at(i)->ID() == check)
 			{
@@ -45,7 +45,7 @@ void ProjectileSystem::Update()
 			}
 		}
 
-		if (pjKey >= 0 && pcKey >= 0 && mcKey >= 0)
+		if (pjKey >= 0 && rectangleKey >= 0 && mcKey >= 0)
 		{
 			//float tempAngle = 90;
 
