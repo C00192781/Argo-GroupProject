@@ -42,7 +42,8 @@ public:
 
 		m_modifers = new std::list<Modifer>();
 	};
-	AttributesComponent(int health, int maxHealth, int armour, int maxArmour, int movement, int maxMovement) :m_health(health), m_maxHealth(maxHealth), m_armour(armour), m_maxArmour(maxArmour), m_movementSpeed(movement), m_maxMovementSpeed(maxMovement) { m_type = "AC"; };
+	AttributesComponent(int health, int maxHealth, int armour, int maxArmour, int movement, int maxMovement) :m_health(health), m_maxHealth(maxHealth), m_armour(armour), m_maxArmour(maxArmour), m_movementSpeed(movement), m_maxMovementSpeed(maxMovement) { m_type = "AC"; 
+	};
 	~AttributesComponent() 
 	{
 		m_modifers->clear();
@@ -70,13 +71,19 @@ public:
 	std::list<Modifer> * Modifers() { return m_modifers; };
 
 private:
+	//The amount of armour the entity has
 	int m_armour;
+	//The max amount of armour the entity can have
 	int m_maxArmour;
 
+	//The amount of health the entity has
 	int m_health;
+	//The max amount of health the entity can have
 	int m_maxHealth;
 
+	//The movement speed the entity has
 	int m_movementSpeed;
+	//The max amount of movement speed the entity can have
 	int m_maxMovementSpeed;
 
 	std::list<Modifer> * m_modifers;

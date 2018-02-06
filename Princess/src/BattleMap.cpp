@@ -88,14 +88,15 @@ void BattleMap::Generate(std::string type)
 	m_systemManager->healthSystem->UpdateMaxHeartsUI(player, player);
 	m_systemManager->healthSystem->UpdateMaxArmourUI(player, player);
 
-	//for (int c = 0; c < hUI->HeartsVector()->size(); c++)
-	//{
-	//	m_systemManager->RenderSystem->AddEntity(hUI->HeartsVector()->at(c));
-	//}
-	//for (int i = 0; i < aUI->HeartsVector()->size(); i++)
-	//{
-	//	m_systemManager->RenderSystem->AddEntity(aUI->HeartsVector()->at(i));
-	//}
+	for (int c = 0; c < hUI->HeartsVector()->size(); c++)
+	{
+		m_systemManager->RenderSystem->AddEntity(hUI->HeartsVector()->at(c));
+	}
+	for (int i = 0; i < aUI->HeartsVector()->size(); i++)
+	{
+		m_systemManager->RenderSystem->AddEntity(aUI->HeartsVector()->at(i));
+	}
+
 }
 void BattleMap::Update()
 {
