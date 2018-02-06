@@ -52,13 +52,20 @@ void Quadtree::clear() {
 * Splits the node into 4 subnodes
 */
 
-void Quadtree::split() {
+void Quadtree::split() 
+{
+
 	int subWidth = (int)(bounds.w / 2);
 	int subHeight = (int)(bounds.h / 2);
 	int x = bounds.x;
 	int y = bounds.y;
 
+	nodes.clear();
 
+	nodes.push_back(new Quadtree(0, SDL_Rect{ x + subWidth, y, subWidth, subHeight }));
+	nodes.push_back(new Quadtree(0, SDL_Rect{ x, y, subWidth, subHeight }));
+	nodes.push_back(new Quadtree(0, SDL_Rect{ x, y + subHeight, subWidth, subHeight }));
+	nodes.push_back(new Quadtree(0, SDL_Rect{ x + subWidth, y + subHeight, subWidth, subHeight }));
 
 	//nodes[0] = new Quadtree(level + 1, new Rectangle(x + subWidth, y, subWidth, subHeight));
 	//nodes[1] = new Quadtree(level + 1, new Rectangle(x, y, subWidth, subHeight));
@@ -92,7 +99,7 @@ int Quadtree::getIndex(Entity* entity)
 
 	
 
-	static_cast<PositionComponent*>(entity->GetComponents()->at(2))->getPosition().x;
+	//static_cast<PositionComponent*>(entity->GetComponents()->at(2))->getPosition().x;
 
 	auto temp = entity->GetComponents();
 	// Object can completely fit within the top quadrants
@@ -155,7 +162,7 @@ void Quadtree::insert(Entity* entities)
 
 	if (objects.size() > MAX_OBJECTS && level < MAX_LEVELS) 
 	{
-		if (nodes[0] == nullptr) {
+		if (nodes[0] == nullptr) { //really???????????????$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 			split();
 		}
 
@@ -167,7 +174,7 @@ void Quadtree::insert(Entity* entities)
 			if (index != -1)
 			{
 				//objects.erase()
-				nodes.at(i)->insert(objects.at(i)); //at index???
+				nodes.at(index)->insert(objects.at(i)); //at index???
 
 				objects.erase(objects.begin() + i);
 				//nodes.at(i)->insert(objects.);
@@ -208,7 +215,7 @@ std::vector<Entity*> Quadtree::retrieve(std::vector<Entity*> returnObjects, Enti
 
 	for (auto i = objects.begin(), e = objects.end(); i != e; i++)
 	{
-		auto tempid = (*i)->ID();
+	//	auto tempid = (*i)->ID();
 
 	
 		returnObjects.push_back(*i);

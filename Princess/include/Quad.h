@@ -28,7 +28,7 @@ public:
 
 
 private:
-	int MAX_OBJECTS = 2;
+	int MAX_OBJECTS = 5;
 	int MAX_LEVELS = 5;
 
 	int level;

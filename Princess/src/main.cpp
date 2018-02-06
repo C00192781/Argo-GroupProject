@@ -68,16 +68,16 @@ int main()
 
 	bool heartTest = true;
 	//princess->AddComponent(new SpriteComponent(ID, 0, 1, 0, 0, 16, 16, 0)); //textid
-	Entity *meleeEnemy = new Entity("Melee Enemy");
-	meleeEnemy->AddComponent(new SpriteComponent("Demon", 0, 0, 0, 0, 16, 16, 0));
-	meleeEnemy->AddComponent(new PositionComponent(SDL_Point{ 550,500 }));
-	meleeEnemy->AddComponent(new MovementComponent(120));
-	meleeEnemy->AddComponent(new SeekComponent(600, 600));
-	meleeEnemy->AddComponent(new AttackComponent(1, 1, 1));
+	////Entity *meleeEnemy = new Entity("Melee Enemy");
+	////meleeEnemy->AddComponent(new SpriteComponent("Demon", 0, 0, 0, 0, 16, 16, 0));
+	////meleeEnemy->AddComponent(new PositionComponent(SDL_Point{ 550,500 }));
+	////meleeEnemy->AddComponent(new MovementComponent(120));
+	////meleeEnemy->AddComponent(new SeekComponent(600, 600));
+	////meleeEnemy->AddComponent(new AttackComponent(1, 1, 1));
 
-	systemManager.AiSystems->AddEntity(meleeEnemy);
-	systemManager.RenderSystem->AddEntity(meleeEnemy);
-	systemManager.MovementSystem->AddEntity(meleeEnemy);
+	////systemManager.AiSystems->AddEntity(meleeEnemy);
+	////systemManager.RenderSystem->AddEntity(meleeEnemy);
+	////systemManager.MovementSystem->AddEntity(meleeEnemy);
 
 
 	Quadtree* quad = new Quadtree(0, SDL_Rect{ 800,800,1,1 });
@@ -96,7 +96,6 @@ int main()
 
 			lastTime = currentTime;
 		}
-
 		auto daddy = systemManager.AiSystems->getEntities();
 
 		quad->clear();
@@ -113,10 +112,24 @@ int main()
 
 		for (int i = 0; i < daddy.size(); i++)
 		{
-			entityVec.clear();
-			 mommy = quad->retrieve(entityVec, daddy.at(i));
+			mommy.clear();
+			 auto something =  quad->retrieve(entityVec, daddy.at(i));
+
+			 if (something.size() > 0)
+			 { 
+				 int l = 5;
+				 l -= 5;
+			 }
+
+			 mommy.insert(mommy.end(), something.begin(), something.end());
+			 
+		//	 mommy.insert()
+
+	//		 older.insert(holder.end(), backgroundHolder.begin(), backgroundHolder.end());
+
 			//entityVec.insert(mommy)'
-	
+			 int q = 5;
+			 q -= 5;
 		}
 		entityVec = mommy;
 
@@ -126,6 +139,11 @@ int main()
 
 			int q = 5;
 			q -= 5;
+
+
+
+
+
 			//collision detection
 		}
 
