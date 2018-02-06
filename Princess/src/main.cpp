@@ -71,15 +71,28 @@ int main()
 	systemManager.ControlSystem->AddEntity(player);
 	systemManager.MovementSystem->AddEntity(player);
 	systemManager.RenderSystem->AddEntity(player);
-	systemManager.ProjectileSystem->AddEntity(player);
+	//systemManager.ProjectileSystem->AddEntity(player);
 	systemManager.CollisionSystem->AddEntity(player);
+
+	//for (int i = 0; i < 200; i++)
+	//{
+	//	Entity* temp = new Entity("temp");
+	//	temp->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
+	//	temp->AddComponent(new RectangleComponent(SDL_Point{ 100, 300 }, 16 * 3, 16 * 3));
+	//	temp->AddComponent(new MovementComponent(3));
+	//	temp->AddComponent(new CollisionComponent());
+	//
+	//	//systemManager.ControlSystem->AddEntity(player);
+	//	systemManager.MovementSystem->AddEntity(player);
+	//	systemManager.RenderSystem->AddEntity(player);
+	//	//systemManager.ProjectileSystem->AddEntity(player);
+	//	systemManager.CollisionSystem->AddEntity(player);
+	//}
 
 	bool heartTest = true;
 
 	while (1 != 0)
 	{
-		SDL_PollEvent(e);
-
 		input->handleInput(*e);
 
 		map1.Update();

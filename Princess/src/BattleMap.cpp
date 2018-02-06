@@ -33,7 +33,7 @@ void BattleMap::Generate(std::string type)
 
 	std::vector<Entity*>* projectileEntities = m_systemManager->ProjectileSystem->getEntities();
 
-	for (int i = 0; i < 50; i++)
+	for (int i = 0; i < 300; i++)
 	{
 		Entity* projectile = new Entity("Projectile");
 		projectile->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));

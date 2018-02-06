@@ -2,6 +2,8 @@
 
 void InputHandler::handleInput(SDL_Event &e) 
 {
+	SDL_PollEvent(&e);
+
 	switch (e.type) 
 	{
 	case SDL_MOUSEBUTTONDOWN:

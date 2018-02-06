@@ -17,5 +17,5 @@ void SystemManager::Update()
 		ControlSystem->getSystemEntities(projectiles);
 	}
 	if (RenderSystem->Active()) { RenderSystem->Update(); }
-	if (ProjectileSystem->Active()) { ProjectileSystem->Update(); }
+	//if (ProjectileSystem->Active()) { ProjectileSystem->Update(); }
 }
