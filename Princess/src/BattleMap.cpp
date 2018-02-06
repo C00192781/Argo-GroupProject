@@ -81,25 +81,15 @@ void BattleMap::Generate(std::string type)
 	m_systemManager->RenderSystem->AddEntity(player);
 
 	m_systemManager->healthSystem->UpdateMaxHeartsUI(player, player);
-	//m_systemManager->healthSystem->UpdateMaxArmourUI(player, player);
+	m_systemManager->healthSystem->UpdateMaxArmourUI(player, player);
 
 	for (int c = 0; c < hUI->HeartsVector()->size(); c++)
 	{
 		m_systemManager->RenderSystem->AddEntity(hUI->HeartsVector()->at(c));
 	}
-	//for (int i = 0; i < aUI->HeartsVector()->size(); i++)
-	//{
-	//	m_systemManager->RenderSystem->AddEntity(aUI->HeartsVector()->at(i));
-	//}
-	static_cast<AttributesComponent*>(player->GetComponents()->at(0))->MaxHealth(40);
-	static_cast<AttributesComponent*>(player->GetComponents()->at(0))->Health(31);
-	int currentSize = hUI->HeartsVector()->size();
-	m_systemManager->healthSystem->UpdateMaxHeartsUI(player, player);
-	for (int c = currentSize; c < hUI->HeartsVector()->size(); c++)
+	for (int i = 0; i < aUI->HeartsVector()->size(); i++)
 	{
-		m_systemManager->RenderSystem->AddEntity(hUI->HeartsVector()->at(c));
-		int x = static_cast<SpriteComponent*>(hUI->HeartsVector()->at(c)->GetComponents()->at(1))->Frame();
-		std::cout << x << std::endl;
+		m_systemManager->RenderSystem->AddEntity(aUI->HeartsVector()->at(i));
 	}
 }
 void BattleMap::Update()

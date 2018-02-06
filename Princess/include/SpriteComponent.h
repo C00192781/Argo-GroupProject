@@ -19,6 +19,7 @@ public:
 		m_type = "SC";
 		m_frame = 0;
 		m_layer = layer;
+		m_IsAnimating = true;
 	 }
 	~SpriteComponent() {};
 
@@ -50,6 +51,9 @@ public:
 	void Sheet(std::string x) { m_sheetID = x; };
 	std::string Sheet() { return m_sheetID; };
 
+	void IsAnimating(bool Animating) { m_IsAnimating = Animating; };
+	bool IsAnimating() { return m_IsAnimating; }
+
 	SDL_Rect GetRect() {
 		return SDL_Rect{ ((m_sheetX * m_noOfFrames) + m_frame) * m_width, ((m_sheetY * 4) + m_direction) * m_height, m_width, m_height };}
 
@@ -62,6 +66,7 @@ private:
 	int m_direction; // 0 Up, 1 Down, 2 Left, 3 Right
 	int m_layer;
 	std::string m_sheetID;
+	bool m_IsAnimating;
 };
 #endif
 

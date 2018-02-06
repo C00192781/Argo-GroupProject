@@ -67,7 +67,7 @@ void HealthSystem::Update()
 						}
 						else
 						{
-							std::cout << "No Health or Armour UI";
+							std::cout << "Entity Missing Health or Armour UI";
 						}
 
 					}
@@ -213,8 +213,8 @@ void HealthSystem::UpdateHeartsUIStatus(Entity * HeartManager, Entity* player)
 					AttributesComponent* playerAc = static_cast<AttributesComponent*>(player->GetComponents()->at(acKey));
 					if (hc->Index() < hc->HeartList()->size())
 					{
-						int numHearts = (playerAc->MaxHealth() / 2);
-						int numFullHearts = (playerAc->Health() / 2);
+						int numHearts = (playerAc->MaxHealth() / 2.0f);
+						float numFullHearts = (playerAc->Health() / 2.0f);
 						if (hc->Index() >= (numFullHearts - 0.5f) && hc->Index() < (numFullHearts) && hc->Index() != numFullHearts)
 						{
 							if (hc->State() != HeartState::HALF)
@@ -296,15 +296,16 @@ void HealthSystem::UpdateMaxArmourUI(Entity * HeartManager, Entity* player)
 
 				if (i >= 10)
 				{
-					static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->setX(20 * (i - 10));
-					static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->setY(60 + 20);
+					static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->setX(60 * (i - 10));
+					static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->setY(170 + 20);
 				}
 				else
 				{
-					static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->setX(20 * i);
-					static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->setY(60);
+					static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->setX(60 * i);
+					static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->setY(140);
 				}
-				armour->AddComponent(new SpriteComponent("ArmourSheet", 2, 0, 0, 0, 16, 16, 0));
+				armour->AddComponent(new SpriteComponent("ArmourSheet", 2, 3, 0, 0, 16, 16, 0));
+				static_cast<SpriteComponent*>((armour)->GetComponents()->at(1))->IsAnimating(false);
 				armour->AddComponent(new HeartComponent(heartVector));
 				heartVector->push_back(armour);
 				static_cast<HeartComponent*>((armour)->GetComponents()->at(2))->Index(heartVector->size() - 1);
@@ -345,7 +346,7 @@ void HealthSystem::UpdateArmourUIStatus(Entity * HeartManager, Entity* player)
 	}
 	if (hmcKey >= 0 && acKey >= 0)
 	{
-		if (static_cast<HeartManagerComponent*>(HeartManager->GetComponents()->at(hmcKey))->HeartType() == HeartTypes::HEALTH)
+		if (static_cast<HeartManagerComponent*>(HeartManager->GetComponents()->at(hmcKey))->HeartType() == HeartTypes::ARMOUR)
 		{
 			std::vector<Entity*>* heartVector = static_cast<HeartManagerComponent*>(HeartManager->GetComponents()->at(hmcKey))->HeartsVector();
 			for (int i = 0; i < heartVector->size(); i++)
@@ -371,8 +372,8 @@ void HealthSystem::UpdateArmourUIStatus(Entity * HeartManager, Entity* player)
 					AttributesComponent* playerAc = static_cast<AttributesComponent*>(player->GetComponents()->at(acKey));
 					if (hc->Index() < hc->HeartList()->size())
 					{
-						int numHearts = (playerAc->MaxArmour() / 2);
-						int numFullHearts = (playerAc->Armour() / 2);
+						int numHearts = (playerAc->MaxArmour() / 2.0f);
+						float numFullHearts = ((float)playerAc->Armour() / 2.0f);
 						if (hc->Index() >= (numFullHearts - 0.5f) && hc->Index() < (numFullHearts) && hc->Index() != numFullHearts)
 						{
 							if (hc->State() != HeartState::HALF)
@@ -405,7 +406,6 @@ void HealthSystem::UpdateArmourUIStatus(Entity * HeartManager, Entity* player)
 				}
 			}
 		}
-		UpdateArmourUIStatus(HeartManager, player);
 	}
 }
 
@@ -457,7 +457,8 @@ void HealthSystem::UpdateMaxHeartsUI(Entity * HeartManager, Entity* player)
 					static_cast<PositionComponent*>((heart)->GetComponents()->at(0))->setX(60 * i);
 					static_cast<PositionComponent*>((heart)->GetComponents()->at(0))->setY(20);
 				}
-				heart->AddComponent(new SpriteComponent("HeartsSheet", 2, 0, 0, 0, 16, 16, 0));
+				heart->AddComponent(new SpriteComponent("HeartsSheet", 2, 3, 0, 0, 16, 16, 0));
+				static_cast<SpriteComponent*>((heart)->GetComponents()->at(1))->IsAnimating(false);
 				heart->AddComponent(new HeartComponent(heartVector));
 				heartVector->push_back(heart);
 				static_cast<HeartComponent*>((heart)->GetComponents()->at(2))->Index(heartVector->size() - 1);
