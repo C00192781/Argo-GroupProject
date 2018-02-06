@@ -33,13 +33,13 @@ void BattleMap::Generate(std::string type)
 
 	std::vector<std::shared_ptr<Entity>>* projectileEntities = m_systemManager->ProjectileSystem->getEntities();
 
-	for (int i = 0; i < 300; i++)
+	for (int i = 0; i < 1000; i++)
 	{
 		std::shared_ptr<Entity> projectile = std::shared_ptr<Entity>(new Entity("Projectile"));
 		projectile->AddComponent(std::shared_ptr<Component>(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0)));
 		projectile->AddComponent(std::shared_ptr<RectangleComponent>(new RectangleComponent(SDL_Point{ 333, 333 }, 16 * 3, 16 * 3)));
 		projectile->AddComponent(std::shared_ptr<ProjectileComponent>(new ProjectileComponent(4.9, "Enemy", 5.0f, 3.0f, 10.0f)));
-		projectile->AddComponent(std::shared_ptr<MovementComponent>(new MovementComponent()));
+		//projectile->AddComponent(std::shared_ptr<MovementComponent>(new MovementComponent()));
 		projectile->AddComponent(std::shared_ptr<CollisionComponent>(new CollisionComponent()));
 		projectileEntities->push_back(projectile);
 	}

@@ -10,4 +10,7 @@ public:
 	MovementSystem() {}
 
 	void Update();
+private:
+	SDL_Point* position;
+	SDL_Point* velocity;
 };

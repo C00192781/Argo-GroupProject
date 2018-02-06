@@ -23,6 +23,7 @@ public:
 	~RectangleComponent() {};
 
 	SDL_Point getPosition() { return m_pos; };
+	SDL_Point* getPositionPtr() { return &m_pos; };
 	int getWidth() { return m_width; };
 	int getHeight() { return m_height; };
 

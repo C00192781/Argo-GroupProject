@@ -23,6 +23,7 @@ public:
 	int getSpeed() { return m_speed; };
 
 	SDL_Point getVelocity() { return m_vel; }
+	SDL_Point* getVelocityPtr() { return &m_vel; }
 	void setVelocity(SDL_Point vel) { m_vel = vel; }
 	void setXVeclocity(float xVel) { m_vel.x = xVel; }
 	void setYVeclocity(float yVel) { m_vel.y = yVel; }
