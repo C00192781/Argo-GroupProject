@@ -23,6 +23,7 @@
     <ClCompile Include="External Dependencies\ResourceManager\ResourceManager.cpp" />
     <ClCompile Include="External Dependencies\SimpleJSON\JSON.cpp" />
     <ClCompile Include="External Dependencies\SimpleJSON\JSONValue.cpp" />
+    <ClCompile Include="include\BasicEnemy.cpp" />
     <ClCompile Include="include\Princess.cpp" />
     <ClCompile Include="src\AISystem.cpp" />
     <ClCompile Include="src\BattleMap.cpp" />
@@ -47,6 +48,8 @@
     <ClInclude Include="Factory.h" />
     <ClInclude Include="include\AiLogicComponent.h" />
     <ClInclude Include="include\AISystem.h" />
+    <ClInclude Include="include\AttackComponent.h" />
+    <ClInclude Include="include\BasicEnemy.h" />
     <ClInclude Include="include\BattleMap.h" />
     <ClInclude Include="include\Character.h" />
     <ClInclude Include="include\CollisionComponent.h" />
@@ -70,6 +73,7 @@
     <ClInclude Include="include\ProjectileComponent.h" />
     <ClInclude Include="include\ProjectileSystem.h" />
     <ClInclude Include="include\RenderSystem.h" />
+    <ClInclude Include="include\SeekComponent.h" />
     <ClInclude Include="include\SpriteComponent.h" />
     <ClInclude Include="include\StateManager.h" />
     <ClInclude Include="include\stdafx.h" />

@@ -54,16 +54,21 @@ void BattleMap::Generate(std::string type)
 				m_entities.push_back(m_factory->GroundD("Turf", i * (16 * m_systemManager->RenderSystem->GetScale()), j * (16 * m_systemManager->RenderSystem->GetScale())));
 			}
 			m_systemManager->RenderSystem->AddEntity(m_entities.back());
+		
+
 		}
 	}
 
 	m_systemManager->AiSystem->Spawn();
 
 	auto aiEntities = m_systemManager->AiSystem->getEntities(); //get and add AI entities to be rendered
+	
+
 
 	for (auto i = aiEntities.begin(), end = aiEntities.end(); i != end; i++)
 	{
 		m_systemManager->RenderSystem->AddEntity((*i));
+		m_systemManager->MovementSystem->AddEntity((*i)); //consider tag discrimination here
 	}
 	
 	Entity * player = new Entity("Player");
@@ -83,14 +88,14 @@ void BattleMap::Generate(std::string type)
 	m_systemManager->healthSystem->UpdateMaxHeartsUI(player, player);
 	m_systemManager->healthSystem->UpdateMaxArmourUI(player, player);
 
-	for (int c = 0; c < hUI->HeartsVector()->size(); c++)
-	{
-		m_systemManager->RenderSystem->AddEntity(hUI->HeartsVector()->at(c));
-	}
-	for (int i = 0; i < aUI->HeartsVector()->size(); i++)
-	{
-		m_systemManager->RenderSystem->AddEntity(aUI->HeartsVector()->at(i));
-	}
+	//for (int c = 0; c < hUI->HeartsVector()->size(); c++)
+	//{
+	//	m_systemManager->RenderSystem->AddEntity(hUI->HeartsVector()->at(c));
+	//}
+	//for (int i = 0; i < aUI->HeartsVector()->size(); i++)
+	//{
+	//	m_systemManager->RenderSystem->AddEntity(aUI->HeartsVector()->at(i));
+	//}
 }
 void BattleMap::Update()
 {

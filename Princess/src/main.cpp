@@ -19,7 +19,7 @@
 #include "HeartComponent.h"
 #include "AIsystem.h"
 #include "Princess.h"
-
+#include <chrono>
 
 #include "SystemManager.h"
 
@@ -28,7 +28,9 @@ int main()
 	SDL_Window* gameWindow = SDL_CreateWindow("TEST", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 816, 624, SDL_WINDOW_SHOWN);
 	SDL_Renderer* gameRenderer = SDL_CreateRenderer(gameWindow, -1, SDL_RENDERER_PRESENTVSYNC);
 	SDL_Event *e = new SDL_Event();
-
+	unsigned int lastTime = 0;
+	float deltaTime = 0;
+	unsigned int currentTime = 0;
 	srand(time(NULL));
 
 	bool debug = false;
@@ -60,27 +62,51 @@ int main()
 	systemManager.healthSystem = new HealthSystem();
 	systemManager.healthSystem->Active(true);
 
-
 	BattleMap map1 = BattleMap(&systemManager, gameRenderer, &state);
 	map1.Generate("Grassland");
 
-	//Add to render system
-	while (1 != 0)
-	{
-		SDL_SetRenderDrawColor(gameRenderer, 255, 255, 255, 0);
-		SDL_RenderClear(gameRenderer);
 
-		SDL_PollEvent(e);
 
-		input->handleInput(*e);
+		RenderSystem * r = new RenderSystem(resourceManager, gameRenderer);
 
-		map1.Update();
+		Entity *meleeEnemy = new Entity("Melee Enemy");
+		meleeEnemy->AddComponent(new SpriteComponent("Demon", 0, 0, 0, 0, 16, 16, 0));
+		meleeEnemy->AddComponent(new PositionComponent(SDL_Point{ 550,500 }));
+		meleeEnemy->AddComponent(new MovementComponent(120));
+		meleeEnemy->AddComponent(new SeekComponent(600, 600));
+		meleeEnemy->AddComponent(new AttackComponent(1, 1, 1));
 
-		systemManager.Update();
+		systemManager.AiSystem->AddEntity(meleeEnemy);
+		systemManager.RenderSystem->AddEntity(meleeEnemy);
+		systemManager.MovementSystem->AddEntity(meleeEnemy);
 
-		SDL_RenderPresent(gameRenderer);
-		
-	}
+		//Add to render system
+		while (1 != 0)
+		{
+			SDL_SetRenderDrawColor(gameRenderer, 255, 255, 255, 0);
+			SDL_RenderClear(gameRenderer);
+
+			currentTime = SDL_GetTicks();
+
+			SDL_PollEvent(e);
+			if (currentTime > lastTime)
+			{
+				deltaTime = ((float)(currentTime - lastTime)) / 1000;
+
+				input->handleInput(*e);
+
+				lastTime = currentTime;
+			}
+
+			input->handleInput(*e);
+
+			map1.Update();
+
+			systemManager.Update(deltaTime);
+
+			SDL_RenderPresent(gameRenderer);
+
+		}
 
 	SDL_DestroyRenderer(gameRenderer);
 	SDL_DestroyWindow(gameWindow);

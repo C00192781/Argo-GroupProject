@@ -22,7 +22,7 @@ public:
 	AiSystem * AiSystem;
 	HealthSystem * healthSystem;
 
-	void Update();
+	void Update(float deltaTime);
 
 private:
 	bool flag = false;
