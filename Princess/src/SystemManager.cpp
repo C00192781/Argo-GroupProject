@@ -18,4 +18,5 @@ void SystemManager::Update()
 	}
 	if (RenderSystem->Active()) { RenderSystem->Update(); }
 	if (ProjectileSystem->Active()) { ProjectileSystem->Update(); }
+	if (healthSystem->Active()) { healthSystem->Update(); }
 }

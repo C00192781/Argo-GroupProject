@@ -10,6 +10,8 @@
 #include "ProjectileComponent.h"
 #include "ProjectileSystem.h"
 #include "CollisionSystem.h"
+#include "AttributesComponent.h"
+#include "HealthSystem.h"
 
 class SystemManager
 {
@@ -20,6 +22,8 @@ public:
 	ControlSystem *  ControlSystem;
 	ProjectileSystem * ProjectileSystem;
 	CollisionSystem * CollisionSystem;
+	HealthSystem * healthSystem;
+	
 
 	void Update();
 

@@ -42,6 +42,7 @@ void HealthSystem::Update()
 						DamageEntity(damageCaused, armour, health);
 						static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(acKey))->Armour(armour);
 						static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(acKey))->Health(health);
+						std::cout << "Armour " << armour << "Health " << health << std::endl;
 					}
 					if (m_entities.at(i)->ID() == "Player")
 					{

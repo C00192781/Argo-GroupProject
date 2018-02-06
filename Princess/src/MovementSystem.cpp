@@ -26,10 +26,13 @@ void MovementSystem::Update()
 			SDL_Point position = static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getPosition();
 			SDL_Point velocity = static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->getVelocity();
 
+			//std::cout << m_entities.at(i)->ID() << " "<< velocity.x << std::endl;
+
 			position.x += velocity.x;
 			position.y += velocity.y;
 
 			static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->setPosition(position);
 		}
 	}
+	//std::cout << std::endl;
 }

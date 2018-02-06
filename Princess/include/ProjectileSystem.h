@@ -28,6 +28,6 @@ public:
 
 private:
 	const float CONVERSION = 180 / 3.14159265359;
-	const float maxHoldTime = 3.0f;
+	const float maxHoldTime = 2.0f;
 };
 #endif

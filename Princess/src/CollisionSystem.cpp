@@ -12,12 +12,12 @@ CollisionSystem::~CollisionSystem()
 
 void CollisionSystem::Update()
 {
-
-	int pcKeyOne = -1;
-	int ccKeyOne = -1;
 	std::string projectileCheck = "Projectile";
 	std::string playerCheck = "Player";
 
+	int pcKey = -1;
+	int scKey = -1;
+	int acKey = -1;
 
 	std::vector<int> posIndex;
 	std::vector<int> spriteIndex;
@@ -39,10 +39,7 @@ void CollisionSystem::Update()
 
 		}
 
-
-
-
-		//	int x1 = static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKeyOne))->getPosition().x;
+		AttributesComponent * ac = new AttributesComponent();
 		for (int j = 0; j < m_entities.at(i)->GetComponents()->size(); j++)
 		{
 
@@ -56,9 +53,6 @@ void CollisionSystem::Update()
 				{
 					y1 = static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(j))->getPosition().y;
 				}
-
-				/*std::cout << "x1 " << x1 << std::endl;*/
-
 			}
 			if (m_entities.at(i)->ID() == playerCheck && m_entities.at(i)->GetComponents()->at(j)->Type() == "SC")
 			{
@@ -71,11 +65,16 @@ void CollisionSystem::Update()
 					h1 = static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(j))->GetRect().h;
 				}
 			}
-
-			
+			if (m_entities.at(i)->ID() == playerCheck && m_entities.at(i)->GetComponents()->at(j)->Type() == "AC")
+			{
+				acKey = j;
+				ac->~AttributesComponent();
+				ac = static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(j));
+			}
 		}
 		for (int p = 0; p < posIndex.size(); p++)
 		{
+		
 			int x2 = static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(posIndex[p]))->getPosition().x;
 			int y2 = static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(posIndex[p]))->getPosition().y;
 
@@ -88,12 +87,23 @@ void CollisionSystem::Update()
 				if ((x1 >= x2) && (x1 <= (x2 + w2))
 					&& (y1 >= y2 && y1 <= (y2 + w2)))
 				{
-					std::cout << "COLLISION!!!" << std::endl;
+					//std::cout << "COLLISION!!!" << std::endl;
+					collision = true;					
+				}
+				else
+				{
+					collision = false;
 				}
 			}
 		}
+		if (collision == true)
+		{
+			if (acKey >= 0)
+			{
+				ac->Modifers()->push_back(Modifer(ModiferTypes::DAMAGE, 10, 0));
+			}
+		}
 	}
-	
 }
 
 

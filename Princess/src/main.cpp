@@ -55,6 +55,8 @@ int main()
 	systemManager.ProjectileSystem->Active(true);
 	systemManager.CollisionSystem = new CollisionSystem();
 	systemManager.CollisionSystem->Active(true);
+	systemManager.healthSystem = new HealthSystem();
+	systemManager.healthSystem->Active(true);
 
 	BattleMap map1 = BattleMap(&systemManager, gameRenderer, &state);
 	map1.Generate("Grassland");
@@ -65,6 +67,7 @@ int main()
 	player->AddComponent(new AttributesComponent());
 	player->AddComponent(new MovementComponent(3));
 	player->AddComponent(new CollisionComponent());
+	player->AddComponent(new AttributesComponent());
 	//RenderSystem * r = new RenderSystem(resourceManager, gameRenderer);
 	//r->AddEntity(player);
 
@@ -73,6 +76,7 @@ int main()
 	systemManager.RenderSystem->AddEntity(player);
 	systemManager.ProjectileSystem->AddEntity(player);
 	systemManager.CollisionSystem->AddEntity(player);
+	systemManager.healthSystem->AddEntity(player);
 
 	bool heartTest = true;
 

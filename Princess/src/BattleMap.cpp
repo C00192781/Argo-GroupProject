@@ -32,13 +32,21 @@ void BattleMap::Generate(std::string type)
 	}
 
 	std::vector<Entity*>* projectileEntities = m_systemManager->ProjectileSystem->getEntities();
-
+	Entity* projectile = new Entity("Projectile");
+	
+	projectile->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
+	projectile->AddComponent(new PositionComponent(SDL_Point{ 300, 300 }));
+	projectile->AddComponent(new ProjectileComponent(4.9, "Enemy", 5.0f, 3.0f, 20.0f, false));
+	projectile->AddComponent(new MovementComponent());
+	projectile->AddComponent(new CollisionComponent());
+	projectileEntities->push_back(projectile);
+	
 	for (int i = 0; i < 50; i++)
 	{
 		Entity* projectile = new Entity("Projectile");
 		projectile->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
 		projectile->AddComponent(new PositionComponent(SDL_Point{ i + 600, i + 300 }));
-		projectile->AddComponent(new ProjectileComponent(4.9, "Enemy", 5.0f, 3.0f, 10.0f));
+		projectile->AddComponent(new ProjectileComponent(4.9, "Player", 5.0f, 3.0f, 20.0f, false));
 		projectile->AddComponent(new MovementComponent());
 		projectile->AddComponent(new CollisionComponent());
 		projectileEntities->push_back(projectile);
@@ -48,8 +56,9 @@ void BattleMap::Generate(std::string type)
 		m_systemManager->RenderSystem->AddEntity((*i));
 		m_systemManager->MovementSystem->AddEntity((*i));
 		m_systemManager->CollisionSystem->AddEntity((*i));
+		//m_systemManager->ControlSystem->AddEntity((*i));
 	}
-	std::cout << projectileEntities->size() << std::endl;
+	//std::cout << projectileEntities->size() << std::endl;
 
 
 
