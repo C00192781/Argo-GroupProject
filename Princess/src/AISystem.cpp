@@ -31,6 +31,13 @@ void AiSystem::Spawn()
 	characterFactory = new BasicEnemy();
 	m_entities.push_back(characterFactory->CharC("Demon", p, 0));
 
+	for (int i = 0; i < 5; i++)
+	{
+	//	characterFactory = new BasicEnemy();
+		m_entities.push_back(characterFactory->CharC("Demon", p, 0));
+
+	}
+
 }
 
 
@@ -83,7 +90,7 @@ void AiSystem::seek(int entityIndex, int pcKey, int mcKey, int seekKey)
 
 void AiSystem::Update()
 {
-
+	
 }
 
 
@@ -270,6 +277,7 @@ void AiSystem::Update(float deltaTime)
 				}
 				else
 				{
+
 					seek(i, pcKey, mcKey, seekKey);
 				}
 			}
@@ -280,7 +288,15 @@ void AiSystem::Update(float deltaTime)
 
 			if (m_entities.at(i)->ID() == "Princess")
 			{
-				Wander(i, pcKey, mcKey, seekKey);
+
+
+				//m_entities.at(i)->RemoveComponent(new MovementComponent*);
+
+				SDL_Point holder = SDL_Point{600 , 600};
+
+				static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->setPosition(holder);
+
+				//Wander(i, pcKey, mcKey, seekKey);
 				//do Princess things
 			}
 

@@ -80,7 +80,7 @@ int main()
 	////systemManager.MovementSystem->AddEntity(meleeEnemy);
 
 
-	Quadtree* quad = new Quadtree(0, SDL_Rect{ 800,800,1,1 });
+	Quadtree* quad = new Quadtree(0, SDL_Rect{1,1  , 816, 624 });
 	
 	std::vector<Entity*> mommy;
 
@@ -139,6 +139,7 @@ int main()
 
 		for (int x = 0; x < entityVec.size(); x++)
 		{
+			//cout << entityVec.size() << endl;
 			/*auto temp = entityVec;
 
 			int q = 5;
@@ -160,12 +161,12 @@ int main()
 
 			if (SDL_HasIntersection(&rect1, &rect2))
 			{
-				cout << "hit " << endl;
+			//	cout << "hit " << endl;
 			}
 
 			if (!SDL_HasIntersection(&rect1, &rect2))
 			{
-				cout << "miss " << endl;
+			//	cout << "miss " << endl;
 			}
 			//collision detection
 		}
