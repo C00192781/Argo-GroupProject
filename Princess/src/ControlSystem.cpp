@@ -28,7 +28,7 @@ void ControlSystem::Update()
 		if (mcKey >= 0) 
 		{
 			SDL_Point holder{ 0, 0 };
-			int speed = static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->getSpeed();
+			int speed = std::static_pointer_cast<MovementComponent>(m_entities.at(i)->GetComponents()->at(mcKey))->getSpeed();
 
 			if (m_eventListener->W)
 			{
@@ -47,7 +47,7 @@ void ControlSystem::Update()
 				holder.x = speed;
 			}
 
-			static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setVelocity(holder);
+			std::static_pointer_cast<MovementComponent>(m_entities.at(i)->GetComponents()->at(mcKey))->setVelocity(holder);
 		}
 		if (pjKey >= 0)
 		{

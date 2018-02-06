@@ -18,9 +18,9 @@ public:
 	};
 
 	void Update();
-	void getSystemEntities(std::vector<Entity*>* projectiles) { m_projectiles = projectiles; }
+	void getSystemEntities(std::vector<std::shared_ptr<Entity>>* projectiles) { m_projectiles = projectiles; }
 private:
 
 	EventListener *m_eventListener;
-	std::vector<Entity*>* m_projectiles;
+	std::vector<std::shared_ptr<Entity>>* m_projectiles;
 };

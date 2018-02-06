@@ -10,7 +10,7 @@ ProjectileSystem::~ProjectileSystem()
 {
 	for (int i = 0; i < m_entities.size(); i++)
 	{
-		delete m_entities.at(i);
+		//delete m_entities.at(i);
 		m_entities.erase(m_entities.begin() + i);
 		m_entities.shrink_to_fit();
 	}
@@ -49,20 +49,20 @@ void ProjectileSystem::Update()
 		{
 			//float tempAngle = 90;
 
-			float m_orientation = static_cast<ProjectileComponent*>(m_entities.at(i)->GetComponents()->at(pjKey))->getOrientation();
+			float m_orientation = std::static_pointer_cast<ProjectileComponent>(m_entities.at(i)->GetComponents()->at(pjKey))->getOrientation();
 			Vector2f v;
 			v = VelocityHandler(m_orientation);
 
-			float timePressed = static_cast<ProjectileComponent*>(m_entities.at(i)->GetComponents()->at(pjKey))->getButtonPressTime();
-			float maxSpeed = static_cast<ProjectileComponent*>(m_entities.at(i)->GetComponents()->at(pjKey))->getMaxSpeed();
+			float timePressed = std::static_pointer_cast<ProjectileComponent>(m_entities.at(i)->GetComponents()->at(pjKey))->getButtonPressTime();
+			float maxSpeed = std::static_pointer_cast<ProjectileComponent>(m_entities.at(i)->GetComponents()->at(pjKey))->getMaxSpeed();
 
 			float speed = CalculateSpeed(timePressed, maxSpeed);
 
 			Vector2f velocity = MovementHandler(v.X, v.Y, speed);
 
 			// assign velocity
-			static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setXVeclocity(velocity.X);
-			static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setYVeclocity(velocity.Y);	
+			std::static_pointer_cast<MovementComponent>(m_entities.at(i)->GetComponents()->at(mcKey))->setXVeclocity(velocity.X);
+			std::static_pointer_cast<MovementComponent>(m_entities.at(i)->GetComponents()->at(mcKey))->setYVeclocity(velocity.Y);	
 		}
 	}
 }
@@ -107,7 +107,7 @@ float ProjectileSystem::CalculateSpeed(float buttonPressTime, float maxSpeed)
 }
 
 
-std::vector<Entity*>* ProjectileSystem::getEntities()
+std::vector<std::shared_ptr<Entity>>* ProjectileSystem::getEntities()
 {
 	return &m_entities;
 }

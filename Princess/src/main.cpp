@@ -40,7 +40,7 @@ int main()
 
 	StateManager state;
 	
-	std::vector<Entity*>* projectiles = new std::vector<Entity*>();
+	std::vector<std::shared_ptr<Entity>>* projectiles = new std::vector<std::shared_ptr<Entity>>();
 
 
 	SystemManager systemManager;
@@ -59,12 +59,12 @@ int main()
 	BattleMap map1 = BattleMap(&systemManager, gameRenderer, &state);
 	map1.Generate("Grassland");
 
-	Entity * player = new Entity("Player");
-	player->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
-	player->AddComponent(new RectangleComponent(SDL_Point{100, 300}, 16 * 3, 16 * 3));
-	player->AddComponent(new AttributesComponent());
-	player->AddComponent(new MovementComponent(3));
-	player->AddComponent(new CollisionComponent());
+	std::shared_ptr<Entity> player = std::shared_ptr<Entity>(new Entity("Player"));
+	player->AddComponent(std::shared_ptr<SpriteComponent>(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0)));
+	player->AddComponent(std::shared_ptr<RectangleComponent>(new RectangleComponent(SDL_Point{100, 300}, 16 * 3, 16 * 3)));
+	player->AddComponent(std::shared_ptr<AttributesComponent>(new AttributesComponent()));
+	player->AddComponent(std::shared_ptr<MovementComponent>(new MovementComponent(3)));
+	player->AddComponent(std::shared_ptr<CollisionComponent>(new CollisionComponent()));
 	//RenderSystem * r = new RenderSystem(resourceManager, gameRenderer);
 	//r->AddEntity(player);
 

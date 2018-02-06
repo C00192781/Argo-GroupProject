@@ -7,10 +7,10 @@
 class GrassTileFactory : public TileFactory
 {
 public:
-	Entity* GroundA(std::string textureID, int x, int y);
-	Entity* GroundB(std::string textureID, int x, int y);
-	Entity* GroundC(std::string textureID, int x, int y);
-	Entity* GroundD(std::string textureID, int x, int y);
+	std::shared_ptr<Entity> GroundA(std::string textureID, int x, int y);
+	std::shared_ptr<Entity> GroundB(std::string textureID, int x, int y);
+	std::shared_ptr<Entity> GroundC(std::string textureID, int x, int y);
+	std::shared_ptr<Entity> GroundD(std::string textureID, int x, int y);
 };
 #endif
 

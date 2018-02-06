@@ -19,7 +19,7 @@ enum class HeartTypes
 class HeartComponent : public Component
 {
 public:
-	HeartComponent(std::vector<Entity*>* heartVector)
+	HeartComponent(std::vector<std::shared_ptr<Entity>>* heartVector)
 	{
 		m_type = "HC";
 		m_index = -1;
@@ -38,7 +38,7 @@ public:
 	HeartTypes HeartType() { return m_heartType; };
 	void HeartType(HeartTypes heartType) { m_heartType = heartType; };
 
-	std::vector<Entity*>* HeartList() { return m_heartVector; };
+	std::vector<std::shared_ptr<Entity>>* HeartList() { return m_heartVector; };
 	//void HeartList(std::list<HeartComponent>* heartList) { m_heartList = heartList; };
 
 private:
@@ -46,7 +46,7 @@ private:
 	int m_index;
 	int m_state;
 	HeartTypes m_heartType;
-	std::vector<Entity*>* m_heartVector;
+	std::vector<std::shared_ptr<Entity>>* m_heartVector;
 
 };
 

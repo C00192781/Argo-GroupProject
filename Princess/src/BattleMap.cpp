@@ -16,7 +16,7 @@ void BattleMap::Generate(std::string type)
 {
 	for (int i = 0; i < m_entities.size(); i++)
 	{
-		delete m_entities.at(i);
+		//delete m_entities.at(i);
 	}
 	m_entities.clear();
 	m_entities.shrink_to_fit();
@@ -31,16 +31,16 @@ void BattleMap::Generate(std::string type)
 		m_factory = new GrassTileFactory();
 	}
 
-	std::vector<Entity*>* projectileEntities = m_systemManager->ProjectileSystem->getEntities();
+	std::vector<std::shared_ptr<Entity>>* projectileEntities = m_systemManager->ProjectileSystem->getEntities();
 
 	for (int i = 0; i < 300; i++)
 	{
-		Entity* projectile = new Entity("Projectile");
-		projectile->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
-		projectile->AddComponent(new RectangleComponent(SDL_Point{ 333, 333 }, 16 * 3, 16 * 3));
-		projectile->AddComponent(new ProjectileComponent(4.9, "Enemy", 5.0f, 3.0f, 10.0f));
-		projectile->AddComponent(new MovementComponent());
-		projectile->AddComponent(new CollisionComponent());
+		std::shared_ptr<Entity> projectile = std::shared_ptr<Entity>(new Entity("Projectile"));
+		projectile->AddComponent(std::shared_ptr<Component>(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0)));
+		projectile->AddComponent(std::shared_ptr<RectangleComponent>(new RectangleComponent(SDL_Point{ 333, 333 }, 16 * 3, 16 * 3)));
+		projectile->AddComponent(std::shared_ptr<ProjectileComponent>(new ProjectileComponent(4.9, "Enemy", 5.0f, 3.0f, 10.0f)));
+		projectile->AddComponent(std::shared_ptr<MovementComponent>(new MovementComponent()));
+		projectile->AddComponent(std::shared_ptr<CollisionComponent>(new CollisionComponent()));
 		projectileEntities->push_back(projectile);
 	}
 	for (auto i = projectileEntities->begin(), end = projectileEntities->end(); i != end; i++)

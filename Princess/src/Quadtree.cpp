@@ -25,19 +25,19 @@ void Quadtree::split() {
 	int x = bounds.x;
 	int y = bounds.y;
 
-	nodes[0] = new Quadtree(level + 1, SDL_Rect{ x + subWidth, y, subWidth, subHeight });
-	nodes[1] = new Quadtree(level + 1, SDL_Rect{ x, y, subWidth, subHeight });
-	nodes[2] = new Quadtree(level + 1, SDL_Rect{ x, y + subHeight, subWidth, subHeight });
-	nodes[3] = new Quadtree(level + 1, SDL_Rect{ x + subWidth, y + subHeight, subWidth, subHeight });
+	nodes[0] = std::shared_ptr<Quadtree>(new Quadtree(level + 1, SDL_Rect{ x + subWidth, y, subWidth, subHeight }));
+	nodes[1] = std::shared_ptr<Quadtree>(new Quadtree(level + 1, SDL_Rect{ x, y, subWidth, subHeight }));
+	nodes[2] = std::shared_ptr<Quadtree>(new Quadtree(level + 1, SDL_Rect{ x, y + subHeight, subWidth, subHeight }));
+	nodes[3] = std::shared_ptr<Quadtree>(new Quadtree(level + 1, SDL_Rect{ x + subWidth, y + subHeight, subWidth, subHeight }));
 }
 
 
 void Quadtree::init()
 {
-	nodes.push_back(new Quadtree(0, SDL_Rect{ 800,800,1,1 }));
-	nodes.push_back(new Quadtree(0, SDL_Rect{ 800,800,1,1 }));
-	nodes.push_back(new Quadtree(0, SDL_Rect{ 800,800,1,1 }));
-	nodes.push_back(new Quadtree(0, SDL_Rect{ 800,800,1,1 }));
+	nodes.push_back(std::shared_ptr<Quadtree>(new Quadtree(0, SDL_Rect{ 800,800,1,1 })));
+	nodes.push_back(std::shared_ptr<Quadtree>(new Quadtree(0, SDL_Rect{ 800,800,1,1 })));
+	nodes.push_back(std::shared_ptr<Quadtree>(new Quadtree(0, SDL_Rect{ 800,800,1,1 })));
+	nodes.push_back(std::shared_ptr<Quadtree>(new Quadtree(0, SDL_Rect{ 800,800,1,1 })));
 }
 
 /*
@@ -45,7 +45,7 @@ void Quadtree::init()
 * object cannot completely fit within a child node and is part
 * of the parent node
 */
-int Quadtree::getIndex(Entity* entity)
+int Quadtree::getIndex(std::shared_ptr<Entity> entity)
 {
 
 	int index = -1;
@@ -57,18 +57,18 @@ int Quadtree::getIndex(Entity* entity)
 
 
 
-	static_cast<RectangleComponent*>(entity->GetComponents()->at(2))->getPosition().x;
+	std::static_pointer_cast<RectangleComponent>(entity->GetComponents()->at(2))->getPosition().x;
 
 	auto temp = entity->GetComponents();
 	// Object can completely fit within the top quadrants
-	bool topQuadrant = (static_cast<RectangleComponent*>(entity->GetComponents()->at(2))->getPosition().y <
-		horizontalMidpoint && static_cast<RectangleComponent*>(entity->GetComponents()->at(2))->getPosition().y + static_cast<RectangleComponent*>(entity->GetComponents()->at(1))->getHeight() < horizontalMidpoint);
+	bool topQuadrant = (std::static_pointer_cast<RectangleComponent>(entity->GetComponents()->at(2))->getPosition().y <
+		horizontalMidpoint && std::static_pointer_cast<RectangleComponent>(entity->GetComponents()->at(2))->getPosition().y + std::static_pointer_cast<RectangleComponent>(entity->GetComponents()->at(1))->getHeight() < horizontalMidpoint);
 	// Object can completely fit within the bottom quadrants
-	bool bottomQuadrant = (static_cast<RectangleComponent*>(entity->GetComponents()->at(2))->getPosition().y > horizontalMidpoint);
+	bool bottomQuadrant = (std::static_pointer_cast<RectangleComponent>(entity->GetComponents()->at(2))->getPosition().y > horizontalMidpoint);
 
 	// Object can completely fit within the left quadrants
-	if (static_cast<RectangleComponent*>(entity->GetComponents()->at(2))->getPosition().x < verticalMidpoint && static_cast<RectangleComponent*>(entity->GetComponents()->at(2))->getPosition().x
-		+ static_cast<RectangleComponent*>(entity->GetComponents()->at(1))->getWidth() < verticalMidpoint) {
+	if (std::static_pointer_cast<RectangleComponent>(entity->GetComponents()->at(2))->getPosition().x < verticalMidpoint && std::static_pointer_cast<RectangleComponent>(entity->GetComponents()->at(2))->getPosition().x
+		+ std::static_pointer_cast<RectangleComponent>(entity->GetComponents()->at(1))->getWidth() < verticalMidpoint) {
 		if (topQuadrant) {
 			index = 1;
 		}
@@ -77,7 +77,7 @@ int Quadtree::getIndex(Entity* entity)
 		}
 	}
 	// Object can completely fit within the right quadrants
-	else if (static_cast<RectangleComponent*>(entity->GetComponents()->at(0))->getPosition().x > verticalMidpoint) {
+	else if (std::static_pointer_cast<RectangleComponent>(entity->GetComponents()->at(0))->getPosition().x > verticalMidpoint) {
 		if (topQuadrant) {
 			index = 0;
 		}
@@ -95,7 +95,7 @@ int Quadtree::getIndex(Entity* entity)
 * objects to their corresponding nodes.
 */
 
-void Quadtree::insert(Entity* entities)
+void Quadtree::insert(std::shared_ptr<Entity> entities)
 {
 
 	//if (nodes.size() > 0)
@@ -155,7 +155,7 @@ void Quadtree::insert(Entity* entities)
 /*
 * Return all objects that could collide with the given object
 */
-std::vector<Entity*> Quadtree::retrieve(std::vector<Entity*> returnObjects, Entity* entity) {
+std::vector<std::shared_ptr<Entity>> Quadtree::retrieve(std::vector<std::shared_ptr<Entity>> returnObjects, std::shared_ptr<Entity> entity) {
 
 	if (entity->ID() == "Princess")
 	{
@@ -300,7 +300,12 @@ std::vector<Entity*> Quadtree::retrieve(std::vector<Entity*> returnObjects, Enti
 //	// find rectangle component
 //	for (int i = 0; i < e->GetComponents()->size(); i++)
 //	{
-//		if (e->GetComponents()->at(i)->Type() == "rectangle")
+//		if (e->GetComponents()->at(i)->Type() == 
+
+
+
+
+//rectangle")
 //		{
 //			rectKey = i;
 //		}
@@ -311,15 +316,15 @@ std::vector<Entity*> Quadtree::retrieve(std::vector<Entity*> returnObjects, Enti
 //	float yMidpoint = (float)m_bounds.x + ((float)m_bounds.w / 2);
 //
 //	// check if entity fits in the top quadrants
-//	bool topQuadrant = (static_cast<RectangleComponent*>(e->GetComponents()->at(rectKey))->getPosition().y < yMidpoint
-//		&& static_cast<RectangleComponent*>(e->GetComponents()->at(rectKey))->getPosition().y + static_cast<RectangleComponent*>(e->GetComponents()->at(rectKey))->getHeight() < yMidpoint);
+//	bool topQuadrant = (std::static_pointer_cast<RectangleComponent>(e->GetComponents()->at(rectKey))->getPosition().y < yMidpoint
+//		&& std::static_pointer_cast<RectangleComponent>(e->GetComponents()->at(rectKey))->getPosition().y + std::static_pointer_cast<RectangleComponent>(e->GetComponents()->at(rectKey))->getHeight() < yMidpoint);
 //	
 //	// check if entity fits in the bottom quadrants
-//	bool bottomQuadrant = (static_cast<RectangleComponent*>(e->GetComponents()->at(rectKey))->getPosition().y > yMidpoint);
+//	bool bottomQuadrant = (std::static_pointer_cast<RectangleComponent>(e->GetComponents()->at(rectKey))->getPosition().y > yMidpoint);
 //
 //	// check if it fits in the left quadrants
-//	if (static_cast<RectangleComponent*>(e->GetComponents()->at(rectKey))->getPosition().x < xMidpoint
-//		&& static_cast<RectangleComponent*>(e->GetComponents()->at(rectKey))->getPosition().x + static_cast<RectangleComponent*>(e->GetComponents()->at(rectKey))->getWidth() < xMidpoint)
+//	if (std::static_pointer_cast<RectangleComponent>(e->GetComponents()->at(rectKey))->getPosition().x < xMidpoint
+//		&& std::static_pointer_cast<RectangleComponent>(e->GetComponents()->at(rectKey))->getPosition().x + std::static_pointer_cast<RectangleComponent>(e->GetComponents()->at(rectKey))->getWidth() < xMidpoint)
 //	{
 //		if (topQuadrant == true)
 //		{
@@ -331,7 +336,7 @@ std::vector<Entity*> Quadtree::retrieve(std::vector<Entity*> returnObjects, Enti
 //		}
 //	}
 //	// check if it fits in the right quadrants
-//	if (static_cast<RectangleComponent*>(e->GetComponents()->at(rectKey))->getPosition().x > xMidpoint)
+//	if (std::static_pointer_cast<RectangleComponent>(e->GetComponents()->at(rectKey))->getPosition().x > xMidpoint)
 //	{
 //		if (topQuadrant == true)
 //		{

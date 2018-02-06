@@ -7,18 +7,18 @@ Entity::Entity(std::string id)
 
 Entity::~Entity()
 {
-	for (int i = 0; i < m_components.size(); i++)
-	{
-		delete m_components.at(i);
-	}
+	//for (int i = 0; i < m_components.size(); i++)
+	//{
+	//	delete m_components.at(i);
+	//}
 }
 
-void Entity::AddComponent(Component* c)
+void Entity::AddComponent(std::shared_ptr<Component> c)
 {
 	m_components.push_back(c);
 }
 
-void Entity::RemoveComponent(Component* c)
+void Entity::RemoveComponent(std::shared_ptr<Component> c)
 {
 	for (int i = 0; i < m_components.size(); i++)
 	{

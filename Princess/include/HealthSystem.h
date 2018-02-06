@@ -14,9 +14,9 @@ public:
 	~HealthSystem();
 	void Update();
 	void UpdateMaxHearts();
-	void UpdateHeartsStatus(Entity* player);
+	void UpdateHeartsStatus(std::shared_ptr<Entity> player);
 	void UpdateMaxArmour();
-	void UpdateArmourStatus(Entity* player);
+	void UpdateArmourStatus(std::shared_ptr<Entity> player);
 
 private:
 	void DamageEntity(int& damageCaused, int& armour, int& health);

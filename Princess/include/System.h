@@ -11,7 +11,7 @@ public:
 	System() {};
 	~System() {};
 
-	void AddEntity(Entity * e);
+	void AddEntity(std::shared_ptr<Entity> e);
 	void RemoveEntity(std::string id);
 	void SelectiveClear();
 	void FullClear();
@@ -22,7 +22,7 @@ public:
 
 protected:
 
-	std::vector<Entity*> m_entities;
+	std::vector<std::shared_ptr<Entity>> m_entities;
 	bool m_active;
 };
 #endif

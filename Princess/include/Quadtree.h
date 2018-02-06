@@ -54,9 +54,9 @@ public:
 	void init();
 	void clear();
 	void split();
-	void insert(Entity* entities);
-	int getIndex(Entity* entity);
-	std::vector<Entity*> retrieve(std::vector<Entity*> returnObjects, Entity* entity);
+	void insert(std::shared_ptr<Entity> entities);
+	int getIndex(std::shared_ptr<Entity> entity);
+	std::vector<std::shared_ptr<Entity>> retrieve(std::vector<std::shared_ptr<Entity>> returnObjects, std::shared_ptr<Entity> entity);
 
 
 private:
@@ -64,9 +64,9 @@ private:
 	int MAX_LEVELS = 5;
 
 	int level;
-	std::vector<Entity*> objects;
+	std::vector<std::shared_ptr<Entity>> objects;
 	SDL_Rect bounds;
-	std::vector<Quadtree*> nodes;
+	std::vector<std::shared_ptr<Quadtree>> nodes;
 
 	/*
 	* Constructor

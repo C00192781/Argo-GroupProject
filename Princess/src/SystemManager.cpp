@@ -3,13 +3,13 @@
 void SystemManager::Update()
 {
 
-	std::vector<Entity*>* projectiles = ProjectileSystem->getEntities();
+	std::vector<shared_ptr<Entity>>* projectiles = ProjectileSystem->getEntities();
 	//std::cout << projectiles->size() << std::endl;
 	//Entity* projectile = new Entity("Projectile");
 	//projectiles->push_back(projectile);
 
 	
-	if (CollisionSystem->Active()) { CollisionSystem->Update(); }
+	//if (CollisionSystem->Active()) { CollisionSystem->Update(); }
 	if (MovementSystem->Active()) { MovementSystem->Update(); }
 	if (ControlSystem->Active()) 
 	{ 

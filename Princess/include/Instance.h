@@ -22,7 +22,7 @@ public:
 protected:
 	std::string m_id;
 
-	std::vector<Entity*> m_entities;
+	std::vector<std::shared_ptr<Entity>> m_entities;
 
 	TileFactory * m_factory;
 

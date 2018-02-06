@@ -1,6 +1,6 @@
 #include "System.h"
 
-void System::AddEntity(Entity * e)
+void System::AddEntity(std::shared_ptr<Entity> e)
 {
 	m_entities.push_back(e);
 }
