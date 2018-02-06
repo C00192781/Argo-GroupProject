@@ -72,22 +72,23 @@ void CollisionSystem::Update()
 				}
 			}
 
-			for (int p = 0; p < posIndex.size(); p++)
+			
+		}
+		for (int p = 0; p < posIndex.size(); p++)
+		{
+			int x2 = static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(posIndex[p]))->getPosition().x;
+			int y2 = static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(posIndex[p]))->getPosition().y;
+
+
+			int w2 = static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(spriteIndex[p]))->GetRect().w;
+			int h2 = static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(spriteIndex[p]))->GetRect().h;
+
+			if (x1 != x2 && y1 != y2)
 			{
-				int x2 = static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(posIndex[p]))->getPosition().x;
-				int y2 = static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(posIndex[p]))->getPosition().y;
-
-
-				int w2 = static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(spriteIndex[p]))->GetRect().w;
-				int h2 = static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(spriteIndex[p]))->GetRect().h;
-
-				if (x1 != x2 && y1 != y2)
+				if ((x1 >= x2) && (x1 <= (x2 + w2))
+					&& (y1 >= y2 && y1 <= (y2 + w2)))
 				{
-					if ((x1 >= x2) && (x1 <= (x2 + w2))
-						&& (y1 >= y2 && y1 <= (y2 + w2)))
-					{
-						std::cout << "COLLISION!!!" << std::endl;
-					}
+					std::cout << "COLLISION!!!" << std::endl;
 				}
 			}
 		}
