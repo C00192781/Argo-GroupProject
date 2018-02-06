@@ -112,16 +112,20 @@ int main()
 
 		for (int i = 0; i < daddy.size(); i++)
 		{
-			mommy.clear();
-			 auto something =  quad->retrieve(entityVec, daddy.at(i));
+			entityVec.clear();
+			entityVec = quad->retrieve(entityVec, daddy.at(i));
 
-			 if (something.size() > 0)
+		//	auto mommwhy = quad->retrieve(entityVec, daddy.at(i));
+			  //auto something =
+			 if (entityVec.size() > 0)
 			 { 
-				 int l = 5;
-				 l -= 5;
+			//	 cout << "FREDIERCUS REX UNSER KONIG UND HERR" << endl;
 			 }
-
-			 mommy.insert(mommy.end(), something.begin(), something.end());
+			 else if (entityVec.size() == 0)
+			 {
+				 cout << "eine jede kugel de trufte ja nicht" << endl;
+			 }
+			// mommy.insert(mommy.end(), something.begin(), something.end());
 			 
 		//	 mommy.insert()
 
@@ -131,7 +135,7 @@ int main()
 			 int q = 5;
 			 q -= 5;
 		}
-		entityVec = mommy;
+	//	entityVec = mommy;
 
 		for (int x = 0; x < entityVec.size(); x++)
 		{

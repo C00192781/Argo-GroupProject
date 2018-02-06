@@ -197,7 +197,7 @@ void Quadtree::insert(Entity* entities)
 /*
 * Return all objects that could collide with the given object
 */
-std::vector<Entity*> Quadtree::retrieve(std::vector<Entity*> returnObjects, Entity* entity) {
+std::vector<Entity*> Quadtree::retrieve(std::vector<Entity*> &returnObjects, Entity* entity) {
 
 	if (entity->ID() == "Princess")
 	{

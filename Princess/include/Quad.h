@@ -24,7 +24,7 @@ public:
 	void split();
 	void insert(Entity* entities);
 	int getIndex(Entity* entity);
-	std::vector<Entity*> retrieve(std::vector<Entity*> returnObjects, Entity* entity);
+	std::vector<Entity*> retrieve(std::vector<Entity*> &returnObjects, Entity* entity);
 
 
 private:
