@@ -91,8 +91,8 @@ void RenderSystem::Update()
 		if (pcKey >= 0 && scKey >= 0)
 		{
 			SDL_Rect* holderRect = new SDL_Rect{ 
-				static_cast<PositionComponent*>(m_entities.at(holder.at(i))->GetComponents()->at(pcKey))->getPosition().x, 
-				static_cast<PositionComponent*>(m_entities.at(holder.at(i))->GetComponents()->at(pcKey))->getPosition().y, 
+				(int)static_cast<PositionComponent*>(m_entities.at(holder.at(i))->GetComponents()->at(pcKey))->getX(), 
+				(int)static_cast<PositionComponent*>(m_entities.at(holder.at(i))->GetComponents()->at(pcKey))->getY(), 
 				static_cast<SpriteComponent*>(m_entities.at(holder.at(i))->GetComponents()->at(scKey))->Width() * (int)m_scale, 
 				static_cast<SpriteComponent*>(m_entities.at(holder.at(i))->GetComponents()->at(scKey))->Height() * (int)m_scale };
 			SDL_RenderCopy(m_renderer, m_resourceManager->GetTexture(static_cast<SpriteComponent*>(m_entities.at(holder.at(i))->GetComponents()->at(scKey))->Sheet()), &static_cast<SpriteComponent*>(m_entities.at(holder.at(i))->GetComponents()->at(scKey))->GetRect(), holderRect);

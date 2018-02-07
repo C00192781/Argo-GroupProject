@@ -8,7 +8,7 @@ Entity* BasicEnemy::CharA(std::string ID, SDL_Point pos, int element)
 	BasicEnemy->AddComponent(new PositionComponent(pos));
 	BasicEnemy->AddComponent(new MovementComponent(100));
 	BasicEnemy->AddComponent(new SeekComponent(600,0));
-	static_cast<PositionComponent*>(BasicEnemy->GetComponents()->back())->setPosition(pos);
+	static_cast<PositionComponent*>(BasicEnemy->GetComponents()->back())->setPosition(pos.x, pos.y);
 	return BasicEnemy;
 }
 
@@ -21,7 +21,7 @@ Entity* BasicEnemy::CharB(std::string ID, SDL_Point pos, int element)
 	BasicEnemy->AddComponent(new MovementComponent(100));
 	BasicEnemy->AddComponent(new SeekComponent(800,800));
 	BasicEnemy->AddComponent(new AttackComponent(1, 1, 1));
-	static_cast<PositionComponent*>(BasicEnemy->GetComponents()->back())->setPosition(pos);
+	static_cast<PositionComponent*>(BasicEnemy->GetComponents()->back())->setPosition(pos.x, pos.y);
 	return BasicEnemy;
 }
 
@@ -35,7 +35,7 @@ Entity* BasicEnemy::CharC(std::string ID, SDL_Point pos, int element)
 	BasicEnemy->AddComponent(new PositionComponent(pos));
 	BasicEnemy->AddComponent(new MovementComponent(100));
 	BasicEnemy->AddComponent(new SeekComponent(100,100));
-	static_cast<PositionComponent*>(BasicEnemy->GetComponents()->back())->setPosition(pos);
+	static_cast<PositionComponent*>(BasicEnemy->GetComponents()->back())->setPosition(pos.x, pos.y);
 	return BasicEnemy;
 }
 
@@ -49,7 +49,7 @@ Entity* BasicEnemy::CharD(std::string ID, SDL_Point pos, int element)
 	BasicEnemy->AddComponent(new PositionComponent(pos));
 	BasicEnemy->AddComponent(new MovementComponent(100));
 	BasicEnemy->AddComponent(new SeekComponent(500,550));
-	static_cast<PositionComponent*>(BasicEnemy->GetComponents()->back())->setPosition(pos);
+	static_cast<PositionComponent*>(BasicEnemy->GetComponents()->back())->setPosition(pos.x, pos.y);
 	return BasicEnemy;
 }
 

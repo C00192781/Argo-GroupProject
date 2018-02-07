@@ -47,38 +47,38 @@ int Quadtree::getIndex(Entity* entity)
 	double horizontalMidpoint = bounds.y + (bounds.h / 2.0f);
 
 	// Object can completely fit within the top quadrants
-	bool topQuadrant = (static_cast<PositionComponent*>(entity->GetComponents()->at(2))->getPosition().y <
-		horizontalMidpoint && static_cast<PositionComponent*>(entity->GetComponents()->at(2))->getPosition().y + 
+	bool topQuadrant = (static_cast<PositionComponent*>(entity->GetComponents()->at(2))->getY() <
+		horizontalMidpoint && static_cast<PositionComponent*>(entity->GetComponents()->at(2))->getY() + 
 		static_cast<SpriteComponent*>(entity->GetComponents()->at(1))->GetRect().h < horizontalMidpoint);
 
 	// Object can completely fit within the bottom quadrants
-	bool bottomQuadrant = (static_cast<PositionComponent*>(entity->GetComponents()->at(2))->getPosition().y > horizontalMidpoint);
+	bool bottomQuadrant = (static_cast<PositionComponent*>(entity->GetComponents()->at(2))->getY() > horizontalMidpoint);
 
 	// Object can completely fit within the left quadrants
-	if (static_cast<PositionComponent*>(entity->GetComponents()->at(2))->getPosition().x < verticalMidpoint && static_cast<PositionComponent*>(entity->GetComponents()->at(2))->getPosition().x
+	if (static_cast<PositionComponent*>(entity->GetComponents()->at(2))->getX() < verticalMidpoint && static_cast<PositionComponent*>(entity->GetComponents()->at(2))->getX()
 		+ static_cast<SpriteComponent*>(entity->GetComponents()->at(1))->GetRect().w < verticalMidpoint) {
 		if (topQuadrant) {
 			index = 1;
 			
-			cout << entity->ID() << "topleft " << endl;
+			//cout << entity->ID() << "topleft " << endl;
 		}
 		else if (bottomQuadrant) {
 			index = 2;
 
-			cout << entity->ID() << "bottomleft" << endl;
+			//cout << entity->ID() << "bottomleft" << endl;
 		}
 	}
 	// Object can completely fit within the right quadrants
-	else if (static_cast<PositionComponent*>(entity->GetComponents()->at(2))->getPosition().x > verticalMidpoint) {
+	else if (static_cast<PositionComponent*>(entity->GetComponents()->at(2))->getX() > verticalMidpoint) {
 		if (topQuadrant) {
 			index = 0;
 
-			cout << entity->ID() << "topright" << endl;
+			//cout << entity->ID() << "topright" << endl;
 		}
 		else if (bottomQuadrant) {
 			index = 3;
 
-			cout << entity->ID() << "bottomright" << endl;
+			//cout << entity->ID() << "bottomright" << endl;
 		}
 	}
 

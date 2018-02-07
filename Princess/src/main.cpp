@@ -61,6 +61,8 @@ int main()
 	systemManager.AttackSystem->Active(true);
 	systemManager.AiSystems = new AiSystem();
 	systemManager.AiSystems->Active(true);
+	systemManager.CollisionSystem = new CollisionSystem(SDL_Rect{ 0, 0, SDL_GetWindowSurface(gameWindow)->w, SDL_GetWindowSurface(gameWindow)->h });
+	//systemManager.CollisionSystem->Active(true);
 
 	BattleMap map1 = BattleMap(&systemManager, gameRenderer, &state);
 	map1.Generate("Grassland");
@@ -69,7 +71,7 @@ int main()
 	player->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
 	player->AddComponent(new PositionComponent(SDL_Point{100, 300}));
 	player->AddComponent(new AttributesComponent());
-	player->AddComponent(new MovementComponent(3));
+	player->AddComponent(new MovementComponent(100));
 	player->AddComponent(new CollisionComponent());
 	player->AddComponent(new WeaponComponent(WeaponType::MELEE));
 
@@ -80,6 +82,7 @@ int main()
 	systemManager.MovementSystem->AddEntity(player);
 	systemManager.RenderSystem->AddEntity(player);
 	systemManager.AttackSystem->AddEntity(player);
+	systemManager.CollisionSystem->AddEntity(player);
 	//RenderSystem * r = new RenderSystem(resourceManager, gameRenderer);
 
 	bool heartTest = true;
@@ -95,9 +98,6 @@ int main()
 	////systemManager.RenderSystem->AddEntity(meleeEnemy);
 	////systemManager.MovementSystem->AddEntity(meleeEnemy);
 
-
-	Quadtree* quad = new Quadtree(0, SDL_Rect{0,0  , 816, 624 });
-
 	while (1 != 0)
 	{
 		currentTime = SDL_GetTicks();
@@ -110,24 +110,15 @@ int main()
 
 			lastTime = currentTime;
 		}
-		auto aiSystemEntities = systemManager.AiSystems->getEntities();
-
-		quad->clear();
-		quad->init();
-		for (int i = 0; i < aiSystemEntities.size(); i++)
-		{
-			quad->insert(aiSystemEntities.at(i));
-		}
-
-		input->handleInput(*e);
 
 		map1.Update();
 
 		SDL_SetRenderDrawColor(gameRenderer, 255, 255, 255, 0);
 		SDL_RenderClear(gameRenderer);
+
 		systemManager.Update(deltaTime);
+
 		SDL_RenderPresent(gameRenderer);
-		
 	}
 
 	SDL_DestroyRenderer(gameRenderer);

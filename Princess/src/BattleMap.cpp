@@ -68,6 +68,7 @@ void BattleMap::Generate(std::string type)
 	{
 		m_systemManager->RenderSystem->AddEntity((*i));
 		m_systemManager->MovementSystem->AddEntity((*i)); //consider tag discrimination here
+		m_systemManager->CollisionSystem->AddEntity((*i));
 	}
 
 }

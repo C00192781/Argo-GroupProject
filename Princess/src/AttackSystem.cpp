@@ -2,6 +2,11 @@
 
 void AttackSystem::Update()
 {
+	int x;
+	int y;
+
+	SDL_GetMouseState(&x, &y);
+
 	for (int i = 0; i < m_entities.size(); i++)
 	{
 		int wcKey = -1;
@@ -65,13 +70,12 @@ void AttackSystem::Update()
 						if (temp > 0)
 						{
 							temp -= 0.01;
-							//temp--;
 						}
 						else
 						{
 							temp = static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getMaxTimeForAttack();
 							static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->setAttacking(false);
-							static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setLockedOrientation(true);
+							static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setLockedOrientation(false);
 						}
 
 						static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->setTimeForAttack(temp);

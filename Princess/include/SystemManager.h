@@ -9,6 +9,7 @@
 #include "PositionComponent.h"
 #include "SpriteComponent.h"
 #include "AISystem.h"
+#include "CollisionSystem.h"
 
 class SystemManager
 {
@@ -19,6 +20,7 @@ public:
 	ControlSystem *  ControlSystem;
 	AttackSystem* AttackSystem;
 	AiSystem * AiSystems;
+	CollisionSystem *CollisionSystem;
 
 	void Update(float deltaTime);
 

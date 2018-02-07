@@ -8,7 +8,8 @@ public:
 	MovementComponent() 
 	{
 		m_type = "movement";
-		m_vel = { 0, 0 };
+		m_xVel = 0;
+		m_yVel = 0;
 		m_speed = 0;
 		m_orientation = 0;
 		m_lockOrientation = false;
@@ -17,7 +18,8 @@ public:
 	MovementComponent(int speed)
 	{
 		m_type = "movement";
-		m_vel = { 0,0 };
+		m_xVel = 0;
+		m_yVel = 0;
 		m_speed = speed;
 		m_orientation = 0;
 		m_lockOrientation = false;
@@ -32,15 +34,19 @@ public:
 	void setLockedOrientation(bool locked) { m_lockOrientation = locked; };
 	bool getLockedOrientation() { return m_lockOrientation; };
 
-	SDL_Point getVelocity() { return m_vel; }
-	void setVelocity(SDL_Point vel) { m_vel = vel; }
-	void setXVelocity(float xVel) { m_vel.x = xVel; }
-	void setYVelocity(float yVel) { m_vel.y = yVel; }
+	float getXVelocity() { return m_xVel; }
+	//float* getXVelocityRef() { return &m_yVel; }
+	float getYVelocity() { return m_yVel; }
+	//float* getYVelocityRef() { return &m_yVel; }
+	void setVelocity(float x, float y) { m_xVel = x;  m_yVel = y; }
+	void setXVelocity(float xVel) { m_xVel = xVel; }
+	void setYVelocity(float yVel) { m_yVel = yVel; }
 
 private:
 	int m_speed;
 
-	SDL_Point m_vel;
+	float m_xVel;
+	float m_yVel;
 
 	float m_orientation;
 	bool m_lockOrientation;

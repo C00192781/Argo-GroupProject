@@ -49,7 +49,7 @@ void ControlSystem::Update()
 				holder.x = speed;
 			}
 
-			static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setVelocity(holder);
+			static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setVelocity(holder.x, holder.y);
 		}
 		if (wcKey >= 0)
 		{
