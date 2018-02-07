@@ -20,16 +20,22 @@ AiSystem::~AiSystem()
 
 void AiSystem::Spawn()
 {
-	SDL_Point p{ 0,0 };
+	SDL_Point p{ 300,0 };
 	
-
 	characterFactory = new Princess();
 	m_entities.push_back(characterFactory->CharA("Red", p, 0));
 
-	p =  SDL_Point{ 500,500 };
+	//p =  SDL_Point{ 10,100 };
 
 	characterFactory = new BasicEnemy();
 	m_entities.push_back(characterFactory->CharC("Demon", p, 0));
+	
+	for (int i = 0; i < 100; i++)
+	{
+	//	characterFactory = new BasicEnemy();
+		m_entities.push_back(characterFactory->CharC("Demon", p, 0));
+	
+	}
 
 }
 
@@ -76,14 +82,12 @@ void AiSystem::seek(int entityIndex, int pcKey, int mcKey, int seekKey, int acKe
 		static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setXVelocity(0);
 		static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setYVelocity(0);
 	}
-
-
 }
 
 
 void AiSystem::Update()
 {
-
+	
 }
 
 
@@ -126,23 +130,23 @@ void AiSystem::Wander(int entityIndex, int pcKey, int mcKey, int seekKey, int ac
 		//srand((unsigned)time(&t));
 	
 
-		std::cout << "ROLLING  " << std::endl;
-		std::cout << "ROLLING  " << std::endl;
+		//std::cout << "ROLLING  " << std::endl;
+		//std::cout << "ROLLING  " << std::endl;
 
-		std::cout << "ROLLING  " << std::endl;
+		//std::cout << "ROLLING  " << std::endl;
 
-		std::cout << "ROLLING  " << std::endl;
-		std::cout << "ROLLING  " << std::endl;
-		std::cout << "ROLLING  " << std::endl;
-		std::cout << "ROLLING  " << std::endl;
-		std::cout << "ROLLING  " << std::endl;
-		std::cout << "ROLLING  " << std::endl;
+		//std::cout << "ROLLING  " << std::endl;
+		//std::cout << "ROLLING  " << std::endl;
+		//std::cout << "ROLLING  " << std::endl;
+		//std::cout << "ROLLING  " << std::endl;
+		//std::cout << "ROLLING  " << std::endl;
+		//std::cout << "ROLLING  " << std::endl;
 
 
 	}
 
 
-	std::cout << "X: " << static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->getXDestination() << "  Y: " << static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->getYDestination() << std::endl;
+	//std::cout << "X: " << static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->getXDestination() << "  Y: " << static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->getYDestination() << std::endl;
 
 
 	float x = static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->getXDestination() - static_cast<PositionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(pcKey))->getPosition().x;
@@ -286,6 +290,15 @@ void AiSystem::Update(float deltaTime)
 			if (m_entities.at(i)->ID() == "Princess")
 			{
 				Wander(i, pcKey, mcKey, seekKey,acKey);
+
+
+				//m_entities.at(i)->RemoveComponent(new MovementComponent*);
+				//
+				//SDL_Point holder = SDL_Point{100 , 100};
+				//
+				//static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->setPosition(holder);
+
+				//Wander(i, pcKey, mcKey, seekKey);
 				//do Princess things
 			}
 

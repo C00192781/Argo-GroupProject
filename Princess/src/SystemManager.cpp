@@ -11,4 +11,6 @@ void SystemManager::Update(float deltaTime)
 
 	if (healthSystem->Active()) { healthSystem->Update(deltaTime); }
 
+	
+
 }
