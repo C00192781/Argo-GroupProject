@@ -35,7 +35,7 @@ void HealthSystem::Update(float deltaTime)
 					{
 						if (timer > 1)
 						{
-							if ((*it).m_type == ModiferTypes::BLEED)
+							if ((*it).m_type == ModiferTypes::BURNING)
 							{
 								int damageCaused = (*it).m_amount;
 								int armour = static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(acKey))->Armour();
