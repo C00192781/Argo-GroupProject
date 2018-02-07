@@ -33,6 +33,7 @@ int main()
 	resourceManager->AddTexture("Red", "Sprite_Red.png");
 	resourceManager->AddTexture("Demon", "demon.png");
 	resourceManager->AddTexture("Turf", "Turfs.png");
+	resourceManager->AddTexture("Arrow", "Arrow.png");
 
 	EventListener *listener = new EventListener();
 

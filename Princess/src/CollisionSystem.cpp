@@ -17,7 +17,7 @@ void CollisionSystem::Update()
 
 	int pcKey = -1;
 	int scKey = -1;
-	int acKey = -1;
+
 
 	std::vector<int> posIndex;
 	std::vector<int> spriteIndex;
@@ -39,7 +39,7 @@ void CollisionSystem::Update()
 
 		}
 
-		AttributesComponent * ac = new AttributesComponent();
+
 		for (int j = 0; j < m_entities.at(i)->GetComponents()->size(); j++)
 		{
 
@@ -65,12 +65,6 @@ void CollisionSystem::Update()
 					h1 = static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(j))->GetRect().h;
 				}
 			}
-			if (m_entities.at(i)->ID() == playerCheck && m_entities.at(i)->GetComponents()->at(j)->Type() == "AC")
-			{
-				acKey = j;
-				ac->~AttributesComponent();
-				ac = static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(j));
-			}
 		}
 		for (int p = 0; p < posIndex.size(); p++)
 		{
@@ -88,6 +82,7 @@ void CollisionSystem::Update()
 					&& (y1 >= y2 && y1 <= (y2 + w2)))
 				{
 					//std::cout << "COLLISION!!!" << std::endl;
+
 					collision = true;					
 				}
 				else
@@ -98,9 +93,22 @@ void CollisionSystem::Update()
 		}
 		if (collision == true)
 		{
-			if (acKey >= 0)
+			if (m_entities.at(i)->ID() == playerCheck)
 			{
-				ac->Modifers()->push_back(Modifer(ModiferTypes::DAMAGE, 10, 0));
+				AttributesComponent * ac = nullptr;
+				int acKey = -1;
+				for (int j = 0; j < m_entities.at(i)->GetComponents()->size(); j++)
+				{
+					if (m_entities.at(i)->GetComponents()->at(j)->Type() == "AC")
+					{
+						acKey = j;
+						ac = static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(j));
+					}
+				}
+				if (acKey >= 0 && ac != nullptr)
+				{
+					ac->Modifers()->push_back(Modifer(ModiferTypes::DAMAGE, 10, 0));
+				}
 			}
 		}
 	}
