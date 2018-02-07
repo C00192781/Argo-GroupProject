@@ -33,8 +33,8 @@ Entity* BasicEnemy::CharC(std::string ID, SDL_Point pos, int element)
 	BasicEnemy->AddComponent(new AiLogicComponent);
 	BasicEnemy->AddComponent(new SpriteComponent(ID, 0, 0, 0, 0, 16, 16, 0)); ////sprite id
 	BasicEnemy->AddComponent(new PositionComponent(pos));
-	BasicEnemy->AddComponent(new MovementComponent(100));
-	BasicEnemy->AddComponent(new SeekComponent(100,100));
+	//BasicEnemy->AddComponent(new MovementComponent(100));
+	//BasicEnemy->AddComponent(new SeekComponent(100,100));
 	static_cast<PositionComponent*>(BasicEnemy->GetComponents()->back())->setPosition(pos.x, pos.y);
 	return BasicEnemy;
 }

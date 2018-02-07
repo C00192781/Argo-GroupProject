@@ -62,7 +62,7 @@ int main()
 	systemManager.AiSystems = new AiSystem();
 	systemManager.AiSystems->Active(true);
 	systemManager.CollisionSystem = new CollisionSystem(SDL_Rect{ 0, 0, SDL_GetWindowSurface(gameWindow)->w, SDL_GetWindowSurface(gameWindow)->h });
-	//systemManager.CollisionSystem->Active(true);
+	systemManager.CollisionSystem->Active(true);
 
 	BattleMap map1 = BattleMap(&systemManager, gameRenderer, &state);
 	map1.Generate("Grassland");
