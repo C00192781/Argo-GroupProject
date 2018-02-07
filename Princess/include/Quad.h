@@ -8,15 +8,11 @@ using namespace std;
 
 class Quadtree 
 {
-
 public:
 	Quadtree(int pLevel, SDL_Rect pBounds)
 	{
 		level = pLevel;
 		bounds = pBounds;
-		//nodes.reserve(300);
-		//nodes = new Quadtree[4];
-		
 	}
 	
 	void init();
@@ -26,7 +22,6 @@ public:
 	int getIndex(Entity* entity);
 	std::vector<Entity*> retrieve(std::vector<Entity*> &returnObjects, Entity* entity);
 
-
 private:
 	int MAX_OBJECTS = 10;
 	int MAX_LEVELS = 15;
@@ -35,9 +30,4 @@ private:
 	std::vector<Entity*> objects;
 	SDL_Rect bounds;
 	std::vector<Quadtree*> nodes;
-
-	/*
-	* Constructor
-	*/
-
 };

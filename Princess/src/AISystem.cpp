@@ -20,22 +20,22 @@ AiSystem::~AiSystem()
 
 void AiSystem::Spawn()
 {
-	SDL_Point p{ 0,0 };
+	SDL_Point p{ 300,0 };
 	
 
 	characterFactory = new Princess();
 	m_entities.push_back(characterFactory->CharA("Red", p, 0));
 
-	p =  SDL_Point{ 500,500 };
+	//p =  SDL_Point{ 10,100 };
 
 	characterFactory = new BasicEnemy();
 	m_entities.push_back(characterFactory->CharC("Demon", p, 0));
-
-	for (int i = 0; i < 5; i++)
+	
+	for (int i = 0; i < 100; i++)
 	{
 	//	characterFactory = new BasicEnemy();
 		m_entities.push_back(characterFactory->CharC("Demon", p, 0));
-
+	
 	}
 
 }
@@ -291,10 +291,10 @@ void AiSystem::Update(float deltaTime)
 
 
 				//m_entities.at(i)->RemoveComponent(new MovementComponent*);
-
-				SDL_Point holder = SDL_Point{600 , 600};
-
-				static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->setPosition(holder);
+				//
+				//SDL_Point holder = SDL_Point{100 , 100};
+				//
+				//static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->setPosition(holder);
 
 				//Wander(i, pcKey, mcKey, seekKey);
 				//do Princess things
