@@ -2,7 +2,7 @@
 
 CollisionSystem::CollisionSystem()
 {
-	m_quadtree = new Quadtree(0, SDL_Rect{ 0, 0, 100, 100 });
+	m_quadtree = new Quadtree(0, SDL_Rect{ 0, 0, 812, 624 });
 }
 
 CollisionSystem::CollisionSystem(SDL_Rect bounds)
@@ -25,6 +25,9 @@ void CollisionSystem::Update()
 
 	for (int i = 0; i < m_entities.size(); i++)
 	{
+		if (i == 15) {
+			std::cout << "." << std::endl;
+		}
 		m_quadtree->insert(m_entities.at(i));
 	}
 

@@ -34,16 +34,16 @@ void BattleMap::Generate(std::string type)
 
 	std::vector<Entity*>* projectileEntities = m_systemManager->ProjectileSystem->getEntities();
 	
-	for (int i = 0; i < 50; i++)
-	{
-		Entity* projectile = new Entity("Projectile");
-		projectile->AddComponent(new SpriteComponent("Arrow", 2, 0, 0, 0, 16, 8, 0));
-		projectile->AddComponent(new PositionComponent(SDL_Point{ -5000, -5000 }));
-		projectile->AddComponent(new ProjectileComponent(4.9, "Player", 5.0f, 3.0f, 700.0f, false));
-		projectile->AddComponent(new MovementComponent());
-		projectile->AddComponent(new CollisionComponent());
-		projectileEntities->push_back(projectile);
-	}
+	//for (int i = 0; i < 50; i++)
+	//{
+	//	Entity* projectile = new Entity("Projectile");
+	//	projectile->AddComponent(new SpriteComponent("Arrow", 2, 0, 0, 0, 16, 8, 0));
+	//	projectile->AddComponent(new PositionComponent(SDL_Point{ -5000, -5000 }));
+	//	projectile->AddComponent(new ProjectileComponent(4.9, "Player", 5.0f, 3.0f, 700.0f, false));
+	//	projectile->AddComponent(new MovementComponent());
+	//	projectile->AddComponent(new CollisionComponent());
+	//	projectileEntities->push_back(projectile);
+	//}
 	for (auto i = projectileEntities->begin(), end = projectileEntities->end(); i != end; i++)
 	{
 		m_systemManager->RenderSystem->AddEntity((*i));

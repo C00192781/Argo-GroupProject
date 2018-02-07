@@ -25,7 +25,6 @@ public:
 	MovementSystem * MovementSystem;
 	ControlSystem *  ControlSystem;
 	AttackSystem* AttackSystem;
-	AiSystem * AiSystems;
 	CollisionSystem *CollisionSystem;
 	ProjectileSystem * ProjectileSystem;
 	HealthSystem * healthSystem;
