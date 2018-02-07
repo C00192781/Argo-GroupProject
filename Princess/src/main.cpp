@@ -63,7 +63,7 @@ int main()
 
 	std::vector<Entity*> entitys;
 
-	for (int i = 0; i < 10000; i++)
+	for (int i = 0; i < 5000; i++)
 	{
 		Entity * player = new Entity("Player");
 		player->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
