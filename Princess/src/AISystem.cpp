@@ -22,7 +22,6 @@ void AiSystem::Spawn()
 {
 	SDL_Point p{ 300,0 };
 	
-
 	characterFactory = new Princess();
 	m_entities.push_back(characterFactory->CharA("Red", p, 0));
 
@@ -83,8 +82,6 @@ void AiSystem::seek(int entityIndex, int pcKey, int mcKey, int seekKey)
 		static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setXVelocity(0);
 		static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setYVelocity(0);
 	}
-
-
 }
 
 

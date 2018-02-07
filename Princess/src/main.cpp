@@ -81,8 +81,6 @@ int main()
 
 
 	Quadtree* quad = new Quadtree(0, SDL_Rect{0,0  , 816, 624 });
-	
-	std::vector<Entity*> mommy;
 
 	while (1 != 0)
 	{
@@ -96,89 +94,14 @@ int main()
 
 			lastTime = currentTime;
 		}
-		auto daddy = systemManager.AiSystems->getEntities();
+		auto aiSystemEntities = systemManager.AiSystems->getEntities();
 
 		quad->clear();
 		quad->init();
-		for (int i = 0; i < daddy.size(); i++) 
+		for (int i = 0; i < aiSystemEntities.size(); i++)
 		{
-			quad->insert(daddy.at(i));
+			quad->insert(aiSystemEntities.at(i));
 		}
-
-
-		//std::vector<Entity*> entityVec;
-		//
-		////entityVec.reserve(daddy.size());
-		//
-		//for (int i = 0; i < daddy.size(); i++)
-		//{
-		//	entityVec.clear();
-		//	entityVec = quad->retrieve(entityVec, daddy.at(i));
-		//
-		////	auto mommwhy = quad->retrieve(entityVec, daddy.at(i));
-		//	  //auto something =
-		//	 if (entityVec.size() > 0)
-		//	 { 
-		//	//	 cout << "FREDIERCUS REX UNSER KONIG UND HERR" << endl;
-		//	 }
-		//	 else if (entityVec.size() == 0)
-		//	 {
-		//		 cout << "eine jede kugel die trifft ja nicht" << endl;
-		//	 }
-		//	// mommy.insert(mommy.end(), something.begin(), something.end());
-		//	 
-		////	 mommy.insert()
-		//
-	//	//	 older.insert(holder.end(), backgroundHolder.begin(), backgroundHolder.end());
-		//
-		//	//entityVec.insert(mommy)'
-		//	 int q = 5;
-		//	 q -= 5;
-		//}
-	//	//entityVec = mommy;
-		//
-		//for (int x = 0; x < entityVec.size(); x++)
-		//{
-		//	//cout << entityVec.size() << endl;
-		//	/*auto temp = entityVec;
-		//
-		//	int q = 5;
-		//	q -= 5;
-		// */
-		//	auto temp1 = entityVec.at(0);
-		////	static_cast<PositionComponent*>(entity->GetComponents()->at(2))->getPosition().y
-		//	auto rect1 = static_cast<SpriteComponent*>(temp1->GetComponents()->at(1))->GetRect();
-		//
-		//	auto temp2 = entityVec.at(1);
-		//	//	static_cast<PositionComponent*>(entity->GetComponents()->at(2))->getPosition().y
-		//	auto rect2 = static_cast<SpriteComponent*>(temp1->GetComponents()->at(1))->GetRect();
-		//
-		//	rect1.x += static_cast<PositionComponent*>(temp1->GetComponents()->at(2))->getPosition().x;
-		//	rect1.x += static_cast<PositionComponent*>(temp1->GetComponents()->at(2))->getPosition().y;
-		//
-		//	rect2.x += static_cast<PositionComponent*>(temp2->GetComponents()->at(2))->getPosition().x;
-		//	rect2.x += static_cast<PositionComponent*>(temp2->GetComponents()->at(2))->getPosition().y;
-		//
-		//	if (SDL_HasIntersection(&rect1, &rect2))
-		//	{
-		//	//	cout << "hit " << endl;
-		//	}
-		//
-		//	if (!SDL_HasIntersection(&rect1, &rect2))
-		//	{
-		//	//	cout << "miss " << endl;
-		//	}
-		//	//collision detection
-		//}
-		//
-		////List returnObjects = new ArrayList();
-		////for (int i = 0; i < allObjects.size(); i++) {
-		////	returnObjects.clear();
-		////	quad.retrieve(returnObjects, objects.get(i));
-		//
-		////	for (int x = 0; x < returnObjects.size(); x++) {
-		////		// Run collision detection algorithm between objects
-		////	}
 
 		input->handleInput(*e);
 
