@@ -71,9 +71,6 @@
     <ClCompile Include="src\WorldTileFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Quad.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Component.h">
@@ -173,9 +170,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\WorldTileFactory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Quad.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

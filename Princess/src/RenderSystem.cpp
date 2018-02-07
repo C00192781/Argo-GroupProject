@@ -88,7 +88,7 @@ void RenderSystem::Update()
 		std::vector<Entity*> entHolder;
 		for (int i = 0; i < holder.size(); i++)
 		{
-			entHolder.push_back(m_entities.at(i));
+			entHolder.push_back(m_entities.at(holder.at(i)));
 		}
 
 		m_sizeMemory = entHolder.size();
