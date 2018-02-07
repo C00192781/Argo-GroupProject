@@ -10,8 +10,6 @@ HealthSystem::~HealthSystem()
 
 }
 
-
-
 void HealthSystem::Update(float deltaTime)
 {
 
@@ -112,8 +110,6 @@ void HealthSystem::UpdateHeartsUIStatus(Entity * HeartManager, Entity* player)
 			acKey = k;
 		}
 	}
-
-
 	int hmcKey = -1;
 	for (int j = 0; j < HeartManager->GetComponents()->size(); j++)
 	{
@@ -161,6 +157,7 @@ void HealthSystem::UpdateHeartsUIStatus(Entity * HeartManager, Entity* player)
 					{
 						int numHearts = (playerAc->MaxHealth() / 2.0f);
 						float numFullHearts = (playerAc->Health() / 2.0f);
+
 						if (hc->Index() >= (numFullHearts - 0.5f) && hc->Index() < (numFullHearts) && hc->Index() != numFullHearts)
 						{
 							if (hc->State() != HeartState::HALF)
@@ -189,8 +186,7 @@ void HealthSystem::UpdateHeartsUIStatus(Entity * HeartManager, Entity* player)
 					else
 					{
 						std::cout << "ERROR INDEX LARGER THAN LIST SIZE" << std::endl;
-					}
-				
+					}			
 				}
 			}
 		}

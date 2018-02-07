@@ -4,12 +4,18 @@
 #include "PositionComponent.h"
 #include "CollisionComponent.h"
 #include "SpriteComponent.h"
+#include "AttributesComponent.h"
 
 class CollisionSystem : public System
 {
 public:
 	CollisionSystem();
 	~CollisionSystem();
-
+	int x1 = -22222;
+	int y1 = -22222;
+	int w1 = -22222;
+	int h1 = -22222;
+	int damage = 0;
+	bool collision = false;
 	void Update();
 };

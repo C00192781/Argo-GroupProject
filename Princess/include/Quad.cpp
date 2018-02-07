@@ -60,12 +60,12 @@ int Quadtree::getIndex(Entity* entity)
 		if (topQuadrant) {
 			index = 1;
 			
-			cout << entity->ID() << "topleft " << endl;
+			//cout << entity->ID() << "topleft " << endl;
 		}
 		else if (bottomQuadrant) {
 			index = 2;
 
-			cout << entity->ID() << "bottomleft" << endl;
+			//cout << entity->ID() << "bottomleft" << endl;
 		}
 	}
 	// Object can completely fit within the right quadrants
@@ -73,12 +73,12 @@ int Quadtree::getIndex(Entity* entity)
 		if (topQuadrant) {
 			index = 0;
 
-			cout << entity->ID() << "topright" << endl;
+			//cout << entity->ID() << "topright" << endl;
 		}
 		else if (bottomQuadrant) {
 			index = 3;
 
-			cout << entity->ID() << "bottomright" << endl;
+			//cout << entity->ID() << "bottomright" << endl;
 		}
 	}
 
