@@ -23,7 +23,7 @@ void BattleMap::Generate(std::string type)
 	m_systemManager->ControlSystem->SelectiveClear();
 	m_systemManager->RenderSystem->SelectiveClear();
 	m_systemManager->MovementSystem->SelectiveClear();
-
+	m_systemManager->AiSystems->SelectiveClear();
 	delete m_factory;
 
 	if (type == "Grassland")
@@ -53,8 +53,23 @@ void BattleMap::Generate(std::string type)
 				m_entities.push_back(m_factory->GroundD("Turf", i * (16 * m_systemManager->RenderSystem->GetScale()), j * (16 * m_systemManager->RenderSystem->GetScale())));
 			}
 			m_systemManager->RenderSystem->AddEntity(m_entities.back());
+		
+
 		}
 	}
+
+	m_systemManager->AiSystems->Spawn();
+
+	auto aiEntities = m_systemManager->AiSystems->getEntities(); //get and add AI entities to be rendered
+	
+
+
+	for (auto i = aiEntities.begin(), end = aiEntities.end(); i != end; i++)
+	{
+		m_systemManager->RenderSystem->AddEntity((*i));
+		m_systemManager->MovementSystem->AddEntity((*i)); //consider tag discrimination here
+	}
+
 }
 void BattleMap::Update()
 {

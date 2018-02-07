@@ -8,6 +8,7 @@
 #include "AttackSystem.h"
 #include "PositionComponent.h"
 #include "SpriteComponent.h"
+#include "AISystem.h"
 
 class SystemManager
 {
@@ -17,8 +18,12 @@ public:
 	MovementSystem * MovementSystem;
 	ControlSystem *  ControlSystem;
 	AttackSystem* AttackSystem;
+	AiSystem * AiSystems;
 
-	void Update();
+	void Update(float deltaTime);
+
+private:
+	bool flag = false;
 
 };
 #endif
