@@ -59,7 +59,7 @@ std::vector<Entity*> AiSystem::getEntities()
 }
 
 
-void AiSystem::seek(int entityIndex, int pcKey, int mcKey, int seekKey)
+void AiSystem::seek(int entityIndex, int pcKey, int mcKey, int seekKey, int attributeKey)
 {
 	float x = static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->getXDestination() - static_cast<PositionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(pcKey))->getX();
 	float y = static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->getYDestination() - static_cast<PositionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(pcKey))->getY();
@@ -68,11 +68,11 @@ void AiSystem::seek(int entityIndex, int pcKey, int mcKey, int seekKey)
 
 	static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->setDistanceToDestination(dist);
 
-	if (dist > static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->getSpeed() / 60)
+	if (dist > static_cast<AttributesComponent*>(m_entities.at(entityIndex)->GetComponents()->at(attributeKey))->MovementSpeed() / 60)
 	{
 		normalise(x, y);
-		x *= static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->getSpeed();
-		y *= static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->getSpeed();
+		x *= static_cast<AttributesComponent*>(m_entities.at(entityIndex)->GetComponents()->at(attributeKey))->MovementSpeed();
+		y *= static_cast<AttributesComponent*>(m_entities.at(entityIndex)->GetComponents()->at(attributeKey))->MovementSpeed();
 
 		static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setXVelocity(x);
 		static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setYVelocity(y);
@@ -91,7 +91,7 @@ void AiSystem::Update()
 }
 
 
-void AiSystem::Wander(int entityIndex, int pcKey, int mcKey, int seekKey)
+void AiSystem::Wander(int entityIndex, int pcKey, int mcKey, int seekKey, int attributeKey)
 {
 	time_t t;
 
@@ -159,8 +159,8 @@ void AiSystem::Wander(int entityIndex, int pcKey, int mcKey, int seekKey)
 	//if (dist > static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->getSpeed() )
 	//{
 		normalise(x, y);
-		x *= static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->getSpeed();
-		y *= static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->getSpeed();
+		x *= static_cast<AttributesComponent*>(m_entities.at(entityIndex)->GetComponents()->at(attributeKey))->MovementSpeed();
+		y *= static_cast<AttributesComponent*>(m_entities.at(entityIndex)->GetComponents()->at(attributeKey))->MovementSpeed();
 
 		static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setXVelocity(x);
 		static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setYVelocity(y);
@@ -242,6 +242,7 @@ void AiSystem::Update(float deltaTime)
 		int mcKey = -1;
 		int seekKey = -1;
 		int attackKey = -1;
+		int attributeKey = -1;
 
 		for (int j = 0; j < m_entities.at(i)->GetComponents()->size(); j++)
 		{
@@ -261,10 +262,14 @@ void AiSystem::Update(float deltaTime)
 			{
 				attackKey = j;
 			}
+			else if (m_entities.at(i)->GetComponents()->at(j)->Type() == "attribute")
+			{
+				attributeKey = j;
+			}
 		}
 
 
-		if (seekKey >= 0 && pcKey >= 0 && mcKey >= 0)
+		if (seekKey >= 0 && pcKey >= 0 && mcKey >= 0 && attributeKey >= 0)
 		{
 			if (attackKey >= 0)
 			{
@@ -274,17 +279,17 @@ void AiSystem::Update(float deltaTime)
 				}
 				else
 				{
-
-					seek(i, pcKey, mcKey, seekKey);
+					seek(i, pcKey, mcKey, seekKey,attributeKey);
 				}
 			}
 			else
 			{
-				seek(i, pcKey, mcKey, seekKey);
+				seek(i, pcKey, mcKey, seekKey,attributeKey);
 			}
 
 			if (m_entities.at(i)->ID() == "Princess")
 			{
+				Wander(i, pcKey, mcKey, seekKey,attributeKey);
 
 
 				//m_entities.at(i)->RemoveComponent(new MovementComponent*);

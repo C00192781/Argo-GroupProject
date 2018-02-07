@@ -7,9 +7,15 @@
 #include "MovementSystem.h"
 #include "AttackSystem.h"
 #include "PositionComponent.h"
-#include "SpriteComponent.h"
+#include "SpriteComponent.h"<
+#include "ProjectileComponent.h"
+#include "ProjectileSystem.h"
+#include "CollisionSystem.h"
+#include "AttributesComponent.h"
+#include "HeartManagerComponent.h"
 #include "AISystem.h"
 #include "CollisionSystem.h"
+#include "HealthSystem.h"
 
 class SystemManager
 {
@@ -21,6 +27,9 @@ public:
 	AttackSystem* AttackSystem;
 	AiSystem * AiSystems;
 	CollisionSystem *CollisionSystem;
+	ProjectileSystem * ProjectileSystem;
+	HealthSystem * healthSystem;
+	AiSystem * AiSystem;
 
 	void Update(float deltaTime);
 

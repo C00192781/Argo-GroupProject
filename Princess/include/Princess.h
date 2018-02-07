@@ -6,6 +6,7 @@
 #include "PositionComponent.h"
 #include "AiLogicComponent.h"
 #include "MovementComponent.h"
+#include "AttributesComponent.h"
 #include "SeekComponent.h"
 class Princess : public Character
 {

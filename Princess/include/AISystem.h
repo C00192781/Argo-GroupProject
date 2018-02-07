@@ -8,6 +8,7 @@
 #include "MovementComponent.h"
 #include "SeekComponent.h"
 #include "AttackComponent.h"
+#include "AttributesComponent.h"
 #include "BasicEnemy.h"
 
 class AiSystem : public System
@@ -20,11 +21,11 @@ public:
 	void Spawn(std::string id);
 	void Spawn();
 	std::vector<Entity*> getEntities();
-	void seek(int entityIndex, int pcKey, int mcKey, int seekKey);
+	void seek(int entityIndex, int pcKey, int mcKey, int seekKey, int attributeKey);
 	void attack(int entityIndex, int attackKey, int mcKey);
 	void normalise(float &x, float &y);
 	float magnitude(float x, float y);
-	void Wander(int i,int pcKey,int mcKey,int seekKey);
+	void Wander(int i,int pcKey,int mcKey,int seekKey, int attributeKey);
 private:
 	std::vector<Character*> CharFactory;
 	Character* characterFactory;

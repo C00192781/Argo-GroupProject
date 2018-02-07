@@ -8,6 +8,7 @@
 #include "MovementComponent.h"
 #include "SeekComponent.h"
 #include "AttackComponent.h"
+#include "AttributesComponent.h"
 class BasicEnemy : public Character
 {
 public:

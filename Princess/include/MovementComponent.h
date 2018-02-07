@@ -25,8 +25,8 @@ public:
 		m_lockOrientation = false;
 	}
 
-	void setSpeed(int speed) { m_speed = speed; };
-	int getSpeed() { return m_speed; };
+	//void setSpeed(int speed) { m_speed = speed; };
+	//int getSpeed() { return m_speed; };
 
 	void setOrientation(float orientation) { m_orientation = orientation; };
 	float getOrientation() { return m_orientation; };
