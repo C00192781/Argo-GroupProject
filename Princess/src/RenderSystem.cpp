@@ -34,7 +34,10 @@ void RenderSystem::Update()
 			{
 				if (m_entities.at(i)->GetComponents()->at(j)->Type() == "SC")
 				{
-					static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(j))->Frame(static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(j))->Frame() + 1);
+					if (static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(j))->IsAnimating() == true)
+					{
+						static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(j))->Frame(static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(j))->Frame() + 1);
+					}
 				}
 			}
 		}

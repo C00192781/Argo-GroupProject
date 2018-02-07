@@ -16,7 +16,10 @@ public:
 private:
 	SDL_Renderer * m_renderer;
 	ResourceManager * m_resourceManager;
-	int m_scale;
+
+	float m_scale;
+	//int m_scale;
+
 	int m_timer;
 };
 #endif

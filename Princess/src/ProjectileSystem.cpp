@@ -64,14 +64,14 @@ void ProjectileSystem::Update()
 				Vector2f velocity = MovementHandler(v.X, v.Y, speed);
 
 				// assign velocity
-				static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setXVeclocity(velocity.X);
-				static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setYVeclocity(velocity.Y);
+				static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setXVelocity(velocity.X);
+				static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setYVelocity(velocity.Y);
 			}
 		    if (alive == false)
 			{
 				// assign velocity
-				static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setXVeclocity(0);
-				static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setYVeclocity(0);
+				static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setXVelocity(0);
+				static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setYVelocity(0);
 			}
 		}
 	}

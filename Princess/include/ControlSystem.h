@@ -7,7 +7,7 @@
 #include "SpriteComponent.h"
 #include "CollisionSystem.h"
 #include "MovementComponent.h"
-
+#include "AttributesComponent.h"
 
 class ControlSystem : public System
 {
