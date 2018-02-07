@@ -1,21 +1,14 @@
 #include "SystemManager.h"
 
-void SystemManager::Update()
+void SystemManager::Update(float deltaTime)
 {
-	/*if (flag == false)
-	{
-		AiSystem->Spawn();
-		flag = true;
-	}
-*/
-	//auto m_entities = AiSystem->getEntities();
 
-	if (MovementSystem->Active()) { MovementSystem->Update(); }
+	if (MovementSystem->Active()) { MovementSystem->Update(deltaTime); }
 	if (ControlSystem->Active()) { ControlSystem->Update(); }
 
-	//RenderSystem->addEntities(m_entities);
-
 	if (RenderSystem->Active()) { RenderSystem->Update(); }
-	if (AiSystem->Active()) { AiSystem->Update(); }
+	if (AiSystems->Active()) { AiSystems->Update(deltaTime); }
+
+	
 
 }
