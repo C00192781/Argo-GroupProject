@@ -39,8 +39,10 @@ public:
 	void HeartType(HeartTypes heartType) { m_heartType = heartType; };
 
 	std::vector<Entity*>* HeartList() { return m_heartVector; };
+	//void HeartList(std::list<HeartComponent>* heartList) { m_heartList = heartList; };
 
 private:
+
 	int m_index;
 	int m_state;
 	HeartTypes m_heartType;

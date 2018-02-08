@@ -9,6 +9,5 @@ class MovementSystem : public System
 public:
 	MovementSystem() {}
 
-	void Update() {}
-	void Update(float deltaTime);
-}; 
+	void Update();
+};

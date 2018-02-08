@@ -24,8 +24,6 @@ protected:
 
 	std::vector<Entity*> m_entities;
 
-	TileFactory * m_factory;
-
 	SystemManager * m_systemManager;
 
 	StateManager * m_stateManager;

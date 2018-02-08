@@ -3,6 +3,7 @@
 Entity::Entity(std::string id)
 {
 	m_id = id;
+	m_active = true;
 }
 
 Entity::~Entity()

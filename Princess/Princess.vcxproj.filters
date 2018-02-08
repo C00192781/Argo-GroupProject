@@ -65,16 +65,10 @@
     <ClCompile Include="src\SystemManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\AISystem.cpp">
+    <ClCompile Include="src\WorldMap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="include\Princess.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="include\BasicEnemy.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="include\Quad.cpp">
+    <ClCompile Include="src\WorldTileFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -124,9 +118,6 @@
     <ClInclude Include="include\HeartComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\HeartManagerComponent.h">
-	      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\EventListener.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -169,34 +160,16 @@
     <ClInclude Include="include\StateManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\TileFactory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\SystemManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\AiLogicComponent.h">
+    <ClInclude Include="include\TileFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\AISystem.h">
+    <ClInclude Include="include\WorldMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Princess.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Character.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\AttackComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\SeekComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\BasicEnemy.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Quad.h">
+    <ClInclude Include="include\WorldTileFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

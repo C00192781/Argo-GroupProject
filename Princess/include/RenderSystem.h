@@ -11,15 +11,20 @@ public:
 	RenderSystem(ResourceManager * rm, SDL_Renderer * r);
 	~RenderSystem();
 	void Update();
+	void Draw();
 	void SetScale(float x) { m_scale = x; };
 	float GetScale() { return m_scale; };
+
+	void Camera(bool x) { m_cameraOn = x; }
+	void Camera(int width, int height) { m_camera.x = width; m_camera.y = height; };
+
 private:
 	SDL_Renderer * m_renderer;
 	ResourceManager * m_resourceManager;
-
-	float m_scale;
-	//int m_scale;
-
+	int m_scale;
 	int m_timer;
+	int m_sizeMemory;
+	bool m_cameraOn;
+	SDL_Point m_camera;
 };
 #endif

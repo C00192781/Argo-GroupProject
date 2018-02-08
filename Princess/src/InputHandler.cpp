@@ -1,11 +1,12 @@
 #include "InputHandler.h"
 
-void InputHandler::handleInput(SDL_Event &e) 
+void InputHandler::handleInput() 
 {
-	switch (e.type) 
+	SDL_PollEvent(m_event);
+	switch (m_event->type) 
 	{
 	case SDL_MOUSEBUTTONDOWN:
-		switch (e.button.button)
+		switch (m_event->button.button)
 		{
 		case SDL_BUTTON_LEFT:
 			m_eventListener->LeftClick = true;
@@ -20,7 +21,7 @@ void InputHandler::handleInput(SDL_Event &e)
 		break;
 
 	case SDL_MOUSEBUTTONUP:
-		switch (e.button.button)
+		switch (m_event->button.button)
 		{
 		case SDL_BUTTON_LEFT:
 			m_eventListener->LeftClick = false;
@@ -35,7 +36,7 @@ void InputHandler::handleInput(SDL_Event &e)
 		break;
 
 	case SDL_KEYDOWN:
-		switch (e.key.keysym.sym) 
+		switch (m_event->key.keysym.sym)
 		{
 		case SDLK_w:
 			m_eventListener->W = true;
@@ -67,7 +68,7 @@ void InputHandler::handleInput(SDL_Event &e)
 		break;
 
 	case SDL_KEYUP:
-		switch (e.key.keysym.sym) 
+		switch (m_event->key.keysym.sym)
 		{
 		case SDLK_w:
 			m_eventListener->W = false;
