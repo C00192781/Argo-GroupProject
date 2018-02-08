@@ -15,7 +15,8 @@ public:
 	void Update();
 	void ChangeMenu(std::string ID);
 	void SetUpMainMenu();
-	void RemoveMenu();
+	void RemoveMenu(std::string ID);
+	MenuComponent* GetMenuComponent(std::string ID);
 private:
 	int indexActiveMenu;
 	std::string activeMenuID;

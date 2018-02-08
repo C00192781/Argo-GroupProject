@@ -26,7 +26,6 @@
     <ClCompile Include="include\BasicEnemy.cpp" />
     <ClCompile Include="include\Princess.cpp" />
     <ClCompile Include="include\Quad.cpp" />
-    <ClCompile Include="MenuSystem.cpp" />
     <ClCompile Include="src\AISystem.cpp" />
     <ClCompile Include="src\BattleMap.cpp" />
     <ClCompile Include="src\CollisionSystem.cpp" />
@@ -36,6 +35,7 @@
     <ClCompile Include="src\HealthSystem.cpp" />
     <ClCompile Include="src\InputHandler.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\MenuSystem.cpp" />
     <ClCompile Include="src\MovementSystem.cpp" />
     <ClCompile Include="src\ProjectileSystem.cpp" />
     <ClCompile Include="src\RenderSystem.cpp" />
@@ -43,7 +43,6 @@
     <ClCompile Include="src\SystemManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ButtonComponent.h" />
     <ClInclude Include="External Dependencies\ResourceManager\JSONReader.h" />
     <ClInclude Include="External Dependencies\ResourceManager\ResourceManager.h" />
     <ClInclude Include="External Dependencies\SimpleJSON\JSON.h" />
@@ -53,6 +52,7 @@
     <ClInclude Include="include\AttackComponent.h" />
     <ClInclude Include="include\BasicEnemy.h" />
     <ClInclude Include="include\BattleMap.h" />
+    <ClInclude Include="include\ButtonComponent.h" />
     <ClInclude Include="include\Character.h" />
     <ClInclude Include="include\CollisionComponent.h" />
     <ClInclude Include="include\CollisionSystem.h" />
@@ -69,6 +69,8 @@
     <ClInclude Include="include\HeartManagerComponent.h" />
     <ClInclude Include="include\InputHandler.h" />
     <ClInclude Include="include\Instance.h" />
+    <ClInclude Include="include\MenuComponent.h" />
+    <ClInclude Include="include\MenuSystem.h" />
     <ClInclude Include="include\MovementComponent.h" />
     <ClInclude Include="include\MovementSystem.h" />
     <ClInclude Include="include\PositionComponent.h" />
@@ -84,8 +86,6 @@
     <ClInclude Include="include\System.h" />
     <ClInclude Include="include\SystemManager.h" />
     <ClInclude Include="include\TileFactory.h" />
-    <ClInclude Include="MenuComponent.h" />
-    <ClInclude Include="MenuSystem.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

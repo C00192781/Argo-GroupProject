@@ -25,6 +25,7 @@ void BattleMap::Generate(std::string type)
 	m_systemManager->MovementSystem->SelectiveClear();
 	m_systemManager->AiSystem->SelectiveClear();
 	m_systemManager->healthSystem->SelectiveClear();
+	m_systemManager->menuSystem->SelectiveClear();
 	delete m_factory;
 
 	if (type == "Grassland")
@@ -104,10 +105,10 @@ void BattleMap::Generate(std::string type)
 
 	m_systemManager->ControlSystem->AddEntity(player);
 	m_systemManager->MovementSystem->AddEntity(player);
-	//m_systemManager->RenderSystem->AddEntity(player);
+	m_systemManager->RenderSystem->AddEntity(player);
 	m_systemManager->ProjectileSystem->AddEntity(player);
 	m_systemManager->CollisionSystem->AddEntity(player);
-	//m_systemManager->healthSystem->AddEntity(player);
+	m_systemManager->healthSystem->AddEntity(player);
 
 	AttributesComponent* ac = new AttributesComponent();
 	player->AddComponent(ac);

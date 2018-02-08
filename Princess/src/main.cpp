@@ -45,6 +45,11 @@ int main()
 	resourceManager->AddTexture("HeartsSheet", "heartSpriteSheet.png");
 	resourceManager->AddTexture("ArmourSheet", "armourSpriteSheet.png");
 
+	resourceManager->AddTexture("StartGameButton", "StartGameButton.png");
+	resourceManager->AddTexture("OptionsButton", "OptionsButton.png");
+	resourceManager->AddTexture("ExitGameButton", "ExitGameButton.png");
+
+
 	EventListener *listener = new EventListener();
 
 	InputHandler *input = new InputHandler(listener);
@@ -72,6 +77,9 @@ int main()
 
 	systemManager.healthSystem = new HealthSystem();
 	systemManager.healthSystem->Active(true);
+
+	systemManager.menuSystem = new MenuSystem();
+	systemManager.menuSystem->Active(true);
 
 	BattleMap map1 = BattleMap(&systemManager, gameRenderer, &state);
 	map1.Generate("Grassland");
@@ -109,6 +117,12 @@ int main()
 	////systemManager.RenderSystem->AddEntity(meleeEnemy);
 	////systemManager.MovementSystem->AddEntity(meleeEnemy);
 
+	systemManager.menuSystem->SetUpMainMenu();
+	systemManager.menuSystem->ChangeMenu("MainMenu");
+	for (int i = 0; i < systemManager.menuSystem->GetMenuComponent("MainMenu")->Buttons()->size(); i++)
+	{
+		systemManager.RenderSystem->AddEntity(systemManager.menuSystem->GetMenuComponent("MainMenu")->Buttons()->at(i));
+	}
 
 	Quadtree* quad = new Quadtree(0, SDL_Rect{0,0  , 816, 624 });
 
@@ -134,6 +148,7 @@ int main()
 		}
 
 		input->handleInput(*e);
+
 		map1.Update();
 
 		SDL_SetRenderDrawColor(gameRenderer, 255, 255, 255, 0);

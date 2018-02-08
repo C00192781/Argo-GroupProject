@@ -16,4 +16,5 @@ void SystemManager::Update(float deltaTime)
 	if (AiSystem->Active()) { AiSystem->Update(deltaTime); }
 	if (ProjectileSystem->Active()) { ProjectileSystem->Update(); }
 	if (healthSystem->Active()) { healthSystem->Update(deltaTime); }
+	if (menuSystem->Active()) { menuSystem->Update(); }
 }

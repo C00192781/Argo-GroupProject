@@ -77,7 +77,7 @@
     <ClCompile Include="include\Quad.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MenuSystem.cpp">
+    <ClCompile Include="src\MenuSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -202,13 +202,13 @@
     <ClInclude Include="include\Quad.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ButtonComponent.h">
+    <ClInclude Include="include\ButtonComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MenuComponent.h">
+    <ClInclude Include="include\MenuComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MenuSystem.h">
+    <ClInclude Include="include\MenuSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
