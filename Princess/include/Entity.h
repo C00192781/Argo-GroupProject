@@ -15,7 +15,7 @@ public:
 	std::string ID() { return m_id; };
 	bool Active() { return m_active; };
 	void Active(bool x) { m_active = x; };
-	bool Transient() { return m_transient; };		
+	bool Transient() { return m_transient; };
 	void Transient(bool x) { m_transient = x; };
 private:
 	std::vector<Component*> m_components;
@@ -23,4 +23,5 @@ private:
 	bool m_transient;
 	bool m_active;
 };
+
 #endif

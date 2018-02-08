@@ -6,11 +6,10 @@
 class InputHandler
 {
 public:
-	InputHandler(EventListener *e, SDL_Event * ev) { m_eventListener = e; m_event = ev; };
+	InputHandler(EventListener *e) { m_eventListener = e; };
 
-	void handleInput();
+	void handleInput(SDL_Event &e);
 
 private:
 	EventListener *m_eventListener;
-	SDL_Event * m_event;
 };

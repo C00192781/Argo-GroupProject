@@ -29,9 +29,22 @@ void AiSystem::Spawn()
 
 	characterFactory = new BasicEnemy();
 	m_entities.push_back(characterFactory->CharC("Demon", p, 0));
+
+	time_t t;
+
+	srand((unsigned)time(&t));
+
+	//int temp = m_time * 1000;
+
+	int mod1 = rand() % 800;
+
+	int mod2 = rand() % 750;
 	
-	for (int i = 0; i < 100; i++)
+	for (int i = 0; i < 50; i++)
 	{
+		p.x = rand() % 800;
+		p.y = rand()% 760;
+	
 	//	characterFactory = new BasicEnemy();
 		m_entities.push_back(characterFactory->CharC("Demon", p, 0));
 	

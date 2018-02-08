@@ -6,12 +6,12 @@
 class ControlComponent : public Component
 {
 public:
-	ControlComponent(InputHandler *input) 
-	{ 
+	ControlComponent(InputHandler *input)
+	{
 		m_type = "control";
 		m_input = input;
 	}
-	
+
 	InputHandler* getInput() { return m_input; }
 
 private:
