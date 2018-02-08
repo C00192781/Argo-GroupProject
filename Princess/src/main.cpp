@@ -34,6 +34,8 @@ int main()
 
 	bool debug = false;
 
+	bool running = true;
+
 	srand(time(NULL));
 
 	ResourceManager *resourceManager = new ResourceManager(gameRenderer, "Resources");
@@ -125,8 +127,7 @@ int main()
 	}
 
 	Quadtree* quad = new Quadtree(0, SDL_Rect{0,0  , 816, 624 });
-
-	while (1 != 0)
+	while (running == true)
 	{
 		currentTime = SDL_GetTicks();
 		SDL_PollEvent(e);
@@ -147,7 +148,7 @@ int main()
 			quad->insert(aiSystemEntities.at(i));
 		}
 
-		input->handleInput(*e);
+		//input->handleInput(*e);
 
 		map1.Update();
 

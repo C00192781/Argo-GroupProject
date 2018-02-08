@@ -124,6 +124,8 @@ void MenuSystem::RemoveMenu(std::string ID)
 			m_entities.erase((it));
 		}
 	}
+
+
 }
 
 MenuComponent * MenuSystem::GetMenuComponent(std::string ID)
