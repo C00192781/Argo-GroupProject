@@ -173,7 +173,6 @@ int main()
 		{
 			//Wait remaining time
 			SDL_Delay(SCREEN_TICKS_PER_FRAME - frameTicks);
-			//cout << "juim" << endl;
 
 			currentTime = SDL_GetTicks();
 			SDL_PollEvent(e);
@@ -185,6 +184,8 @@ int main()
 
 				lastTime = currentTime;
 			}
+
+
 			auto aiSystemEntities = systemManager.AiSystem->getEntities();
 
 			quad->clear();
@@ -212,18 +213,12 @@ int main()
 
 				collVector.push_back(aiSystemEntities.at(i));
 			}
-	/////*		for (int i = 0; i < projectiles->size(); i++)
-	////		{
-	////			collVector.push_back(projectiles->at(i));
-	////		}*/
 
 			for (int i = 0; i < collVector.size(); i++)
 			{
 				entityVec.clear();
 				entityVec = quad->retrieve(entityVec, collVector.at(i));
 
-				//	auto mommwhy = quad->retrieve(entityVec, daddy.at(i));
-				//auto something =
 				if (entityVec.size() > 0)
 				{
 					//	 cout << "FRIDERICUS REX UNSER KONIG UND HERR" << endl;
@@ -263,8 +258,6 @@ int main()
 					}
 				}
 			}
-
-
 			//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 			input->handleInput(*e);
