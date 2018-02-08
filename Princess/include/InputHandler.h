@@ -23,4 +23,5 @@ private:
 	SDL_GameController *gameController[MAX_CONTROLLERS];
 	int MaxJoysticks;
 	int ControllerIndex;
+
 };

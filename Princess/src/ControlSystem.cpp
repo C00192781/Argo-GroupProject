@@ -37,7 +37,7 @@ void ControlSystem::Update()
 				playerPos = static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(playerKey))->getPosition();
 			}
 			// makes sure it finds a movement component in the entity
-			if (mcKey >= 0 && acKey >= 0)
+			if (mcKey >= 0 && acKey >=0)
 			{
 				SDL_Point holder{ 0, 0 };
 				int speed = static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(acKey))->MovementSpeed();
@@ -78,7 +78,45 @@ void ControlSystem::Update()
 					{
 						holder.x = speed;
 					}
+
+					if (m_eventListener->XStick == -45)
+					{
+						holder.y = -speed;
+						holder.x = speed;
+					}
+					else if (m_eventListener->XStick == 0)
+					{
+						holder.x = speed;
+					}
+					else if (m_eventListener->XStick == 45)
+					{
+						holder.y = speed;
+						holder.x = speed;
+					}
+					else if (m_eventListener->XStick == 90)
+					{
+						holder.y = speed;
+					}
+					else if (m_eventListener->XStick == 135)
+					{
+						holder.x = -speed;
+						holder.y = speed;
+					}
+					else if (m_eventListener->XStick == 180)
+					{
+						holder.x = -speed;
+					}
+					else if (m_eventListener->XStick == -135)
+					{
+						holder.y = -speed;
+						holder.x = -speed;
+					}
+					else if (m_eventListener->XStick == -90)
+					{
+						holder.y = -speed;
+					}
 				}
+
 				static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setVelocity(holder);
 			}
 		}
@@ -121,7 +159,7 @@ void ControlSystem::Update()
 						float cosA;
 						SDL_GetMouseState(&x, &y);
 						cosA = atan2(y - playerPos.y, x - playerPos.x) + 3.14159265359 / 180 * 90;
-
+		
 						if (pjKey >= 0 && pcKey >= 0)
 						{
 							tickTime = SDL_GetTicks();
@@ -146,7 +184,7 @@ void ControlSystem::Update()
 									static_cast<ProjectileComponent*>(m_projectiles->at(index)->GetComponents()->at(pjKey))->setButtonPressTime(differenceInSeconds);
 									static_cast<ProjectileComponent*>(m_projectiles->at(index)->GetComponents()->at(pjKey))->setOrientation(cosA);
 									static_cast<PositionComponent*>(m_projectiles->at(index)->GetComponents()->at(pcKey))->setPosition(playerPos);
-
+								
 								}
 							}
 						}
@@ -158,11 +196,14 @@ void ControlSystem::Update()
 					{
 						lastTickTime = tickTime;
 						shoot = true;
-						std::cout << "Attack Button Pressed" << std::endl;
 					}
 					if (m_eventListener->RightTrigger <= 8000)
 					{
-						float cosA = 0;
+						//std::cout << m_eventListener->controllerActivated << std::endl;
+						float cosA;
+						cosA = m_eventListener->YStick;
+						//std::cout << cosA << std::endl;
+						
 						if (pjKey >= 0 && pcKey >= 0)
 						{
 							tickTime = SDL_GetTicks();
@@ -195,9 +236,8 @@ void ControlSystem::Update()
 				}
 			}
 		}
-	}	
+	}
 }
-
 
 //			//	mc->setAliveStatus(false);
 //				//int velocityX = mc->getSpeed();
