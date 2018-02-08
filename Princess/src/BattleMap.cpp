@@ -94,6 +94,7 @@ void BattleMap::Generate(std::string type)
 	}
 	
 	Entity * player = new Entity("Player");
+	player->Active(true);
 	player->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
 	player->AddComponent(new PositionComponent(SDL_Point{ 100, 300 }));
 	player->AddComponent(new AttributesComponent(26, 26, 10, 10, 100, 100));

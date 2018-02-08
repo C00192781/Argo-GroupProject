@@ -24,16 +24,19 @@ void AiSystem::Spawn()
 	
 	characterFactory = new Princess();
 	m_entities.push_back(characterFactory->CharA("Red", p, 0));
+	m_entities.back()->Active(true);
 
 	//p =  SDL_Point{ 10,100 };
 
 	characterFactory = new BasicEnemy();
 	//m_entities.push_back(characterFactory->CharC("Demon", p, 0));
+	//m_entities.back()->Active(true);
 	
 	for (int i = 0; i < 100; i++)
 	{
 	//	characterFactory = new BasicEnemy();
 		m_entities.push_back(characterFactory->CharC("Demon", SDL_Point{ rand() % 812, rand() % 624 }, 0));
+		m_entities.back()->Active(true);
 		//m_entities.push_back(characterFactory->CharC("Demon", SDL_Point{ 0, 0 }, 0));
 	}
 
