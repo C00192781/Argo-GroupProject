@@ -39,7 +39,6 @@ void AiSystem::Spawn()
 		m_entities.back()->Active(true);
 		//m_entities.push_back(characterFactory->CharC("Demon", SDL_Point{ 0, 0 }, 0));
 	}
-
 }
 
 
