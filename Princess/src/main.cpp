@@ -35,7 +35,7 @@ int main()
 	bool debug = false;
 
 	srand(time(NULL));
-	const int SCREEN_FPS = 60;
+	const int SCREEN_FPS = 600;
 	const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
 
 	//Set text color as black
@@ -71,6 +71,11 @@ int main()
 
 	std::vector<Entity*>* projectiles = new std::vector<Entity*>();
 
+	//for (int i = 0; i < 50; i++)
+	//{
+	//	projectiles->push_back()
+	//}
+
 
 	SystemManager systemManager;
 	systemManager.ControlSystem = new ControlSystem(listener);
@@ -97,14 +102,14 @@ int main()
 	BattleMap m = BattleMap(&systemManager, &state);
 	m.Generate("Grassland");
 
-	Entity * player = new Entity("Player");
-	player->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
-	player->Transient(true);
-	player->AddComponent(new PositionComponent(SDL_Point{ 0, 0 }));
-	player->AddComponent(new AttributesComponent());
-	player->AddComponent(new MovementComponent(3));
-	player->AddComponent(new CollisionComponent());
-	player->Active(true);
+	///*Entity * player = new Entity("Player");
+	//player->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
+	//player->Transient(true);
+	//player->AddComponent(new PositionComponent(SDL_Point{ 0, 0 }));
+	//player->AddComponent(new AttributesComponent());
+	//player->AddComponent(new MovementComponent(3));
+	//player->AddComponent(new CollisionComponent());
+	//player->Active(true);*/
 
 
 	//Entity * player = new Entity("Player");
@@ -140,7 +145,7 @@ int main()
 	////systemManager.RenderSystem->AddEntity(meleeEnemy);
 	////systemManager.MovementSystem->AddEntity(meleeEnemy);
 
-
+	std::vector<Entity*> collVector;
 	Quadtree* quad = new Quadtree(0, SDL_Rect{ 0,0  , 816, 624 });
 
 	while (1 != 0)
@@ -187,7 +192,80 @@ int main()
 			for (int i = 0; i < aiSystemEntities.size(); i++)
 			{
 				quad->insert(aiSystemEntities.at(i));
+				
 			}
+			
+////	/*		for (int i = 0; i < projectiles->size(); i++)
+////			{
+////				quad->insert(projectiles->at(i));
+////			}
+////*/
+			//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+			std::vector<Entity*> entityVec;
+
+			collVector.clear(); 
+	
+
+			for (int i = 0; i < aiSystemEntities.size(); i++)
+			{
+
+				collVector.push_back(aiSystemEntities.at(i));
+			}
+	/////*		for (int i = 0; i < projectiles->size(); i++)
+	////		{
+	////			collVector.push_back(projectiles->at(i));
+	////		}*/
+
+			for (int i = 0; i < collVector.size(); i++)
+			{
+				entityVec.clear();
+				entityVec = quad->retrieve(entityVec, collVector.at(i));
+
+				//	auto mommwhy = quad->retrieve(entityVec, daddy.at(i));
+				//auto something =
+				if (entityVec.size() > 0)
+				{
+					//	 cout << "FRIDERICUS REX UNSER KONIG UND HERR" << endl;
+				}
+				else if (entityVec.size() == 0)
+				{
+					cout << "quad empty" << endl;
+				}
+			}
+
+			for (int x = 0; x < entityVec.size(); x++) //check collision between entities in the current (sub)quadrant
+			{
+				auto temp1 = entityVec.at(x);
+				auto rect1 = static_cast<SpriteComponent*>(temp1->GetComponents()->at(1))->GetRect();
+
+				rect1.x += static_cast<PositionComponent*>(temp1->GetComponents()->at(2))->getPosition().x;
+				rect1.x += static_cast<PositionComponent*>(temp1->GetComponents()->at(2))->getPosition().y;
+
+				for (int y = 0; y < entityVec.size(); y++)
+				{
+					if (x != y) //things don't collide with themselves
+					{
+						auto temp2 = entityVec.at(y);
+						auto rect2 = static_cast<SpriteComponent*>(temp1->GetComponents()->at(1))->GetRect();
+						rect2.x += static_cast<PositionComponent*>(temp2->GetComponents()->at(2))->getPosition().x;
+						rect2.x += static_cast<PositionComponent*>(temp2->GetComponents()->at(2))->getPosition().y;
+
+						if (SDL_HasIntersection(&rect1, &rect2))
+						{
+					//		cout << "hit " << endl;
+						}
+
+						if (!SDL_HasIntersection(&rect1, &rect2))
+						{
+							//	cout << "miss " << endl;
+						}
+					}
+				}
+			}
+
+
+			//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 			input->handleInput(*e);
 			m.Update();

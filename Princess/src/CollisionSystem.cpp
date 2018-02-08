@@ -16,6 +16,8 @@ void CollisionSystem::Update()
 	float playerPosY = 0.0f;
 	float projectilePosX = 0.0f;
 	float projectilePosY = 0.0f;
+
+
 	for (int i = 0; i < m_entities.size(); i++)
 	{
 		if (m_entities.at(i)->ID() != "Hearts" && m_entities.at(i)->ID() != "ArmourDisplay")

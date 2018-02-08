@@ -40,7 +40,7 @@ void AiSystem::Spawn()
 
 	int mod2 = rand() % 750;
 	
-	for (int i = 0; i < 50; i++)
+	for (int i = 0; i < 100; i++)
 	{
 		p.x = rand() % 800;
 		p.y = rand()% 760;
