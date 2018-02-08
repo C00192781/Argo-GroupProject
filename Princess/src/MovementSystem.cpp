@@ -2,6 +2,8 @@
 
 void MovementSystem::Update(float deltaTime)
 {
+	SDL_GetMouseState(&m_mouseX, &m_mouseY);
+
 	// looks for if there is a position and movement component in the entity
 	for (int i = 0; i < m_entities.size(); i++)
 	{
@@ -28,6 +30,13 @@ void MovementSystem::Update(float deltaTime)
 			
 			*xPos += static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->getXVelocity() * deltaTime;
 			*yPos += static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->getYVelocity() * deltaTime;
+		
+			if (m_entities.at(i)->ID() == "Player")
+			{
+				if (static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->getLockedOrientation() == false) {
+					static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setOrientation(atan2((float)m_mouseY - *yPos, (float)m_mouseX - *xPos) * 180 / 3.14159265359);
+				}
+			}
 		}
 	}
 }

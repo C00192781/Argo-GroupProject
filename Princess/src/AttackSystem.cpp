@@ -122,7 +122,7 @@ void AttackSystem::Update()
 							}
 						}
 						static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->setAttacking(false);
-						//static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->setAllowAttack(true);
+						static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->setAllowAttack(true);
 					}
 				}
 				// if the entity has a magic weapon

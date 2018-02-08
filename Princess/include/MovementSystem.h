@@ -11,4 +11,7 @@ public:
 
 	void Update() {}
 	void Update(float deltaTime);
+private:
+	int m_mouseX;
+	int m_mouseY;
 }; 
