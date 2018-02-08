@@ -13,5 +13,8 @@ public:
 	bool S = false;
 	bool D = false;
 	bool Escape = false;
+	bool StartGame = false;
+	bool ExitGame = false;
+	bool GoToOptions = false;
 };
 #endif

@@ -8,6 +8,8 @@
 #include "CollisionSystem.h"
 #include "MovementComponent.h"
 #include "AttributesComponent.h"
+#include "MenuComponent.h"
+#include "ButtonComponent.h"
 
 class ControlSystem : public System
 {

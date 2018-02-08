@@ -80,51 +80,22 @@ int main()
 	systemManager.healthSystem = new HealthSystem();
 	systemManager.healthSystem->Active(true);
 
-	systemManager.menuSystem = new MenuSystem();
+	systemManager.menuSystem = new MenuSystem(listener);
 	systemManager.menuSystem->Active(true);
 
 	BattleMap map1 = BattleMap(&systemManager, gameRenderer, &state);
 	map1.Generate("Grassland");
 
-	//Entity * player = new Entity("Player");
-	//player->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
-	//player->AddComponent(new PositionComponent(SDL_Point{100, 300}));
-	//player->AddComponent(new AttributesComponent());
-	//player->AddComponent(new MovementComponent(3));
-	//player->AddComponent(new CollisionComponent());
-	//player->AddComponent(new AttributesComponent());
-	////RenderSystem * r = new RenderSystem(resourceManager, gameRenderer);
-	////r->AddEntity(player);
-
-	//systemManager.ControlSystem->AddEntity(player);
-	//systemManager.MovementSystem->AddEntity(player);
-	//systemManager.RenderSystem->AddEntity(player);
-	//systemManager.ProjectileSystem->AddEntity(player);
-	//systemManager.CollisionSystem->AddEntity(player);
-	//systemManager.healthSystem->AddEntity(player);
-
-	bool heartTest = true;
-
-	//RenderSystem * r = new RenderSystem(resourceManager, gameRenderer);
-
-	//princess->AddComponent(new SpriteComponent(ID, 0, 1, 0, 0, 16, 16, 0)); //textid
-	////Entity *meleeEnemy = new Entity("Melee Enemy");
-	////meleeEnemy->AddComponent(new SpriteComponent("Demon", 0, 0, 0, 0, 16, 16, 0));
-	////meleeEnemy->AddComponent(new PositionComponent(SDL_Point{ 550,500 }));
-	////meleeEnemy->AddComponent(new MovementComponent(120));
-	////meleeEnemy->AddComponent(new SeekComponent(600, 600));
-	////meleeEnemy->AddComponent(new AttackComponent(1, 1, 1));
-
-	////systemManager.AiSystems->AddEntity(meleeEnemy);
-	////systemManager.RenderSystem->AddEntity(meleeEnemy);
-	////systemManager.MovementSystem->AddEntity(meleeEnemy);
-
 	systemManager.menuSystem->SetUpMainMenu();
 	systemManager.menuSystem->ChangeMenu("MainMenu");
+
+
 	for (int i = 0; i < systemManager.menuSystem->GetMenuComponent("MainMenu")->Buttons()->size(); i++)
 	{
 		systemManager.RenderSystem->AddEntity(systemManager.menuSystem->GetMenuComponent("MainMenu")->Buttons()->at(i));
 	}
+	systemManager.ControlSystem->AddEntity(systemManager.menuSystem->getMenu("MainMenu"));
+
 
 	Quadtree* quad = new Quadtree(0, SDL_Rect{0,0  , 816, 624 });
 	while (running == true)
@@ -147,8 +118,6 @@ int main()
 		{
 			quad->insert(aiSystemEntities.at(i));
 		}
-
-		//input->handleInput(*e);
 
 		map1.Update();
 

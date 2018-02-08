@@ -9,7 +9,7 @@ void ControlSystem::Update()
 		int pjKey = -1;
 		int playerKey = -1;
 		int acKey = -1;
-
+		int menuCKey = -1;
 		// looks for if there is a movement component in the entity
 		for (int j = 0; j < m_entities.at(i)->GetComponents()->size(); j++)
 		{
@@ -23,12 +23,47 @@ void ControlSystem::Update()
 				{
 					pjKey = j;
 				}
+				if (m_entities.at(i)->GetComponents()->at(j)->Type() == "MenuC")
+				{
+					menuCKey = j;
+				}
 				if (m_entities.at(i)->GetComponents()->at(j)->Type() == "PC" && m_entities.at(i)->ID() == "Player")
 				{
 					playerKey = j;
 					if (m_entities.at(i)->GetComponents()->at(j)->Type() == "AC")
 					{
 						acKey = j;
+					}
+				}
+			}
+			if (menuCKey >= 0)
+			{
+				//check if mouse click and if mouse position
+				if (m_eventListener->LeftClick == true)
+				{
+					MenuComponent* menu = static_cast<MenuComponent*>(m_entities.at(i)->GetComponents()->at(menuCKey));
+					for (int j = 0; j < menu->Buttons()->size(); j++)
+					{
+						int scKey = -1;
+						for (int k = 0; k < menu->Buttons()->at(j)->GetComponents()->size(); k++)
+						{
+							if (menu->Buttons()->at(j)->GetComponents()->at(k)->Type() == "sc")
+							{
+								scKey = k;
+							}
+						}
+						if (scKey >= 0)
+						{
+							SDL_Point p = SDL_Point{ -1, -1 };
+							SDL_GetMouseState(&p.x, &p.y);
+							std::cout << p.x << p.y << std::endl;
+							SDL_Rect * rect = &static_cast<SpriteComponent*>(menu->Buttons()->at(j)->GetComponents()->at(scKey))->GetRect();
+							if (SDL_PointInRect(&p, rect) == true)
+							{
+								static_cast<ButtonComponent*>(menu->Buttons()->at(j)->GetComponents()->at(buttonCKey))->Activated(true);
+							}
+	
+						}
 					}
 				}
 			}
@@ -96,6 +131,7 @@ void ControlSystem::Update()
 				}
 				if (m_eventListener->LeftClick == false)
 				{
+
 					SDL_GetMouseState(&x, &y);
 					float cosA = atan2(y - playerPos.y, x - playerPos.x) + 3.14159265359 / 180 * 90;
 					if (pjKey >= 0 && pcKey >= 0)
@@ -132,11 +168,3 @@ void ControlSystem::Update()
 		}
 	}
 }
-
-//			//	mc->setAliveStatus(false);
-//				//int velocityX = mc->getSpeed();
-//				//std::cout << m_projectiles->at(i)->ID() << " " << velocityX << std::endl;
-//			//MovementComponent move;
-//			//m_projectiles->at(6)->AddComponent(new MovementComponent());
-//			//m_projectiles->at(6)->RemoveComponent()
-//

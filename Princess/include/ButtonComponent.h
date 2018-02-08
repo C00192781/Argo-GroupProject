@@ -20,6 +20,7 @@ public:
 	};
 	ButtonComponent(int posX, int posY, int width, int height)
 	{
+		m_type = "ButtonC";
 		m_rect.x = posX;
 		m_rect.y = posY;
 		m_rect.w = width;

@@ -1,7 +1,8 @@
 #include "MenuSystem.h"
 
-MenuSystem::MenuSystem()
+MenuSystem::MenuSystem(EventListener * listener)
 {
+	m_eventListener = listener;
 	indexActiveMenu = -1;
 }
 
@@ -42,16 +43,19 @@ void MenuSystem::Update()
 						if (menu->Buttons()->at(i)->ID() == "StartGame")
 						{
 							std::cout << "Start The Game" << std::endl;
+							m_eventListener->StartGame = true;
 							//startGame;
 						}
 						if (menu->Buttons()->at(i)->ID() == "ExitGame")
 						{
 							std::cout << "Close The Application" << std::endl;
+							m_eventListener->ExitGame = true;
 							//exitGame;
 						}
 						if (menu->Buttons()->at(i)->ID() == "OptionsMenu")
 						{
 							std::cout << "Open Options Menu" << std::endl;
+							m_eventListener->GoToOptions = true;
 							//exitGame;
 						}
 					}
@@ -89,17 +93,17 @@ void MenuSystem::SetUpMainMenu()
 	Entity * buttonOne = new Entity("StartGame");
 	buttonOne->AddComponent(new PositionComponent(SDL_Point{ 100, 100 }));
 	buttonOne->AddComponent(new SpriteComponent("StartGameButton", 2, 0, 0, 0, 128, 32, 0));
-	buttonOne->AddComponent(new ButtonComponent(100, 100, 64, 64));
+	buttonOne->AddComponent(new ButtonComponent(100, 100, 128, 32));
 
 	Entity * buttonTwo = new Entity("OptionsGame");
 	buttonTwo->AddComponent(new PositionComponent(SDL_Point{ 100, 300 }));
 	buttonTwo->AddComponent(new SpriteComponent("OptionsButton", 2, 0, 0, 0, 128, 32, 0));
-	buttonTwo->AddComponent(new ButtonComponent(100, 300, 64, 64));
+	buttonTwo->AddComponent(new ButtonComponent(100, 300, 128, 32));
 
 	Entity * buttonThree = new Entity("ExitGame");
 	buttonThree->AddComponent(new PositionComponent(SDL_Point{ 100, 500 }));
 	buttonThree->AddComponent(new SpriteComponent("ExitGameButton", 2, 0, 0, 0, 128, 32, 0));
-	buttonThree->AddComponent(new ButtonComponent(100, 500, 64, 64));
+	buttonThree->AddComponent(new ButtonComponent(100, 500, 128, 32));
 
 	menuC->Buttons()->push_back(buttonOne);
 	menuC->Buttons()->push_back(buttonTwo);
@@ -107,6 +111,18 @@ void MenuSystem::SetUpMainMenu()
 
 	menu->AddComponent(menuC);
 	m_entities.push_back(menu);
+}
+
+Entity * MenuSystem::getMenu(std::string ID)
+{
+	for (int i = 0; i < m_entities.size(); i++)
+	{
+		if (ID == m_entities.at(i)->ID())
+		{
+			return m_entities.at(i);
+		}
+	}
+	return nullptr;
 }
 
 void MenuSystem::RemoveMenu(std::string ID)
