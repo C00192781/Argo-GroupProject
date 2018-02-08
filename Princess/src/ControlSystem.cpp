@@ -26,10 +26,10 @@ void ControlSystem::Update()
 				if (m_entities.at(i)->GetComponents()->at(j)->Type() == "PC" && m_entities.at(i)->ID() == "Player")
 				{
 					playerKey = j;
-					if (m_entities.at(i)->GetComponents()->at(j)->Type() == "AC")
-					{
-						acKey = j;
-					}
+					/*if (m_entities.at(i)->GetComponents()->at(j)->Type() == "AC")
+					{*/
+						acKey = j + 1;
+					//}
 				}
 			}
 			if (playerKey >= 0)

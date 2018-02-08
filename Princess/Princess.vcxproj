@@ -24,6 +24,7 @@
     <ClCompile Include="External Dependencies\SimpleJSON\JSON.cpp" />
     <ClCompile Include="External Dependencies\SimpleJSON\JSONValue.cpp" />
     <ClCompile Include="include\BasicEnemy.cpp" />
+    <ClCompile Include="include\LTimer.cpp" />
     <ClCompile Include="include\Princess.cpp" />
     <ClCompile Include="include\Quad.cpp" />
     <ClCompile Include="src\AISystem.cpp" />
@@ -67,6 +68,7 @@
     <ClInclude Include="include\HeartManagerComponent.h" />
     <ClInclude Include="include\InputHandler.h" />
     <ClInclude Include="include\Instance.h" />
+    <ClInclude Include="include\LTimer.h" />
     <ClInclude Include="include\MovementComponent.h" />
     <ClInclude Include="include\MovementSystem.h" />
     <ClInclude Include="include\PositionComponent.h" />

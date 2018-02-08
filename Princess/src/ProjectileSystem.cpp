@@ -26,6 +26,11 @@ void ProjectileSystem::Update()
 		int pjKey = -1; // 
 		int mcKey = -1;
 
+		//if (m_entities.at(i)->Active())
+		//{
+		//	std::cout << "ddidy" << std::endl;
+		//}
+		//
 		std::string check = "Projectile";
 
 		std::string playerCheck = "Player";
@@ -52,6 +57,8 @@ void ProjectileSystem::Update()
 			bool alive = static_cast<ProjectileComponent*>(m_entities.at(i)->GetComponents()->at(pjKey))->getAliveStatus();
 			if (alive == true)
 			{
+				m_entities.at(i)->Active(true);
+
 				float m_orientation = static_cast<ProjectileComponent*>(m_entities.at(i)->GetComponents()->at(pjKey))->getOrientation();
 				Vector2f v;
 				v = VelocityHandler(m_orientation);
@@ -69,6 +76,7 @@ void ProjectileSystem::Update()
 			}
 		    if (alive == false)
 			{
+				m_entities.at(i)->Active(false);
 				// assign velocity
 				static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setXVelocity(0);
 				static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setYVelocity(0);

@@ -92,46 +92,46 @@ void BattleMap::Generate(std::string type)
 	}
 	
 	//Entity * player = new Entity("Player");
-	Entity * player = new Entity("Player");
+	/*Entity * player = new Entity("Player");
 	player->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
 	player->AddComponent(new PositionComponent(SDL_Point{ 100, 300 }));
 	player->AddComponent(new AttributesComponent());
 	player->AddComponent(new MovementComponent(3));
 	player->AddComponent(new CollisionComponent());
-	player->AddComponent(new AttributesComponent());
+	player->AddComponent(new AttributesComponent());*/
 	//RenderSystem * r = new RenderSystem(resourceManager, gameRenderer);
 	//r->AddEntity(player);
 
-	m_systemManager->ControlSystem->AddEntity(player);
-	m_systemManager->MovementSystem->AddEntity(player);
-	//m_systemManager->RenderSystem->AddEntity(player);
-	m_systemManager->ProjectileSystem->AddEntity(player);
-	m_systemManager->CollisionSystem->AddEntity(player);
+	//m_systemManager->ControlSystem->AddEntity(player);
+	//m_systemManager->MovementSystem->AddEntity(player);
+	////m_systemManager->RenderSystem->AddEntity(player);
+	//m_systemManager->ProjectileSystem->AddEntity(player);
+	//m_systemManager->CollisionSystem->AddEntity(player);
 	//m_systemManager->healthSystem->AddEntity(player);
 
-	AttributesComponent* ac = new AttributesComponent();
-	player->AddComponent(ac);
+	//AttributesComponent* ac = new AttributesComponent();
+	//player->AddComponent(ac);
 
-	HeartManagerComponent* hUI = new HeartManagerComponent(HeartTypes::HEALTH);
-	player->AddComponent(hUI);
+	//HeartManagerComponent* hUI = new HeartManagerComponent(HeartTypes::HEALTH);
+	//player->AddComponent(hUI);
 
-	HeartManagerComponent* aUI = new HeartManagerComponent(HeartTypes::ARMOUR);
-	player->AddComponent(aUI);
+	//HeartManagerComponent* aUI = new HeartManagerComponent(HeartTypes::ARMOUR);
+	//player->AddComponent(aUI);
 
-	m_systemManager->healthSystem->AddEntity(player);
-	m_systemManager->RenderSystem->AddEntity(player);
+	//m_systemManager->healthSystem->AddEntity(player);
+	//m_systemManager->RenderSystem->AddEntity(player);
 
-	m_systemManager->healthSystem->UpdateMaxHeartsUI(player, player);
-	m_systemManager->healthSystem->UpdateMaxArmourUI(player, player);
+	//m_systemManager->healthSystem->UpdateMaxHeartsUI(player, player);
+	//m_systemManager->healthSystem->UpdateMaxArmourUI(player, player);
 
-	for (int c = 0; c < hUI->HeartsVector()->size(); c++)
-	{
-		m_systemManager->RenderSystem->AddEntity(hUI->HeartsVector()->at(c));
-	}
-	for (int i = 0; i < aUI->HeartsVector()->size(); i++)
-	{
-		m_systemManager->RenderSystem->AddEntity(aUI->HeartsVector()->at(i));
-	}
+	//for (int c = 0; c < hUI->HeartsVector()->size(); c++)
+	//{
+	//	m_systemManager->RenderSystem->AddEntity(hUI->HeartsVector()->at(c));
+	//}
+	//for (int i = 0; i < aUI->HeartsVector()->size(); i++)
+	//{
+	//	m_systemManager->RenderSystem->AddEntity(aUI->HeartsVector()->at(i));
+	//}
 }
 void BattleMap::Update()
 {

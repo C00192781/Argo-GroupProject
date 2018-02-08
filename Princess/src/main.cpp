@@ -21,7 +21,7 @@
 #include "Princess.h"
 #include <chrono>
 #include "SystemManager.h"
-
+#include "LTimer.h"
 int main()
 {
 	SDL_Window* gameWindow = SDL_CreateWindow("TEST", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 816, 624, SDL_WINDOW_SHOWN);
@@ -35,6 +35,24 @@ int main()
 	bool debug = false;
 
 	srand(time(NULL));
+	const int SCREEN_FPS = 60;
+	const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
+
+	//Set text color as black
+	SDL_Color textColor = { 0, 0, 0, 255 };
+
+	//The frames per second timer
+	LTimer fpsTimer;
+
+	//The frames per second cap timer
+	LTimer capTimer;
+
+	//In memory text stream
+	std::stringstream timeText;
+
+	//Start counting frames per second
+	int countedFrames = 0;
+	fpsTimer.start();
 
 	ResourceManager *resourceManager = new ResourceManager(gameRenderer, "Resources");
 
@@ -114,34 +132,61 @@ int main()
 
 	while (1 != 0)
 	{
-		currentTime = SDL_GetTicks();
-		SDL_PollEvent(e);
-		if (currentTime > lastTime)
-		{
-			deltaTime = ((float)(currentTime - lastTime)) / 1000;
 
-			input->handleInput(*e);
 
-			lastTime = currentTime;
-		}
-		auto aiSystemEntities = systemManager.AiSystem->getEntities();
+		 //Calculate and correct fps
+                int avgFPS = countedFrames / ( fpsTimer.getTicks() / 1000.f );
+                if( avgFPS > 2000000 )
+                {
+                    avgFPS = 0;
+                }
 
-		quad->clear();
-		quad->init();
-		for (int i = 0; i < aiSystemEntities.size(); i++)
-		{
-			quad->insert(aiSystemEntities.at(i));
-		}
+                //Set text to be rendered
+				if (avgFPS > 12)
+				{
+					cout << "FPS (With Cap) " << avgFPS << endl;;
+				}
+				//update ren
+                ++countedFrames;
 
-		input->handleInput(*e);
-		map1.Update();
+				//If frame finished early
+				int frameTicks = capTimer.getTicks();
+				if (frameTicks < SCREEN_TICKS_PER_FRAME)
+				{
+					//Wait remaining time
+					SDL_Delay(SCREEN_TICKS_PER_FRAME - frameTicks);
+					//cout << "juim" << endl;
 
-		SDL_SetRenderDrawColor(gameRenderer, 255, 255, 255, 0);
-		SDL_RenderClear(gameRenderer);
+					currentTime = SDL_GetTicks();
+					SDL_PollEvent(e);
+					if (currentTime > lastTime)
+					{
+						deltaTime = ((float)(currentTime - lastTime)) / 1000;
 
-		systemManager.Update(deltaTime);
+						input->handleInput(*e);
 
-		SDL_RenderPresent(gameRenderer);
+						lastTime = currentTime;
+					}
+					auto aiSystemEntities = systemManager.AiSystem->getEntities();
+
+					quad->clear();
+					quad->init();
+					for (int i = 0; i < aiSystemEntities.size(); i++)
+					{
+						quad->insert(aiSystemEntities.at(i));
+					}
+
+					input->handleInput(*e);
+					map1.Update();
+
+					SDL_SetRenderDrawColor(gameRenderer, 255, 255, 255, 0);
+					SDL_RenderClear(gameRenderer);
+
+					systemManager.Update(deltaTime);
+
+					SDL_RenderPresent(gameRenderer);
+				}
+
 	}
 
 	SDL_RenderPresent(gameRenderer);

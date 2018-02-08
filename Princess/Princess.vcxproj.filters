@@ -77,6 +77,9 @@
     <ClCompile Include="include\Quad.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="include\LTimer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Component.h">
@@ -125,7 +128,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\HeartManagerComponent.h">
-	      <Filter>Header Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\EventListener.h">
       <Filter>Header Files</Filter>
@@ -197,6 +200,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Quad.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\LTimer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
