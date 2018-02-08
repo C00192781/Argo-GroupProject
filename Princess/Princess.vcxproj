@@ -26,6 +26,7 @@
     <ClCompile Include="include\BasicEnemy.cpp" />
     <ClCompile Include="include\Princess.cpp" />
     <ClCompile Include="include\Quad.cpp" />
+    <ClCompile Include="MenuSystem.cpp" />
     <ClCompile Include="src\AISystem.cpp" />
     <ClCompile Include="src\BattleMap.cpp" />
     <ClCompile Include="src\CollisionSystem.cpp" />
@@ -42,6 +43,7 @@
     <ClCompile Include="src\SystemManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ButtonComponent.h" />
     <ClInclude Include="External Dependencies\ResourceManager\JSONReader.h" />
     <ClInclude Include="External Dependencies\ResourceManager\ResourceManager.h" />
     <ClInclude Include="External Dependencies\SimpleJSON\JSON.h" />
@@ -82,6 +84,8 @@
     <ClInclude Include="include\System.h" />
     <ClInclude Include="include\SystemManager.h" />
     <ClInclude Include="include\TileFactory.h" />
+    <ClInclude Include="MenuComponent.h" />
+    <ClInclude Include="MenuSystem.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
