@@ -26,7 +26,7 @@ void SystemManager::Update(float deltaTime)
 	if (controlSystem->Active()) { controlSystem->Update(); }
 	if (movementSystem->Active()) { movementSystem->Update(deltaTime); }
 	if (renderSystem->Active()) { renderSystem->Update(); }
-	if (attackSystem->Active()) { attackSystem->Update(); }
+	if (attackSystem->Active()) { attackSystem->Update(deltaTime); }
 	if (aiSystem->Active()) { aiSystem->Update(deltaTime); }
 	if (collisionSystem->Active()) { collisionSystem->Update(); }
 	//std::vector<Entity*>* projectiles = ProjectileSystem->getEntities();

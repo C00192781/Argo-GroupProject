@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Component.h"
+#include <iostream>
 
 class MovementComponent : public Component 
 {

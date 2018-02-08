@@ -34,7 +34,7 @@ void MovementSystem::Update(float deltaTime)
 			if (m_entities.at(i)->ID() == "Player")
 			{
 				if (static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->getLockedOrientation() == false) {
-					static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setOrientation(atan2((float)m_mouseY - *yPos, (float)m_mouseX - *xPos) * 180 / 3.14159265359);
+					static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setOrientation(atan2((float)m_mouseY - *yPos, (float)m_mouseX - *xPos));
 				}
 			}
 		}

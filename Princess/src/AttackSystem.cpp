@@ -5,18 +5,13 @@ AttackSystem::AttackSystem(std::vector<Entity*>* projectiles)
 	m_projectiles = projectiles;
 }
 
-void AttackSystem::Update()
+void AttackSystem::Update(float deltaTime)
 {
-	int x;
-	int y;
-
-	SDL_GetMouseState(&x, &y);
-
 	for (int i = 0; i < m_entities.size(); i++)
 	{
 		int wcKey = -1;
 		int pcKey = -1;
-		int pjKey = -1;
+		//int pjKey = -1;
 		int mcKey = -1;
 
 		//std::string check = "Projectile";
@@ -43,10 +38,10 @@ void AttackSystem::Update()
 			{
 				pcKey = j;
 			}
-			else if (m_entities.at(i)->GetComponents()->at(j)->Type() == "PJ")
-			{
-				pjKey = j;
-			}
+			//else if (m_entities.at(i)->GetComponents()->at(j)->Type() == "PJ")
+			//{
+			//	pjKey = j;
+			//}
 			else if (m_entities.at(i)->GetComponents()->at(j)->Type() == "movement")
 			{
 				mcKey = j;
@@ -112,17 +107,47 @@ void AttackSystem::Update()
 						{
 							if (m_projectiles->at(j)->Active() == false)
 							{
-								std::cout << "LUL" << std::endl;
-								break;
-							}
-							else
-							{
-								std::cout << "NOT LUL" << std::endl;
+								int projectileMCKey = -1;
+								int projectilePJKey = -1;
+								int projectilePCKey = -1;
+
+								for (int k = 0; k < m_projectiles->at(j)->GetComponents()->size(); k++)
+								{
+									if (m_projectiles->at(j)->GetComponents()->at(k)->Type() == "movement")
+									{
+										projectileMCKey = k;
+									}
+									else if (m_projectiles->at(j)->GetComponents()->at(k)->Type() == "PJ")
+									{
+										projectilePJKey = k;
+									}
+									else if (m_projectiles->at(j)->GetComponents()->at(k)->Type() == "PC")
+									{
+										projectilePCKey = k;
+									}
+								}
+								m_projectiles->at(j)->Active(true);
+								static_cast<ProjectileComponent*>(m_projectiles->at(j)->GetComponents()->at(projectilePJKey))->setShooterType(m_entities.at(i)->ID());
+								float temp = static_cast<ProjectileComponent*>(m_projectiles->at(j)->GetComponents()->at(projectilePJKey))->getBaseSpeed() * static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getAttackSpeed(); // *deltaTime;
+								//static_cast<ProjectileComponent*>(m_projectiles->at(j)->GetComponents()->at(projectilePJKey))->setSpeed(temp);
+								static_cast<ProjectileComponent*>(m_projectiles->at(j)->GetComponents()->at(projectilePJKey))->setTimeToLive(static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getRange() / temp);
+								static_cast<PositionComponent*>(m_projectiles->at(j)->GetComponents()->at(projectilePCKey))->setPosition(static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getX(), static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getY());
+
+								std::cout << static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->getOrientation() << std::endl;
+
+								static_cast<MovementComponent*>(m_projectiles->at(j)->GetComponents()->at(projectileMCKey))->setXVelocity(sin(static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->getOrientation()+90) * 100);
+								static_cast<MovementComponent*>(m_projectiles->at(j)->GetComponents()->at(projectileMCKey))->setYVelocity(-cos(static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->getOrientation()+90) * 100);
+
+								//static_cast<MovementComponent*>(m_projectiles->at(j)->GetComponents()->at(projectileMCKey))->setXVelocity(180 - (-sin(static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->getOrientation()) / (180 / 3.14)) * 100);
+								//static_cast<MovementComponent*>(m_projectiles->at(j)->GetComponents()->at(projectileMCKey))->setYVelocity(cos(static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->getOrientation() / (180 / 3.14)) * 100);
+
+
 								break;
 							}
 						}
 						static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->setAttacking(false);
 						static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->setAllowAttack(true);
+						static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setLockedOrientation(false);
 					}
 				}
 				// if the entity has a magic weapon

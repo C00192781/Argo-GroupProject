@@ -14,10 +14,10 @@ void Quadtree::split()
 
 	nodes.clear();
 
-	nodes.push_back(new Quadtree(0, SDL_Rect{ x + subWidth, y, subWidth, subHeight }));
-	nodes.push_back(new Quadtree(0, SDL_Rect{ x, y, subWidth, subHeight }));
-	nodes.push_back(new Quadtree(0, SDL_Rect{ x, y + subHeight, subWidth, subHeight }));
-	nodes.push_back(new Quadtree(0, SDL_Rect{ x + subWidth, y + subHeight, subWidth, subHeight }));
+	nodes.push_back(new Quadtree(level + 1, SDL_Rect{ x + subWidth, y, subWidth, subHeight }));
+	nodes.push_back(new Quadtree(level + 1, SDL_Rect{ x, y, subWidth, subHeight }));
+	nodes.push_back(new Quadtree(level + 1, SDL_Rect{ x, y + subHeight, subWidth, subHeight }));
+	nodes.push_back(new Quadtree(level + 1, SDL_Rect{ x + subWidth, y + subHeight, subWidth, subHeight }));
 }
 
 
@@ -113,9 +113,9 @@ void Quadtree::insert(Entity* entities)
 			split();
 		}
 
-		int i = 0;
+		//int i = 0;
 
-		while (i < objects.size())
+		for (int i = 0; i < objects.size();)
 		{
 			int index = getIndex(objects.at(i));
 
