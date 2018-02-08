@@ -1,5 +1,10 @@
 #include "AttackSystem.h"
 
+AttackSystem::AttackSystem(std::vector<Entity*>* projectiles)
+{
+	m_projectiles = projectiles;
+}
+
 void AttackSystem::Update()
 {
 	int x;
@@ -100,7 +105,25 @@ void AttackSystem::Update()
 				// if the entity has a ranged weapon
 				else if (static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getWeaponType() == WeaponType::RANGE)
 				{
-
+					// if the entity is already attacking
+					if (static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getAttacking() == true)
+					{
+						for (int j = 0; j < m_projectiles->size(); j++)
+						{
+							if (m_projectiles->at(j)->Active() == false)
+							{
+								std::cout << "LUL" << std::endl;
+								break;
+							}
+							else
+							{
+								std::cout << "NOT LUL" << std::endl;
+								break;
+							}
+						}
+						static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->setAttacking(false);
+						//static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->setAllowAttack(true);
+					}
 				}
 				// if the entity has a magic weapon
 				else

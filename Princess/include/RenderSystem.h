@@ -1,5 +1,5 @@
-#ifndef _RENDERSYSTEM_H
-#define _RENDERSYSTEM_H
+#ifndef _RenderSystem_H
+#define _RenderSystem_H
 
 #include "System.h"
 #include "ResourceManager.h"

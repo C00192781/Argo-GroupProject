@@ -38,8 +38,6 @@ Entity* BasicEnemy::CharC(std::string ID, SDL_Point pos, int element)
 	//BasicEnemy->AddComponent(new MovementComponent(100));
 	//BasicEnemy->AddComponent(new SeekComponent(100,100));
 	static_cast<PositionComponent*>(BasicEnemy->GetComponents()->back())->setPosition(pos.x, pos.y);
-	BasicEnemy->AddComponent(new MovementComponent(100));
-	BasicEnemy->AddComponent(new SeekComponent(100,100));
 	BasicEnemy->AddComponent(new AttributesComponent(10, 10, 0, 0, 80, 80));
 
 	return BasicEnemy;

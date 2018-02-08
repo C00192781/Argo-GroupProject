@@ -49,7 +49,7 @@ Entity* Princess::CharD(std::string ID, SDL_Point pos, int personality)
 	princess->AddComponent(new AiLogicComponent);
 	princess->AddComponent(new SpriteComponent(ID, 0, 1, 0, 0, 16, 16, 0)); //textid
 	princess->AddComponent(new PositionComponent(pos));
-	princess->AddComponent(new MovementComponent(100));
+	//princess->AddComponent(new MovementComponent(100));
 	princess->AddComponent(new SeekComponent());
 	static_cast<PositionComponent*>(princess->GetComponents()->back())->setPosition(pos.x, pos.y);
 	princess->AddComponent(new AttributesComponent(10, 10, 0, 0, 80, 80));

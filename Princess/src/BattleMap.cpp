@@ -20,10 +20,10 @@ void BattleMap::Generate(std::string type)
 	}
 	m_entities.clear();
 	m_entities.shrink_to_fit();
-	m_systemManager->ControlSystem->SelectiveClear();
-	m_systemManager->RenderSystem->SelectiveClear();
-	m_systemManager->MovementSystem->SelectiveClear();
-	m_systemManager->AiSystem->SelectiveClear();
+	m_systemManager->controlSystem->SelectiveClear();
+	m_systemManager->renderSystem->SelectiveClear();
+	m_systemManager->movementSystem->SelectiveClear();
+	m_systemManager->aiSystem->SelectiveClear();
 	m_systemManager->healthSystem->SelectiveClear();
 	delete m_factory;
 
@@ -32,26 +32,27 @@ void BattleMap::Generate(std::string type)
 		m_factory = new GrassTileFactory();
 	}
 
-	std::vector<Entity*>* projectileEntities = m_systemManager->ProjectileSystem->getEntities();
+	std::vector<Entity*>* projectileEntities = m_systemManager->attackSystem->getProjectiles();;
 	
-	//for (int i = 0; i < 50; i++)
-	//{
-	//	Entity* projectile = new Entity("Projectile");
-	//	projectile->AddComponent(new SpriteComponent("Arrow", 2, 0, 0, 0, 16, 8, 0));
-	//	projectile->AddComponent(new PositionComponent(SDL_Point{ -5000, -5000 }));
-	//	projectile->AddComponent(new ProjectileComponent(4.9, "Player", 5.0f, 3.0f, 700.0f, false));
-	//	projectile->AddComponent(new MovementComponent());
-	//	projectile->AddComponent(new CollisionComponent());
-	//	projectileEntities->push_back(projectile);
-	//}
+	for (int i = 0; i < 100; i++)
+	{
+		Entity* projectile = new Entity("Projectile");
+		projectile->AddComponent(new SpriteComponent("Arrow", 2, 0, 0, 0, 16, 8, 0));
+		projectile->AddComponent(new PositionComponent(SDL_Point{ -5000, -5000 }));
+		projectile->AddComponent(new ProjectileComponent(4.9, "Player", 5.0f, 3.0f, 700.0f, false));
+		projectile->AddComponent(new MovementComponent());
+		projectile->AddComponent(new CollisionComponent());
+		projectile->Active(false);
+		projectileEntities->push_back(projectile);
+	}
 	for (auto i = projectileEntities->begin(), end = projectileEntities->end(); i != end; i++)
 	{
-		m_systemManager->RenderSystem->AddEntity((*i));
-		m_systemManager->MovementSystem->AddEntity((*i));
-		m_systemManager->CollisionSystem->AddEntity((*i));
-		//m_systemManager->ControlSystem->AddEntity((*i));
+		m_systemManager->renderSystem->AddEntity((*i));
+		m_systemManager->movementSystem->AddEntity((*i));
+		m_systemManager->collisionSystem->AddEntity((*i));
+		m_systemManager->attackSystem->AddEntity((*i));
 	}
-	//std::cout << projectileEntities->size() << std::endl;
+	std::cout << projectileEntities->size() << std::endl;
 
 
 	for (int i = 0; i < 17; i++)
@@ -61,57 +62,54 @@ void BattleMap::Generate(std::string type)
 			int rando = rand() % 100;
 			if (rando <= 80)
 			{
-				m_entities.push_back(m_factory->GroundA("Turf", i * (16 * m_systemManager->RenderSystem->GetScale()), j * (16 * m_systemManager->RenderSystem->GetScale())));
+				m_entities.push_back(m_factory->GroundA("Turf", i * (16 * m_systemManager->renderSystem->GetScale()), j * (16 * m_systemManager->renderSystem->GetScale())));
 			}
 			else if (rando <= 90)
 			{
-				m_entities.push_back(m_factory->GroundB("Turf", i * (16 * m_systemManager->RenderSystem->GetScale()), j * (16 * m_systemManager->RenderSystem->GetScale())));
+				m_entities.push_back(m_factory->GroundB("Turf", i * (16 * m_systemManager->renderSystem->GetScale()), j * (16 * m_systemManager->renderSystem->GetScale())));
 			}																			
 			else if (rando <= 95)														
 			{																			
-				m_entities.push_back(m_factory->GroundC("Turf", i * (16 * m_systemManager->RenderSystem->GetScale()), j * (16 * m_systemManager->RenderSystem->GetScale())));
+				m_entities.push_back(m_factory->GroundC("Turf", i * (16 * m_systemManager->renderSystem->GetScale()), j * (16 * m_systemManager->renderSystem->GetScale())));
 			}																			
 			else																		
 			{																			
-				m_entities.push_back(m_factory->GroundD("Turf", i * (16 * m_systemManager->RenderSystem->GetScale()), j * (16 * m_systemManager->RenderSystem->GetScale())));
+				m_entities.push_back(m_factory->GroundD("Turf", i * (16 * m_systemManager->renderSystem->GetScale()), j * (16 * m_systemManager->renderSystem->GetScale())));
 			}
-			m_systemManager->RenderSystem->AddEntity(m_entities.back());
+			m_systemManager->renderSystem->AddEntity(m_entities.back());
 		}
 	}
 
-	m_systemManager->AiSystem->Spawn();
+	m_systemManager->aiSystem->Spawn();
 
-	auto aiEntities = m_systemManager->AiSystem->getEntities(); //get and add AI entities to be rendered
+	auto aiEntities = m_systemManager->aiSystem->getEntities(); //get and add AI entities to be rendered
 	
 
 
 	for (auto i = aiEntities.begin(), end = aiEntities.end(); i != end; i++)
 	{
-		m_systemManager->RenderSystem->AddEntity((*i));
-		m_systemManager->MovementSystem->AddEntity((*i)); //consider tag discrimination here
-		m_systemManager->CollisionSystem->AddEntity((*i));
+		m_systemManager->renderSystem->AddEntity((*i));
+		m_systemManager->movementSystem->AddEntity((*i)); //consider tag discrimination here
+		m_systemManager->collisionSystem->AddEntity((*i));
 	}
 	
-	//Entity * player = new Entity("Player");
 	Entity * player = new Entity("Player");
 	player->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
 	player->AddComponent(new PositionComponent(SDL_Point{ 100, 300 }));
-	player->AddComponent(new AttributesComponent());
-	player->AddComponent(new MovementComponent(3));
+	player->AddComponent(new AttributesComponent(26, 26, 10, 10, 100, 100));
+	player->AddComponent(new MovementComponent());
 	player->AddComponent(new CollisionComponent());
-	player->AddComponent(new AttributesComponent());
-	//RenderSystem * r = new RenderSystem(resourceManager, gameRenderer);
+	player->AddComponent(new WeaponComponent(WeaponType::RANGE));
+	//renderSystem * r = new renderSystem(resourceManager, gameRenderer);
 	//r->AddEntity(player);
 
-	m_systemManager->ControlSystem->AddEntity(player);
-	m_systemManager->MovementSystem->AddEntity(player);
-	//m_systemManager->RenderSystem->AddEntity(player);
-	m_systemManager->ProjectileSystem->AddEntity(player);
-	m_systemManager->CollisionSystem->AddEntity(player);
+	m_systemManager->controlSystem->AddEntity(player);
+	m_systemManager->movementSystem->AddEntity(player);
+	//m_systemManager->renderSystem->AddEntity(player);
+	m_systemManager->projectileSystem->AddEntity(player);
+	m_systemManager->collisionSystem->AddEntity(player);
 	//m_systemManager->healthSystem->AddEntity(player);
-
-	AttributesComponent* ac = new AttributesComponent();
-	player->AddComponent(ac);
+	m_systemManager->attackSystem->AddEntity(player);
 
 	HeartManagerComponent* hUI = new HeartManagerComponent(HeartTypes::HEALTH);
 	player->AddComponent(hUI);
@@ -120,18 +118,18 @@ void BattleMap::Generate(std::string type)
 	player->AddComponent(aUI);
 
 	m_systemManager->healthSystem->AddEntity(player);
-	m_systemManager->RenderSystem->AddEntity(player);
+	m_systemManager->renderSystem->AddEntity(player);
 
 	m_systemManager->healthSystem->UpdateMaxHeartsUI(player, player);
 	m_systemManager->healthSystem->UpdateMaxArmourUI(player, player);
 
 	for (int c = 0; c < hUI->HeartsVector()->size(); c++)
 	{
-		m_systemManager->RenderSystem->AddEntity(hUI->HeartsVector()->at(c));
+		m_systemManager->renderSystem->AddEntity(hUI->HeartsVector()->at(c));
 	}
 	for (int i = 0; i < aUI->HeartsVector()->size(); i++)
 	{
-		m_systemManager->RenderSystem->AddEntity(aUI->HeartsVector()->at(i));
+		m_systemManager->renderSystem->AddEntity(aUI->HeartsVector()->at(i));
 	}
 }
 void BattleMap::Update()

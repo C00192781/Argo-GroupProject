@@ -30,7 +30,7 @@ void AiSystem::Spawn()
 	characterFactory = new BasicEnemy();
 	//m_entities.push_back(characterFactory->CharC("Demon", p, 0));
 	
-	for (int i = 0; i < 1000; i++)
+	for (int i = 0; i < 100; i++)
 	{
 	//	characterFactory = new BasicEnemy();
 		m_entities.push_back(characterFactory->CharC("Demon", SDL_Point{ rand() % 812, rand() % 624 }, 0));

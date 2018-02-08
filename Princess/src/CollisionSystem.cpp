@@ -25,10 +25,10 @@ void CollisionSystem::Update()
 
 	for (int i = 0; i < m_entities.size(); i++)
 	{
-		if (i == 15) {
-			std::cout << "." << std::endl;
+		if (m_entities.at(i)->Active())
+		{
+			m_quadtree->insert(m_entities.at(i));
 		}
-		m_quadtree->insert(m_entities.at(i));
 	}
 
 	for (int i = 0; i < m_entities.size(); i++)

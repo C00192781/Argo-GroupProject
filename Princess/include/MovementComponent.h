@@ -10,7 +10,7 @@ public:
 		m_type = "movement";
 		m_xVel = 0;
 		m_yVel = 0;
-		m_speed = 0;
+		//m_speed = 0;
 		m_orientation = 0;
 		m_lockOrientation = false;
 	}
@@ -20,7 +20,7 @@ public:
 		m_type = "movement";
 		m_xVel = 0;
 		m_yVel = 0;
-		m_speed = speed;
+		//m_speed = speed;
 		m_orientation = 0;
 		m_lockOrientation = false;
 	}
@@ -43,7 +43,7 @@ public:
 	void setYVelocity(float yVel) { m_yVel = yVel; }
 
 private:
-	int m_speed;
+	//int m_speed;
 
 	float m_xVel;
 	float m_yVel;
