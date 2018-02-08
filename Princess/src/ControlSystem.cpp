@@ -109,42 +109,86 @@ void ControlSystem::Update()
 						}
 					}
 				}
-				if (m_eventListener->LeftClick == true)
+				if (m_eventListener->controllerActivated == false)
 				{
-					lastTickTime = tickTime;
-					shoot = true;
-				}
-				if (m_eventListener->LeftClick == false)
-				{
-					float cosA;
-					SDL_GetMouseState(&x, &y);
-					cosA = atan2(y - playerPos.y, x - playerPos.x) + 3.14159265359 / 180 * 90;
-
-					if (pjKey >= 0 && pcKey >= 0)
+					if (m_eventListener->LeftClick == true)
 					{
-						tickTime = SDL_GetTicks();
+						lastTickTime = tickTime;
+						shoot = true;
+					}
+					if (m_eventListener->LeftClick == false)
+					{
+						float cosA;
+						SDL_GetMouseState(&x, &y);
+						cosA = atan2(y - playerPos.y, x - playerPos.x) + 3.14159265359 / 180 * 90;
 
-						uint32_t difference;
-						difference = tickTime - lastTickTime;
-
-						float differenceInSeconds;
-						differenceInSeconds = (float)difference * 0.001f;
-
-						if (difference > 50 && shoot == true)
+						if (pjKey >= 0 && pcKey >= 0)
 						{
-							index++;
-							shoot = false;
-							if (index >= m_projectiles->size())
-							{
-								index = 0;
-							}
-							if (static_cast<ProjectileComponent*>(m_projectiles->at(index)->GetComponents()->at(pjKey))->getType() == "Player")
-							{
-								static_cast<ProjectileComponent*>(m_projectiles->at(index)->GetComponents()->at(pjKey))->setAliveStatus(true);
-								static_cast<ProjectileComponent*>(m_projectiles->at(index)->GetComponents()->at(pjKey))->setButtonPressTime(differenceInSeconds);
-								static_cast<ProjectileComponent*>(m_projectiles->at(index)->GetComponents()->at(pjKey))->setOrientation(cosA);
-								static_cast<PositionComponent*>(m_projectiles->at(index)->GetComponents()->at(pcKey))->setPosition(playerPos);
+							tickTime = SDL_GetTicks();
 
+							uint32_t difference;
+							difference = tickTime - lastTickTime;
+
+							float differenceInSeconds;
+							differenceInSeconds = (float)difference * 0.001f;
+
+							if (difference > 50 && shoot == true)
+							{
+								index++;
+								shoot = false;
+								if (index >= m_projectiles->size())
+								{
+									index = 0;
+								}
+								if (static_cast<ProjectileComponent*>(m_projectiles->at(index)->GetComponents()->at(pjKey))->getType() == "Player")
+								{
+									static_cast<ProjectileComponent*>(m_projectiles->at(index)->GetComponents()->at(pjKey))->setAliveStatus(true);
+									static_cast<ProjectileComponent*>(m_projectiles->at(index)->GetComponents()->at(pjKey))->setButtonPressTime(differenceInSeconds);
+									static_cast<ProjectileComponent*>(m_projectiles->at(index)->GetComponents()->at(pjKey))->setOrientation(cosA);
+									static_cast<PositionComponent*>(m_projectiles->at(index)->GetComponents()->at(pcKey))->setPosition(playerPos);
+
+								}
+							}
+						}
+					}
+				}
+				else if (m_eventListener->controllerActivated == true)
+				{
+					if (m_eventListener->RightTrigger > 8000)
+					{
+						lastTickTime = tickTime;
+						shoot = true;
+						std::cout << "Attack Button Pressed" << std::endl;
+					}
+					if (m_eventListener->RightTrigger <= 8000)
+					{
+						float cosA = 0;
+						if (pjKey >= 0 && pcKey >= 0)
+						{
+							tickTime = SDL_GetTicks();
+
+							uint32_t difference;
+							difference = tickTime - lastTickTime;
+
+							float differenceInSeconds;
+							differenceInSeconds = (float)difference * 0.001f;
+
+							if (difference > 50 && shoot == true)
+							{
+								index++;
+								shoot = false;
+								if (index >= m_projectiles->size())
+								{
+									index = 0;
+								}
+								if (static_cast<ProjectileComponent*>(m_projectiles->at(index)->GetComponents()->at(pjKey))->getType() == "Player")
+								{
+									static_cast<ProjectileComponent*>(m_projectiles->at(index)->GetComponents()->at(pjKey))->setAliveStatus(true);
+									static_cast<ProjectileComponent*>(m_projectiles->at(index)->GetComponents()->at(pjKey))->setButtonPressTime(differenceInSeconds);
+									static_cast<ProjectileComponent*>(m_projectiles->at(index)->GetComponents()->at(pjKey))->setOrientation(cosA);
+									static_cast<PositionComponent*>(m_projectiles->at(index)->GetComponents()->at(pcKey))->setPosition(playerPos);
+									//static_cast<ProjectileComponent*>(m_projectiles->at(index)->GetComponents()->at(pjKey))->setMaxSpeed(15.0f);
+								}
 							}
 						}
 					}

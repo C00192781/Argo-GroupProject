@@ -46,6 +46,9 @@ void InputHandler::handleInput(SDL_Event &e)
 		{
 			SDL_Joystick *joystick = SDL_GameControllerGetJoystick(gameController[ControllerIndex]);
 	
+			m_eventListener->LeftTrigger = SDL_GameControllerGetAxis(gameController[ControllerIndex], SDL_CONTROLLER_AXIS_TRIGGERLEFT);
+			m_eventListener->RightTrigger = SDL_GameControllerGetAxis(gameController[ControllerIndex], SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
+
 			m_eventListener->AButton = SDL_GameControllerGetButton(gameController[ControllerIndex], SDL_CONTROLLER_BUTTON_A);
 			m_eventListener->BButton = SDL_GameControllerGetButton(gameController[ControllerIndex], SDL_CONTROLLER_BUTTON_B);
 			m_eventListener->YButton = SDL_GameControllerGetButton(gameController[ControllerIndex], SDL_CONTROLLER_BUTTON_Y);
@@ -60,11 +63,7 @@ void InputHandler::handleInput(SDL_Event &e)
 			m_eventListener->BackButton = SDL_GameControllerGetButton(gameController[ControllerIndex], SDL_CONTROLLER_BUTTON_BACK);
 			m_eventListener->GuideButton = SDL_GameControllerGetButton(gameController[ControllerIndex], SDL_CONTROLLER_BUTTON_GUIDE);
 		}
-
-		std::cout << "UP Button " << m_eventListener->UpButton << std::endl;
 	}
-	
-
 	
 	switch (e.type) 
 	{
