@@ -1,7 +1,71 @@
 #include "InputHandler.h"
 
-void InputHandler::handleInput(SDL_Event &e) 
+void InputHandler::ControllerInit()
 {
+	SDL_Init(SDL_INIT_JOYSTICK);
+	MaxJoysticks = SDL_NumJoysticks();
+	//std::cout << MaxJoysticks << std::endl;
+	if (MaxJoysticks > 0)
+	{
+		m_eventListener->controllerActivated = true;
+	}
+	else
+	{
+		m_eventListener->controllerActivated = false;
+	}
+	ControllerIndex = 0;
+	for (int JoystickIndex = 0; JoystickIndex < MaxJoysticks; ++JoystickIndex)
+	{
+		if (!SDL_IsGameController(JoystickIndex))
+		{
+			continue;
+		}
+		if (ControllerIndex >= MAX_CONTROLLERS)
+		{
+			break;
+		}
+		gameController[ControllerIndex] = SDL_GameControllerOpen(JoystickIndex);
+		ControllerIndex++;
+	}
+}
+
+void InputHandler::handleInput(SDL_Event &e)
+{
+	for (int ControllerIndex = 0; ControllerIndex < MAX_CONTROLLERS; ControllerIndex++)
+	{
+		// if we disconnect the controller, we remove it 
+		// we reactivate mouse & keyboard controls
+		if (SDL_GameControllerGetAttached(gameController[ControllerIndex]) == false)
+		{
+			SDL_GameControllerClose(gameController[ControllerIndex]);
+			m_eventListener->controllerActivated = false;
+		}
+
+
+		if (gameController[ControllerIndex] != 0 && SDL_GameControllerGetAttached(gameController[ControllerIndex]))
+		{
+			SDL_Joystick *joystick = SDL_GameControllerGetJoystick(gameController[ControllerIndex]);
+	
+			m_eventListener->AButton = SDL_GameControllerGetButton(gameController[ControllerIndex], SDL_CONTROLLER_BUTTON_A);
+			m_eventListener->BButton = SDL_GameControllerGetButton(gameController[ControllerIndex], SDL_CONTROLLER_BUTTON_B);
+			m_eventListener->YButton = SDL_GameControllerGetButton(gameController[ControllerIndex], SDL_CONTROLLER_BUTTON_Y);
+			m_eventListener->XButton = SDL_GameControllerGetButton(gameController[ControllerIndex], SDL_CONTROLLER_BUTTON_X);
+			m_eventListener->LeftShoulder = SDL_GameControllerGetButton(gameController[ControllerIndex], SDL_CONTROLLER_BUTTON_LEFTSHOULDER);
+			m_eventListener->RightShoulder = SDL_GameControllerGetButton(gameController[ControllerIndex], SDL_CONTROLLER_BUTTON_RIGHTSHOULDER);
+			m_eventListener->UpButton = SDL_GameControllerGetButton(gameController[ControllerIndex], SDL_CONTROLLER_BUTTON_DPAD_UP);
+			m_eventListener->DownButton = SDL_GameControllerGetButton(gameController[ControllerIndex], SDL_CONTROLLER_BUTTON_DPAD_DOWN);
+			m_eventListener->LeftButton = SDL_GameControllerGetButton(gameController[ControllerIndex], SDL_CONTROLLER_BUTTON_DPAD_LEFT);
+			m_eventListener->RightButton = SDL_GameControllerGetButton(gameController[ControllerIndex], SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
+			m_eventListener->StartButton = SDL_GameControllerGetButton(gameController[ControllerIndex], SDL_CONTROLLER_BUTTON_START);
+			m_eventListener->BackButton = SDL_GameControllerGetButton(gameController[ControllerIndex], SDL_CONTROLLER_BUTTON_BACK);
+			m_eventListener->GuideButton = SDL_GameControllerGetButton(gameController[ControllerIndex], SDL_CONTROLLER_BUTTON_GUIDE);
+		}
+
+		std::cout << "UP Button " << m_eventListener->UpButton << std::endl;
+	}
+	
+
+	
 	switch (e.type) 
 	{
 	case SDL_MOUSEBUTTONDOWN:

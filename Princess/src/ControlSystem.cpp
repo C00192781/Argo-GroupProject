@@ -37,28 +37,48 @@ void ControlSystem::Update()
 				playerPos = static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(playerKey))->getPosition();
 			}
 			// makes sure it finds a movement component in the entity
-			if (mcKey >= 0 && acKey >=0)
+			if (mcKey >= 0 && acKey >= 0)
 			{
 				SDL_Point holder{ 0, 0 };
 				int speed = static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(acKey))->MovementSpeed();
-
-				if (m_eventListener->W)
+				if (m_eventListener->controllerActivated == false)
 				{
-					holder.y = -speed;
+					if (m_eventListener->W)
+					{
+						holder.y = -speed;
+					}
+					if (m_eventListener->A)
+					{
+						holder.x = -speed;
+					}
+					if (m_eventListener->S)
+					{
+						holder.y = speed;
+					}
+					if (m_eventListener->D)
+					{
+						holder.x = speed;
+					}
 				}
-				if (m_eventListener->A)
+				else
 				{
-					holder.x = -speed;
+					if (m_eventListener->UpButton)
+					{
+						holder.y = -speed;
+					}
+					if (m_eventListener->LeftButton)
+					{
+						holder.x = -speed;
+					}
+					if (m_eventListener->DownButton)
+					{
+						holder.y = speed;
+					}
+					if (m_eventListener->RightButton)
+					{
+						holder.x = speed;
+					}
 				}
-				if (m_eventListener->S)
-				{
-					holder.y = speed;
-				}
-				if (m_eventListener->D)
-				{
-					holder.x = speed;
-				}
-
 				static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setVelocity(holder);
 			}
 		}
@@ -96,8 +116,10 @@ void ControlSystem::Update()
 				}
 				if (m_eventListener->LeftClick == false)
 				{
+					float cosA;
 					SDL_GetMouseState(&x, &y);
-					float cosA = atan2(y - playerPos.y, x - playerPos.x) + 3.14159265359 / 180 * 90;
+					cosA = atan2(y - playerPos.y, x - playerPos.x) + 3.14159265359 / 180 * 90;
+
 					if (pjKey >= 0 && pcKey >= 0)
 					{
 						tickTime = SDL_GetTicks();
@@ -122,16 +144,16 @@ void ControlSystem::Update()
 								static_cast<ProjectileComponent*>(m_projectiles->at(index)->GetComponents()->at(pjKey))->setButtonPressTime(differenceInSeconds);
 								static_cast<ProjectileComponent*>(m_projectiles->at(index)->GetComponents()->at(pjKey))->setOrientation(cosA);
 								static_cast<PositionComponent*>(m_projectiles->at(index)->GetComponents()->at(pcKey))->setPosition(playerPos);
-								//static_cast<ProjectileComponent*>(m_projectiles->at(index)->GetComponents()->at(pjKey))->setMaxSpeed(15.0f);
+
 							}
 						}
 					}
 				}
-
 			}
 		}
-	}
+	}	
 }
+
 
 //			//	mc->setAliveStatus(false);
 //				//int velocityX = mc->getSpeed();
