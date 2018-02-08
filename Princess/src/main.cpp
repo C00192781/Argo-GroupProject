@@ -59,6 +59,7 @@ int main()
 	player->AddComponent(new MovementComponent(3));
 	player->AddComponent(new CollisionComponent());
 	player->AddComponent(new AttributesComponent());
+	player->Active(true);
 	systemManager.RenderSystem->AddEntity(player);
 	systemManager.MovementSystem->AddEntity(player);
 	systemManager.ControlSystem->AddEntity(player);
