@@ -235,36 +235,45 @@ int main()
 
 			for (int x = 0; x < entityVec.size(); x++) //check collision between entities in the current (sub)quadrant
 			{
-				auto temp1 = entityVec.at(x);
-				auto rect1 = static_cast<SpriteComponent*>(temp1->GetComponents()->at(1))->GetRect();
+				auto tempAlpha = entityVec.at(x);
+				auto spriteCompAlpha = static_cast<SpriteComponent*>(tempAlpha->FindComponent("SC"));
+				auto posCompAlpha = static_cast<PositionComponent*>(tempAlpha->FindComponent("PC"));
 
-				rect1.x += static_cast<PositionComponent*>(temp1->GetComponents()->at(2))->getPosition().x;
-				rect1.y += static_cast<PositionComponent*>(temp1->GetComponents()->at(2))->getPosition().y;
-				rect1.w *= camScale;
-				rect1.h *= camScale;
+				auto rectAlpha = spriteCompAlpha->GetRect();
+				auto posAlpha = posCompAlpha->getPosition();
+
+				rectAlpha.x += posCompAlpha->getPosition().x;
+				rectAlpha.y += posCompAlpha->getPosition().y;
+
+				rectAlpha.w *= camScale;
+				rectAlpha.h *= camScale;
 
 				for (int y = 0; y < entityVec.size(); y++)
 				{
 					if (x != y) //things don't collide with themselves
 					{
-						auto temp2 = entityVec.at(y);
-						auto rect2 = static_cast<SpriteComponent*>(temp1->GetComponents()->at(1))->GetRect();
-						rect2.x += static_cast<PositionComponent*>(temp2->GetComponents()->at(2))->getPosition().x;
-						rect2.y += static_cast<PositionComponent*>(temp2->GetComponents()->at(2))->getPosition().y;
-						rect2.w *= camScale;
-						rect2.h *= camScale;
+						auto tempBeta = entityVec.at(y);
+						auto spriteCompBeta = static_cast<SpriteComponent*>(tempBeta->FindComponent("SC"));
+						auto posCompBeta = static_cast<PositionComponent*>(tempBeta->FindComponent("PC"));
+						auto rectBeta = spriteCompBeta->GetRect();
+
+						rectBeta.x += static_cast<PositionComponent*>(tempBeta->GetComponents()->at(2))->getPosition().x;
+						rectBeta.y += static_cast<PositionComponent*>(tempBeta->GetComponents()->at(2))->getPosition().y;
+
+						rectBeta.w *= camScale;
+						rectBeta.h *= camScale;
 						//rect2.w *= scale;
 						SDL_Rect grumbo{ 0,0,0,0 };
 
-						if (SDL_IntersectRect(&rect1, &rect2, &grumbo))
+						if (SDL_IntersectRect(&rectAlpha, &rectBeta, &grumbo))
 						{
-							//cout << "hit " << endl;
+						//	cout << "hit " << endl;
 							colls++;
 						}
 
-						if (!SDL_IntersectRect(&rect1, &rect2, &grumbo))
+						if (!SDL_IntersectRect(&rectAlpha, &rectBeta, &grumbo))
 						{
-							//	cout << "miss " << endl;
+						//		cout << "miss " << endl;
 						}
 					}
 				}
