@@ -11,6 +11,7 @@ void MovementSystem::Update(float deltaTime)
 		{
 			int mcKey = -1;
 			int pcKey = -1;
+			int collisionKey = -1;
 
 			for (int j = 0; j < m_entities.at(i)->GetComponents()->size(); j++)
 			{
@@ -21,6 +22,10 @@ void MovementSystem::Update(float deltaTime)
 				else if (m_entities.at(i)->GetComponents()->at(j)->Type() == "movement")
 				{
 					mcKey = j;
+				}
+				else if (m_entities.at(i)->GetComponents()->at(j)->Type() == "collision")
+				{
+					collisionKey = j;
 				}
 			}
 
@@ -33,10 +38,15 @@ void MovementSystem::Update(float deltaTime)
 				*xPos += static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->getXVelocity() * deltaTime;
 				*yPos += static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->getYVelocity() * deltaTime;
 
+				if (collisionKey >= 0)
+				{
+					static_cast<CollisionComponent*>(m_entities.at(i)->GetComponents()->at(collisionKey))->setPosition(*xPos, *yPos);
+				}
+
 				if (m_entities.at(i)->ID() == "Player")
 				{
 					if (static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->getLockedOrientation() == false) {
-						static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setOrientation(atan2((float)m_mouseY - *yPos, (float)m_mouseX - *xPos));
+						static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setOrientation((atan2((float)m_mouseY - *yPos, (float)m_mouseX - *xPos)) * (180 / 3.142) + 90);
 					}
 				}
 			}

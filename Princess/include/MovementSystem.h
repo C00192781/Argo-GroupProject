@@ -3,6 +3,7 @@
 #include "System.h"
 #include "PositionComponent.h"
 #include "MovementComponent.h"
+#include "CollisionComponent.h"
 
 class MovementSystem : public System
 {

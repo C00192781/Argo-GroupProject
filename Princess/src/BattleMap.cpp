@@ -41,7 +41,7 @@ void BattleMap::Generate(std::string type)
 		projectile->AddComponent(new PositionComponent(SDL_Point{ -5000, -5000 }));
 		projectile->AddComponent(new ProjectileComponent(10));
 		projectile->AddComponent(new MovementComponent());
-		projectile->AddComponent(new CollisionComponent());
+		projectile->AddComponent(new CollisionComponent(-5000, -5000, 10, 10, 2));
 		projectile->Active(false);
 		projectileEntities->push_back(projectile);
 	}
@@ -101,6 +101,7 @@ void BattleMap::Generate(std::string type)
 	player->AddComponent(new MovementComponent());
 	player->AddComponent(new CollisionComponent());
 	player->AddComponent(new WeaponComponent(WeaponType::RANGE));
+	player->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
 	//renderSystem * r = new renderSystem(resourceManager, gameRenderer);
 	//r->AddEntity(player);
 
