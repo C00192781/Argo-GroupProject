@@ -12,7 +12,6 @@ CollisionSystem::~CollisionSystem()
 
 void CollisionSystem::Update()
 {
-
 	float playerPosX = 0.0f;
 	float playerPosY = 0.0f;
 	float projectilePosX = 0.0f;
@@ -77,35 +76,6 @@ void CollisionSystem::Update()
 						std::cout << "COLLISION!!!" << std::endl;
 					}
 				}
-
-
-				//if (x1 != x2 || y1 != y2)
-				//{
-				//	if (x1 < (x2))
-				//	{
-				//		if (x1 + w1 >= x2)
-				//		{
-				//			std::cout << "FROM THE RIGHT" << std::endl;
-				//			int temp = x1 - 2;
-				//			static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKeyOne))->setX(temp);
-				//		}
-				//	}
-				//	if (x1 > x2)
-				//	{
-				//		if (x1 <= x2 + w2)
-				//		{
-				//			std::cout << "FROM THE RIGHT" << std::endl;
-				//			int temp = x1 + 2;
-				//			static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKeyOne))->setX(temp);
-				//		}
-				//	}	
-				//	/*}*/
-				//}
-
-				//std::cout << "x1 " << x1 << std::endl;
-				//std::cout << "y1 " << y1 << std::endl;
-				//std::cout << "x2 " << x2 << std::endl;
-				//std::cout << "y2 " << y2 << std::endl;
 
 			}
 		}

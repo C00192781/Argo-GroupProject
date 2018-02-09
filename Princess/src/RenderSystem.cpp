@@ -22,6 +22,8 @@ RenderSystem::~RenderSystem()
 
 void RenderSystem::Update()
 {
+	int offsetX = 0;
+	int offsetY = 0;
 	if (m_timer <= 0)
 	{
 		for (int i = 0; i < m_entities.size(); i++)
@@ -31,14 +33,39 @@ void RenderSystem::Update()
 				if (m_entities.at(i)->GetComponents()->at(j)->Type() == "SC")
 				{
 					static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(j))->Frame(static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(j))->Frame() + 1);
+					break;
 				}
 			}
 		}
-		m_timer = 10;
+		m_timer = 25;
 	}
 	else
 	{
 		m_timer--;
+	}
+	bool finish = false;
+	if (m_cameraOn)
+	{
+		for (int i = m_entities.size() - 1; i > 0; i--)
+		{
+			if (m_entities.at(i)->ID() == "Player")
+			{
+				for (int j = 0; j < m_entities.at(i)->GetComponents()->size(); j++)
+				{
+					if (m_entities.at(i)->GetComponents()->at(j)->Type() == "PC")
+					{
+						offsetX = static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(j))->getPosition().x;
+						offsetY = static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(j))->getPosition().y;
+						finish = true;
+						break;
+					}
+				}
+			}
+			if (finish)
+			{
+				break;
+			}
+		}
 	}
 	if (m_sizeMemory != m_entities.size())
 	{
@@ -70,7 +97,7 @@ void RenderSystem::Update()
 					{
 						finalgroundHolder.push_back(i);
 					}
-					else if (static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(j))->Layer() == 4)
+					else
 					{
 						hudHolder.push_back(i);
 					}
@@ -99,28 +126,42 @@ void RenderSystem::Update()
 
 	for (int i = 0; i < m_entities.size(); i++)
 	{
-		int pcKey = -1;
-		int scKey = -1;
-		for (int j = 0; j < m_entities.at(i)->GetComponents()->size(); j++)
+		if (m_entities.at(i)->Active())
 		{
-			if (m_entities.at(i)->GetComponents()->at(j)->Type() == "PC")
+			int pcKey = -1;
+			int scKey = -1;
+			for (int j = 0; j < m_entities.at(i)->GetComponents()->size(); j++)
 			{
-				pcKey = j;
+				if (m_entities.at(i)->GetComponents()->at(j)->Type() == "PC")
+				{
+					pcKey = j;
+				}
+				else if (m_entities.at(i)->GetComponents()->at(j)->Type() == "SC")
+				{
+					scKey = j;
+				}
+				else if (scKey > 0 && pcKey > 0)
+				{
+					break;
+				}
 			}
-			else if (m_entities.at(i)->GetComponents()->at(j)->Type() == "SC")
+			if (pcKey >= 0 && scKey >= 0)
 			{
-				scKey = j;
+				SDL_Rect holderRect{
+					static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getPosition().x,
+					static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getPosition().y,
+					static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(scKey))->Width() * (int)m_scale,
+					static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(scKey))->Height() * (int)m_scale };
+				if (m_cameraOn)
+				{
+					holderRect.x = (holderRect.x - offsetX) + m_camera.x / 2;
+					holderRect.y = (holderRect.y - offsetY) + m_camera.y / 2;
+				}
+				if (holderRect.x >= -(m_camera.x * 0.1) && holderRect.x <= m_camera.x && holderRect.y > -(m_camera.y * 0.1) && holderRect.y < m_camera.y)
+				{
+					SDL_RenderCopy(m_renderer, m_resourceManager->GetTexture(static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(scKey))->Sheet()), &static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(scKey))->GetRect(), &holderRect);
+				}
 			}
-		}
-		if (pcKey >= 0 && scKey >= 0)
-		{
-			SDL_Rect* holderRect = new SDL_Rect{ 
-				static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getPosition().x, 
-				static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getPosition().y, 
-				static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(scKey))->Width() * (int)m_scale, 
-				static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(scKey))->Height() * (int)m_scale };
-			SDL_RenderCopy(m_renderer, m_resourceManager->GetTexture(static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(scKey))->Sheet()), &static_cast<SpriteComponent*>(m_entities.at(i)->GetComponents()->at(scKey))->GetRect(), holderRect);
-			delete holderRect;
 		}
 	}
 }

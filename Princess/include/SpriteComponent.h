@@ -50,8 +50,7 @@ public:
 	void Sheet(std::string x) { m_sheetID = x; };
 	std::string Sheet() { return m_sheetID; };
 
-	SDL_Rect GetRect() {
-		return SDL_Rect{ ((m_sheetX +(m_sheetX* m_noOfFrames)) + m_frame) * m_width, ((m_sheetY * 4) + m_direction) * m_height, m_width, m_height };}
+	SDL_Rect GetRect() { return SDL_Rect{ ((m_sheetX +(m_sheetX* m_noOfFrames)) + m_frame) * m_width, ((m_sheetY * 4) + m_direction) * m_height, m_width, m_height };}
 
 private:
 

@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <time.h>
+#include <mutex>
+#include <thread>
 
 #include "ResourceManager.h"
 #include "Entity.h"
@@ -47,19 +49,22 @@ int main()
 	systemManager.MovementSystem->Active(true);
 	systemManager.RenderSystem = new RenderSystem(resourceManager, gameRenderer);
 	systemManager.RenderSystem->Active(true);
-	systemManager.RenderSystem->SetScale(1);
+	systemManager.RenderSystem->SetScale(3);
 
 	Entity * player = new Entity("Player");
 	player->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
 	player->Transient(true);
-	player->AddComponent(new PositionComponent(SDL_Point{100, 300}));
+	player->AddComponent(new PositionComponent(SDL_Point{0, 0}));
 	player->AddComponent(new AttributesComponent());
 	player->AddComponent(new MovementComponent(3));
 	player->AddComponent(new CollisionComponent());
 	player->AddComponent(new AttributesComponent());
+	player->Active(true);
 	systemManager.RenderSystem->AddEntity(player);
 	systemManager.MovementSystem->AddEntity(player);
 	systemManager.ControlSystem->AddEntity(player);
+	systemManager.RenderSystem->Camera(true);
+	systemManager.RenderSystem->Camera(816, 624);
 
 	WorldMap* m = new WorldMap(&systemManager, &state);
 	m->Generate(25, 25, 100);
@@ -67,8 +72,8 @@ int main()
 	std::vector<Entity*> entitys;
 
 	bool heartTest = true;
-	
 
+	
 	while (1 != 0)
 	{
 		input->handleInput();

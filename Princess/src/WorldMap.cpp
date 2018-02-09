@@ -32,7 +32,7 @@ void WorldMap::Generate(int width, int height, int chaosFactor)
 		std::vector<std::string> holder;
 		for (int j = 0; j < height + 12; j++)
 		{
-			holder.push_back("Water");
+			holder.push_back("DeepWater");
 		}
 		mapHolder.push_back(holder);
 	}
@@ -46,7 +46,7 @@ void WorldMap::Generate(int width, int height, int chaosFactor)
 			{
 				if (i == 6 || i == width + 5 || j == 6 || j == height + 5)
 				{
-					ApplyLake(&mapHolder, i, j, (rand() % 4) + 2);
+					ApplyLake(&mapHolder, i, j, (rand() % 4)+2);
 				}
 				else if (i == 7 || i == width + 4 || j == 7 || j == height + 4)
 				{
@@ -59,7 +59,12 @@ void WorldMap::Generate(int width, int height, int chaosFactor)
 			}
 		}
 	}
-	int holder = (rand() % 5)+4;
+	int holder = (rand() % 6) + 2;
+	for (int i = 0; i < holder; i++)
+	{
+		ApplyLake(&mapHolder, (rand() % ((width + 12) - 14)) + 7, (rand() % ((height + 12) - 14)) + 7, (rand() % 4) + 2);
+	}
+	holder = (rand() % 5) + 4;
 	for (int i = 0; i < holder; i++)
 	{
 		ApplySnowField(&mapHolder, (rand() % ((width + 12) - 14)) + 7, (rand() % ((height + 12) - 14)) + 7, (rand() % 2) + 4);
@@ -69,40 +74,35 @@ void WorldMap::Generate(int width, int height, int chaosFactor)
 	{
 		ApplyDesert(&mapHolder, (rand() % ((width + 12) - 14)) + 7, (rand() % ((height + 12) - 14)) + 7, (rand() % 2) + 4);
 	}
-	holder = (rand() % 5)+2;
+	holder = (rand() % chaosFactor)+2;
 	for (int i = 0; i < holder; i++)
 	{
 		ApplyForest(&mapHolder, (rand() % ((width + 12) - 14)) + 7, (rand() % ((height + 12) - 14)) + 7, (rand() % 2) + 2);
 	}
-	holder = (rand() % 5)+2;
+	holder = (rand() % chaosFactor)+2;
 	for (int i = 0; i < holder; i++)
 	{
 		ApplyMeadow(&mapHolder, (rand() % ((width + 12) - 14)) + 7, (rand() % ((height + 12) - 14)) + 7, (rand() % 2) + 2);
 	}
-	holder = (rand() % 5)+2;
+	holder = (rand() % chaosFactor)+2;
 	for (int i = 0; i < holder; i++)
 	{
 		ApplyDune(&mapHolder, (rand() % ((width + 12) - 14)) + 7, (rand() % ((height + 12) - 14)) + 7, (rand() % 2) + 2);
 	}
-	holder = (rand() % 5)+2;
+	holder = (rand() % chaosFactor)+2;
 	for (int i = 0; i < holder; i++)
 	{
 		ApplyRock(&mapHolder, (rand() % ((width + 12) - 14)) + 7, (rand() % ((height + 12) - 14)) + 7, (rand() % 2) + 2);
 	}
-	holder = (rand() % 5)+2;
+	holder = (rand() % chaosFactor)+2;
 	for (int i = 0; i < holder; i++)
 	{
 		ApplySnowDune(&mapHolder, (rand() % ((width + 12) - 14)) + 7, (rand() % ((height + 12) - 14)) + 7, (rand() % 2) + 2);
 	}
-	holder = (rand() % 5)+2;
+	holder = (rand() % chaosFactor)+2;
 	for (int i = 0; i < holder; i++)
 	{
 		ApplyGlacier(&mapHolder, (rand() % ((width + 12) - 14)) + 7, (rand() % ((height + 12) - 14)) + 7, (rand() % 2) + 2);
-	}
-	holder = (rand() % 6) + 2;
-	for (int i = 0; i < holder; i++)
-	{
-		ApplyLake(&mapHolder, (rand() % ((width + 12) - 14)) + 7, (rand() % ((height + 12) - 14)) + 7, (rand() % 4) + 2);
 	}
 	for (int i = 0; i < width + 12; i++)
 	{
@@ -148,9 +148,82 @@ void WorldMap::Generate(int width, int height, int chaosFactor)
 			{
 				m_entities.push_back(factory.Glacier("WorldTurf", i * (16 * m_systemManager->RenderSystem->GetScale()), j * (16 * m_systemManager->RenderSystem->GetScale())));
 			}
+			else if (mapHolder.at(i).at(j) == "DeepWater")
+			{
+				m_entities.push_back(factory.DeepWater("WorldTurf", i * (16 * m_systemManager->RenderSystem->GetScale()), j * (16 * m_systemManager->RenderSystem->GetScale())));
+			}
 			m_systemManager->RenderSystem->AddEntity(m_entities.back());
 		}
 	}
+	bool done = false;
+	int giveUp = 50;
+	while (!done && giveUp > 0)
+	{
+		int xHolder = rand() % width;
+		int yHolder = rand() % height;
+		if (mapHolder.at(xHolder).at(yHolder) != "Water" && mapHolder.at(xHolder).at(yHolder) != "DeepWater" && mapHolder.at(xHolder).at(yHolder) != "Town" && mapHolder.at(xHolder).at(yHolder) != "Castle" && mapHolder.at(xHolder).at(yHolder) != "Dungeon" && mapHolder.at(xHolder).at(yHolder) != "DarkCastle")
+		{
+			mapHolder.at(xHolder).at(yHolder) = "Castle";
+			m_entities.push_back(factory.Castle("WorldTurf", xHolder * (16 * m_systemManager->RenderSystem->GetScale()), yHolder * (16 * m_systemManager->RenderSystem->GetScale())));
+			m_systemManager->RenderSystem->AddEntity(m_entities.back());
+			done = true;
+		}
+		giveUp--;
+	}
+	done = false;
+	giveUp = 50;
+	while (!done && giveUp > 0)
+	{
+		int xHolder = rand() % width;
+		int yHolder = rand() % height;
+		if (mapHolder.at(xHolder).at(yHolder) != "Water" && mapHolder.at(xHolder).at(yHolder) != "DeepWater" && mapHolder.at(xHolder).at(yHolder) != "Town" && mapHolder.at(xHolder).at(yHolder) != "Castle" && mapHolder.at(xHolder).at(yHolder) != "Dungeon" && mapHolder.at(xHolder).at(yHolder) != "DarkCastle")
+		{
+			mapHolder.at(xHolder).at(yHolder) = "DarkCastle";
+			m_entities.push_back(factory.DarkCastle("WorldTurf", xHolder * (16 * m_systemManager->RenderSystem->GetScale()), yHolder * (16 * m_systemManager->RenderSystem->GetScale())));
+			m_systemManager->RenderSystem->AddEntity(m_entities.back());
+			done = true;
+		}
+		giveUp--;
+	}
+	holder = (rand() % (chaosFactor / 4)) + 2;
+	for (int i = 0; i < holder; i++)
+	{
+		bool done = false;
+		int giveUp = 50;
+		while (!done && giveUp > 0)
+		{
+			int xHolder = rand() % width;
+			int yHolder = rand() % height;
+			if (mapHolder.at(xHolder).at(yHolder) != "Water" && mapHolder.at(xHolder).at(yHolder) != "DeepWater" && mapHolder.at(xHolder).at(yHolder) != "Town" && mapHolder.at(xHolder).at(yHolder) != "Castle" && mapHolder.at(xHolder).at(yHolder) != "Dungeon" && mapHolder.at(xHolder).at(yHolder) != "DarkCastle" )
+			{
+				mapHolder.at(xHolder).at(yHolder) = "Town";
+				m_entities.push_back(factory.Town("WorldTurf", xHolder * (16 * m_systemManager->RenderSystem->GetScale()), yHolder * (16 * m_systemManager->RenderSystem->GetScale())));
+				m_systemManager->RenderSystem->AddEntity(m_entities.back());
+				done = true;
+			}
+			giveUp--;
+		}
+	}
+	holder = (rand() % (chaosFactor/4)) + 2;
+	for (int i = 0; i < holder; i++)
+	{
+		bool done = false;
+		int giveUp = 50;
+		while (!done && giveUp > 0)
+		{
+			int xHolder = rand() % width;
+			int yHolder = rand() % height;
+			if (mapHolder.at(xHolder).at(yHolder) != "Water" && mapHolder.at(xHolder).at(yHolder) != "DeepWater" && mapHolder.at(xHolder).at(yHolder) != "Town" && mapHolder.at(xHolder).at(yHolder) != "Castle" && mapHolder.at(xHolder).at(yHolder) != "Dungeon" && mapHolder.at(xHolder).at(yHolder) != "DarkCastle")
+			{
+				mapHolder.at(xHolder).at(yHolder) = "Dungeon";
+				m_entities.push_back(factory.Dungeon("WorldTurf", xHolder * (16 * m_systemManager->RenderSystem->GetScale()), yHolder * (16 * m_systemManager->RenderSystem->GetScale())));
+				m_systemManager->RenderSystem->AddEntity(m_entities.back());
+				done = true;
+			}
+			giveUp--;
+		}
+	}
+
 }
 
 void WorldMap::Load()
@@ -174,7 +247,7 @@ void WorldMap::ApplyLake(std::vector<std::vector<std::string>>* map, int x, int 
 			{
 				for (int i = -holderRad; i <= holderRad; i++)
 				{
-					if (i == holderRad && map->at(x + i).at(y - (radius - holderRad)) != "Water" || i == -holderRad && map->at(x + i).at(y - (radius - holderRad)) != "Water")
+					if (i == holderRad && map->at(x + i).at(y - (radius - holderRad)) != "Water" && i == holderRad && map->at(x + i).at(y - (radius - holderRad)) != "DeepWater" || i == -holderRad && map->at(x + i).at(y - (radius - holderRad)) != "Water" && i == -holderRad && map->at(x + i).at(y - (radius - holderRad)) != "DeepWater")
 					{
 						map->at(x + i).at(y - (radius - holderRad)) = "Desert";
 					}
@@ -200,7 +273,7 @@ void WorldMap::ApplyLake(std::vector<std::vector<std::string>>* map, int x, int 
 			{
 				for (int i = -holderRad; i <= holderRad; i++)
 				{
-					if (i == holderRad && map->at(x + i).at(y + (radius - holderRad)) != "Water" || i == -holderRad && map->at(x + i).at(y + (radius - holderRad)) != "Water")
+					if (i == holderRad && map->at(x + i).at(y - (radius - holderRad)) != "Water" && i == holderRad && map->at(x + i).at(y - (radius - holderRad)) != "DeepWater" || i == -holderRad && map->at(x + i).at(y - (radius - holderRad)) != "Water" && i == -holderRad && map->at(x + i).at(y - (radius - holderRad)) != "DeepWater")
 					{
 						map->at(x + i).at(y + (radius - holderRad)) = "Desert";
 					}
@@ -212,11 +285,11 @@ void WorldMap::ApplyLake(std::vector<std::vector<std::string>>* map, int x, int 
 			}
 			holderRad--;
 		}
-		if (map->at(x).at(y - radius) != "Water")
+		if (map->at(x).at(y - radius) != "Water" && map->at(x).at(y - radius) != "DeepWater")
 		{
 			map->at(x).at(y - radius) = "Desert";
 		}
-		if (map->at(x).at(y + radius) != "Water")
+		if (map->at(x).at(y + radius) != "Water" && map->at(x).at(y - radius) != "DeepWater")
 		{
 			map->at(x).at(y + radius) = "Desert";
 		}

@@ -40,8 +40,6 @@ public:
 	float getButtonPressTime() { return buttonPressTime; }
 	std::string getType() { return shooterType;  }
 
-
-
 private:
 	float m_maxSpeed;
 	float m_orientation;
