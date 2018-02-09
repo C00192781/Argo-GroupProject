@@ -257,8 +257,8 @@ int main()
 						auto posCompBeta = static_cast<PositionComponent*>(tempBeta->FindComponent("PC"));
 						auto rectBeta = spriteCompBeta->GetRect();
 
-						rectBeta.x += static_cast<PositionComponent*>(tempBeta->GetComponents()->at(2))->getPosition().x;
-						rectBeta.y += static_cast<PositionComponent*>(tempBeta->GetComponents()->at(2))->getPosition().y;
+						rectBeta.x += posCompBeta->getPosition().x;
+						rectBeta.y += posCompBeta->getPosition().y;
 
 						rectBeta.w *= camScale;
 						rectBeta.h *= camScale;
