@@ -11,6 +11,13 @@
 
 class ControlSystem : public System
 {
+
+struct Vector2f
+{
+	float x;
+	float y;
+};
+
 public:
 	ControlSystem(EventListener *e) 
 	{ 

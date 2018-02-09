@@ -33,7 +33,7 @@ void InputHandler::handleInput(SDL_Event &e)
 {
 	for (int ControllerIndex = 0; ControllerIndex < MAX_CONTROLLERS; ControllerIndex++)
 	{
-	
+
 		// if we disconnect the controller, we remove it 
 		// we reactivate mouse & keyboard controls
 		if (SDL_GameControllerGetAttached(gameController[ControllerIndex]) == false)
@@ -52,47 +52,15 @@ void InputHandler::handleInput(SDL_Event &e)
 
 				int16_t XAxisRight = SDL_JoystickGetAxis(joystick, 3);
 				int16_t YAxisRight = SDL_JoystickGetAxis(joystick, 4);
-				int xDir = 0;
-				int yDir = 0;
-				if (XAxisLeft < -8000)
-				{
-					xDir = -1;
-				}
-				else if (XAxisLeft > 8000)
-				{
-					xDir = 1;
-				}
-				else
-				{
-					xDir = 0;
-				}
-
-				if (YAxisLeft < -8000)
-				{
-					yDir = -1;
-				}
-				else if (YAxisLeft > 8000)
-				{
-					yDir = 1;
-				}
-				else
-				{
-					yDir = 0;
-				}
-
-				double leftJoystickAngle = atan2((double)yDir, (double)xDir) * (180.0 / M_PI);
-				if (xDir == 0 && yDir == 0)
-				{
-					leftJoystickAngle = 0;
-				}
 
 				float rightJoystickAngle = atan2(YAxisRight, XAxisRight) + 3.14159265359 / 180 * 90;
 
 				m_eventListener->LeftTrigger = SDL_GameControllerGetAxis(gameController[ControllerIndex], SDL_CONTROLLER_AXIS_TRIGGERLEFT);
 				m_eventListener->RightTrigger = SDL_GameControllerGetAxis(gameController[ControllerIndex], SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
 
-				m_eventListener->XStick = leftJoystickAngle;
-				m_eventListener->YStick = rightJoystickAngle;
+				m_eventListener->LeftStickX = XAxisLeft;
+				m_eventListener->LeftStickY = YAxisLeft;
+				m_eventListener->RightStick = rightJoystickAngle;
 				m_eventListener->AButton = SDL_GameControllerGetButton(gameController[ControllerIndex], SDL_CONTROLLER_BUTTON_A);
 				m_eventListener->BButton = SDL_GameControllerGetButton(gameController[ControllerIndex], SDL_CONTROLLER_BUTTON_B);
 				m_eventListener->YButton = SDL_GameControllerGetButton(gameController[ControllerIndex], SDL_CONTROLLER_BUTTON_Y);

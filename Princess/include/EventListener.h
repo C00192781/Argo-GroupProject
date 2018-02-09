@@ -24,10 +24,9 @@ public:
 
 	// Sticks 
 	// range of -32767 to 32767
-	//int16_t XStick = 0;
-	//int16_t YStick = 0;
-	int XStick = 0;
-	float YStick = 0;
+	float LeftStickX = 0;
+	float LeftStickY = 0;
+	float RightStick = 0;
 
 	// Buttons
 	bool AButton = false;

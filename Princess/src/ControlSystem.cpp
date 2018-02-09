@@ -39,85 +39,71 @@ void ControlSystem::Update()
 			// makes sure it finds a movement component in the entity
 			if (mcKey >= 0 && acKey >=0)
 			{
-				SDL_Point holder{ 0, 0 };
+				Vector2f holder{ 0, 0 };
 				int speed = static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(acKey))->MovementSpeed();
 				if (m_eventListener->controllerActivated == false)
 				{
 					if (m_eventListener->W)
 					{
-						holder.y = -speed;
+						holder.y = -speed + 1;
 					}
 					if (m_eventListener->A)
 					{
-						holder.x = -speed;
+						holder.x = -speed + 1;
 					}
 					if (m_eventListener->S)
 					{
-						holder.y = speed;
+						holder.y = speed - 1;
 					}
 					if (m_eventListener->D)
 					{
-						holder.x = speed;
+						holder.x = speed - 1;
 					}
 				}
 				else
 				{
+					float tempX;
+					float tempY;
+					float x = m_eventListener->LeftStickX;
+					float y = m_eventListener->LeftStickY;
+
+					float rightJoystickAngle = atan2(y, x) + 3.14159265359 / 180 * 90;
+
+					tempX = sin(rightJoystickAngle);
+					tempY = -cos(rightJoystickAngle);
+
+					holder.x = speed * tempX;
+					if (x > -8000 && x < 8000)
+					{
+						holder.x = 0;
+					}
+
+					holder.y = speed * tempY;
+					if (y > -8000 && y < 8000)
+					{
+						holder.y = 0;
+					}
+
 					if (m_eventListener->UpButton)
 					{
-						holder.y = -speed;
+						holder.y = -speed + 1;
 					}
 					if (m_eventListener->LeftButton)
 					{
-						holder.x = -speed;
+						holder.x = -speed + 1;
 					}
 					if (m_eventListener->DownButton)
 					{
-						holder.y = speed;
+						holder.y = speed - 1;
 					}
 					if (m_eventListener->RightButton)
 					{
-						holder.x = speed;
-					}
-
-					if (m_eventListener->XStick == -45)
-					{
-						holder.y = -speed;
-						holder.x = speed;
-					}
-					else if (m_eventListener->XStick == 0)
-					{
-						holder.x = speed;
-					}
-					else if (m_eventListener->XStick == 45)
-					{
-						holder.y = speed;
-						holder.x = speed;
-					}
-					else if (m_eventListener->XStick == 90)
-					{
-						holder.y = speed;
-					}
-					else if (m_eventListener->XStick == 135)
-					{
-						holder.x = -speed;
-						holder.y = speed;
-					}
-					else if (m_eventListener->XStick == 180)
-					{
-						holder.x = -speed;
-					}
-					else if (m_eventListener->XStick == -135)
-					{
-						holder.y = -speed;
-						holder.x = -speed;
-					}
-					else if (m_eventListener->XStick == -90)
-					{
-						holder.y = -speed;
+						holder.x = speed - 1;
 					}
 				}
 
-				static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setVelocity(holder);
+				static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setXVelocity(holder.x);
+				static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setYVelocity(holder.y);
 			}
 		}
 		if (m_projectiles != nullptr)
@@ -201,7 +187,7 @@ void ControlSystem::Update()
 					{
 						//std::cout << m_eventListener->controllerActivated << std::endl;
 						float cosA;
-						cosA = m_eventListener->YStick;
+						cosA = m_eventListener->RightStick;
 						//std::cout << cosA << std::endl;
 						
 						if (pjKey >= 0 && pcKey >= 0)
