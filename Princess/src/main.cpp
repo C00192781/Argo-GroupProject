@@ -35,7 +35,7 @@ int main()
 	bool debug = false;
 
 	srand(time(NULL));
-	const int SCREEN_FPS = 600;
+	const int SCREEN_FPS = 5;
 	const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
 
 	//Set text color as black
@@ -152,10 +152,10 @@ int main()
 	Quadtree* quad = new Quadtree(0, SDL_Rect{ 0,0  , 816, 624 });
 
 	int camScale = systemManager.RenderSystem->GetScale();
-
+	int colls = 0;
 	while (1 != 0)
 	{
-
+		colls = 0;
 		//Calculate and correct fps
 		int avgFPS = countedFrames / (fpsTimer.getTicks() / 1000.f);
 		if (avgFPS > 2000000)
@@ -258,7 +258,8 @@ int main()
 
 						if (SDL_IntersectRect(&rect1, &rect2, &grumbo))
 						{
-							cout << "hit " << endl;
+							//cout << "hit " << endl;
+							colls++;
 						}
 
 						if (!SDL_IntersectRect(&rect1, &rect2, &grumbo))
@@ -268,6 +269,7 @@ int main()
 					}
 				}
 			}
+			cout << "colls: " <<  colls /2 << endl;
 			//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 			input->handleInput(*e);

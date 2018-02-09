@@ -20,10 +20,10 @@ AiSystem::~AiSystem()
 
 void AiSystem::Spawn()
 {
-	SDL_Point p{ 300,0 };
+	SDL_Point p{ 0,0 };
 	
-	//characterFactory = new Princess();
-	//m_entities.push_back(characterFactory->CharA("Red", p, 0));
+	characterFactory = new Princess();
+	m_entities.push_back(characterFactory->CharA("Red", p, 0));
 
 	////p =  SDL_Point{ 10,100 };
 
@@ -40,27 +40,15 @@ void AiSystem::Spawn()
 
 	int mod2 = rand() % 750;
 	
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < 3; i++)
 	{
-		 //; +(i * 100);
-		 //;+ (i * 100);
-	
-	//	characterFactory = new BasicEnemy();
-		if (i == 0)
-		{
-			p.x = 100;
-			p.y = 100;
-			m_entities.push_back(characterFactory->CharC("Demon", p, 0));
-		}
-		else if (i == 1)
-		{
-			p.x = 160;
-			p.y = 86;
-			m_entities.push_back(characterFactory->CharB("Demon", p, 0));
-		}
-	
-	}
+		p.x = rand() % 300;
+		p.y = rand() % 300;
 
+		//	characterFactory = new BasicEnemy();
+		m_entities.push_back(characterFactory->CharC("Demon", p, 0));
+
+	}
 }
 
 
