@@ -22,6 +22,8 @@
 #include <chrono>
 #include "SystemManager.h"
 
+int GAME_SCALE = 3;
+
 int main()
 {
 	SDL_Window* gameWindow = SDL_CreateWindow("TEST", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 816, 624, SDL_WINDOW_SHOWN);
@@ -68,7 +70,7 @@ int main()
 	systemManager.MovementSystem->Active(true);
 	systemManager.RenderSystem = new RenderSystem(resourceManager, gameRenderer);
 	systemManager.RenderSystem->Active(true);
-	systemManager.RenderSystem->SetScale(3);
+	systemManager.RenderSystem->SetScale(GAME_SCALE);
 	systemManager.ProjectileSystem = new ProjectileSystem();
 	systemManager.ProjectileSystem->Active(true);
 	systemManager.CollisionSystem = new CollisionSystem();

@@ -11,6 +11,8 @@
 #include "MenuComponent.h"
 #include "ButtonComponent.h"
 
+extern int GAME_SCALE;
+
 class ControlSystem : public System
 {
 public:
