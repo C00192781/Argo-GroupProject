@@ -11,12 +11,16 @@ private:
 	//The button's dimensions
 	SDL_Rect m_rect;
 
+	//if the button is selected
+	bool m_selected;
+
 public:
 	ButtonComponent() 
 	{ 
 		m_activated = false;
 		m_rect = SDL_Rect();
 		m_type = "ButtonC";
+		m_selected = false;
 	};
 	ButtonComponent(int posX, int posY, int width, int height)
 	{
@@ -27,6 +31,9 @@ public:
 		m_rect.h = height;
 	};
 	~ButtonComponent() {};
+
+	bool Selected() { return m_selected; };
+	void Selected(bool selected) { m_selected = selected; };
 
 	bool Activated() { return m_activated; };
 	void Activated(bool activated) { m_activated = activated; };

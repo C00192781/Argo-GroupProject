@@ -38,34 +38,217 @@ void ControlSystem::Update()
 			}
 			if (menuCKey >= 0)
 			{
-				//check if mouse click and if mouse position
-				if (m_eventListener->LeftClick == true)
+				if (menuTimer > 2)
 				{
-					MenuComponent* menu = static_cast<MenuComponent*>(m_entities.at(i)->GetComponents()->at(menuCKey));
-					for (int j = 0; j < menu->Buttons()->size(); j++)
+					if (m_eventListener->W)
 					{
-						int scKey = -1;
-						for (int k = 0; k < menu->Buttons()->at(j)->GetComponents()->size(); k++)
+						MenuComponent* menu = static_cast<MenuComponent*>(m_entities.at(i)->GetComponents()->at(menuCKey));
+						if (menu->SelectedButtonIndex() == 0)
 						{
-							if (menu->Buttons()->at(j)->GetComponents()->at(k)->Type() == "sc")
+							int buttonCOneKey = -1;
+							int scOneKey = -1;
+							for (int k = 0; k < menu->Buttons()->at(0)->GetComponents()->size(); k++)
 							{
-								scKey = k;
+								if (menu->Buttons()->at(j)->GetComponents()->at(k)->Type() == "ButtonC")
+								{
+									buttonCOneKey = k;
+								}
+								if (menu->Buttons()->at(j)->GetComponents()->at(k)->Type() == "SC")
+								{
+									scOneKey = k;
+								}
+							}
+
+							int buttonCTwoKey = -1;
+							int scTwoKey = -1;
+							for (int k = 0; k < menu->Buttons()->at(menu->Buttons()->size() - 1)->GetComponents()->size(); k++)
+							{
+								if (menu->Buttons()->at(j)->GetComponents()->at(k)->Type() == "ButtonC")
+								{
+									buttonCTwoKey = k;
+								}
+								if (menu->Buttons()->at(j)->GetComponents()->at(k)->Type() == "SC")
+								{
+									scTwoKey = k;
+								}
+							}
+							if (scOneKey >= 0 && scTwoKey >= 0 && buttonCOneKey >= 0 && buttonCTwoKey >= 0)
+							{
+								static_cast<ButtonComponent*>(menu->Buttons()->at(0)->GetComponents()->at(buttonCOneKey))->Selected(false);
+								static_cast<SpriteComponent*>(menu->Buttons()->at(0)->GetComponents()->at(scOneKey))->Frame(0);
+
+								static_cast<ButtonComponent*>(menu->Buttons()->at(menu->Buttons()->size() - 1)->GetComponents()->at(buttonCTwoKey))->Selected(true);
+								static_cast<SpriteComponent*>(menu->Buttons()->at(menu->Buttons()->size() - 1)->GetComponents()->at(scTwoKey))->Frame(1);
+
+								menu->SelectedButtonIndex(menu->Buttons()->size() - 1);
+								std::cout << menu->SelectedButtonIndex() << std::endl;
+							}
+
+						}
+						else
+						{
+							for (int j = 0; j < menu->Buttons()->size(); j++)
+							{
+								if (j == menu->SelectedButtonIndex())
+								{
+									int buttonOneCKey = -1;
+									int scOneKey = -1;
+									for (int k = 0; k < menu->Buttons()->at(j)->GetComponents()->size(); k++)
+									{
+										if (menu->Buttons()->at(j)->GetComponents()->at(k)->Type() == "ButtonC")
+										{
+											buttonOneCKey = k;
+										}
+										if (menu->Buttons()->at(j)->GetComponents()->at(k)->Type() == "SC")
+										{
+											scOneKey = k;
+										}
+									}
+									int buttonTwoCKey = -1;
+									int scTwoKey = -1;
+									for (int k = 0; k < menu->Buttons()->at(j - 1)->GetComponents()->size(); k++)
+									{
+										if (menu->Buttons()->at(j - 1)->GetComponents()->at(k)->Type() == "ButtonC")
+										{
+											buttonTwoCKey = k;
+										}
+										if (menu->Buttons()->at(j - 1)->GetComponents()->at(k)->Type() == "SC")
+										{
+											scTwoKey = k;
+										}
+									}
+									if (scOneKey >= 0 && scTwoKey >= 0 && buttonOneCKey >= 0 && buttonTwoCKey >= 0)
+									{
+										static_cast<ButtonComponent*>(menu->Buttons()->at(j)->GetComponents()->at(buttonOneCKey))->Selected(false);
+										static_cast<SpriteComponent*>(menu->Buttons()->at(j)->GetComponents()->at(scOneKey))->Frame(0);
+
+										static_cast<ButtonComponent*>(menu->Buttons()->at((j - 1))->GetComponents()->at(buttonTwoCKey))->Selected(true);
+										static_cast<SpriteComponent*>(menu->Buttons()->at((j - 1))->GetComponents()->at(scTwoKey))->Frame(1);
+
+										menu->SelectedButtonIndex((j - 1));
+										std::cout << menu->SelectedButtonIndex() << std::endl;
+										break;
+									}
+								}
 							}
 						}
-						if (scKey >= 0)
+						menuTimer = 0;
+					}
+					else if (m_eventListener->S)
+					{
+						MenuComponent* menu = static_cast<MenuComponent*>(m_entities.at(i)->GetComponents()->at(menuCKey));
+						if (menu->SelectedButtonIndex() == (menu->Buttons()->size() - 1))
 						{
-							SDL_Point p = SDL_Point{ -1, -1 };
-							SDL_GetMouseState(&p.x, &p.y);
-							std::cout << p.x << p.y << std::endl;
-							SDL_Rect * rect = &static_cast<SpriteComponent*>(menu->Buttons()->at(j)->GetComponents()->at(scKey))->GetRect();
-							if (SDL_PointInRect(&p, rect) == true)
+							int buttonCOneKey = -1;
+							int scOneKey = -1;
+							for (int k = 0; k < menu->Buttons()->at(0)->GetComponents()->size(); k++)
 							{
-								static_cast<ButtonComponent*>(menu->Buttons()->at(j)->GetComponents()->at(buttonCKey))->Activated(true);
+								if (menu->Buttons()->at(j)->GetComponents()->at(k)->Type() == "ButtonC")
+								{
+									buttonCOneKey = k;
+								}
+								if (menu->Buttons()->at(j)->GetComponents()->at(k)->Type() == "SC")
+								{
+									scOneKey = k;
+								}
 							}
-	
+
+							int buttonCTwoKey = -1;
+							int scTwoKey = -1;
+							for (int k = 0; k < menu->Buttons()->at(menu->Buttons()->size() - 1)->GetComponents()->size(); k++)
+							{
+								if (menu->Buttons()->at(j)->GetComponents()->at(k)->Type() == "ButtonC")
+								{
+									buttonCTwoKey = k;
+								}
+								if (menu->Buttons()->at(j)->GetComponents()->at(k)->Type() == "SC")
+								{
+									scTwoKey = k;
+								}
+							}
+							if (buttonCOneKey >= 0 && buttonCTwoKey)
+							{
+								static_cast<ButtonComponent*>(menu->Buttons()->at(menu->Buttons()->size() - 1)->GetComponents()->at(buttonCOneKey))->Selected(false);
+								static_cast<SpriteComponent*>(menu->Buttons()->at(menu->Buttons()->size() - 1)->GetComponents()->at(scTwoKey))->Frame(0);
+
+								static_cast<ButtonComponent*>(menu->Buttons()->at(0)->GetComponents()->at(buttonCTwoKey))->Selected(true);
+								static_cast<SpriteComponent*>(menu->Buttons()->at(0)->GetComponents()->at(scOneKey))->Frame(1);
+								menu->SelectedButtonIndex(0);
+								std::cout << menu->SelectedButtonIndex() << std::endl;
+							}
+
 						}
+						else
+						{
+							for (int j = 0; j < menu->Buttons()->size(); j++)
+							{
+								if (j == menu->SelectedButtonIndex())
+								{
+									int buttonOneCKey = -1;
+									int scOneKey = -1;
+									for (int k = 0; k < menu->Buttons()->at(j)->GetComponents()->size(); k++)
+									{
+										if (menu->Buttons()->at(j)->GetComponents()->at(k)->Type() == "ButtonC")
+										{
+											buttonOneCKey = k;
+										}
+										if (menu->Buttons()->at(j)->GetComponents()->at(k)->Type() == "SC")
+										{
+											scOneKey = k;
+										}
+									}
+
+									int buttonTwoCKey = -1;
+									int scTwoKey = -1;
+									for (int k = 0; k < menu->Buttons()->at(j + 1)->GetComponents()->size(); k++)
+									{
+										if (menu->Buttons()->at(j + 1)->GetComponents()->at(k)->Type() == "ButtonC")
+										{
+											buttonTwoCKey = k;
+										}
+										if (menu->Buttons()->at(j + 1)->GetComponents()->at(k)->Type() == "SC")
+										{
+											scTwoKey = k;
+										}
+									}
+
+									if (buttonOneCKey >= 0 && buttonTwoCKey >= 0)
+									{
+										static_cast<ButtonComponent*>(menu->Buttons()->at(j)->GetComponents()->at(buttonOneCKey))->Selected(false);
+										static_cast<SpriteComponent*>(menu->Buttons()->at(j)->GetComponents()->at(scOneKey))->Frame(0);
+
+										static_cast<ButtonComponent*>(menu->Buttons()->at((j + 1))->GetComponents()->at(buttonTwoCKey))->Selected(true);
+										static_cast<SpriteComponent*>(menu->Buttons()->at((j + 1))->GetComponents()->at(scTwoKey))->Frame(1);
+
+										menu->SelectedButtonIndex((j + 1));
+										std::cout << menu->SelectedButtonIndex() << std::endl;
+										break;
+									}
+								}
+							}
+						}
+						menuTimer = 0;
+					}
+					else if (m_eventListener->Space)
+					{
+						MenuComponent* menu = static_cast<MenuComponent*>(m_entities.at(i)->GetComponents()->at(menuCKey));
+						int buttonCKey = -1;
+						for (int k = 0; k < menu->Buttons()->at(menu->SelectedButtonIndex())->GetComponents()->size(); k++)
+						{
+							if (menu->Buttons()->at(menu->SelectedButtonIndex())->GetComponents()->at(k)->Type() == "ButtonC")
+							{
+								buttonCKey = k;
+							}
+						}
+						static_cast<ButtonComponent*>(menu->Buttons()->at(menu->SelectedButtonIndex())->GetComponents()->at(buttonCKey))->Activated(true);
+						menuTimer = 0;
 					}
 				}
+				else
+				{
+					menuTimer++;
+				}
+
 			}
 			if (playerKey >= 0)
 			{

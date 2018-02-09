@@ -92,7 +92,6 @@ void BattleMap::Generate(std::string type)
 		m_systemManager->MovementSystem->AddEntity((*i)); //consider tag discrimination here
 	}
 	
-	//Entity * player = new Entity("Player");
 	Entity * player = new Entity("Player");
 	player->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
 	player->AddComponent(new PositionComponent(SDL_Point{ 100, 300 }));
@@ -100,8 +99,6 @@ void BattleMap::Generate(std::string type)
 	player->AddComponent(new MovementComponent(3));
 	player->AddComponent(new CollisionComponent());
 	player->AddComponent(new AttributesComponent());
-	//RenderSystem * r = new RenderSystem(resourceManager, gameRenderer);
-	//r->AddEntity(player);
 
 	m_systemManager->ControlSystem->AddEntity(player);
 	m_systemManager->MovementSystem->AddEntity(player);

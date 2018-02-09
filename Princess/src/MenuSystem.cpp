@@ -8,7 +8,10 @@ MenuSystem::MenuSystem(EventListener * listener)
 
 MenuSystem::~MenuSystem()
 {
-
+	for (int i = 0; i < m_entities.size(); i++)
+	{
+		RemoveMenu(m_entities.at(i)->ID);
+	}
 }
 
 void MenuSystem::Update()
@@ -29,14 +32,14 @@ void MenuSystem::Update()
 			for (int i = 0; i < menu->Buttons()->size(); i++)
 			{
 				int buttonCKey = -1;
-				for (int j = 0; j < m_entities.at(indexActiveMenu)->GetComponents()->size(); j++)
+				for (int j = 0; j < menu->Buttons()->at(i)->GetComponents()->size(); j++)
 				{
-					if (m_entities.at(indexActiveMenu)->GetComponents()->at(j)->Type() == "ButtonC")
+					if (menu->Buttons()->at(i)->GetComponents()->at(j)->Type() == "ButtonC")
 					{
 						buttonCKey = j;
 					}
 				}
-				if (buttonCKey == true)
+				if (buttonCKey >= 0)
 				{
 					if (static_cast<ButtonComponent*>(menu->Buttons()->at(i)->GetComponents()->at(buttonCKey))->Activated() == true)
 					{
@@ -52,7 +55,7 @@ void MenuSystem::Update()
 							m_eventListener->ExitGame = true;
 							//exitGame;
 						}
-						if (menu->Buttons()->at(i)->ID() == "OptionsMenu")
+						if (menu->Buttons()->at(i)->ID() == "OpenOptions")
 						{
 							std::cout << "Open Options Menu" << std::endl;
 							m_eventListener->GoToOptions = true;
@@ -92,17 +95,22 @@ void MenuSystem::SetUpMainMenu()
 
 	Entity * buttonOne = new Entity("StartGame");
 	buttonOne->AddComponent(new PositionComponent(SDL_Point{ 100, 100 }));
-	buttonOne->AddComponent(new SpriteComponent("StartGameButton", 2, 0, 0, 0, 128, 32, 0));
+	buttonOne->AddComponent(new SpriteComponent("StartGameButton", 2, 2, 0, 0, 128, 32, 0));
+	static_cast<SpriteComponent*>(buttonOne->GetComponents()->at(1))->IsAnimating(false);
+	static_cast<SpriteComponent*>(buttonOne->GetComponents()->at(1))->Frame(1);
 	buttonOne->AddComponent(new ButtonComponent(100, 100, 128, 32));
 
-	Entity * buttonTwo = new Entity("OptionsGame");
+
+	Entity * buttonTwo = new Entity("OpenOptions");
 	buttonTwo->AddComponent(new PositionComponent(SDL_Point{ 100, 300 }));
-	buttonTwo->AddComponent(new SpriteComponent("OptionsButton", 2, 0, 0, 0, 128, 32, 0));
+	buttonTwo->AddComponent(new SpriteComponent("OptionsButton", 2, 2, 0, 0, 128, 32, 0));
+	static_cast<SpriteComponent*>(buttonTwo->GetComponents()->at(1))->IsAnimating(false);
 	buttonTwo->AddComponent(new ButtonComponent(100, 300, 128, 32));
 
 	Entity * buttonThree = new Entity("ExitGame");
 	buttonThree->AddComponent(new PositionComponent(SDL_Point{ 100, 500 }));
-	buttonThree->AddComponent(new SpriteComponent("ExitGameButton", 2, 0, 0, 0, 128, 32, 0));
+	buttonThree->AddComponent(new SpriteComponent("ExitGameButton", 2, 2, 0, 0, 128, 32, 0));
+	static_cast<SpriteComponent*>(buttonThree->GetComponents()->at(1))->IsAnimating(false);
 	buttonThree->AddComponent(new ButtonComponent(100, 500, 128, 32));
 
 	menuC->Buttons()->push_back(buttonOne);

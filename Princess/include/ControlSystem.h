@@ -24,6 +24,7 @@ public:
 		playerPos = SDL_Point{ 0,0 };
 		x = 0.0f;
 		y = 0.0f;
+		menuTimer = 0;
 	};
 
 	void Update();
@@ -38,4 +39,5 @@ private:
 	bool shoot;
 	SDL_Point playerPos;
 	int x, y;
+	int menuTimer;
 };

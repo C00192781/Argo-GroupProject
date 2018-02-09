@@ -7,6 +7,7 @@ class MenuComponent : public Component
 {
 private:
 	std::vector<Entity*>* m_buttons;
+	int m_selectedButtonIndex;
 public:
 	MenuComponent() 
 	{
@@ -19,6 +20,9 @@ public:
 	};
 
 	std::vector<Entity*>* Buttons() { return m_buttons; };
+
+	int SelectedButtonIndex() { return m_selectedButtonIndex; };
+	void SelectedButtonIndex(int selectedButtonIndex) { m_selectedButtonIndex = selectedButtonIndex; };
 };
 
 #endif

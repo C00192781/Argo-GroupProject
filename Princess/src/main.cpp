@@ -88,8 +88,6 @@ int main()
 
 	systemManager.menuSystem->SetUpMainMenu();
 	systemManager.menuSystem->ChangeMenu("MainMenu");
-
-
 	for (int i = 0; i < systemManager.menuSystem->GetMenuComponent("MainMenu")->Buttons()->size(); i++)
 	{
 		systemManager.RenderSystem->AddEntity(systemManager.menuSystem->GetMenuComponent("MainMenu")->Buttons()->at(i));
