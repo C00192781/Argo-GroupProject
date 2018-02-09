@@ -35,7 +35,7 @@ int main()
 	bool debug = false;
 
 	srand(time(NULL));
-	const int SCREEN_FPS = 5;
+	const int SCREEN_FPS = 500;
 	const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
 
 	//Set text color as black
@@ -173,7 +173,7 @@ int main()
 		//Set text to be rendered
 		if (avgFPS > 1)
 		{
-		//	cout << "FPS (With Cap) " << avgFPS << endl;;
+			cout << "FPS (With Cap) " << avgFPS << endl;;
 		}
 		//update ren
 		++countedFrames;
@@ -237,6 +237,7 @@ int main()
 				{
 					break;
 				}
+
 				auto tempAlpha = entityVec.at(x);
 				if (tempAlpha->FindComponent("SC") != nullptr)
 				{
@@ -245,6 +246,11 @@ int main()
 				else
 				{
 					cout << "killmyself" << endl;
+					ofstream myfile;
+					myfile.open("crashlog.txt");
+					myfile << "You removed a vital component and then searched for it you pillock.\n" << std::to_string(__LINE__) << "\n" << __FILE__;
+					myfile.close();
+					return 0;
 					brokenCode = true;
 					break;
 				}
@@ -256,6 +262,11 @@ int main()
 				else
 				{
 					cout << "killmyself" << endl;
+					ofstream myfile;
+					myfile.open("crashlog.txt");
+					myfile << "You removed a vital component and then searched for it you pillock.\n" << std::to_string(__LINE__) << "\n" << __FILE__;
+					myfile.close();
+					return 0;
 					brokenCode = true;
 					break;
 				}
@@ -282,6 +293,12 @@ int main()
 						else
 						{
 							brokenCode = true;
+							ofstream myfile;
+							myfile.open("crashlog.txt");
+							
+							myfile << "You removed a vital component and then searched for it you pillock.\n" << std::to_string( __LINE__) << "\n" << __FILE__ ;
+							myfile.close();
+							return 0;
 							break;
 						}
 
@@ -292,6 +309,11 @@ int main()
 						else
 						{
 							brokenCode = true;
+							ofstream myfile;
+							myfile.open("crashlog.txt");
+							myfile << "You removed a vital component and then searched for it you pillock.\n" << std::to_string(__LINE__) << "\n" << __FILE__;
+							myfile.close();
+							return 0;
 							break;
 						}
 
@@ -318,7 +340,7 @@ int main()
 					}
 				}
 			}
-			cout << "colls: " <<  colls /2 << endl;
+			//cout << "colls: " <<  colls /2 << endl;
 			//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 			input->handleInput(*e);

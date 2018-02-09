@@ -53,7 +53,7 @@ Entity* BasicEnemy::CharC(std::string ID, SDL_Point pos, int element)
 {
 	Entity *BasicEnemy = new Entity("Spellcaster Enemy");
 	BasicEnemy->AddComponent(new AiLogicComponent);
-//	BasicEnemy->AddComponent(new SpriteComponent(ID, 0, 0, 0, 0, 16, 16, 0)); ////sprite id
+//	BasicEnemy->AddComponent(new SpriteComponent(ID, 0, 0, 0, 0, 16, 16, 0)); ////sprite id 
 	BasicEnemy->AddComponent(new PositionComponent(pos));
 	BasicEnemy->AddComponent(new MovementComponent(100));
 	BasicEnemy->AddComponent(new SeekComponent(-50, -50));
