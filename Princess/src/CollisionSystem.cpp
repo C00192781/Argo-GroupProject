@@ -31,7 +31,7 @@ void CollisionSystem::Update()
 
 	for (int i = 0; i < m_entities.size(); i++)
 	{
-		if (m_entities.at(i)->Active()) 
+		if (m_entities.at(i)->Active())
 		{
 			int collisionKey1 = -1;
 
