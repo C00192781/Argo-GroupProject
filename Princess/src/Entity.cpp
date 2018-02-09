@@ -29,7 +29,7 @@ Component* Entity::FindComponent(std::string ID)
 		}
 	}
 
-	return 0;
+	return nullptr;
 }
 
 void Entity::RemoveComponent(Component* c)

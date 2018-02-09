@@ -153,7 +153,14 @@ int main()
 
 	int camScale = systemManager.RenderSystem->GetScale();
 	int colls = 0;
-	while (1 != 0)
+
+	PositionComponent* posCompBeta = nullptr;
+	PositionComponent* posCompAlpha = nullptr;
+	SpriteComponent* spriteCompAlpha = nullptr;
+	SpriteComponent* spriteCompBeta = nullptr;
+	bool brokenCode = false;
+
+	while (brokenCode == false)
 	{
 		colls = 0;
 		//Calculate and correct fps
@@ -199,19 +206,10 @@ int main()
 				quad->insert(aiSystemEntities.at(i));
 				
 			}
-			
-////	/*		for (int i = 0; i < projectiles->size(); i++)
-////			{
-////				quad->insert(projectiles->at(i));
-////			}
-////*/
-			//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 			std::vector<Entity*> entityVec;
-
 			collVector.clear(); 
 	
-
 			for (int i = 0; i < aiSystemEntities.size(); i++)
 			{
 
@@ -235,9 +233,32 @@ int main()
 
 			for (int x = 0; x < entityVec.size(); x++) //check collision between entities in the current (sub)quadrant
 			{
+				if (brokenCode == true)
+				{
+					break;
+				}
 				auto tempAlpha = entityVec.at(x);
-				auto spriteCompAlpha = static_cast<SpriteComponent*>(tempAlpha->FindComponent("SC"));
-				auto posCompAlpha = static_cast<PositionComponent*>(tempAlpha->FindComponent("PC"));
+				if (tempAlpha->FindComponent("SC") != nullptr)
+				{
+					spriteCompAlpha = static_cast<SpriteComponent*>(tempAlpha->FindComponent("SC"));
+				}
+				else
+				{
+					cout << "killmyself" << endl;
+					brokenCode = true;
+					break;
+				}
+
+				if (tempAlpha->FindComponent("PC") != nullptr)
+				{
+					posCompAlpha = static_cast<PositionComponent*>(tempAlpha->FindComponent("PC"));
+				}
+				else
+				{
+					cout << "killmyself" << endl;
+					brokenCode = true;
+					break;
+				}
 
 				auto rectAlpha = spriteCompAlpha->GetRect();
 				auto posAlpha = posCompAlpha->getPosition();
@@ -253,8 +274,27 @@ int main()
 					if (x != y) //things don't collide with themselves
 					{
 						auto tempBeta = entityVec.at(y);
-						auto spriteCompBeta = static_cast<SpriteComponent*>(tempBeta->FindComponent("SC"));
-						auto posCompBeta = static_cast<PositionComponent*>(tempBeta->FindComponent("PC"));
+
+						if (tempBeta->FindComponent("SC") != nullptr)
+						{
+							spriteCompBeta = static_cast<SpriteComponent*>(tempBeta->FindComponent("SC"));
+						}
+						else
+						{
+							brokenCode = true;
+							break;
+						}
+
+						if (tempBeta->FindComponent("PC") != nullptr)
+						{
+							posCompBeta = static_cast<PositionComponent*>(tempBeta->FindComponent("PC"));
+						}
+						else
+						{
+							brokenCode = true;
+							break;
+						}
+
 						auto rectBeta = spriteCompBeta->GetRect();
 
 						rectBeta.x += posCompBeta->getPosition().x;
