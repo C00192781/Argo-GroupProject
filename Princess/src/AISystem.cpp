@@ -40,10 +40,10 @@ void AiSystem::Spawn()
 
 	int mod2 = rand() % 750;
 	
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 50; i++)
 	{
-		p.x = rand() % 300;
-		p.y = rand() % 300;
+		p.x = rand() % 800;
+		p.y = rand() % 750;
 
 		//	characterFactory = new BasicEnemy();
 		m_entities.push_back(characterFactory->CharC("Demon", p, 0));

@@ -35,7 +35,7 @@ int main()
 	bool debug = false;
 
 	srand(time(NULL));
-	const int SCREEN_FPS = 500;
+	const int SCREEN_FPS = 600;
 	const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
 
 	//Set text color as black
@@ -105,48 +105,7 @@ int main()
 	BattleMap m = BattleMap(&systemManager, &state);
 	m.Generate("Grassland");
 
-	///*Entity * player = new Entity("Player");
-	//player->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
-	//player->Transient(true);
-	//player->AddComponent(new PositionComponent(SDL_Point{ 0, 0 }));
-	//player->AddComponent(new AttributesComponent());
-	//player->AddComponent(new MovementComponent(3));
-	//player->AddComponent(new CollisionComponent());
-	//player->Active(true);*/
-
-
-	//Entity * player = new Entity("Player");
-	//player->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
-	//player->AddComponent(new PositionComponent(SDL_Point{100, 300}));
-	//player->AddComponent(new AttributesComponent());
-	//player->AddComponent(new MovementComponent(3));
-	//player->AddComponent(new CollisionComponent());
-	//player->AddComponent(new AttributesComponent());
-	////RenderSystem * r = new RenderSystem(resourceManager, gameRenderer);
-	////r->AddEntity(player);
-
-	//systemManager.ControlSystem->AddEntity(player);
-	//systemManager.MovementSystem->AddEntity(player);
-	//systemManager.RenderSystem->AddEntity(player);
-	//systemManager.ProjectileSystem->AddEntity(player);
-	//systemManager.CollisionSystem->AddEntity(player);
-	//systemManager.healthSystem->AddEntity(player);
-
 	bool heartTest = true;
-
-	//RenderSystem * r = new RenderSystem(resourceManager, gameRenderer);
-
-	//princess->AddComponent(new SpriteComponent(ID, 0, 1, 0, 0, 16, 16, 0)); //textid
-	////Entity *meleeEnemy = new Entity("Melee Enemy");
-	////meleeEnemy->AddComponent(new SpriteComponent("Demon", 0, 0, 0, 0, 16, 16, 0));
-	////meleeEnemy->AddComponent(new PositionComponent(SDL_Point{ 550,500 }));
-	////meleeEnemy->AddComponent(new MovementComponent(120));
-	////meleeEnemy->AddComponent(new SeekComponent(600, 600));
-	////meleeEnemy->AddComponent(new AttackComponent(1, 1, 1));
-
-	////systemManager.AiSystems->AddEntity(meleeEnemy);
-	////systemManager.RenderSystem->AddEntity(meleeEnemy);
-	////systemManager.MovementSystem->AddEntity(meleeEnemy);
 
 	std::vector<Entity*> collVector;
 	Quadtree* quad = new Quadtree(0, SDL_Rect{ 0,0  , 816, 624 });
@@ -233,107 +192,42 @@ int main()
 
 			for (int x = 0; x < entityVec.size(); x++) //check collision between entities in the current (sub)quadrant
 			{
-				if (brokenCode == true)
-				{
-					break;
-				}
 
-				auto tempAlpha = entityVec.at(x);
-				if (tempAlpha->FindComponent("SC") != nullptr)
-				{
-					spriteCompAlpha = static_cast<SpriteComponent*>(tempAlpha->FindComponent("SC"));
-				}
-				else
-				{
-					cout << "killmyself" << endl;
-					ofstream myfile;
-					myfile.open("crashlog.txt");
-					myfile << "You removed a vital component and then searched for it you pillock.\n" << std::to_string(__LINE__) << "\n" << __FILE__;
-					myfile.close();
-					return 0;
-					brokenCode = true;
-					break;
-				}
+			//	auto tempAlpha = entityVec.at(x);  //used to test components of entity are valid
 
-				if (tempAlpha->FindComponent("PC") != nullptr)
-				{
-					posCompAlpha = static_cast<PositionComponent*>(tempAlpha->FindComponent("PC"));
-				}
-				else
-				{
-					cout << "killmyself" << endl;
-					ofstream myfile;
-					myfile.open("crashlog.txt");
-					myfile << "You removed a vital component and then searched for it you pillock.\n" << std::to_string(__LINE__) << "\n" << __FILE__;
-					myfile.close();
-					return 0;
-					brokenCode = true;
-					break;
-				}
+	
 
-				auto rectAlpha = spriteCompAlpha->GetRect();
-				auto posAlpha = posCompAlpha->getPosition();
+				auto temp1 = entityVec.at(x);
+				auto rect1 = static_cast<SpriteComponent*>(temp1->GetComponents()->at(1))->GetRect();
 
-				rectAlpha.x += posCompAlpha->getPosition().x;
-				rectAlpha.y += posCompAlpha->getPosition().y;
-
-				rectAlpha.w *= camScale;
-				rectAlpha.h *= camScale;
+				rect1.x += static_cast<PositionComponent*>(temp1->GetComponents()->at(2))->getPosition().x;
+				rect1.x += static_cast<PositionComponent*>(temp1->GetComponents()->at(2))->getPosition().y;
+				rect1.y += static_cast<PositionComponent*>(temp1->GetComponents()->at(2))->getPosition().y;
+				rect1.w *= camScale;
+				rect1.h *= camScale;
 
 				for (int y = 0; y < entityVec.size(); y++)
 				{
 					if (x != y) //things don't collide with themselves
 					{
-						auto tempBeta = entityVec.at(y);
+						auto temp2= entityVec.at(x);
+						auto rect2 = static_cast<SpriteComponent*>(temp1->GetComponents()->at(1))->GetRect();
 
-						if (tempBeta->FindComponent("SC") != nullptr)
-						{
-							spriteCompBeta = static_cast<SpriteComponent*>(tempBeta->FindComponent("SC"));
-						}
-						else
-						{
-							brokenCode = true;
-							ofstream myfile;
-							myfile.open("crashlog.txt");
-							
-							myfile << "You removed a vital component and then searched for it you pillock.\n" << std::to_string( __LINE__) << "\n" << __FILE__ ;
-							myfile.close();
-							return 0;
-							break;
-						}
-
-						if (tempBeta->FindComponent("PC") != nullptr)
-						{
-							posCompBeta = static_cast<PositionComponent*>(tempBeta->FindComponent("PC"));
-						}
-						else
-						{
-							brokenCode = true;
-							ofstream myfile;
-							myfile.open("crashlog.txt");
-							myfile << "You removed a vital component and then searched for it you pillock.\n" << std::to_string(__LINE__) << "\n" << __FILE__;
-							myfile.close();
-							return 0;
-							break;
-						}
-
-						auto rectBeta = spriteCompBeta->GetRect();
-
-						rectBeta.x += posCompBeta->getPosition().x;
-						rectBeta.y += posCompBeta->getPosition().y;
-
-						rectBeta.w *= camScale;
-						rectBeta.h *= camScale;
+						rect2.x += static_cast<PositionComponent*>(temp1->GetComponents()->at(2))->getPosition().x;
+						rect2.x += static_cast<PositionComponent*>(temp1->GetComponents()->at(2))->getPosition().y;
+						rect2.y += static_cast<PositionComponent*>(temp1->GetComponents()->at(2))->getPosition().y;
+						rect2.w *= camScale;
+						rect2.h *= camScale;
 						//rect2.w *= scale;
 						SDL_Rect grumbo{ 0,0,0,0 };
 
-						if (SDL_IntersectRect(&rectAlpha, &rectBeta, &grumbo))
+						if (SDL_IntersectRect(&rect1, &rect2, &grumbo))
 						{
 						//	cout << "hit " << endl;
 							colls++;
 						}
 
-						if (!SDL_IntersectRect(&rectAlpha, &rectBeta, &grumbo))
+						if (!SDL_IntersectRect(&rect1, &rect2, &grumbo))
 						{
 						//		cout << "miss " << endl;
 						}
