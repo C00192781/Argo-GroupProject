@@ -10,7 +10,7 @@ MenuSystem::~MenuSystem()
 {
 	for (int i = 0; i < m_entities.size(); i++)
 	{
-		RemoveMenu(m_entities.at(i)->ID);
+		RemoveMenu(m_entities.at(i)->ID());
 	}
 }
 
