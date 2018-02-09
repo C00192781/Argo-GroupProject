@@ -32,13 +32,13 @@ void AiSystem::Spawn()
 	//m_entities.push_back(characterFactory->CharC("Demon", p, 0));
 	//m_entities.back()->Active(true);
 	
-	//for (int i = 0; i < 10; i++)
-	//{
-	////	characterFactory = new BasicEnemy();
-	//	//m_entities.push_back(characterFactory->CharC("Demon", SDL_Point{ rand() % 812, rand() % 624 }, 0));
-	//	m_entities.push_back(characterFactory->CharC("Demon", SDL_Point{ 500, 500 }, 0));
-	//	m_entities.back()->Active(true);
-	//}
+	for (int i = 0; i < 10; i++)
+	{
+	//	characterFactory = new BasicEnemy();
+		m_entities.push_back(characterFactory->CharC("Demon", SDL_Point{ rand() % 812, rand() % 624 }, 0));
+		//m_entities.push_back(characterFactory->CharC("Demon", SDL_Point{ 500, 500 }, 0));
+		m_entities.back()->Active(true);
+	}
 }
 
 
@@ -129,20 +129,6 @@ void AiSystem::Wander(int entityIndex, int pcKey, int mcKey, int seekKey, int at
 		{
 			static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->setYDestination(300 - mod2);
 		}
-		//srand((unsigned)time(&t));
-	
-
-		//std::cout << "ROLLING  " << std::endl;
-		//std::cout << "ROLLING  " << std::endl;
-
-		//std::cout << "ROLLING  " << std::endl;
-
-		//std::cout << "ROLLING  " << std::endl;
-		//std::cout << "ROLLING  " << std::endl;
-		//std::cout << "ROLLING  " << std::endl;
-		//std::cout << "ROLLING  " << std::endl;
-		//std::cout << "ROLLING  " << std::endl;
-		//std::cout << "ROLLING  " << std::endl;
 
 
 	}

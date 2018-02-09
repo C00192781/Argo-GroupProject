@@ -33,7 +33,7 @@ void CollisionSystem::Update()
 
 	for (int i = 0; i < m_entities.size(); i++)
 	{
-		if (m_entities.at(i)->Active()) 
+		if (m_entities.at(i)->Active())
 		{
 			int collisionKey1 = -1;
 			int scKey = -1;
@@ -52,9 +52,9 @@ void CollisionSystem::Update()
 
 			if (collisionKey1 >= 0)
 			{
-				SDL_Rect rect1 = { static_cast<CollisionComponent*>(m_entities.at(i)->GetComponents()->at(collisionKey1))->getX(), 
-					static_cast<CollisionComponent*>(m_entities.at(i)->GetComponents()->at(collisionKey1))->getY(), 
-					static_cast<CollisionComponent*>(m_entities.at(i)->GetComponents()->at(collisionKey1))->getWidth(), 
+				SDL_Rect rect1 = { static_cast<CollisionComponent*>(m_entities.at(i)->GetComponents()->at(collisionKey1))->getX(),
+					static_cast<CollisionComponent*>(m_entities.at(i)->GetComponents()->at(collisionKey1))->getY(),
+					static_cast<CollisionComponent*>(m_entities.at(i)->GetComponents()->at(collisionKey1))->getWidth(),
 					static_cast<CollisionComponent*>(m_entities.at(i)->GetComponents()->at(collisionKey1))->getHeight() };
 
 				//if (m_entities.at(i)->ID() == "Player")
@@ -73,7 +73,7 @@ void CollisionSystem::Update()
 					{
 						//if (m_entities.at(i)->ID() == "Projectile" && collidableEntities.at(j)->ID() != "Projectile" && collidableEntities.at(j)->ID() != "Player")
 						if (m_entities.at(i) != collidableEntities.at(j)) {
-							if (m_entities.at(i)->ID() == "Princess")
+							if (m_entities.at(i)->ID() == "Princess" || m_entities.at(i)->ID() == "Player")
 							{
 								int collisionKey2 = -1;
 
@@ -107,5 +107,4 @@ void CollisionSystem::Update()
 		}
 	}
 }
-
 

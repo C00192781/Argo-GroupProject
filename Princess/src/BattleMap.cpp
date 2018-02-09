@@ -99,7 +99,7 @@ void BattleMap::Generate(std::string type)
 	player->AddComponent(new PositionComponent(SDL_Point{ 100, 300 }));
 	player->AddComponent(new AttributesComponent(26, 26, 10, 10, 100, 100));
 	player->AddComponent(new MovementComponent());
-	player->AddComponent(new CollisionComponent());
+	player->AddComponent((new CollisionComponent(100, 300, 16, 16, 2)));
 	player->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
 	//renderSystem * r = new renderSystem(resourceManager, gameRenderer);
