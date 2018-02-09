@@ -7,6 +7,7 @@
 #include "SpriteComponent.h"
 #include "Quad.h"
 #include "AttributesComponent.h"
+#include "ProjectileComponent.h"
 
 class CollisionSystem : public System
 {
@@ -25,4 +26,10 @@ public:
 private:
 	SDL_Rect m_bounds;
 	Quadtree* m_quadtree;
+
+	std::vector<Entity*> m_collidableEntities;
+
+	void filterCollisions(int entityIndex, int entityColIndex, int collidableIndex, int collidableColIndex);
+	void projectileCollision(int index);
+	void spellcasterCollision(int index);
 };

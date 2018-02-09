@@ -11,37 +11,15 @@ void AttackSystem::Update(float deltaTime)
 	{
 		int wcKey = -1;
 		int pcKey = -1;
-		//int pjKey = -1;
 		int mcKey = -1;
-
-		//std::string check = "Projectile";
-		//
-		//std::string playerCheck = "Player";
 
 		// looks for if there is are specific components in the entity
 		for (int j = 0; j < m_entities.at(i)->GetComponents()->size(); j++)
 		{
-			//if (m_entities.at(i)->GetComponents()->at(j)->Type() == "PC" && m_entities.at(i)->ID() == check)
-			//{
-			//	pcKey = j;
-			//}
-			//else if (m_entities.at(i)->GetComponents()->at(j)->Type() == "PJ" && m_entities.at(i)->ID() == check)
-			//{
-			//	pjKey = j;
-			//}
-			//else if (m_entities.at(i)->GetComponents()->at(j)->Type() == "movement" && m_entities.at(i)->ID() == check)
-			//{
-			//	mcKey = j;
-			//}
-
 			if (m_entities.at(i)->GetComponents()->at(j)->Type() == "PC")
 			{
 				pcKey = j;
 			}
-			//else if (m_entities.at(i)->GetComponents()->at(j)->Type() == "PJ")
-			//{
-			//	pjKey = j;
-			//}
 			else if (m_entities.at(i)->GetComponents()->at(j)->Type() == "movement")
 			{
 				mcKey = j;
@@ -129,7 +107,6 @@ void AttackSystem::Update(float deltaTime)
 								m_projectiles->at(j)->Active(true);
 								static_cast<ProjectileComponent*>(m_projectiles->at(j)->GetComponents()->at(projectilePJKey))->setShooterType(m_entities.at(i)->ID());
 								float temp = static_cast<ProjectileComponent*>(m_projectiles->at(j)->GetComponents()->at(projectilePJKey))->getBaseSpeed() * static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getAttackSpeed() * deltaTime;
-								//static_cast<ProjectileComponent*>(m_projectiles->at(j)->GetComponents()->at(projectilePJKey))->setSpeed(temp);
 								static_cast<ProjectileComponent*>(m_projectiles->at(j)->GetComponents()->at(projectilePJKey))->setTimeToLive(static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getRange() / temp);
 								static_cast<PositionComponent*>(m_projectiles->at(j)->GetComponents()->at(projectilePCKey))->setPosition(static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getX(), static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getY());
 
