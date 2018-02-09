@@ -14,6 +14,7 @@ public:
 		level = pLevel;
 		bounds = pBounds;
 	}
+	~Quadtree();
 	
 	void init();
 	void clear();

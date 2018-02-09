@@ -1,6 +1,21 @@
 #include "Quad.h"
 
-void Quadtree::clear() {
+Quadtree::~Quadtree()
+{
+	for (int i = 0; i < nodes.size(); i++)
+	{
+		delete nodes.at(i);
+	}
+	nodes.clear();
+}
+
+void Quadtree::clear() 
+{
+	for (int i = 0; i < nodes.size(); i++)
+	{
+		delete nodes.at(i);
+	}
+
 	objects.clear();
 	nodes.clear();
 }

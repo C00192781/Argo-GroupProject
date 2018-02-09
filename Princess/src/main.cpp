@@ -89,7 +89,7 @@ int main()
 		}
 
 		//Set text to be rendered
-		if (avgFPS > 40)
+		if (avgFPS > 1)
 		{
 			cout << "FPS (With Cap) " << avgFPS << endl;;
 		}
