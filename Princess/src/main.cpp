@@ -63,6 +63,9 @@ int main()
 	resourceManager->AddTexture("HeartsSheet", "heartSpriteSheet.png");
 	resourceManager->AddTexture("ArmourSheet", "armourSpriteSheet.png");
 
+
+
+
 	EventListener *listener = new EventListener();
 
 	InputHandler *input = new InputHandler(listener);
@@ -148,9 +151,10 @@ int main()
 	std::vector<Entity*> collVector;
 	Quadtree* quad = new Quadtree(0, SDL_Rect{ 0,0  , 816, 624 });
 
+	int camScale = systemManager.RenderSystem->GetScale();
+
 	while (1 != 0)
 	{
-
 
 		//Calculate and correct fps
 		int avgFPS = countedFrames / (fpsTimer.getTicks() / 1000.f);
@@ -162,7 +166,7 @@ int main()
 		//Set text to be rendered
 		if (avgFPS > 1)
 		{
-			cout << "FPS (With Cap) " << avgFPS << endl;;
+		//	cout << "FPS (With Cap) " << avgFPS << endl;;
 		}
 		//update ren
 		++countedFrames;
@@ -235,7 +239,9 @@ int main()
 				auto rect1 = static_cast<SpriteComponent*>(temp1->GetComponents()->at(1))->GetRect();
 
 				rect1.x += static_cast<PositionComponent*>(temp1->GetComponents()->at(2))->getPosition().x;
-				rect1.x += static_cast<PositionComponent*>(temp1->GetComponents()->at(2))->getPosition().y;
+				rect1.y += static_cast<PositionComponent*>(temp1->GetComponents()->at(2))->getPosition().y;
+				rect1.w *= camScale;
+				rect1.h *= camScale;
 
 				for (int y = 0; y < entityVec.size(); y++)
 				{
@@ -244,14 +250,18 @@ int main()
 						auto temp2 = entityVec.at(y);
 						auto rect2 = static_cast<SpriteComponent*>(temp1->GetComponents()->at(1))->GetRect();
 						rect2.x += static_cast<PositionComponent*>(temp2->GetComponents()->at(2))->getPosition().x;
-						rect2.x += static_cast<PositionComponent*>(temp2->GetComponents()->at(2))->getPosition().y;
+						rect2.y += static_cast<PositionComponent*>(temp2->GetComponents()->at(2))->getPosition().y;
+						rect2.w *= camScale;
+						rect2.h *= camScale;
+						//rect2.w *= scale;
+						SDL_Rect grumbo{ 0,0,0,0 };
 
-						if (SDL_HasIntersection(&rect1, &rect2))
+						if (SDL_IntersectRect(&rect1, &rect2, &grumbo))
 						{
-					//		cout << "hit " << endl;
+							cout << "hit " << endl;
 						}
 
-						if (!SDL_HasIntersection(&rect1, &rect2))
+						if (!SDL_IntersectRect(&rect1, &rect2, &grumbo))
 						{
 							//	cout << "miss " << endl;
 						}

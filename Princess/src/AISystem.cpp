@@ -22,13 +22,13 @@ void AiSystem::Spawn()
 {
 	SDL_Point p{ 300,0 };
 	
-	characterFactory = new Princess();
-	m_entities.push_back(characterFactory->CharA("Red", p, 0));
+	//characterFactory = new Princess();
+	//m_entities.push_back(characterFactory->CharA("Red", p, 0));
 
-	//p =  SDL_Point{ 10,100 };
+	////p =  SDL_Point{ 10,100 };
 
 	characterFactory = new BasicEnemy();
-	m_entities.push_back(characterFactory->CharC("Demon", p, 0));
+	//m_entities.push_back(characterFactory->CharC("Demon", p, 0));
 
 	time_t t;
 
@@ -40,13 +40,24 @@ void AiSystem::Spawn()
 
 	int mod2 = rand() % 750;
 	
-	for (int i = 0; i < 50; i++)
+	for (int i = 0; i < 2; i++)
 	{
-		p.x = rand() % 800;
-		p.y = rand()% 760;
+		 //; +(i * 100);
+		 //;+ (i * 100);
 	
 	//	characterFactory = new BasicEnemy();
-		m_entities.push_back(characterFactory->CharC("Demon", p, 0));
+		if (i == 0)
+		{
+			p.x = 100;
+			p.y = 100;
+			m_entities.push_back(characterFactory->CharC("Demon", p, 0));
+		}
+		else if (i == 1)
+		{
+			p.x = 160;
+			p.y = 86;
+			m_entities.push_back(characterFactory->CharB("Demon", p, 0));
+		}
 	
 	}
 
@@ -214,40 +225,8 @@ float AiSystem::magnitude(float x, float y)
 void AiSystem::Update(float deltaTime)
 {
 	m_time = deltaTime;
+	auto cummies = static_cast<PositionComponent*>(m_entities.at(1)->GetComponents()->at(2))->getPosition();
 
-	//for (int i = 0; i < m_entities.size(); i++)
-	//{
-	//	int pcKey = -1;
-	//	int ailKey = -1;
-	//	for (int j = 0; j < m_entities.at(i)->GetComponents()->size(); j++)
-	//	{
-	//		if (m_entities.at(i)->GetComponents()->at(j)->Type() == "PC") //position comp
-	//		{
-	//			pcKey = j;
-	//		}
-	//		else if (m_entities.at(i)->GetComponents()->at(j)->Type() == "AIL") //ai logic comp
-	//		{
-	//			ailKey = j;
-	//		}
-	//	}
-	//	if (pcKey >= 0 && ailKey >= 0)
-	//	{
-	//		if (m_entities.at(i)->ID() == "Princess")
-	//		{
-	//			//if it's a princess, do something special
-	//		}
-
-	//		static_cast<AiLogicComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->Speed(1); //set speed
-
-	//		SDL_Point holder{ static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getPosition().x, static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getPosition().y };
-	//		//update position with speed
-	//		holder.x += static_cast<AiLogicComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->Speed();
-	//		holder.y += static_cast<AiLogicComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->Speed();
-
-	//		static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->setPosition(holder);
-
-	//	}
-	//}
 
 	for (int i = 0; i < m_entities.size(); i++)
 	{
@@ -337,8 +316,8 @@ void AiSystem::Update(float deltaTime)
 		}
 	
 
-		
-
+		auto cummies2 = static_cast<PositionComponent*>(m_entities.at(1)->GetComponents()->at(2))->getPosition();
+		int x = 0;
 	}
 
 }

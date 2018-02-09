@@ -35,7 +35,16 @@ Entity* Princess::CharB(std::string ID, SDL_Point pos, int personality)
 	princess->AddComponent(new AttributesComponent());
 
 	//princess->AddComponent(new AttributesComponent(10, 10, 0, 0, 80, 80));
-	static_cast<PositionComponent*>(princess->GetComponents()->back())->setPosition(pos);
+	int posKey = -1;
+	for (int i = 0; i < princess->GetComponents()->size(); i++)
+	{
+		if (princess->GetComponents()->at(i)->Type() == "PC")
+		{
+			posKey = i;
+		}
+	}
+	static_cast<PositionComponent*>(princess->GetComponents()->at(posKey))->setPosition(pos);
+
 	return princess;
 }
 
@@ -51,7 +60,16 @@ Entity* Princess::CharC(std::string ID, SDL_Point pos, int personality)
 	princess->AddComponent(new SeekComponent());
 	princess->AddComponent(new AttributesComponent());
 //	princess->AddComponent(new AttributesComponent(10, 10, 0, 0, 80, 80));
-	static_cast<PositionComponent*>(princess->GetComponents()->back())->setPosition(pos);
+	int posKey = -1;
+	for (int i = 0; i < princess->GetComponents()->size(); i++)
+	{
+		if (princess->GetComponents()->at(i)->Type() == "PC")
+		{
+			posKey = i;
+		}
+	}
+	static_cast<PositionComponent*>(princess->GetComponents()->at(posKey))->setPosition(pos);
+
 	return princess;
 }
 
@@ -67,20 +85,16 @@ Entity* Princess::CharD(std::string ID, SDL_Point pos, int personality)
 	princess->AddComponent(new SeekComponent());
 	princess->AddComponent(new AttributesComponent());
 	//princess->AddComponent(new AttributesComponent(10, 10, 0, 0, 80, 80));
-	static_cast<PositionComponent*>(princess->GetComponents()->back())->setPosition(pos);
+	int posKey = -1;
+	for (int i = 0; i < princess->GetComponents()->size(); i++)
+	{
+		if (princess->GetComponents()->at(i)->Type() == "PC")
+		{
+			posKey = i;
+		}
+	}
+	static_cast<PositionComponent*>(princess->GetComponents()->at(posKey))->setPosition(pos);
+
 	return princess;
 }
 
-
-
-
-//Entity* PrincessEntity(std::string ID, SDL_Point pos, int personality)
-//{
-//	Entity *princess = new Entity("Princess");
-//	princess->AddComponent(new AiLogicComponent);
-//	princess->AddComponent(new SpriteComponent(ID, 0, 0, 0, 0, 32, 32, 0)); //textid
-//	princess->AddComponent(new PositionComponent());
-//	static_cast<PositionComponent*>(princess->GetComponents()->back())->setPosition(pos);
-//	return princess;
-//}
-//

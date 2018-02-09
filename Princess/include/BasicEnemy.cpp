@@ -32,7 +32,7 @@ Entity* BasicEnemy::CharB(std::string ID, SDL_Point pos, int element)
 	BasicEnemy->AddComponent(new SpriteComponent(ID, 0, 0, 0, 0, 16, 16, 0)); ////sprite id
 	BasicEnemy->AddComponent(new PositionComponent(pos));
 	BasicEnemy->AddComponent(new MovementComponent(100));
-	BasicEnemy->AddComponent(new SeekComponent(800, 800));
+//	BasicEnemy->AddComponent(new SeekComponent(0, 0));
 	BasicEnemy->AddComponent(new AttackComponent(1, 1, 1));
 	BasicEnemy->AddComponent(new AttributesComponent());
 	int posKey = -1;
@@ -56,7 +56,7 @@ Entity* BasicEnemy::CharC(std::string ID, SDL_Point pos, int element)
 	BasicEnemy->AddComponent(new SpriteComponent(ID, 0, 0, 0, 0, 16, 16, 0)); ////sprite id
 	BasicEnemy->AddComponent(new PositionComponent(pos));
 	BasicEnemy->AddComponent(new MovementComponent(100));
-	BasicEnemy->AddComponent(new SeekComponent(100, 100));
+//	BasicEnemy->AddComponent(new SeekComponent(-50, -50));
 	BasicEnemy->AddComponent(new AttackComponent(100, 1, 1));
 	BasicEnemy->AddComponent(new AttributesComponent());
 

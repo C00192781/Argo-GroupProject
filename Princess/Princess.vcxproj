@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DungeonMap.cpp" />
     <ClCompile Include="External Dependencies\ResourceManager\JSONReader.cpp" />
     <ClCompile Include="External Dependencies\ResourceManager\ResourceManager.cpp" />
     <ClCompile Include="External Dependencies\SimpleJSON\JSON.cpp" />
@@ -30,6 +31,7 @@
     <ClCompile Include="src\BattleMap.cpp" />
     <ClCompile Include="src\CollisionSystem.cpp" />
     <ClCompile Include="src\ControlSystem.cpp" />
+    <ClCompile Include="src\DungeonTileFactory.cpp" />
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\GrassTileFactory.cpp" />
     <ClCompile Include="src\HealthSystem.cpp" />
@@ -37,6 +39,7 @@
     <ClCompile Include="src\LTimer.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MovementSystem.cpp" />
+    <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\ProjectileSystem.cpp" />
     <ClCompile Include="src\RenderSystem.cpp" />
     <ClCompile Include="src\System.cpp" />
@@ -45,6 +48,7 @@
     <ClCompile Include="src\WorldTileFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DungeonMap.h" />
     <ClInclude Include="External Dependencies\ResourceManager\JSONReader.h" />
     <ClInclude Include="External Dependencies\ResourceManager\ResourceManager.h" />
     <ClInclude Include="External Dependencies\SimpleJSON\JSON.h" />
@@ -59,6 +63,7 @@
     <ClInclude Include="include\Component.h" />
     <ClInclude Include="include\ControlComponent.h" />
     <ClInclude Include="include\ControlSystem.h" />
+    <ClInclude Include="include\DungeonTileFactory.h" />
     <ClInclude Include="include\Entity.h" />
     <ClInclude Include="include\Factory.h" />
     <ClInclude Include="include\GrassTileFactory.h" />
@@ -71,6 +76,7 @@
     <ClInclude Include="include\LTimer.h" />
     <ClInclude Include="include\MovementComponent.h" />
     <ClInclude Include="include\MovementSystem.h" />
+    <ClInclude Include="include\Player.h" />
     <ClInclude Include="include\PositionComponent.h" />
     <ClInclude Include="include\Princess.h" />
     <ClInclude Include="include\ProjectileComponent.h" />
@@ -86,6 +92,9 @@
     <ClInclude Include="include\TileFactory.h" />
     <ClInclude Include="include\WorldMap.h" />
     <ClInclude Include="include\WorldTileFactory.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Map\map.json" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
