@@ -1,8 +1,21 @@
 #include "Quad.h"
 
 void Quadtree::clear() {
-	objects.clear();
+
+	//for (std::vector<Entity*>::iterator it = objects.begin(); it != objects.end(); ++it)
+	//{
+	//	delete (*it);
+	//}
+
+
+
+	for (std::vector<Quadtree*>::iterator it = nodes.begin(); it != nodes.end(); ++it)
+	{
+		delete (*it);
+	}
+
 	nodes.clear();
+	objects.clear();
 }
 
 void Quadtree::split() 

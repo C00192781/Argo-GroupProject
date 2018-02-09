@@ -15,6 +15,16 @@ public:
 		bounds = pBounds;
 	}
 	
+	~Quadtree()
+	{
+		for (std::vector<Quadtree*>::iterator it = nodes.begin(); it != nodes.end(); ++it)
+		{
+			delete (*it);
+		}
+
+		nodes.clear();
+		objects.clear();
+	}
 	void init();
 	void clear();
 	void split();
@@ -24,7 +34,7 @@ public:
 
 private:
 	int MAX_OBJECTS = 10;
-	int MAX_LEVELS = 300;
+	int MAX_LEVELS = 3;
 
 	int level;
 	std::vector<Entity*> objects;
