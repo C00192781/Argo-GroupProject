@@ -10,4 +10,8 @@ public:
 	MovementSystem() {}
 
 	void Update();
+
+private:
+	void LoadComponent() {};
+	void UnloadComponent(int x) {};
 };

@@ -3,6 +3,7 @@
 void System::AddEntity(Entity * e)
 {
 	m_entities.push_back(e);
+	LoadComponent();
 }
 void System::RemoveEntity(std::string id)
 {
@@ -12,6 +13,7 @@ void System::RemoveEntity(std::string id)
 		{
 			m_entities.erase(m_entities.begin() + i);
 			m_entities.shrink_to_fit();
+			UnloadComponent(i);
 		}
 	}
 }

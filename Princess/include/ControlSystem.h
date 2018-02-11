@@ -13,6 +13,9 @@ public:
 	void Update();
 private:
 
+	void LoadComponent() {};
+	void UnloadComponent(int x) {};
+
 	EventListener *m_eventListener;
 	InputHandler *m_input;
 };
