@@ -50,7 +50,7 @@ void CollisionSystem::UnloadComponent(int x)
 void CollisionSystem::Update()
 {
 	m_quadtree->clear();
-	m_quadtree->init();
+	//m_quadtree->init();
 
 	for (int i = 0; i < m_entities.size(); i++)
 	{
@@ -134,12 +134,12 @@ void CollisionSystem::filterCollisions(int entityIndex, int entityColIndex, int 
 		//}
 		if (m_entities.at(entityIndex)->ID() == "Projectile")
 		{
-
+		
 			if (m_collidableEntities.at(collidableIndex)->ID() == "Spellcaster Enemy")
 			{
-				std::cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAA" << std::endl;
-			//	projectileCollision(collidableIndex);
-			//	spellcasterCollision(entityIndex);
+				//std::cout << "Count Kekko" << std::endl;
+				projectileCollision(entityIndex);
+				//spellcasterCollision(entityIndex);
 			}
 		}
 		//else if (m_entities.at(entityIndex)->ID() == "Princess")
@@ -154,11 +154,11 @@ void CollisionSystem::projectileCollision(int index)
 	// find projectile component in collidable
 	// set ttl to 0
 
-	for (int i = 0; i < m_collidableEntities.at(index)->GetComponents()->size(); i++)
+	for (int i = 0; i < m_entities.at(index)->GetComponents()->size(); i++)
 	{
-		if (m_collidableEntities.at(index)->GetComponents()->at(i)->Type() == "PJ")
+		if (m_entities.at(index)->GetComponents()->at(i)->Type() == "PJ")
 		{
-			static_cast<ProjectileComponent*>(m_collidableEntities.at(index)->GetComponents()->at(i))->setTimeToLive(0);
+			static_cast<ProjectileComponent*>(m_entities.at(index)->GetComponents()->at(i))->setTimeToLive(0);
 		}
 	}
 }

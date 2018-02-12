@@ -90,7 +90,7 @@ int main()
 	systemManager.controlSystem->Active(true);
 
 
-	systemManager.movementSystem = new MovementSystem();
+	systemManager.movementSystem = new MovementSystem(816, 624);
 	systemManager.movementSystem->Active(true);
 	systemManager.renderSystem = new RenderSystem(resourceManager, gameRenderer);
 	systemManager.renderSystem->Active(true);

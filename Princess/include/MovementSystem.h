@@ -10,6 +10,11 @@ class MovementSystem : public System
 {
 public:
 	MovementSystem() {}
+	MovementSystem(int windowWidth, int windowHeight)
+	{
+		m_windowWidth = windowWidth;
+		m_windowHeight = windowHeight;
+	}
 
 	void Update() {}
 	void Update(float deltaTime);
@@ -19,6 +24,9 @@ private:
 
 	int m_mouseX;
 	int m_mouseY;
+
+	int m_windowWidth;
+	int m_windowHeight;
 
 	std::vector<PositionComponent*> m_positionComponent;
 	std::vector<MovementComponent*> m_movementComponent;

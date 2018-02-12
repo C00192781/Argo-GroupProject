@@ -81,7 +81,7 @@ void BattleMap::Generate(std::string type)
 		projectile->AddComponent(new PositionComponent(SDL_Point{ -5000, -5000 }));
 		projectile->AddComponent(new ProjectileComponent(10));
 		projectile->AddComponent(new MovementComponent());
-		projectile->AddComponent(new CollisionComponent(-5000, -5000, 10, 10, 2));
+		projectile->AddComponent(new CollisionComponent(-5000, -5000, 16, 8));
 		projectile->Active(false);
 		projectileEntities->push_back(projectile);
 	}
