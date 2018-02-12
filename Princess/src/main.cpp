@@ -153,7 +153,7 @@ int main()
 			SDL_Delay(SCREEN_TICKS_PER_FRAME - frameTicks);
 
 			currentTime = SDL_GetTicks();
-			SDL_PollEvent(e);
+			//SDL_PollEvent(e);
 			if (currentTime > lastTime)
 			{
 				deltaTime = ((float)(currentTime - lastTime)) / 1000;
