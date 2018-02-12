@@ -86,7 +86,7 @@ void AttackSystem::Update(float deltaTime)
 							// checks for if still attacking
 							if (temp > 0)
 							{
-								temp -= 0.01;
+								temp -= deltaTime;
 							}
 							else
 							{
@@ -103,7 +103,7 @@ void AttackSystem::Update(float deltaTime)
 						// checks for if allowed to attack
 						if (temp > 0)
 						{
-							temp -= 0.01;
+							temp -= deltaTime;
 							//temp--;
 						}
 						else
@@ -127,44 +127,57 @@ void AttackSystem::Update(float deltaTime)
 									ProjectileComponent* newProjectileComponent = nullptr;
 									PositionComponent* projectilePositionComponent = nullptr;
 									MovementComponent* projectileMovementComponent = nullptr;
-
-									int projectileMCKey = -1;
-									int projectilePJKey = -1;
-									int projectilePCKey = -1;
 						
 									for (int k = 0; k < m_projectiles->at(j)->GetComponents()->size(); k++)
 									{
 										if (m_projectiles->at(j)->GetComponents()->at(k)->Type() == "movement")
 										{
 											projectileMovementComponent = static_cast<MovementComponent*>(m_projectiles->at(j)->GetComponents()->at(k));
-											projectileMCKey = k;
 										}
 										else if (m_projectiles->at(j)->GetComponents()->at(k)->Type() == "PJ")
 										{
 											newProjectileComponent = static_cast<ProjectileComponent*>(m_projectiles->at(j)->GetComponents()->at(k));
-											projectilePJKey = k;
 										}
 										else if (m_projectiles->at(j)->GetComponents()->at(k)->Type() == "PC")
 										{
 											projectilePositionComponent = static_cast<PositionComponent*>(m_projectiles->at(j)->GetComponents()->at(k));
-											projectilePCKey = k;
 										}
 									}
 									m_projectiles->at(j)->Active(true);
 									newProjectileComponent->setShooterType(m_entities.at(i)->ID());
-									float temp = newProjectileComponent->getBaseSpeed() * weaponComponent->getAttackSpeed() *deltaTime;
-									newProjectileComponent->setTimeToLive(weaponComponent->getRange() / (temp / deltaTime));
+									//float temp = newProjectileComponent->getBaseSpeed() * weaponComponent->getAttackSpeed() * deltaTime;
+									newProjectileComponent->setTimeToLive(weaponComponent->getRange() * deltaTime);
 									projectilePositionComponent->setPosition(positionComponent->getX(), positionComponent->getY());
 						
-									projectileMovementComponent->setXVelocity((sin(movementComponent->getOrientation()* (3.142 / 180)) * temp) * 1000);
-									projectileMovementComponent->setYVelocity((-cos(movementComponent->getOrientation() * (3.142 / 180)) * temp) * 1000);
+									projectileMovementComponent->setXVelocity((sin(movementComponent->getOrientation()* (3.142 / 180)) * newProjectileComponent->getBaseSpeed()));
+									projectileMovementComponent->setYVelocity((-cos(movementComponent->getOrientation() * (3.142 / 180)) * newProjectileComponent->getBaseSpeed()));
+
+									//projectileMovementComponent->setXVelocity((sin(movementComponent->getOrientation()* (3.142 / 180)) * (temp / (deltaTime / 4))));
+									//projectileMovementComponent->setYVelocity((-cos(movementComponent->getOrientation() * (3.142 / 180)) * (temp / (deltaTime / 4))));
+
+									weaponComponent->setAttacking(false);
+									movementComponent->setLockedOrientation(false);
 						
 									break;
 								}
 							}
-							weaponComponent->setAttacking(false);
-							weaponComponent->setAllowAttack(true);
-							movementComponent->setLockedOrientation(false);
+						}
+						else
+						{
+							float temp = weaponComponent->getTimeToAllowAttack();
+
+							// checks for if allowed to attack
+							if (temp > 0)
+							{
+								temp -= deltaTime;
+							}
+							else
+							{
+								temp = weaponComponent->getMaxTimeToAllowAttack();
+								weaponComponent->setAllowAttack(true);
+							}
+
+							weaponComponent->setTimeToAllowAttack(temp);
 						}
 					}
 					// if the entity has a magic weapon
@@ -176,10 +189,9 @@ void AttackSystem::Update(float deltaTime)
 			}
 			if (projectileComponent != nullptr)
 			{
-				//ProjectileComponent* projectileComponent = static_cast<ProjectileComponent*>(m_entities.at(i)->GetComponents()->at(projKey));
 				if (projectileComponent->getTimeToLive() > 0)
 				{
-					//std::cout << projectileComponent->getTimeToLive() << std::endl;
+					std::cout << projectileComponent->getTimeToLive() << std::endl;
 					projectileComponent->setTimeToLive(projectileComponent->getTimeToLive() - deltaTime);
 				}
 				else
