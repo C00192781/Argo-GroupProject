@@ -139,7 +139,7 @@ void CollisionSystem::filterCollisions(int entityIndex, int entityColIndex, int 
 			{
 				//std::cout << "Count Kekko" << std::endl;
 				projectileCollision(entityIndex);
-				//spellcasterCollision(entityIndex);
+				spellcasterCollision(entityIndex);
 			}
 		}
 		//else if (m_entities.at(entityIndex)->ID() == "Princess")
@@ -165,5 +165,5 @@ void CollisionSystem::projectileCollision(int index)
 
 void CollisionSystem::spellcasterCollision(int index)
 {
-	//std::cout << "OH NO" << std::endl;
+	std::cout << "OH NO" << std::endl;
 }

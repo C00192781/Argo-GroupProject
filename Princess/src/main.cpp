@@ -104,22 +104,12 @@ int main()
 	systemManager.projectileSystem = new ProjectileSystem();
 	systemManager.projectileSystem->Active(true);
 
-	systemManager.collisionSystem = new CollisionSystem();
+	systemManager.collisionSystem = new CollisionSystem(SDL_Rect{ 0 , 0, 5000, 5000 });
 	systemManager.collisionSystem->Active(true);
 	systemManager.aiSystem = new AiSystem();
 	systemManager.aiSystem->Active(true);
 	systemManager.healthSystem = new HealthSystem();
 	systemManager.healthSystem->Active(true);
-
-
-
-	/// <summary>
-	/// $$$$$$$$$$$$$
-	/// </summary>
-	/// <returns></returns>
-
-
-
 
 	BattleMap map1 = BattleMap(&systemManager, &state);
 	map1.Generate("Grassland");
@@ -141,7 +131,7 @@ int main()
 		//Set text to be rendered
 		if (avgFPS > 1)
 		{
-			//cout << "FPS (With Cap) " << avgFPS << endl;;
+			cout << "FPS (With Cap) " << avgFPS << endl;;
 		}
 		//update ren
 		++countedFrames;
@@ -164,7 +154,7 @@ int main()
 				lastTime = currentTime;
 			}
 
-		//	map1.Update();
+		///	map1.Update();
 		//	m->Update();
 
 

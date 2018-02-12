@@ -144,8 +144,8 @@ void AttackSystem::Update(float deltaTime)
 									}
 									m_projectiles->at(j)->Active(true);
 									static_cast<ProjectileComponent*>(m_projectiles->at(j)->GetComponents()->at(projectilePJKey))->setShooterType(m_entities.at(i)->ID());
-									float temp = static_cast<ProjectileComponent*>(m_projectiles->at(j)->GetComponents()->at(projectilePJKey))->getBaseSpeed() * static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getAttackSpeed() * deltaTime;
-									static_cast<ProjectileComponent*>(m_projectiles->at(j)->GetComponents()->at(projectilePJKey))->setTimeToLive(static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getRange() / temp);
+									float temp = static_cast<ProjectileComponent*>(m_projectiles->at(j)->GetComponents()->at(projectilePJKey))->getBaseSpeed() * static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getAttackSpeed() *deltaTime;
+									static_cast<ProjectileComponent*>(m_projectiles->at(j)->GetComponents()->at(projectilePJKey))->setTimeToLive(static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getRange() / (temp / deltaTime));
 									static_cast<PositionComponent*>(m_projectiles->at(j)->GetComponents()->at(projectilePCKey))->setPosition(static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getX(), static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getY());
 						
 									static_cast<MovementComponent*>(m_projectiles->at(j)->GetComponents()->at(projectileMCKey))->setXVelocity((sin(static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->getOrientation()* (3.142 / 180)) * temp) * 1000);
@@ -168,9 +168,14 @@ void AttackSystem::Update(float deltaTime)
 			}
 			if (projKey >= 0)
 			{
-				if (static_cast<ProjectileComponent*>(m_entities.at(i)->GetComponents()->at(projKey))->getTimeToLive() == 0)
+				ProjectileComponent* projectileComponent = static_cast<ProjectileComponent*>(m_entities.at(i)->GetComponents()->at(projKey));
+				if (projectileComponent->getTimeToLive() > 0)
 				{
-					std::cout << "LUL" << std::endl;
+					//std::cout << projectileComponent->getTimeToLive() << std::endl;
+					projectileComponent->setTimeToLive(projectileComponent->getTimeToLive() - deltaTime);
+				}
+				else
+				{
 					m_entities.at(i)->Active(false);
 				}
 			}
