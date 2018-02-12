@@ -42,45 +42,46 @@ void AttackSystem::Update(float deltaTime)
 	{
 		if (m_entities.at(i)->Active())
 		{
-			int wcKey = -1;
-			int pcKey = -1;
-			int mcKey = -1;
-			int projKey = -1;
+			PositionComponent* positionComponent = nullptr;
+			MovementComponent* movementComponent = nullptr;
+			ProjectileComponent* projectileComponent = nullptr;
+			WeaponComponent* weaponComponent = nullptr;
+
 
 			// looks for if there is are specific components in the entity
 			for (int j = 0; j < m_entities.at(i)->GetComponents()->size(); j++)
 			{
 				if (m_entities.at(i)->GetComponents()->at(j)->Type() == "PC")
 				{
-					pcKey = j;
+					positionComponent = static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(j));
 				}
 				else if (m_entities.at(i)->GetComponents()->at(j)->Type() == "movement")
 				{
-					mcKey = j;
+					movementComponent = static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(j));
 				}
 				else if (m_entities.at(i)->GetComponents()->at(j)->Type() == "weapon")
 				{
-					wcKey = j;
+					weaponComponent = static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(j));
 				}
 				else if (m_entities.at(i)->GetComponents()->at(j)->Type() == "PJ")
 				{
-					projKey = j;
+					projectileComponent = static_cast<ProjectileComponent*>(m_entities.at(i)->GetComponents()->at(j));
 				}
 			}
 
-			//if (pcKey >= 0 && pjKey >= 0 && mcKey >= 0 && wcKey >= 0)
-			if (pcKey >= 0 && mcKey >= 0 && wcKey >= 0)
+			if (positionComponent != nullptr && movementComponent != nullptr && weaponComponent != nullptr)
+			//if (pcKey >= 0 && mcKey >= 0 && wcKey >= 0)
 			{
 				// if the entity is not allowed to attack
-				if (static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getAllowAttack() == false)
+				if (weaponComponent->getAllowAttack() == false)
 				{
 					// if the weapon the entity uses is a melee weapon
-					if (static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getWeaponType() == WeaponType::MELEE)
+					if (weaponComponent->getWeaponType() == WeaponType::MELEE)
 					{
 						// if the entity is already attacking
-						if (static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getAttacking() == true)
+						if (weaponComponent->getAttacking() == true)
 						{
-							float temp = static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getTimeForAttack();
+							float temp = weaponComponent->getTimeForAttack();
 
 							// checks for if still attacking
 							if (temp > 0)
@@ -89,15 +90,15 @@ void AttackSystem::Update(float deltaTime)
 							}
 							else
 							{
-								temp = static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getMaxTimeForAttack();
-								static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->setAttacking(false);
-								static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setLockedOrientation(false);
+								temp = weaponComponent->getMaxTimeForAttack();
+								weaponComponent->setAttacking(false);
+								movementComponent->setLockedOrientation(false);
 							}
 
-							static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->setTimeForAttack(temp);
+							weaponComponent->setTimeForAttack(temp);
 						}
 
-						float temp = static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getTimeToAllowAttack();
+						float temp = weaponComponent->getTimeToAllowAttack();
 
 						// checks for if allowed to attack
 						if (temp > 0)
@@ -107,22 +108,26 @@ void AttackSystem::Update(float deltaTime)
 						}
 						else
 						{
-							temp = static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getMaxTimeToAllowAttack();
-							static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->setAllowAttack(true);
+							temp = weaponComponent->getMaxTimeToAllowAttack();
+							weaponComponent->setAllowAttack(true);
 						}
 
-						static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->setTimeToAllowAttack(temp);
+						weaponComponent->setTimeToAllowAttack(temp);
 					}
 					// if the entity has a ranged weapon
-					else if (static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getWeaponType() == WeaponType::RANGE)
+					else if (weaponComponent->getWeaponType() == WeaponType::RANGE)
 					{
 						// if the entity is already attacking
-						if (static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getAttacking() == true)
+						if (weaponComponent->getAttacking() == true)
 						{
 							for (int j = 0; j < m_projectiles->size(); j++)
 							{
 								if (m_projectiles->at(j)->Active() == false)
 								{
+									ProjectileComponent* newProjectileComponent = nullptr;
+									PositionComponent* projectilePositionComponent = nullptr;
+									MovementComponent* projectileMovementComponent = nullptr;
+
 									int projectileMCKey = -1;
 									int projectilePJKey = -1;
 									int projectilePCKey = -1;
@@ -131,32 +136,35 @@ void AttackSystem::Update(float deltaTime)
 									{
 										if (m_projectiles->at(j)->GetComponents()->at(k)->Type() == "movement")
 										{
+											projectileMovementComponent = static_cast<MovementComponent*>(m_projectiles->at(j)->GetComponents()->at(k));
 											projectileMCKey = k;
 										}
 										else if (m_projectiles->at(j)->GetComponents()->at(k)->Type() == "PJ")
 										{
+											newProjectileComponent = static_cast<ProjectileComponent*>(m_projectiles->at(j)->GetComponents()->at(k));
 											projectilePJKey = k;
 										}
 										else if (m_projectiles->at(j)->GetComponents()->at(k)->Type() == "PC")
 										{
+											projectilePositionComponent = static_cast<PositionComponent*>(m_projectiles->at(j)->GetComponents()->at(k));
 											projectilePCKey = k;
 										}
 									}
 									m_projectiles->at(j)->Active(true);
-									static_cast<ProjectileComponent*>(m_projectiles->at(j)->GetComponents()->at(projectilePJKey))->setShooterType(m_entities.at(i)->ID());
-									float temp = static_cast<ProjectileComponent*>(m_projectiles->at(j)->GetComponents()->at(projectilePJKey))->getBaseSpeed() * static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getAttackSpeed() *deltaTime;
-									static_cast<ProjectileComponent*>(m_projectiles->at(j)->GetComponents()->at(projectilePJKey))->setTimeToLive(static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getRange() / (temp / deltaTime));
-									static_cast<PositionComponent*>(m_projectiles->at(j)->GetComponents()->at(projectilePCKey))->setPosition(static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getX(), static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getY());
+									newProjectileComponent->setShooterType(m_entities.at(i)->ID());
+									float temp = newProjectileComponent->getBaseSpeed() * weaponComponent->getAttackSpeed() *deltaTime;
+									newProjectileComponent->setTimeToLive(weaponComponent->getRange() / (temp / deltaTime));
+									projectilePositionComponent->setPosition(positionComponent->getX(), positionComponent->getY());
 						
-									static_cast<MovementComponent*>(m_projectiles->at(j)->GetComponents()->at(projectileMCKey))->setXVelocity((sin(static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->getOrientation()* (3.142 / 180)) * temp) * 1000);
-									static_cast<MovementComponent*>(m_projectiles->at(j)->GetComponents()->at(projectileMCKey))->setYVelocity((-cos(static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->getOrientation() * (3.142 / 180)) * temp) * 1000);
+									projectileMovementComponent->setXVelocity((sin(movementComponent->getOrientation()* (3.142 / 180)) * temp) * 1000);
+									projectileMovementComponent->setYVelocity((-cos(movementComponent->getOrientation() * (3.142 / 180)) * temp) * 1000);
 						
 									break;
 								}
 							}
-							static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->setAttacking(false);
-							static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->setAllowAttack(true);
-							static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setLockedOrientation(false);
+							weaponComponent->setAttacking(false);
+							weaponComponent->setAllowAttack(true);
+							movementComponent->setLockedOrientation(false);
 						}
 					}
 					// if the entity has a magic weapon
@@ -166,9 +174,9 @@ void AttackSystem::Update(float deltaTime)
 					}
 				}
 			}
-			if (projKey >= 0)
+			if (projectileComponent != nullptr)
 			{
-				ProjectileComponent* projectileComponent = static_cast<ProjectileComponent*>(m_entities.at(i)->GetComponents()->at(projKey));
+				//ProjectileComponent* projectileComponent = static_cast<ProjectileComponent*>(m_entities.at(i)->GetComponents()->at(projKey));
 				if (projectileComponent->getTimeToLive() > 0)
 				{
 					//std::cout << projectileComponent->getTimeToLive() << std::endl;
