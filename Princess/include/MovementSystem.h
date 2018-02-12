@@ -19,7 +19,10 @@ private:
 
 	int m_mouseX;
 	int m_mouseY;
-
+	int countedFrames;
+	int cooldownFrames;
+	int m_lastXVel;
+	int m_lastYVel;
 	std::vector<PositionComponent*> m_positionComponent;
 	std::vector<MovementComponent*> m_movementComponent;
 	std::vector<CollisionComponent*> m_collisionComponent;
