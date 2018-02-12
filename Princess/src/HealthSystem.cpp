@@ -10,48 +10,61 @@ HealthSystem::~HealthSystem()
 
 }
 
+void HealthSystem::LoadComponent()
+{
+	//int pcKey = -1;
+	//int scKey = -1;
+	//for (int j = 0; j < m_entities.back()->GetComponents()->size(); j++)
+	//{
+	//	if (m_entities.back()->GetComponents()->at(j)->Type() == "PC")
+	//	{
+	//		pcKey = j;
+	//	}
+	//	else if (m_entities.back()->GetComponents()->at(j)->Type() == "SC")
+	//	{
+	//		scKey = j;
+	//	}
+	//	if (scKey > 0 && pcKey > 0)
+	//	{
+	//		break;
+	//	}
+	//}
+	//m_positionComponent.push_back(static_cast<PositionComponent>(m_entities.back()->GetComponents()->at(pcKey)));
+	//m_spriteComponent.push_back(static_cast<SpriteComponent>(m_entities.back()->GetComponents()->at(scKey)));
+}
+
+void HealthSystem::UnloadComponent(int x)
+{
+	//m_positionComponent.erase(m_positionComponent.begin() + x);
+	//m_spriteComponent.erase(m_spriteComponent.begin() + x);
+	//m_positionComponent.shrink_to_fit();
+	//m_spriteComponent.shrink_to_fit();
+}
+
 void HealthSystem::Update(float deltaTime)
 {
 
-		for (int i = 0; i < m_entities.size(); i++)
+	for (int i = 0; i < m_entities.size(); i++)
+	{
+		int attributeKey = -1;
+		for (int j = 0; j < m_entities.at(i)->GetComponents()->size(); j++)
 		{
-			int attributeKey = -1;
-			for (int j = 0; j < m_entities.at(i)->GetComponents()->size(); j++)
+			if (m_entities.at(i)->GetComponents()->at(j)->Type() == "attribute")
 			{
-				if (m_entities.at(i)->GetComponents()->at(j)->Type() == "attribute")
-				{
-					attributeKey = j;
-				}
+				attributeKey = j;
 			}
-			if (attributeKey >= 0)
+		}
+		if (attributeKey >= 0)
+		{
+			std::list<Modifer> * modifiers = static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(attributeKey))->Modifers();
+			if (modifiers->size() != 0)
 			{
-				std::list<Modifer> * modifiers = static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(attributeKey))->Modifers();
-				if (modifiers->size() != 0)
+				//Goes through all the modifiers the Attributes Component has
+				for (std::list<Modifer>::iterator it = modifiers->begin(); it != modifiers->end(); ++it)
 				{
-					//Goes through all the modifiers the Attributes Component has
-					for (std::list<Modifer>::iterator it = modifiers->begin(); it != modifiers->end(); ++it)
+					if (timer > 1)
 					{
-						if (timer > 1)
-						{
-							if ((*it).m_type == ModiferTypes::BURNING)
-							{
-								int damageCaused = (*it).m_amount;
-								int armour = static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(attributeKey))->Armour();
-								int health = static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(attributeKey))->Health();
-								DamageEntity(damageCaused, armour, health);
-								static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(attributeKey))->Armour(armour);
-								static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(attributeKey))->Health(health);
-							}
-
-							(*it).m_duration = (*it).m_duration - 1;
-							timer = 0;
-						}
-						else
-						{
-							timer += deltaTime;
-						}
-						//Applies Damage to the armour and health
-						if ((*it).m_type == ModiferTypes::DAMAGE)
+						if ((*it).m_type == ModiferTypes::BURNING)
 						{
 							int damageCaused = (*it).m_amount;
 							int armour = static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(attributeKey))->Armour();
@@ -60,29 +73,47 @@ void HealthSystem::Update(float deltaTime)
 							static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(attributeKey))->Armour(armour);
 							static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(attributeKey))->Health(health);
 						}
-						//Updates Health and Armour UI
-						if (m_entities.at(i)->ID() == "Player")
-						{
-							UpdateHeartsUIStatus(m_entities.at(i), m_entities.at(i));
-							UpdateArmourUIStatus(m_entities.at(i), m_entities.at(i));
-						}
 
+						(*it).m_duration = (*it).m_duration - 1;
+						timer = 0;
 					}
-					//Remove Modifiers whose duration has ended
-					for (std::list<Modifer>::iterator it = modifiers->begin(); it != modifiers->end();)
+					else
 					{
-						if ((*it).m_duration <= 0)
-						{
-							it = modifiers->erase(it);
-						}
-						else
-						{
-							++it;
-						}
-
+						timer += deltaTime;
 					}
+					//Applies Damage to the armour and health
+					if ((*it).m_type == ModiferTypes::DAMAGE)
+					{
+						int damageCaused = (*it).m_amount;
+						int armour = static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(attributeKey))->Armour();
+						int health = static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(attributeKey))->Health();
+						DamageEntity(damageCaused, armour, health);
+						static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(attributeKey))->Armour(armour);
+						static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(attributeKey))->Health(health);
+					}
+					//Updates Health and Armour UI
+					if (m_entities.at(i)->ID() == "Player")
+					{
+						UpdateHeartsUIStatus(m_entities.at(i), m_entities.at(i));
+						UpdateArmourUIStatus(m_entities.at(i), m_entities.at(i));
+					}
+
+				}
+				//Remove Modifiers whose duration has ended
+				for (std::list<Modifer>::iterator it = modifiers->begin(); it != modifiers->end();)
+				{
+					if ((*it).m_duration <= 0)
+					{
+						it = modifiers->erase(it);
+					}
+					else
+					{
+						++it;
+					}
+
 				}
 			}
+		}
 	}
 }
 
@@ -186,7 +217,7 @@ void HealthSystem::UpdateHeartsUIStatus(Entity * HeartManager, Entity* player)
 					else
 					{
 						std::cout << "ERROR INDEX LARGER THAN LIST SIZE" << std::endl;
-					}			
+					}
 				}
 			}
 		}
@@ -411,4 +442,3 @@ void HealthSystem::UpdateMaxHeartsUI(Entity * HeartManager, Entity* player)
 		}
 	}
 }
-

@@ -21,6 +21,8 @@ public:
 	int h1 = -22222;
 	int damage = 0;
 	bool collision = false;
+	void LoadComponent();
+	void UnloadComponent(int x);
 
 	void Update();
 private:

@@ -2,7 +2,7 @@
 
 
 
-BattleMap::BattleMap(SystemManager * sm, SDL_Renderer * sdlr, StateManager * s)
+BattleMap::BattleMap(SystemManager * sm, StateManager * s)
 {
 	m_systemManager = sm;
 	m_stateManager = s;
@@ -23,16 +23,56 @@ void BattleMap::Generate(std::string type)
 	m_systemManager->controlSystem->SelectiveClear();
 	m_systemManager->renderSystem->SelectiveClear();
 	m_systemManager->movementSystem->SelectiveClear();
-	m_systemManager->aiSystem->SelectiveClear();
-	m_systemManager->healthSystem->SelectiveClear();
-	delete m_factory;
+
+	TileFactory * factory;
 
 	if (type == "Grassland")
 	{
-		m_factory = new GrassTileFactory();
+		factory = new GrassTileFactory();
+	}
+	else
+	{
+		factory = new GrassTileFactory();
+	}
+	std::vector<Entity*>* projectileEntities = m_systemManager->attackSystem->getProjectiles();
+
+
+	for (int i = 0; i < 17; i++)
+	{
+		for (int j = 0; j < 13; j++)
+		{
+			int rando = rand() % 100;
+			if (rando <= 80)
+			{
+				m_entities.push_back(factory->GroundA("Turf", i * (16 * m_systemManager->renderSystem->GetScale()), j * (16 * m_systemManager->renderSystem->GetScale())));
+			}
+			else if (rando <= 90)
+			{
+				m_entities.push_back(factory->GroundB("Turf", i * (16 * m_systemManager->renderSystem->GetScale()), j * (16 * m_systemManager->renderSystem->GetScale())));
+			}
+			else if (rando <= 95)
+			{
+				m_entities.push_back(factory->GroundC("Turf", i * (16 * m_systemManager->renderSystem->GetScale()), j * (16 * m_systemManager->renderSystem->GetScale())));
+			}
+			else
+			{
+				m_entities.push_back(factory->GroundD("Turf", i * (16 * m_systemManager->renderSystem->GetScale()), j * (16 * m_systemManager->renderSystem->GetScale())));
+			}
+			m_systemManager->renderSystem->AddEntity(m_entities.back());
+		}
 	}
 
-	std::vector<Entity*>* projectileEntities = m_systemManager->attackSystem->getProjectiles();;
+
+
+
+
+
+	/// <summary>
+	/// //$$$$
+	/// </summary>
+	/// <param name="type"></param>
+	/// 
+	/// 	std::vector<Entity*>* projectileEntities = m_systemManager->attackSystem->getProjectiles();;
 	
 	for (int i = 0; i < 100; i++)
 	{
@@ -54,36 +94,10 @@ void BattleMap::Generate(std::string type)
 	}
 	std::cout << projectileEntities->size() << std::endl;
 
-
-	for (int i = 0; i < 17; i++)
-	{
-		for (int j = 0; j < 13; j++)
-		{
-			int rando = rand() % 100;
-			if (rando <= 80)
-			{
-				m_entities.push_back(m_factory->GroundA("Turf", i * (16 * m_systemManager->renderSystem->GetScale()), j * (16 * m_systemManager->renderSystem->GetScale())));
-			}
-			else if (rando <= 90)
-			{
-				m_entities.push_back(m_factory->GroundB("Turf", i * (16 * m_systemManager->renderSystem->GetScale()), j * (16 * m_systemManager->renderSystem->GetScale())));
-			}																			
-			else if (rando <= 95)														
-			{																			
-				m_entities.push_back(m_factory->GroundC("Turf", i * (16 * m_systemManager->renderSystem->GetScale()), j * (16 * m_systemManager->renderSystem->GetScale())));
-			}																			
-			else																		
-			{																			
-				m_entities.push_back(m_factory->GroundD("Turf", i * (16 * m_systemManager->renderSystem->GetScale()), j * (16 * m_systemManager->renderSystem->GetScale())));
-			}
-			m_systemManager->renderSystem->AddEntity(m_entities.back());
-		}
-	}
-
 	m_systemManager->aiSystem->Spawn();
 
 	auto aiEntities = m_systemManager->aiSystem->getEntities(); //get and add AI entities to be rendered
-	
+
 
 
 	for (auto i = aiEntities.begin(), end = aiEntities.end(); i != end; i++)
@@ -92,7 +106,7 @@ void BattleMap::Generate(std::string type)
 		m_systemManager->movementSystem->AddEntity((*i)); //consider tag discrimination here
 		m_systemManager->collisionSystem->AddEntity((*i));
 	}
-	
+
 	Entity * player = new Entity("Player");
 	player->Active(true);
 	player->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
@@ -132,6 +146,15 @@ void BattleMap::Generate(std::string type)
 	{
 		m_systemManager->renderSystem->AddEntity(aUI->HeartsVector()->at(i));
 	}
+
+
+
+	/// <summary>
+	/// $$$$$$
+	/// </summary>
+	/// <param name="type"></param>
+
+	delete factory;
 }
 void BattleMap::Update()
 {

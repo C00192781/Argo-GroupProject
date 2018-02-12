@@ -36,6 +36,12 @@ public:
 
 private:
 	bool flag = false;
+	//RenderSystem *   RenderSystem;
+	//MovementSystem * MovementSystem;
+	//ControlSystem *  ControlSystem;
+
+	void Update();
+
 };
 #endif
 

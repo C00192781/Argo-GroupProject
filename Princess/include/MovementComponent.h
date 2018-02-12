@@ -3,10 +3,10 @@
 #include "Component.h"
 #include <iostream>
 
-class MovementComponent : public Component 
+class MovementComponent : public Component
 {
 public:
-	MovementComponent() 
+	MovementComponent()
 	{
 		m_type = "movement";
 		m_xVel = 0;

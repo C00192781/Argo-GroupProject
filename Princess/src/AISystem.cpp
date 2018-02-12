@@ -18,6 +18,83 @@ AiSystem::~AiSystem()
 }
 
 
+void AiSystem::LoadComponent()
+{
+	//std::vector<AiLogicComponent*> m_aiLogicComponent;
+	//std::vector<SpriteComponent*> m_spriteComponent;
+	//std::vector<MovementComponent*> m_movementComponent;
+	//std::vector<SeekComponent*> m_seekComponent;
+	//std::vector<AttributesComponent*> m_attributesComponent;
+	//std::vector<AttackComponent*> m_attackComponent;
+
+
+
+	//int pcKey = -1;
+	//int scKey = -1;
+	//int acKey = -1;
+	//int skKey = -1;
+	//int atkKey = -1;
+	//int ailKey = -1;
+	//int seekKey = -1;
+	//for (int j = 0; j < m_entities.back()->GetComponents()->size(); j++)
+	//{
+	//	if (m_entities.back()->GetComponents()->at(j)->Type() == "PC")
+	//	{
+	//		pcKey = j;
+	//	}
+	//	else if (m_entities.back()->GetComponents()->at(j)->Type() == "SC")
+	//	{
+	//		scKey = j;
+	//	}
+	//	else if (m_entities.back()->GetComponents()->at(j)->Type() == "AC")
+	//	{
+	//		acKey = j;
+	//	}
+	//	else if (m_entities.back()->GetComponents()->at(j)->Type() == "attack")
+	//	{
+	//		atkKey = j;
+	//	}
+	//	else if (m_entities.back()->GetComponents()->at(j)->Type() == "AIL")
+	//	{
+	//		ailKey = j;
+	//	}
+	//	//else if (m_entities.back()->GetComponents()->at(j)->Type() == "AIL")
+	//	//{
+	//	//	ailKey = j;
+	//	//}
+	//	else if (m_entities.back()->GetComponents()->at(j)->Type() == "seek")
+	//	{
+	//		seekKey = j;
+	//	}
+	//	
+	//	if (scKey > 0 && pcKey > 0)
+	//	{
+	//		break;
+	//	}
+	//}
+
+	//m_positionComponent.push_back(static_cast<PositionComponent*>(m_entities.back()->GetComponents()->at(pcKey)));
+	//m_spriteComponent.push_back(static_cast<SpriteComponent*>(m_entities.back()->GetComponents()->at(scKey)));
+
+
+	//m_aiLogicComponent.push_back(static_cast<AiLogicComponent*>(m_entities.back()->GetComponents()->at(pcKey));
+
+	//static_cast<SpriteComponent*> m_spriteComponent;
+	//static_cast<MovementComponent*> m_movementComponent;
+	//static_cast<SeekComponent*> m_seekComponent;
+	//static_cast<AttributesComponent*> m_attributesComponent;
+	//static_cast<AttackComponent*> m_attackComponent;
+	//static_cast<PositionComponent*> m_positionComponent;
+}
+
+void AiSystem::UnloadComponent(int x)
+{
+	//m_positionComponent.erase(m_positionComponent.begin() + x);
+	//m_spriteComponent.erase(m_spriteComponent.begin() + x);
+	//m_positionComponent.shrink_to_fit();
+	//m_spriteComponent.shrink_to_fit();
+}
+
 void AiSystem::Spawn()
 {
 	SDL_Point p{ 300,0 };
@@ -32,7 +109,7 @@ void AiSystem::Spawn()
 	//m_entities.push_back(characterFactory->CharC("Demon", p, 0));
 	//m_entities.back()->Active(true);
 	
-	for (int i = 0; i < 50; i++)
+	for (int i = 0; i < 12; i++)
 	{
 	//	characterFactory = new BasicEnemy();
 		m_entities.push_back(characterFactory->CharC("Demon", SDL_Point{ rand() % 812, rand() % 624 }, 0));

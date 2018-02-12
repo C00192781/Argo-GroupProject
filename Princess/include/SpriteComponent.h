@@ -20,26 +20,26 @@ public:
 		m_frame = 0;
 		m_layer = layer;
 		m_IsAnimating = true;
-	 }
+	}
 	~SpriteComponent() {};
 
 	void Direction(int dir) { m_direction = dir; };
-	int Direction(){ return m_direction; };
+	int Direction() { return m_direction; };
 
-	void Frame(int frame) { 
+	void Frame(int frame) {
 		if (frame < 0)
 		{
 			frame = m_noOfFrames;
 		}
-		else if( frame > m_noOfFrames)
+		else if (frame > m_noOfFrames)
 		{
 			frame = 0;
 		}
-		m_frame = frame; 
+		m_frame = frame;
 	};
 	int Frame() { return m_frame; };
 
-	void Width(int width) {m_width = width; };
+	void Width(int width) { m_width = width; };
 	int Width() { return m_width; };
 
 	void Height(int height) { m_height = height; };
@@ -55,7 +55,8 @@ public:
 	bool IsAnimating() { return m_IsAnimating; }
 
 	SDL_Rect GetRect() {
-		return SDL_Rect{ ((m_sheetX * m_noOfFrames) + m_frame) * m_width, ((m_sheetY * 4) + m_direction) * m_height, m_width, m_height };}
+		return SDL_Rect{ ((m_sheetX * m_noOfFrames) + m_frame) * m_width, ((m_sheetY * 4) + m_direction) * m_height, m_width, m_height };
+	}
 
 private:
 
@@ -69,4 +70,3 @@ private:
 	bool m_IsAnimating;
 };
 #endif
-

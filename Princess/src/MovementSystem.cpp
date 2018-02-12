@@ -1,5 +1,37 @@
 #include "MovementSystem.h"
 
+
+void MovementSystem::LoadComponent()
+{
+	//int pcKey = -1;
+	//int scKey = -1;
+	//for (int j = 0; j < m_entities.back()->GetComponents()->size(); j++)
+	//{
+	//	if (m_entities.back()->GetComponents()->at(j)->Type() == "PC")
+	//	{
+	//		pcKey = j;
+	//	}
+	//	else if (m_entities.back()->GetComponents()->at(j)->Type() == "SC")
+	//	{
+	//		scKey = j;
+	//	}
+	//	if (scKey > 0 && pcKey > 0)
+	//	{
+	//		break;
+	//	}
+	//}
+	//m_positionComponent.push_back(static_cast<PositionComponent>(m_entities.back()->GetComponents()->at(pcKey)));
+	//m_spriteComponent.push_back(static_cast<SpriteComponent>(m_entities.back()->GetComponents()->at(scKey)));
+}
+
+void MovementSystem::UnloadComponent(int x)
+{
+	//m_positionComponent.erase(m_positionComponent.begin() + x);
+	//m_spriteComponent.erase(m_spriteComponent.begin() + x);
+	//m_positionComponent.shrink_to_fit();
+	//m_spriteComponent.shrink_to_fit();
+}
+
 void MovementSystem::Update(float deltaTime)
 {
 	SDL_GetMouseState(&m_mouseX, &m_mouseY);

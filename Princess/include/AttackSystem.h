@@ -16,6 +16,8 @@ public:
 	void Update(float deltaTime);
 
 	std::vector<Entity*>* getProjectiles() { return m_projectiles; }
+	void LoadComponent();
+	void UnloadComponent(int x);
 private:
 	std::vector<Entity*>* m_projectiles;
 };

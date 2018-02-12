@@ -22,6 +22,7 @@
 #include <chrono>
 #include "SystemManager.h"
 #include "LTimer.h"
+#include "WorldMap.h"
 int main()
 {
 	SDL_Window* gameWindow = SDL_CreateWindow("TEST", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 816, 624, SDL_WINDOW_SHOWN);
@@ -64,18 +65,66 @@ int main()
 	resourceManager->AddTexture("HeartsSheet", "heartSpriteSheet.png");
 	resourceManager->AddTexture("ArmourSheet", "armourSpriteSheet.png");
 
+	resourceManager->AddTexture("WorldTurf", "World_Turfs.png");
+
+
 	EventListener *listener = new EventListener();
 
-	InputHandler *input = new InputHandler(listener);
+	InputHandler *input = new InputHandler(listener,e);
 
 	StateManager state;
-	
+
 	std::vector<Entity*>* projectiles = new std::vector<Entity*>;
 
 	SystemManager systemManager(resourceManager, gameRenderer, listener, projectiles);
+	//systemManager.
+	//systemManager.ControlSystem = new ControlSystem(listener, input);
+	//systemManager.ControlSystem->Active(true);
+	//systemManager.MovementSystem = new MovementSystem();
+	//systemManager.MovementSystem->Active(true);
+	//systemManager.RenderSystem = new RenderSystem(resourceManager, gameRenderer);
+	//systemManager.RenderSystem->Active(true);
+	//systemManager.RenderSystem->SetScale(3);
 
-	BattleMap map1 = BattleMap(&systemManager, gameRenderer, &state);
+	systemManager.controlSystem = new ControlSystem(listener, input);
+	systemManager.controlSystem->Active(true);
+	systemManager.movementSystem = new MovementSystem();
+	systemManager.movementSystem->Active(true);
+	systemManager.renderSystem = new RenderSystem(resourceManager, gameRenderer);
+	systemManager.renderSystem->Active(true);
+	systemManager.renderSystem->SetScale(3);
+	systemManager.renderSystem->Camera(true);
+	systemManager.renderSystem->Camera(816, 624);
+
+
+	systemManager.attackSystem = new AttackSystem(projectiles);
+	systemManager.attackSystem->Active(true);
+	systemManager.projectileSystem = new ProjectileSystem();
+	systemManager.projectileSystem->Active(true);
+
+	systemManager.collisionSystem = new CollisionSystem();
+	systemManager.collisionSystem->Active(true);
+	systemManager.aiSystem = new AiSystem();
+	systemManager.aiSystem->Active(true);
+	systemManager.healthSystem = new HealthSystem();
+	systemManager.healthSystem->Active(true);
+
+
+
+	/// <summary>
+	/// $$$$$$$$$$$$$
+	/// </summary>
+	/// <returns></returns>
+
+
+	/*BattleMap map1 = BattleMap(&systemManager, gameRenderer, &state);
+	map1.Generate("Grassland");*/
+
+	BattleMap map1 = BattleMap(&systemManager, &state);
 	map1.Generate("Grassland");
+
+	//WorldMap* m = new WorldMap(&systemManager, &state);
+	//m->Generate(25, 25, 100);
 
 	bool heartTest = true;
 
@@ -109,12 +158,14 @@ int main()
 			{
 				deltaTime = ((float)(currentTime - lastTime)) / 1000;
 
-				input->handleInput(*e);
+				input->handleInput();
 
 				lastTime = currentTime;
 			}
 
-			map1.Update();
+		//	map1.Update();
+		//	m->Update();
+
 
 			SDL_SetRenderDrawColor(gameRenderer, 255, 255, 255, 0);
 			SDL_RenderClear(gameRenderer);

@@ -56,7 +56,7 @@ public:
 	//float getButtonPressTime() { return m_buttonPressTime; }
 	float getTimeToLive() { return m_timeToLive; }
 	float getBaseSpeed() { return m_baseSpeed; }
-	std::string getType() { return m_shooterType;  }
+	std::string getType() { return m_shooterType; }
 
 	//bool getAliveStatus() { return m_alive; }
 

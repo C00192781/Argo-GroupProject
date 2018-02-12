@@ -24,10 +24,10 @@ public:
 	Vector2f VelocityHandler(float orientation);
 	Vector2f MovementHandler(float velocityX, float VelocityY, float speed);
 	float CalculateSpeed(float buttonPressTime, float maxSpeed);
-	std::vector<Entity*>* getEntities();
-
+	void LoadComponent();
+	void UnloadComponent(int x);
 private:
 	const float CONVERSION = 180 / 3.14159265359;
-	const float maxHoldTime = 2.0f;
+	const float maxHoldTime = 3.0f;
 };
 #endif

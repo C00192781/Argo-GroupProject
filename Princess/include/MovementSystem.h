@@ -12,7 +12,9 @@ public:
 
 	void Update() {}
 	void Update(float deltaTime);
+	void LoadComponent();
+	void UnloadComponent(int x);
 private:
 	int m_mouseX;
 	int m_mouseY;
-}; 
+};

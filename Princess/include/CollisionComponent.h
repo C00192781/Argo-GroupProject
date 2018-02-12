@@ -19,7 +19,7 @@ public:
 	{
 		m_offset = 0;
 		m_x = x;
-		m_y = y; 
+		m_y = y;
 		m_width = width;
 		m_height = height;
 		m_type = "collision";
@@ -52,4 +52,3 @@ private:
 	float m_offset;
 };
 #endif
-

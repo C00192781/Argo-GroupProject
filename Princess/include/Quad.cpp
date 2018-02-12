@@ -22,6 +22,10 @@ void Quadtree::clear()
 
 void Quadtree::split() 
 {
+	cout << "split " << endl;
+	cout << "level: " << level << endl;
+
+
 	int subWidth = (int)(bounds.w / 2);
 	int subHeight = (int)(bounds.h / 2);
 	int x = bounds.x;

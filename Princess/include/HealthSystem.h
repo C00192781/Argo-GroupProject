@@ -22,5 +22,7 @@ public:
 	void UpdateHeartsUIStatus(Entity * HeartManager, Entity* player);
 	void UpdateMaxArmourUI(Entity * HeartManager, Entity* player);
 	void UpdateArmourUIStatus(Entity * HeartManager, Entity* player);
+	void LoadComponent();
+	void UnloadComponent(int x);
 };
 #endif
