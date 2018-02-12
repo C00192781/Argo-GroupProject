@@ -22,9 +22,13 @@ public:
 		}
 		else if (m_weaponType == WeaponType::RANGE)
 		{
-			m_range = 50 + (rand() % 25);
-			m_damage = 1 + (rand() % 9);
-			setAttackSpeed(0.5 + ((float)(rand() % 250) / 100));
+			//m_range = 50 + (rand() % 25);
+			//m_damage = 1 + (rand() % 9);
+			//setAttackSpeed(0.5 + ((float)(rand() % 250) / 100));
+
+			m_range = 50;
+			m_damage = 1;
+			setAttackSpeed(3);
 		}
 		else
 		{

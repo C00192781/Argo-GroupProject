@@ -124,12 +124,22 @@ void CollisionSystem::filterCollisions(int entityIndex, int entityColIndex, int 
 
 	if (SDL_IntersectRect(&rectEntity, &rectCollidable, &holder))
 	{
-		if (m_entities.at(entityIndex)->ID() == "Spellcaster Enemy")
+		//if (m_entities.at(entityIndex)->ID() == "Spellcaster Enemy")
+		//{
+		//	if (m_collidableEntities.at(collidableIndex)->ID() == "Projectile")
+		//	{
+		//		projectileCollision(collidableIndex);
+		//		spellcasterCollision(entityIndex);
+		//	}
+		//}
+		if (m_entities.at(entityIndex)->ID() == "Projectile")
 		{
-			if (m_collidableEntities.at(collidableIndex)->ID() == "Projectile")
+
+			if (m_collidableEntities.at(collidableIndex)->ID() == "Spellcaster Enemy")
 			{
-				projectileCollision(collidableIndex);
-				spellcasterCollision(entityIndex);
+				std::cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAA" << std::endl;
+			//	projectileCollision(collidableIndex);
+			//	spellcasterCollision(entityIndex);
 			}
 		}
 		//else if (m_entities.at(entityIndex)->ID() == "Princess")
@@ -144,16 +154,13 @@ void CollisionSystem::projectileCollision(int index)
 	// find projectile component in collidable
 	// set ttl to 0
 
-
-
-	//for (int i = 0; i < m_collidableEntities.at(index)->GetComponents()->size(); i++)
-	//{
-	//	if (m_collidableEntities.at(index)->GetComponents()->at(i)->Type() == "PJ")
-	//	{
-	//		static_cast<ProjectileComponent*>(m_collidableEntities.at(index)->GetComponents()->at(i))->setTimeToLive(0);
-	//		std::cout << "DE WEI" << std::endl;
-	//	}
-	//}
+	for (int i = 0; i < m_collidableEntities.at(index)->GetComponents()->size(); i++)
+	{
+		if (m_collidableEntities.at(index)->GetComponents()->at(i)->Type() == "PJ")
+		{
+			static_cast<ProjectileComponent*>(m_collidableEntities.at(index)->GetComponents()->at(i))->setTimeToLive(0);
+		}
+	}
 }
 
 void CollisionSystem::spellcasterCollision(int index)
