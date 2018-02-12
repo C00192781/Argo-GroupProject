@@ -126,7 +126,7 @@ void AttackSystem::Update(float deltaTime)
 									int projectileMCKey = -1;
 									int projectilePJKey = -1;
 									int projectilePCKey = -1;
-
+						
 									for (int k = 0; k < m_projectiles->at(j)->GetComponents()->size(); k++)
 									{
 										if (m_projectiles->at(j)->GetComponents()->at(k)->Type() == "movement")
@@ -147,10 +147,10 @@ void AttackSystem::Update(float deltaTime)
 									float temp = static_cast<ProjectileComponent*>(m_projectiles->at(j)->GetComponents()->at(projectilePJKey))->getBaseSpeed() * static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getAttackSpeed() * deltaTime;
 									static_cast<ProjectileComponent*>(m_projectiles->at(j)->GetComponents()->at(projectilePJKey))->setTimeToLive(static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getRange() / temp);
 									static_cast<PositionComponent*>(m_projectiles->at(j)->GetComponents()->at(projectilePCKey))->setPosition(static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getX(), static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getY());
-
+						
 									static_cast<MovementComponent*>(m_projectiles->at(j)->GetComponents()->at(projectileMCKey))->setXVelocity((sin(static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->getOrientation()* (3.142 / 180)) * temp) * 1000);
 									static_cast<MovementComponent*>(m_projectiles->at(j)->GetComponents()->at(projectileMCKey))->setYVelocity((-cos(static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->getOrientation() * (3.142 / 180)) * temp) * 1000);
-
+						
 									break;
 								}
 							}

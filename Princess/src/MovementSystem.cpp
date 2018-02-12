@@ -63,14 +63,15 @@ void MovementSystem::Update(float deltaTime)
 		
 			if (m_entities.at(i)->ID() == "Player")
 			{
+				//std::cout << "Mouse Y: " << m_mouseY + *yPos << std::endl;
 				if (m_movementComponent.at(i)->getLockedOrientation() == false)
 				{
-					//m_movementComponent.at(i)->setOrientation((atan2((float)m_mouseY - *yPos, (float)m_mouseX - *xPos)) * (180 / 3.142) + 90);
-					m_movementComponent.at(i)->setOrientation((atan2(*yPos - ((float)m_mouseY / 2), *xPos - ((float)m_mouseY / 2))) * (180 / 3.142) + 90);
+					m_movementComponent.at(i)->setOrientation((atan2((float)m_mouseY - (624 / 2), (float)m_mouseX - (816 / 2))) * (180 / 3.142) + 90);
+					//m_movementComponent.at(i)->setOrientation((atan2((float)m_mouseY, (float)m_mouseX)) * (180 / 3.142) + 90);
 					//std::cout << "X Pos: " << *xPos << std::endl;
 					//std::cout << "Y Pos: " << *yPos << std::endl;
 					//std::cout << "Mouse X: " << m_mouseX + *xPos << std::endl;
-					std::cout << "Mouse Y: " << m_mouseY << std::endl;
+					//std::cout << "Mouse Y: " << m_mouseY << std::endl;
 					//std::cout << "Orientation: " << m_movementComponent.at(i)->getOrientation() << std::endl;
 				}
 			}
