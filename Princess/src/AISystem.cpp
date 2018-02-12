@@ -109,7 +109,7 @@ void AiSystem::Spawn()
 	//m_entities.push_back(characterFactory->CharC("Demon", p, 0));
 	//m_entities.back()->Active(true);
 	
-	for (int i = 0; i < 12; i++)
+	for (int i = 0; i < 20; i++)
 	{
 	//	characterFactory = new BasicEnemy();
 		m_entities.push_back(characterFactory->CharC("Demon", SDL_Point{ rand() % 812, rand() % 624 }, 0));
@@ -140,14 +140,18 @@ std::vector<Entity*> AiSystem::getEntities()
 
 void AiSystem::seek(int entityIndex, int pcKey, int mcKey, int seekKey, int attributeKey)
 {
-	float x = static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->getXDestination() - static_cast<PositionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(pcKey))->getX();
-	float y = static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->getYDestination() - static_cast<PositionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(pcKey))->getY();
+
+
+//	SDL_Point{ rand() % 812, rand() % 624 }, 0));
+	
+	float x = (rand() % 812) - static_cast<PositionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(pcKey))->getX();
+	float y = (rand() % 624) - static_cast<PositionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(pcKey))->getY();
 
 	float dist = magnitude(x, y);
 
 	static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->setDistanceToDestination(dist);
 
-	if (dist > static_cast<AttributesComponent*>(m_entities.at(entityIndex)->GetComponents()->at(attributeKey))->MovementSpeed() / 60)
+	if (dist > static_cast<AttributesComponent*>(m_entities.at(entityIndex)->GetComponents()->at(attributeKey))->MovementSpeed() / 60.0f)
 	{
 		normalise(x, y);
 		x *= static_cast<AttributesComponent*>(m_entities.at(entityIndex)->GetComponents()->at(attributeKey))->MovementSpeed();
@@ -156,11 +160,11 @@ void AiSystem::seek(int entityIndex, int pcKey, int mcKey, int seekKey, int attr
 		static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setXVelocity(x);
 		static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setYVelocity(y);
 	}
-	else
-	{
-		static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setXVelocity(0);
-		static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setYVelocity(0);
-	}
+	//else
+	//{
+	//	static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setXVelocity(0);
+	//	static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setYVelocity(0);
+	//}
 }
 
 
@@ -338,14 +342,14 @@ void AiSystem::Update(float deltaTime)
 		{
 			if (attackKey >= 0)
 			{
-				if (static_cast<SeekComponent*>(m_entities.at(i)->GetComponents()->at(seekKey))->getDistanceToDestination() < static_cast<AttackComponent*>(m_entities.at(i)->GetComponents()->at(attackKey))->getRange())
+	/*			if (static_cast<SeekComponent*>(m_entities.at(i)->GetComponents()->at(seekKey))->getDistanceToDestination() < static_cast<AttackComponent*>(m_entities.at(i)->GetComponents()->at(attackKey))->getRange())
 				{
 					attack(i, attackKey, mcKey);
 				}
 				else
-				{
+				{*/
 					seek(i, pcKey, mcKey, seekKey,attributeKey);
-				}
+			//	}
 			}
 			else
 			{

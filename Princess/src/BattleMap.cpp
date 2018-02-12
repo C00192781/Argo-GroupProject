@@ -110,7 +110,7 @@ void BattleMap::Generate(std::string type)
 	Entity * player = new Entity("Player");
 	player->Active(true);
 	player->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
-	player->AddComponent(new PositionComponent(SDL_Point{ 100, 300 }));
+	player->AddComponent(new PositionComponent(SDL_Point{ 500, 380 }));
 	player->AddComponent(new AttributesComponent(26, 26, 10, 10, 100, 100));
 	player->AddComponent(new MovementComponent());
 	player->AddComponent(new WeaponComponent(WeaponType::RANGE));
@@ -120,6 +120,7 @@ void BattleMap::Generate(std::string type)
 
 	m_systemManager->controlSystem->AddEntity(player);
 	m_systemManager->movementSystem->AddEntity(player);
+	m_systemManager->renderSystem->AddEntity(player);
 	//m_systemManager->renderSystem->AddEntity(player);
 	m_systemManager->projectileSystem->AddEntity(player);
 	m_systemManager->collisionSystem->AddEntity(player);
@@ -133,7 +134,7 @@ void BattleMap::Generate(std::string type)
 	player->AddComponent(aUI);
 
 	m_systemManager->healthSystem->AddEntity(player);
-	m_systemManager->renderSystem->AddEntity(player);
+	
 
 	m_systemManager->healthSystem->UpdateMaxHeartsUI(player, player);
 	m_systemManager->healthSystem->UpdateMaxArmourUI(player, player);
@@ -147,6 +148,8 @@ void BattleMap::Generate(std::string type)
 		m_systemManager->renderSystem->AddEntity(aUI->HeartsVector()->at(i));
 	}
 
+
+	//static_cast<PositionComponent*>(player->GetComponents()->at(1))->setPosition(400,400);
 
 
 	/// <summary>

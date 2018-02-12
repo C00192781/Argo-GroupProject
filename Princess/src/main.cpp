@@ -86,8 +86,10 @@ int main()
 	//systemManager.RenderSystem->Active(true);
 	//systemManager.RenderSystem->SetScale(3);
 
-	systemManager.controlSystem = new ControlSystem(listener, input);
+	systemManager.controlSystem = new ControlSystem(listener);
 	systemManager.controlSystem->Active(true);
+
+
 	systemManager.movementSystem = new MovementSystem();
 	systemManager.movementSystem->Active(true);
 	systemManager.renderSystem = new RenderSystem(resourceManager, gameRenderer);
@@ -117,8 +119,7 @@ int main()
 	/// <returns></returns>
 
 
-	/*BattleMap map1 = BattleMap(&systemManager, gameRenderer, &state);
-	map1.Generate("Grassland");*/
+
 
 	BattleMap map1 = BattleMap(&systemManager, &state);
 	map1.Generate("Grassland");
@@ -153,7 +154,7 @@ int main()
 			SDL_Delay(SCREEN_TICKS_PER_FRAME - frameTicks);
 
 			currentTime = SDL_GetTicks();
-			//SDL_PollEvent(e);
+
 			if (currentTime > lastTime)
 			{
 				deltaTime = ((float)(currentTime - lastTime)) / 1000;
