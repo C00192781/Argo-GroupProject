@@ -23,6 +23,7 @@
 #include "SystemManager.h"
 #include "LTimer.h"
 #include "WorldMap.h"
+#include "DungeonMap.h"
 int main()
 {
 	SDL_Window* gameWindow = SDL_CreateWindow("TEST", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 816, 624, SDL_WINDOW_SHOWN);
@@ -118,11 +119,11 @@ int main()
 	/// </summary>
 	/// <returns></returns>
 
+	DungeonMap dMap = DungeonMap(&systemManager, &state);
+	dMap.Generate("Dungeon1");
 
-
-
-	BattleMap map1 = BattleMap(&systemManager, &state);
-	map1.Generate("Grassland");
+	//BattleMap map1 = BattleMap(&systemManager, &state);
+	//map1.Generate("Grassland");
 
 	//WorldMap* m = new WorldMap(&systemManager, &state);
 	//m->Generate(25, 25, 100);
@@ -166,6 +167,7 @@ int main()
 
 		//	map1.Update();
 		//	m->Update();
+		//	dMap.Update();
 
 
 			SDL_SetRenderDrawColor(gameRenderer, 255, 255, 255, 0);
