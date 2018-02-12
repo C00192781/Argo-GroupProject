@@ -24,8 +24,8 @@ public:
 	std::vector<Entity*> retrieve(std::vector<Entity*> &returnObjects, Entity* entity);
 
 private:
-	int MAX_OBJECTS = 10;
-	int MAX_LEVELS = 8;
+	int MAX_OBJECTS = 2;
+	int MAX_LEVELS = 5;
 
 	int level;
 	std::vector<Entity*> objects;

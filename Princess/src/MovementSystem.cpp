@@ -75,9 +75,15 @@ void MovementSystem::Update(float deltaTime)
 
 			if (countedFrames > 30 && m_entities.at(i)->ID() == "Player") //if all 30 roll frames have passed.
 			{
-				//assign roll invincibility here at some point.
+			//cooldown on rolling
 				countedFrames = 0;
-				cooldownFrames = 30;
+				cooldownFrames = 1000; //
+
+				auto temp = m_entities.at(i)->FindComponent("SC");
+
+				static_cast<SpriteComponent*>(temp)->Direction(0); //undo temporary roll animation
+
+			//	std::cout << "cd " << std::endl;
 				static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setLockedOrientation(false);
 			}
 
@@ -89,7 +95,7 @@ void MovementSystem::Update(float deltaTime)
 
 				if (static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->getRolling() && m_entities.at(i)->ID() == "Player" && cooldownFrames < 1) //if roll isnt on cooldown and we wanna roll
 				{
-					
+					//assign roll invincibility here at some point.
 					countedFrames++;
 				//	std::cout << "timer: " << countedFrames << std::endl;
 					
@@ -113,6 +119,7 @@ void MovementSystem::Update(float deltaTime)
 						*xPos += m_lastXVel; //locked roll rolls in given dir
 						*yPos += m_lastYVel;
 					}
+
 					static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setLockedOrientation(true);
 
 					if (countedFrames > 30) //after 30f, roll ends. 
@@ -120,13 +127,27 @@ void MovementSystem::Update(float deltaTime)
 						//end invincibility here.
 						static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setRolling(false);
 					}
+					else if (countedFrames < 30 && countedFrames > 0)
+					{
+
+						auto temp = m_entities.at(i)->FindComponent("SC");
+
+						static_cast<SpriteComponent*>(temp)->Direction(1); //temporary roll animation
+
+					
+						//play anim
+					}
 
 				}
 				else
 				{
 					*xPos += (static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->getXVelocity()) * deltaTime;
 					*yPos += (static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->getYVelocity()) * deltaTime;
-					cooldownFrames--; //30frame cooldown on spamming roll.
+					if (cooldownFrames > 0)
+					{
+						cooldownFrames--; //30frame cooldown on spamming roll.
+					}
+		//			std::cout << "on cd" << cooldownFrames << std::endl;
 				}
 
 				if (collisionKey >= 0)

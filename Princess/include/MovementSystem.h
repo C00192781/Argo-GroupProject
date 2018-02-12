@@ -4,6 +4,7 @@
 #include "PositionComponent.h"
 #include "MovementComponent.h"
 #include "CollisionComponent.h"
+#include "SpriteComponent.h"
 #include <vector>
 
 class MovementSystem : public System
@@ -23,6 +24,7 @@ private:
 	int cooldownFrames;
 	int m_lastXVel;
 	int m_lastYVel;
+	bool m_rollAnim;
 	std::vector<PositionComponent*> m_positionComponent;
 	std::vector<MovementComponent*> m_movementComponent;
 	std::vector<CollisionComponent*> m_collisionComponent;

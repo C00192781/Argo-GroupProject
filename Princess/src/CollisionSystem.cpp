@@ -137,7 +137,7 @@ void CollisionSystem::filterCollisions(int entityIndex, int entityColIndex, int 
 
 			if (m_collidableEntities.at(collidableIndex)->ID() == "Spellcaster Enemy")
 			{
-				std::cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAA" << std::endl;
+			//	std::cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAA" << std::endl;
 			//	projectileCollision(collidableIndex);
 			//	spellcasterCollision(entityIndex);
 			}

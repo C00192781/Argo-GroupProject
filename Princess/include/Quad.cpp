@@ -38,15 +38,15 @@ void Quadtree::split()
 
 void Quadtree::init()
 {
-	int subWidth = (int)(bounds.w / 2);
-	int subHeight = (int)(bounds.h / 2);
-	int x = bounds.x;
-	int y = bounds.y;
+	//int subWidth = (int)(bounds.w / 2);
+	//int subHeight = (int)(bounds.h / 2);
+	//int x = bounds.x;
+	//int y = bounds.y;
 
-	nodes.push_back(new Quadtree(0, SDL_Rect{ x + subWidth, y, subWidth, subHeight }));
-	nodes.push_back(new Quadtree(0, SDL_Rect{ x, y, subWidth, subHeight }));
-	nodes.push_back(new Quadtree(0, SDL_Rect{ x, y + subHeight, subWidth, subHeight }));
-	nodes.push_back(new Quadtree(0, SDL_Rect{ x + subWidth, y + subHeight, subWidth, subHeight }));
+	//nodes.push_back(new Quadtree(0, SDL_Rect{ x + subWidth, y, subWidth, subHeight }));
+	//nodes.push_back(new Quadtree(0, SDL_Rect{ x, y, subWidth, subHeight }));
+	//nodes.push_back(new Quadtree(0, SDL_Rect{ x, y + subHeight, subWidth, subHeight }));
+	//nodes.push_back(new Quadtree(0, SDL_Rect{ x + subWidth, y + subHeight, subWidth, subHeight }));
 }
 
 /*
@@ -61,17 +61,26 @@ int Quadtree::getIndex(Entity* entity)
 	double verticalMidpoint = bounds.x + (bounds.w / 2.0f);
 	double horizontalMidpoint = bounds.y + (bounds.h / 2.0f);
 
+	auto posComp = entity->FindComponent("PC");
+	auto sprComp = entity->FindComponent("SC");
+	
+	auto posCompX = static_cast<PositionComponent*>(posComp)->getX();
+	auto posCompY = static_cast<PositionComponent*>(posComp)->getY();
+
+	auto sprCompW = static_cast<SpriteComponent*>(sprComp)->GetRect().w;
+	auto sprCompH = static_cast<SpriteComponent*>(sprComp)->GetRect().h;
+
 	// Object can completely fit within the top quadrants
-	bool topQuadrant = (static_cast<PositionComponent*>(entity->GetComponents()->at(2))->getY() <
-		horizontalMidpoint && static_cast<PositionComponent*>(entity->GetComponents()->at(2))->getY() + 
-		static_cast<SpriteComponent*>(entity->GetComponents()->at(1))->GetRect().h < horizontalMidpoint);
+	bool topQuadrant = (posCompY <
+		horizontalMidpoint && posCompY + 
+		sprCompH < horizontalMidpoint);
 
 	// Object can completely fit within the bottom quadrants
-	bool bottomQuadrant = (static_cast<PositionComponent*>(entity->GetComponents()->at(2))->getY() > horizontalMidpoint);
+	bool bottomQuadrant = (posCompY >= horizontalMidpoint);
 
 	// Object can completely fit within the left quadrants
-	if (static_cast<PositionComponent*>(entity->GetComponents()->at(2))->getX() < verticalMidpoint && static_cast<PositionComponent*>(entity->GetComponents()->at(2))->getX()
-		+ static_cast<SpriteComponent*>(entity->GetComponents()->at(1))->GetRect().w < verticalMidpoint) {
+	if (posCompX < verticalMidpoint && posCompX
+		+ sprCompW < verticalMidpoint) {
 		if (topQuadrant) {
 			index = 1;
 			
@@ -84,7 +93,7 @@ int Quadtree::getIndex(Entity* entity)
 		}
 	}
 	// Object can completely fit within the right quadrants
-	else if (static_cast<PositionComponent*>(entity->GetComponents()->at(2))->getX() > verticalMidpoint) {
+	else if (posCompX > verticalMidpoint) {
 		if (topQuadrant) {
 			index = 0;
 
@@ -95,6 +104,24 @@ int Quadtree::getIndex(Entity* entity)
 
 			//cout << entity->ID() << "bottomright" << endl;
 		}
+	}
+	
+
+	if (entity->ID() == "Player" && index == 1)
+	{
+		cout << "top left player "  << endl;
+	}
+	else if (entity->ID() == "Player" && index == 2)
+	{
+		cout << "bottom left player" << endl;
+	}
+	else if (entity->ID() == "Player" && index == 3)
+	{
+		cout << "bottom right player" << endl;
+	}
+	else if (entity->ID() == "Player" && index == 0)
+	{
+		cout << "top right player" << endl;
 	}
 
 	return index;
@@ -156,7 +183,7 @@ std::vector<Entity*> Quadtree::retrieve(std::vector<Entity*> &returnObjects, Ent
 
 
 	int index = getIndex(entity);
-	if (index != -1 && nodes.size() != 0 && nodes[0] != nullptr) 
+	if (index != -1 && nodes.size() != 0 && !nodes.empty()) 
 	{
 		nodes.at(index)->retrieve(returnObjects, entity);
 	}
