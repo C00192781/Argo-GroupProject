@@ -86,8 +86,7 @@ void RenderSystem::Update()
 		holder.insert(holder.end(), foregroundHolder.begin(), foregroundHolder.end());
 		holder.insert(holder.end(), finalgroundHolder.begin(), finalgroundHolder.end());
 		holder.insert(holder.end(), hudHolder.begin(), hudHolder.end());
-
-	/*	std::vector<Entity*> entHolder;
+		std::vector<Entity*> entHolder;
 		m_positionComponent.clear();
 		m_spriteComponent.clear();
 		for (int i = 0; i < holder.size(); i++)
@@ -117,8 +116,7 @@ void RenderSystem::Update()
 		m_sizeMemory = entHolder.size();
 
 		m_entities.clear();
-		m_entities = entHolder;*/
-		m_sizeMemory = m_entities.size();
+		m_entities = entHolder;
 	}
 	for (int i = 0; i < m_entities.size(); i++)
 	{

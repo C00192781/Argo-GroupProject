@@ -95,7 +95,7 @@ Entity* WorldTileFactory::Water(std::string textureID, int x, int y)
 }
 Entity* WorldTileFactory::DeepWater(std::string textureID, int x, int y)
 {
-	Entity *holder = new Entity("Water");
+	Entity *holder = new Entity("DeepWater");
 	holder->AddComponent(new SpriteComponent(textureID, 0, 1, 2, 0, 16, 16, 1));
 	holder->AddComponent(new PositionComponent());
 	static_cast<PositionComponent*>(holder->GetComponents()->back())->setPosition(x,y);

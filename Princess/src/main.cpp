@@ -77,18 +77,9 @@ int main()
 	std::vector<Entity*>* projectiles = new std::vector<Entity*>;
 
 	SystemManager systemManager(resourceManager, gameRenderer, listener, projectiles);
-	//systemManager.
-	//systemManager.ControlSystem = new ControlSystem(listener, input);
-	//systemManager.ControlSystem->Active(true);
-	//systemManager.MovementSystem = new MovementSystem();
-	//systemManager.MovementSystem->Active(true);
-	//systemManager.RenderSystem = new RenderSystem(resourceManager, gameRenderer);
-	//systemManager.RenderSystem->Active(true);
-	//systemManager.RenderSystem->SetScale(3);
 
 	systemManager.controlSystem = new ControlSystem(listener);
 	systemManager.controlSystem->Active(true);
-
 
 	systemManager.movementSystem = new MovementSystem();
 	systemManager.movementSystem->Active(true);
@@ -97,7 +88,6 @@ int main()
 	systemManager.renderSystem->SetScale(3);
 	systemManager.renderSystem->Camera(true);
 	systemManager.renderSystem->Camera(816, 624);
-
 
 	systemManager.attackSystem = new AttackSystem(projectiles);
 	systemManager.attackSystem->Active(true);
@@ -111,25 +101,29 @@ int main()
 	systemManager.healthSystem = new HealthSystem();
 	systemManager.healthSystem->Active(true);
 
+	Entity * player = new Entity("Player");
+	player->Active(true);
+	player->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
+	player->AddComponent(new PositionComponent(SDL_Point{ 500, 380 }));
+	player->AddComponent(new AttributesComponent(26, 26, 10, 10, 100, 100));
+	player->AddComponent(new MovementComponent());
+	player->AddComponent(new WeaponComponent(WeaponType::RANGE));
+	player->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
+	player->Transient(true);
 
+	systemManager.controlSystem->AddEntity(player);
+	systemManager.movementSystem->AddEntity(player);
+	systemManager.renderSystem->AddEntity(player);
+	systemManager.projectileSystem->AddEntity(player);
+	systemManager.collisionSystem->AddEntity(player);
+	systemManager.attackSystem->AddEntity(player);
 
-	/// <summary>
-	/// $$$$$$$$$$$$$
-	/// </summary>
-	/// <returns></returns>
-
-
-
-
-	BattleMap map1 = BattleMap(&systemManager, &state);
-	map1.Generate("Grassland");
-
-	//WorldMap* m = new WorldMap(&systemManager, &state);
-	//m->Generate(25, 25, 100);
+	WorldMap* m = new WorldMap(&systemManager, &state);
+	m->Generate(25, 25, 100);
 
 	bool heartTest = true;
 
-	while (1 != 0)
+	while (true)
 	{
 		//Calculate and correct fps
 		int avgFPS = countedFrames / (fpsTimer.getTicks() / 1000.f);
@@ -154,7 +148,6 @@ int main()
 			SDL_Delay(SCREEN_TICKS_PER_FRAME - frameTicks);
 
 			currentTime = SDL_GetTicks();
-		//	SDL_PollEvent(e);
 			if (currentTime > lastTime)
 			{
 				deltaTime = ((float)(currentTime - lastTime)) / 1000;
@@ -163,10 +156,6 @@ int main()
 
 				lastTime = currentTime;
 			}
-
-		//	map1.Update();
-		//	m->Update();
-
 
 			SDL_SetRenderDrawColor(gameRenderer, 255, 255, 255, 0);
 			SDL_RenderClear(gameRenderer);

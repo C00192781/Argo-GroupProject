@@ -46,7 +46,7 @@ void WorldMap::Generate(int width, int height, int chaosFactor)
 			{
 				if (i == 6 || i == width + 5 || j == 6 || j == height + 5)
 				{
-					ApplyLake(&mapHolder, i, j, (rand() % 4)+2);
+					ApplyLake(&mapHolder, i, j, (rand() % 4) + 2);
 				}
 				else if (i == 7 || i == width + 4 || j == 7 || j == height + 4)
 				{
@@ -69,37 +69,37 @@ void WorldMap::Generate(int width, int height, int chaosFactor)
 	{
 		ApplySnowField(&mapHolder, (rand() % ((width + 12) - 14)) + 7, (rand() % ((height + 12) - 14)) + 7, (rand() % 2) + 4);
 	}
-	holder = (rand() % 5)+4;
+	holder = (rand() % 5) + 4;
 	for (int i = 0; i < holder; i++)
 	{
 		ApplyDesert(&mapHolder, (rand() % ((width + 12) - 14)) + 7, (rand() % ((height + 12) - 14)) + 7, (rand() % 2) + 4);
 	}
-	holder = (rand() % chaosFactor)+2;
+	holder = (rand() % chaosFactor) + 2;
 	for (int i = 0; i < holder; i++)
 	{
 		ApplyForest(&mapHolder, (rand() % ((width + 12) - 14)) + 7, (rand() % ((height + 12) - 14)) + 7, (rand() % 2) + 2);
 	}
-	holder = (rand() % chaosFactor)+2;
+	holder = (rand() % chaosFactor) + 2;
 	for (int i = 0; i < holder; i++)
 	{
 		ApplyMeadow(&mapHolder, (rand() % ((width + 12) - 14)) + 7, (rand() % ((height + 12) - 14)) + 7, (rand() % 2) + 2);
 	}
-	holder = (rand() % chaosFactor)+2;
+	holder = (rand() % chaosFactor) + 2;
 	for (int i = 0; i < holder; i++)
 	{
 		ApplyDune(&mapHolder, (rand() % ((width + 12) - 14)) + 7, (rand() % ((height + 12) - 14)) + 7, (rand() % 2) + 2);
 	}
-	holder = (rand() % chaosFactor)+2;
+	holder = (rand() % chaosFactor) + 2;
 	for (int i = 0; i < holder; i++)
 	{
 		ApplyRock(&mapHolder, (rand() % ((width + 12) - 14)) + 7, (rand() % ((height + 12) - 14)) + 7, (rand() % 2) + 2);
 	}
-	holder = (rand() % chaosFactor)+2;
+	holder = (rand() % chaosFactor) + 2;
 	for (int i = 0; i < holder; i++)
 	{
 		ApplySnowDune(&mapHolder, (rand() % ((width + 12) - 14)) + 7, (rand() % ((height + 12) - 14)) + 7, (rand() % 2) + 2);
 	}
-	holder = (rand() % chaosFactor)+2;
+	holder = (rand() % chaosFactor) + 2;
 	for (int i = 0; i < holder; i++)
 	{
 		ApplyGlacier(&mapHolder, (rand() % ((width + 12) - 14)) + 7, (rand() % ((height + 12) - 14)) + 7, (rand() % 2) + 2);
@@ -194,7 +194,7 @@ void WorldMap::Generate(int width, int height, int chaosFactor)
 		{
 			int xHolder = rand() % width;
 			int yHolder = rand() % height;
-			if (mapHolder.at(xHolder).at(yHolder) != "Water" && mapHolder.at(xHolder).at(yHolder) != "DeepWater" && mapHolder.at(xHolder).at(yHolder) != "Town" && mapHolder.at(xHolder).at(yHolder) != "Castle" && mapHolder.at(xHolder).at(yHolder) != "Dungeon" && mapHolder.at(xHolder).at(yHolder) != "DarkCastle" )
+			if (mapHolder.at(xHolder).at(yHolder) != "Water" && mapHolder.at(xHolder).at(yHolder) != "DeepWater" && mapHolder.at(xHolder).at(yHolder) != "Town" && mapHolder.at(xHolder).at(yHolder) != "Castle" && mapHolder.at(xHolder).at(yHolder) != "Dungeon" && mapHolder.at(xHolder).at(yHolder) != "DarkCastle")
 			{
 				mapHolder.at(xHolder).at(yHolder) = "Town";
 				m_entities.push_back(factory.Town("WorldTurf", xHolder * (16 * m_systemManager->renderSystem->GetScale()), yHolder * (16 * m_systemManager->renderSystem->GetScale())));
@@ -202,10 +202,9 @@ void WorldMap::Generate(int width, int height, int chaosFactor)
 				done = true;
 			}
 			giveUp--;
-
 		}
 	}
-	holder = (rand() % (chaosFactor/4)) + 2;
+	holder = (rand() % (chaosFactor / 4)) + 2;
 	for (int i = 0; i < holder; i++)
 	{
 		bool done = false;
