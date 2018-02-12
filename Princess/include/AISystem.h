@@ -21,14 +21,25 @@ public:
 	void Spawn(std::string id);
 	void Spawn();
 	std::vector<Entity*> getEntities();
-	void seek(int entityIndex, int pcKey, int mcKey, int seekKey, int acKey);
+	void seek(int entityIndex, int pcKey, int mcKey, int seekKey, int attributeKey);
 	void attack(int entityIndex, int attackKey, int mcKey);
 	void normalise(float &x, float &y);
 	float magnitude(float x, float y);
-	void Wander(int i,int pcKey,int mcKey,int seekKey, int acKey);
+	void Wander(int i,int pcKey,int mcKey,int seekKey, int attributeKey);
+	void LoadComponent();
+	void UnloadComponent(int x);
 private:
 	std::vector<Character*> CharFactory;
 	Character* characterFactory;
+
+	std::vector<AiLogicComponent*> m_aiLogicComponent;
+	std::vector<SpriteComponent*> m_spriteComponent;
+	std::vector<MovementComponent*> m_movementComponent;
+	std::vector<SeekComponent*> m_seekComponent;
+	std::vector<AttributesComponent*> m_attributesComponent;
+	std::vector<AttackComponent*> m_attackComponent;
+	std::vector<PositionComponent*> m_positionComponent;
+
 	float m_time;
 };
 #endif

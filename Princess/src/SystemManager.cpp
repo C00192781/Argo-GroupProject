@@ -1,8 +1,25 @@
 #include "SystemManager.h"
 
-void SystemManager::Update()
+SystemManager::SystemManager(ResourceManager *resourceManager, SDL_Renderer* gameRenderer, EventListener *listener, std::vector<Entity*>* projectiles)
 {
-	if (MovementSystem->Active()) { MovementSystem->Update(); }
-	if (ControlSystem->Active()) { ControlSystem->Update(); }
-	if (RenderSystem->Active()) { RenderSystem->Update(); }
+	
+
 }
+
+void SystemManager::Update(float deltaTime)
+{
+	if (controlSystem->Active()) { controlSystem->Update(); }
+	if (movementSystem->Active()) { movementSystem->Update(deltaTime); }
+	if (renderSystem->Active()) { renderSystem->Update(); }
+	if (attackSystem->Active()) { attackSystem->Update(deltaTime); }
+	if (aiSystem->Active()) { aiSystem->Update(deltaTime); }
+	if (collisionSystem->Active()) { collisionSystem->Update(); }
+}
+
+
+//void SystemManager::Update()
+//{
+//	if (MovementSystem->Active()) { MovementSystem->Update(); }
+//	if (ControlSystem->Active()) { ControlSystem->Update(); }
+//	if (RenderSystem->Active()) { RenderSystem->Update(); }
+//}

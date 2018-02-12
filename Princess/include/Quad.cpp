@@ -1,12 +1,31 @@
 #include "Quad.h"
 
-void Quadtree::clear() {
+Quadtree::~Quadtree()
+{
+	for (int i = 0; i < nodes.size(); i++)
+	{
+		delete nodes.at(i);
+	}
+	nodes.clear();
+}
+
+void Quadtree::clear() 
+{
+	for (int i = 0; i < nodes.size(); i++)
+	{
+		delete nodes.at(i);
+	}
+
 	objects.clear();
 	nodes.clear();
 }
 
 void Quadtree::split() 
 {
+	cout << "split " << endl;
+	cout << "level: " << level << endl;
+
+
 	int subWidth = (int)(bounds.w / 2);
 	int subHeight = (int)(bounds.h / 2);
 	int x = bounds.x;
@@ -14,10 +33,10 @@ void Quadtree::split()
 
 	nodes.clear();
 
-	nodes.push_back(new Quadtree(0, SDL_Rect{ x + subWidth, y, subWidth, subHeight }));
-	nodes.push_back(new Quadtree(0, SDL_Rect{ x, y, subWidth, subHeight }));
-	nodes.push_back(new Quadtree(0, SDL_Rect{ x, y + subHeight, subWidth, subHeight }));
-	nodes.push_back(new Quadtree(0, SDL_Rect{ x + subWidth, y + subHeight, subWidth, subHeight }));
+	nodes.push_back(new Quadtree(level + 1, SDL_Rect{ x + subWidth, y, subWidth, subHeight }));
+	nodes.push_back(new Quadtree(level + 1, SDL_Rect{ x, y, subWidth, subHeight }));
+	nodes.push_back(new Quadtree(level + 1, SDL_Rect{ x, y + subHeight, subWidth, subHeight }));
+	nodes.push_back(new Quadtree(level + 1, SDL_Rect{ x + subWidth, y + subHeight, subWidth, subHeight }));
 }
 
 
@@ -47,15 +66,15 @@ int Quadtree::getIndex(Entity* entity)
 	double horizontalMidpoint = bounds.y + (bounds.h / 2.0f);
 
 	// Object can completely fit within the top quadrants
-	bool topQuadrant = (static_cast<PositionComponent*>(entity->GetComponents()->at(2))->getPosition().y <
-		horizontalMidpoint && static_cast<PositionComponent*>(entity->GetComponents()->at(2))->getPosition().y + 
+	bool topQuadrant = (static_cast<PositionComponent*>(entity->GetComponents()->at(2))->getY() <
+		horizontalMidpoint && static_cast<PositionComponent*>(entity->GetComponents()->at(2))->getY() + 
 		static_cast<SpriteComponent*>(entity->GetComponents()->at(1))->GetRect().h < horizontalMidpoint);
 
 	// Object can completely fit within the bottom quadrants
-	bool bottomQuadrant = (static_cast<PositionComponent*>(entity->GetComponents()->at(2))->getPosition().y > horizontalMidpoint);
+	bool bottomQuadrant = (static_cast<PositionComponent*>(entity->GetComponents()->at(2))->getY() > horizontalMidpoint);
 
 	// Object can completely fit within the left quadrants
-	if (static_cast<PositionComponent*>(entity->GetComponents()->at(2))->getPosition().x < verticalMidpoint && static_cast<PositionComponent*>(entity->GetComponents()->at(2))->getPosition().x
+	if (static_cast<PositionComponent*>(entity->GetComponents()->at(2))->getX() < verticalMidpoint && static_cast<PositionComponent*>(entity->GetComponents()->at(2))->getX()
 		+ static_cast<SpriteComponent*>(entity->GetComponents()->at(1))->GetRect().w < verticalMidpoint) {
 		if (topQuadrant) {
 			index = 1;
@@ -69,7 +88,7 @@ int Quadtree::getIndex(Entity* entity)
 		}
 	}
 	// Object can completely fit within the right quadrants
-	else if (static_cast<PositionComponent*>(entity->GetComponents()->at(2))->getPosition().x > verticalMidpoint) {
+	else if (static_cast<PositionComponent*>(entity->GetComponents()->at(2))->getX() > verticalMidpoint) {
 		if (topQuadrant) {
 			index = 0;
 
@@ -113,9 +132,9 @@ void Quadtree::insert(Entity* entities)
 			split();
 		}
 
-		int i = 0;
+		//int i = 0;
 
-		while (i < objects.size())
+		for (int i = 0; i < objects.size();)
 		{
 			int index = getIndex(objects.at(i));
 

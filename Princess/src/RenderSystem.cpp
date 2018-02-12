@@ -42,8 +42,8 @@ void RenderSystem::Update()
 		{
 			if (m_entities.at(i)->ID() == "Player")
 			{
-				offsetX = m_positionComponent.at(i)->getPosition().x;
-				offsetY = m_positionComponent.at(i)->getPosition().y;
+				offsetX = m_positionComponent.at(i)->getX();
+				offsetY = m_positionComponent.at(i)->getY();
 				break;
 			}
 		}
@@ -86,7 +86,6 @@ void RenderSystem::Update()
 		holder.insert(holder.end(), foregroundHolder.begin(), foregroundHolder.end());
 		holder.insert(holder.end(), finalgroundHolder.begin(), finalgroundHolder.end());
 		holder.insert(holder.end(), hudHolder.begin(), hudHolder.end());
-
 		std::vector<Entity*> entHolder;
 		m_positionComponent.clear();
 		m_spriteComponent.clear();
@@ -124,8 +123,8 @@ void RenderSystem::Update()
 		if (m_entities.at(i)->Active())
 		{
 			SDL_Rect holderRect{
-				m_positionComponent.at(i)->getPosition().x,
-				m_positionComponent.at(i)->getPosition().y,
+				m_positionComponent.at(i)->getX(),
+				m_positionComponent.at(i)->getY(),
 				m_spriteComponent.at(i)->Width() * (int)m_scale,
 				m_spriteComponent.at(i)->Height() * (int)m_scale };
 			if (m_cameraOn)

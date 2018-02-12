@@ -14,6 +14,7 @@ public:
 		level = pLevel;
 		bounds = pBounds;
 	}
+	~Quadtree();
 	
 	void init();
 	void clear();
@@ -24,7 +25,7 @@ public:
 
 private:
 	int MAX_OBJECTS = 10;
-	int MAX_LEVELS = 15;
+	int MAX_LEVELS = 8;
 
 	int level;
 	std::vector<Entity*> objects;
