@@ -97,6 +97,51 @@ void AiSystem::UnloadComponent(int x)
 
 void AiSystem::Spawn()
 {
+	//add root node   the very first 'Question' or decision to be made
+	//is monster health greater than player health?
+	m_decisionTree->CreateRootNode(1);
+
+	//add nodes depending on decisions
+	//2nd decision to be made
+	//is monster strength greater than player strength?
+	m_decisionTree->AddNode1(1, 2);
+
+	//3rd decision
+	//is the monster closer than home base?
+	m_decisionTree->AddNode2(1, 3);
+
+	//depending on the weights of all three decisions, will return certain node result
+	//results!
+	//Run, Attack, 
+	m_decisionTree->AddNode1(2, 4);
+	m_decisionTree->AddNode2(2, 5);
+
+	m_decisionTree->AddNode1(3,6); //this is going on the righthand branch and then being overwritten by the Node"
+	m_decisionTree->AddNode2(3, 7);
+
+	//Others: Run to Base ++ Strength, Surrender Monster/Player, 
+	//needs to be made recursive, that way when strength++ it affects decisions second time around DT
+
+	//display information after creating all the nodes
+	//display the entire tree, i want to make it look like the actual diagram!
+	m_decisionTree->Output();
+
+	//ask/answer question decision making process
+	m_decisionTree->Query();
+
+	cout << "Decision Made." << endl;
+
+	//pause quit, oh wait how did you do that again...look it up and put here
+
+	//release memory!
+	//delete m_decisionTree;
+
+	/// <summary>
+	/// $$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+	/// </summary>
+
+
+
 	SDL_Point p{ 300,0 };
 	
 	characterFactory = new Princess();
@@ -109,7 +154,7 @@ void AiSystem::Spawn()
 	//m_entities.push_back(characterFactory->CharC("Demon", p, 0));
 	//m_entities.back()->Active(true);
 	
-	for (int i = 0; i < 20; i++)
+	for (int i = 0; i < 1; i++)
 	{
 	//	characterFactory = new BasicEnemy();
 		m_entities.push_back(characterFactory->CharC("Demon", SDL_Point{ rand() % 812, rand() % 624 }, 0));

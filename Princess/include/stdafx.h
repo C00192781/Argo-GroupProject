@@ -2,6 +2,11 @@
 #include <stdio.h>
 #include <tchar.h>
 
+#include <random>
+#include <numeric> 
+#include <assert.h>
+#include <fstream>
+
 #include "SDL.h"
 #include "SDL_image.h"
 #include "SDL_ttf.h"

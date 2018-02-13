@@ -18,7 +18,6 @@ public:
 	Entity* CharB(std::string ID, SDL_Point pos, int element);
 	Entity* CharC(std::string ID, SDL_Point pos, int element);
 	Entity* CharD(std::string ID, SDL_Point pos, int element);
-
 };
 #endif
 

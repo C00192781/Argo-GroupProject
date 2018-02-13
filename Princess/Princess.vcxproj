@@ -31,6 +31,7 @@
     <ClCompile Include="src\BattleMap.cpp" />
     <ClCompile Include="src\CollisionSystem.cpp" />
     <ClCompile Include="src\ControlSystem.cpp" />
+    <ClCompile Include="src\Decisions.cpp" />
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\GrassTileFactory.cpp" />
     <ClCompile Include="src\HealthSystem.cpp" />
@@ -42,6 +43,7 @@
     <ClCompile Include="src\RenderSystem.cpp" />
     <ClCompile Include="src\System.cpp" />
     <ClCompile Include="src\SystemManager.cpp" />
+    <ClCompile Include="src\TreeNodes.cpp" />
     <ClCompile Include="src\WorldMap.cpp" />
     <ClCompile Include="src\WorldTileFactory.cpp" />
   </ItemGroup>
@@ -56,12 +58,14 @@
     <ClInclude Include="include\AttackSystem.h" />
     <ClInclude Include="include\BasicEnemy.h" />
     <ClInclude Include="include\BattleMap.h" />
+    <ClInclude Include="include\Character.h" />
     <ClInclude Include="include\CollisionComponent.h" />
     <ClInclude Include="include\CollisionSystem.h" />
     <ClInclude Include="include\AttributesComponent.h" />
     <ClInclude Include="include\Component.h" />
     <ClInclude Include="include\ControlComponent.h" />
     <ClInclude Include="include\ControlSystem.h" />
+    <ClInclude Include="include\DecisionTree.h" />
     <ClInclude Include="include\Entity.h" />
     <ClInclude Include="include\Factory.h" />
     <ClInclude Include="include\GrassTileFactory.h" />
@@ -85,10 +89,12 @@
     <ClInclude Include="include\System.h" />
     <ClInclude Include="include\SystemManager.h" />
     <ClInclude Include="include\TileFactory.h" />
+    <ClInclude Include="include\TreeNodes.h" />
     <ClInclude Include="include\WeaponComponent.h" />
     <ClInclude Include="include\WeaponType.h" />
     <ClInclude Include="include\WorldMap.h" />
     <ClInclude Include="include\WorldTileFactory.h" />
+    <ClInclude Include="RumourComponent.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

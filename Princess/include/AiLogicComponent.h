@@ -2,6 +2,7 @@
 #define _AILOGICCOMPONENT_H
 
 #include "Component.h"
+
 class AiLogicComponent : public Component
 {
 public:
@@ -26,6 +27,8 @@ public:
 
 	int Money() { return m_money; };
 	void Money(int money) { m_money = money; };
+
+
 
 private:
 	int m_behaviour;

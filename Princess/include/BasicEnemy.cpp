@@ -57,7 +57,7 @@ Entity* BasicEnemy::CharC(std::string ID, SDL_Point pos, int element)
 	BasicEnemy->AddComponent(new SpriteComponent(ID, 0, 0, 0, 0, 16, 16, 0)); ////sprite id 
 	BasicEnemy->AddComponent(new CollisionComponent(pos.x, pos.y, 16, 16, 2));
 	BasicEnemy->AddComponent(new PositionComponent(pos));
-	BasicEnemy->AddComponent(new MovementComponent());
+//	BasicEnemy->AddComponent(new MovementComponent());
 	BasicEnemy->AddComponent(new SeekComponent(-50, -50));
 	BasicEnemy->AddComponent(new AttackComponent(100, 1, 1));
 	BasicEnemy->AddComponent(new AttributesComponent(26, 26, 10, 10, 100, 100));

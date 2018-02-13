@@ -23,6 +23,12 @@
 #include "SystemManager.h"
 #include "LTimer.h"
 #include "WorldMap.h"
+
+
+using namespace std;
+
+
+
 int main()
 {
 	SDL_Window* gameWindow = SDL_CreateWindow("TEST", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 816, 624, SDL_WINDOW_SHOWN);
@@ -33,9 +39,16 @@ int main()
 	unsigned int currentTime = 0;
 	srand(time(NULL));
 
-	bool debug = false;
+	ofstream myfile;
+	myfile.open("Resources/Config/Rumours.txt");
+	myfile << "Have you heard of the High Elves?.\n";
+	myfile << "I hear someone whimpering 'B-b-be gentle...' in the alley last night. Weird, huh?.\n";
+	myfile << "Sensational.\n";
+	myfile << "They're turning the frogs gay!.\n";
+	myfile << "What even is 'Daddy's cummies' anyway?";
+	myfile.close();
 
-	srand(time(NULL));
+	bool debug = false;
 
 	const int SCREEN_FPS = 500;
 	const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
@@ -118,10 +131,49 @@ int main()
 	systemManager.collisionSystem->AddEntity(player);
 	systemManager.attackSystem->AddEntity(player);
 
-	WorldMap* m = new WorldMap(&systemManager, &state);
-	m->Generate(25, 25, 100);
+	//WorldMap* m = new WorldMap(&systemManager, &state);
+	//m->Generate(25, 25, 100);
+
+	BattleMap* m = new BattleMap(&systemManager, &state);
+	m->Generate("Grassland");
 
 	bool heartTest = true;
+
+
+
+
+	int number_of_lines = 5;
+
+	// a vector to hold all the indices: 0 to number_of_lines
+	std::vector<int> line_indices(number_of_lines);
+	std::iota(begin(line_indices), end(line_indices), 0); // init line_indices
+
+														  // C++11 random library (should be preferred over rand()/srand())
+	std::random_device r;
+	std::seed_seq seed{ r(), r(), r(), r(), r(), r(), r(), r() };
+	std::mt19937 eng(seed);
+
+	// shuffle the line_indices:
+	std::shuffle(begin(line_indices), end(line_indices), eng);
+
+	int number_of_lines_to_select = 1;
+	assert(number_of_lines_to_select <= number_of_lines);
+
+	std::string line;
+	std::ifstream file("Resources/Config/Rumours.txt");
+
+	int line_number = 0;
+	while (std::getline(file, line))
+	{
+		for (int i = 0; i < number_of_lines_to_select; ++i)
+		{
+			if (line_number == line_indices[i]) {
+				std::cout << line << '\n';
+			}
+		}
+		++line_number;
+	}
+
 
 	while (true)
 	{
@@ -135,7 +187,7 @@ int main()
 		//Set text to be rendered
 		if (avgFPS > 1)
 		{
-			cout << "FPS (With Cap) " << avgFPS << endl;;
+			//cout << "FPS (With Cap) " << avgFPS << endl;;
 		}
 		//update ren
 		++countedFrames;
