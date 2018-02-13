@@ -42,10 +42,14 @@ int main()
 	ofstream myfile;
 	myfile.open("Resources/Config/Rumours.txt");
 	myfile << "Have you heard of the High Elves?.\n";
-	myfile << "I hear someone whimpering 'B-b-be gentle...' in the alley last night. Weird, huh?.\n";
 	myfile << "Sensational.\n";
-	myfile << "They're turning the frogs gay!.\n";
-	myfile << "What even is 'Daddy's cummies' anyway?";
+	myfile << "Have you heard of the High Elves?.\n";
+	myfile << "Sensational.\n";
+	myfile << "Have you heard of the High Elves?.\n";
+	myfile << "Sensational.\n";
+
+
+
 	myfile.close();
 
 	bool debug = false;
