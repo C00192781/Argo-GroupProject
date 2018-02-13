@@ -35,7 +35,7 @@ private:
 	std::vector<Character*> CharFactory;
 	Character* characterFactory;
 
-	DecisionTree* m_decisionTree = new DecisionTree(5, 15, 5, 5, 50);
+	DecisionTree* m_decisionTree = new DecisionTree(15, 5, 5, 5, 50);
 
 	std::vector<AiLogicComponent*> m_aiLogicComponent;
 	std::vector<SpriteComponent*> m_spriteComponent;

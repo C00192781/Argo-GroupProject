@@ -12,7 +12,7 @@ public:
 	void AddNode1(int ExistingNodeID, int NewNodeID);
 	void AddNode2(int ExistingNodeID, int NewNodeID);
 	void CreateRootNode(int NodeID);
-	void MakeDecision(TreeNodes* node);
+	bool MakeDecision(TreeNodes* node);
 
 	bool SearchAddNode1(TreeNodes* CurrentNode, int ExistingNodeID, int NewNodeID);
 	bool SearchAddNode2(TreeNodes* CurrentNode, int ExistingNodeID, int NewNodeID);
@@ -43,4 +43,10 @@ private:
 	int PStrength;
 	int MStrength;
 	int Distance;
+
+
+
+	int test1;
+	int test2;
+	int test3;
 };

@@ -83,27 +83,30 @@ void DecisionTree::printLeafNodes(TreeNodes* root) //this perfectly searches the
 	}
 
 	
-	MakeDecision(root); //try to make a decision at each node. NOTE: we only want to make decisions at the nodes we walk through ultimately! this tests every node!
-	cout << "DECIDE SOMETHING AT " << root->m_NodeID << " " << endl;
+	bool decision = MakeDecision(root); //try to make a decision at each node. NOTE: we only want to make decisions at the nodes we walk through ultimately! this tests every node!
+	//cout << "DECIDE SOMETHING AT " << root->m_NodeID << " " << endl;
 
 	// if node is leaf node, print its data    
 	if (!root->NewBranch1 && !root->NewBranch2)
 	{
-		cout << "leaf: " << root->m_NodeID << endl;
+	//	cout << "leaf: " << root->m_NodeID << endl;
+
 		return;
 	}
 
 	// if left child exists, check for leaf 
 	// recursively
-	if (root->NewBranch1)
+	if (root->NewBranch1 && decision) //if option one, go left
 	{
+		cout << "go left at " << root->m_NodeID << endl;
 		printLeafNodes(root->NewBranch1);
 	}
 
 	// if right child exists, check for leaf 
 	// recursively
-	if (root->NewBranch2)
+	if (root->NewBranch2 && !decision) //if option 2, go right
 	{
+		cout << "go right at " << root->m_NodeID << endl;
 		printLeafNodes(root->NewBranch2);
 	}
 }
@@ -250,7 +253,7 @@ void DecisionTree::AddNode2(int ExistingNodeID, int NewNodeID)
 
 	if (SearchAddNode2(m_RootNode, ExistingNodeID, NewNodeID))
 	{
-		cout << "Added Node Type2 With ID " << NewNodeID << " onto Branch Level " << ExistingNodeID << endl;
+	//	cout << "Added Node Type2 With ID " << NewNodeID << " onto Branch Level " << ExistingNodeID << endl;
 	}
 	else
 	{
@@ -341,7 +344,7 @@ void DecisionTree::Query()
 // cout << node->stringforquestion;
 
 //Step 12
-void DecisionTree::MakeDecision(TreeNodes *node)
+bool DecisionTree::MakeDecision(TreeNodes *node)
 {
 	//should I declare variables here or inside of decisions.h
 
@@ -358,11 +361,11 @@ void DecisionTree::MakeDecision(TreeNodes *node)
 	////DistanceFMonster = random(75);
 
 	//the decision to be made string example: Player health: Monster Health:  player health is lower/higher
-	cout << "Player Health: " << PHealth << endl;
-	cout << "Monster Health: " << MHealth << endl;
-	cout << "Player Strength: " << PStrength << endl;
-	cout << "Monster Strength: " << MStrength << endl;
-	cout << "Distance between: " << Distance << endl;
+	//cout << "Player Health: " << PHealth << endl;
+	//cout << "Monster Health: " << MHealth << endl;
+	//cout << "Player Strength: " << PStrength << endl;
+	//cout << "Monster Strength: " << MStrength << endl;
+	//cout << "Distance between: " << Distance << endl;
 
 	//MH > PH
 	//MH < PH
@@ -381,10 +384,12 @@ void DecisionTree::MakeDecision(TreeNodes *node)
 		if (PHealth > MHealth)
 		{
 			cout << "mon adv hp " << endl;
+			return true;
 		}
 		else
 		{
 			cout << "no hp adv " << endl;
+			return false;
 		}
 	}
 
@@ -394,11 +399,13 @@ void DecisionTree::MakeDecision(TreeNodes *node)
 		if (PStrength < MStrength)
 		{
 			cout << "mon adv str " << endl;
+			return true;
 		}
 		else
 		{
 
 			cout << "no str adv " << endl;
+			return false;
 		}
 	}
 	//re-do question for next branch. Player strength: Monster strength: Player strength is lower/higher
@@ -409,15 +416,75 @@ void DecisionTree::MakeDecision(TreeNodes *node)
 		if (Distance < 60)
 		{
 			cout << "in range " << endl;
+			return true;
 		}
 		else
 		{
 			cout << "out of range" << endl;
+			return false;
 		}
 	}
 
 	//recursive question for next branch. Player distance from base/monster. 
-	int someValue = 10;
+	else if (node->m_NodeID == 5)
+	{
+		if (Distance < 60)
+		{
+			cout << "distance case 2 close " << endl;
+			return true;
+		}
+		else
+		{
+			cout << "distance case 3 far" << endl;
+			return false;
+		}
+	}
+
+	else if (node->m_NodeID == 3)
+	{
+		if (test1 < 1)
+		{
+			cout << "test 1 confirmed " << endl;
+			return true;
+		}
+		else
+		{
+			cout << "test 1 false " << endl;
+			return false;
+		}
+	}
+
+
+	else if (node->m_NodeID == 6)
+	{
+		if (test2 < 1)
+		{
+			cout << "test 2 confirmed " << endl;
+			return true;
+		}
+		else
+		{
+			cout << "test 2 false " << endl;
+			return false;
+		}
+	}
+
+
+	else if (node->m_NodeID == 7)
+	{
+		if (test3 < 1)
+		{
+			cout << "test 3 confirmed " << endl;
+			return true;
+		}
+		else
+		{
+			cout << "test 3 false " << endl;
+			return false;
+		}
+	}
+
+	//default CASE?
 
 
 
@@ -429,6 +496,7 @@ void DecisionTree::MakeDecision(TreeNodes *node)
 	////QueryTree(node->NewBranch2);
 
 	////MakeDecision(node);
+	/// 
 }
 
 //Step.....8ish?
