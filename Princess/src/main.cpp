@@ -53,6 +53,10 @@ int main()
 	resourceManager->AddTexture("OptionsButton", "OptionsButton.png");
 	resourceManager->AddTexture("ExitGameButton", "ExitGameButton.png");
 
+	resourceManager->AddTexture("LeftArrowButton", "LeftArrow.png");
+	resourceManager->AddTexture("RightArrowButton", "RightArrow.png");
+	resourceManager->AddTexture("MainMenuButton", "ExitGameButton.png");
+
 
 	EventListener *listener = new EventListener();
 
@@ -66,13 +70,17 @@ int main()
 	SystemManager systemManager;
 	systemManager.ControlSystem = new ControlSystem(listener);
 	systemManager.ControlSystem->Active(true);
+
 	systemManager.MovementSystem = new MovementSystem();
 	systemManager.MovementSystem->Active(true);
+
 	systemManager.RenderSystem = new RenderSystem(resourceManager, gameRenderer);
 	systemManager.RenderSystem->Active(true);
 	systemManager.RenderSystem->SetScale(GAME_SCALE);
+
 	systemManager.ProjectileSystem = new ProjectileSystem();
 	systemManager.ProjectileSystem->Active(true);
+
 	systemManager.CollisionSystem = new CollisionSystem();
 	systemManager.CollisionSystem->Active(true);
 
@@ -82,20 +90,19 @@ int main()
 	systemManager.healthSystem = new HealthSystem();
 	systemManager.healthSystem->Active(true);
 
-	systemManager.menuSystem = new MenuSystem(listener);
+	systemManager.menuSystem = new MenuSystem(listener, &state);
 	systemManager.menuSystem->Active(true);
 
 	BattleMap map1 = BattleMap(&systemManager, gameRenderer, &state);
 	map1.Generate("Grassland");
 
-	systemManager.menuSystem->SetUpMainMenu();
-	systemManager.menuSystem->ChangeMenu("MainMenu");
-	for (int i = 0; i < systemManager.menuSystem->GetMenuComponent("MainMenu")->Buttons()->size(); i++)
+	//systemManager.menuSystem->SetUpMainMenu();
+	systemManager.menuSystem->SetUpOptionsMenu();
+	systemManager.menuSystem->ChangeMenu("OptionsMenu");
+	for (int i = 0; i < systemManager.menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->size(); i++)
 	{
-		systemManager.RenderSystem->AddEntity(systemManager.menuSystem->GetMenuComponent("MainMenu")->Buttons()->at(i));
+		systemManager.RenderSystem->AddEntity(systemManager.menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->at(i));
 	}
-	systemManager.menuSystem->AddEntity(systemManager.menuSystem->getMenu("MainMenu"));
-
 
 	Quadtree* quad = new Quadtree(0, SDL_Rect{0,0  , 816, 624 });
 	while (running == true)

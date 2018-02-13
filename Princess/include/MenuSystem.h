@@ -6,6 +6,7 @@
 #include "ButtonComponent.h"
 #include "SpriteComponent.h"
 #include "PositionComponent.h"
+#include "StateManager.h"
 #include "EventListener.h"
 
 extern int GAME_SCALE;
@@ -13,19 +14,21 @@ extern int GAME_SCALE;
 class MenuSystem : public System
 {
 public:
-	MenuSystem(EventListener * listener);
+	MenuSystem(EventListener * listerner , StateManager * state);
 	~MenuSystem();
 	void Update();
 	void ChangeMenu(std::string ID);
 	void SetUpMainMenu();
+	void SetUpOptionsMenu();
 	Entity* getMenu(std::string ID);
 	void RemoveMenu(std::string ID);
 	MenuComponent* GetMenuComponent(std::string ID);
 private:
 	int indexActiveMenu;
 	std::string activeMenuID;
-	EventListener *m_eventListener;
 	int menuTimer;
+	EventListener * m_eventListener;
+	StateManager * m_states;
 };
 
 

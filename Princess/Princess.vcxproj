@@ -26,6 +26,7 @@
     <ClCompile Include="include\BasicEnemy.cpp" />
     <ClCompile Include="include\Princess.cpp" />
     <ClCompile Include="include\Quad.cpp" />
+    <ClCompile Include="InstanceManager.cpp" />
     <ClCompile Include="src\AISystem.cpp" />
     <ClCompile Include="src\BattleMap.cpp" />
     <ClCompile Include="src\CollisionSystem.cpp" />
@@ -86,6 +87,7 @@
     <ClInclude Include="include\System.h" />
     <ClInclude Include="include\SystemManager.h" />
     <ClInclude Include="include\TileFactory.h" />
+    <ClInclude Include="InstanceManager.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
