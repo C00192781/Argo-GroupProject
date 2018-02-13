@@ -348,7 +348,6 @@ void MenuSystem::Update()
 							{
 								std::cout << "Open Options Menu" << std::endl;
 								m_states->Options = true;
-								//ChangeMenu("OptionsMenu");
 							}
 							else if (menu->Buttons()->at(i)->ID() == "SoundLeft")
 							{
@@ -374,7 +373,6 @@ void MenuSystem::Update()
 							{
 								std::cout << "Return To Main Menu" << std::endl;
 								m_states->MainMenu = true;
-								//ChangeMenu("MainMenu");
 							}
 						}
 					}

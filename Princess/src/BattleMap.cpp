@@ -6,6 +6,7 @@ BattleMap::BattleMap(SystemManager * sm, SDL_Renderer * sdlr, StateManager * s)
 {
 	m_systemManager = sm;
 	m_stateManager = s;
+	m_id = "BattleMap";
 }
 
 BattleMap::~BattleMap()
