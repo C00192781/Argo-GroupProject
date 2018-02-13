@@ -16,7 +16,7 @@ public:
 
 		if (m_weaponType == WeaponType::MELEE)
 		{
-			m_range = 10 + (rand() % 5);
+			m_range = 3 + (rand() % 3);
 			m_damage = 1 + (rand() % 9);
 			setAttackSpeed(0.5 + ((float)(rand() % 250) / 100));
 		}

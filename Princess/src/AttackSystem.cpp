@@ -81,38 +81,119 @@ void AttackSystem::Update(float deltaTime)
 						// if the entity is already attacking
 						if (weaponComponent->getAttacking() == true)
 						{
-							float temp = weaponComponent->getTimeForAttack();
+							int count = 0;
 
-							// checks for if still attacking
+							for (int j = 0; j < m_projectiles->size(); j++)
+							{
+								if (count < 3)
+								{
+									if (m_projectiles->at(j)->Active() == false)
+									{
+										ProjectileComponent* newProjectileComponent = nullptr;
+										PositionComponent* projectilePositionComponent = nullptr;
+										MovementComponent* projectileMovementComponent = nullptr;
+
+										for (int k = 0; k < m_projectiles->at(j)->GetComponents()->size(); k++)
+										{
+											if (m_projectiles->at(j)->GetComponents()->at(k)->Type() == "movement")
+											{
+												projectileMovementComponent = static_cast<MovementComponent*>(m_projectiles->at(j)->GetComponents()->at(k));
+											}
+											else if (m_projectiles->at(j)->GetComponents()->at(k)->Type() == "PJ")
+											{
+												newProjectileComponent = static_cast<ProjectileComponent*>(m_projectiles->at(j)->GetComponents()->at(k));
+											}
+											else if (m_projectiles->at(j)->GetComponents()->at(k)->Type() == "PC")
+											{
+												projectilePositionComponent = static_cast<PositionComponent*>(m_projectiles->at(j)->GetComponents()->at(k));
+											}
+										}
+										m_projectiles->at(j)->Active(true);
+										newProjectileComponent->setShooterType(m_entities.at(i)->ID());
+										//float temp = newProjectileComponent->getBaseSpeed() * weaponComponent->getAttackSpeed() * deltaTime;
+										newProjectileComponent->setTimeToLive(weaponComponent->getRange() * deltaTime);
+										projectilePositionComponent->setPosition(positionComponent->getX(), positionComponent->getY());
+
+										if (count == 0)
+										{
+											projectileMovementComponent->setXVelocity((sin((movementComponent->getOrientation() - 20) * (3.142 / 180)) * newProjectileComponent->getBaseSpeed()));
+											projectileMovementComponent->setYVelocity((-cos((movementComponent->getOrientation() - 20) * (3.142 / 180)) * newProjectileComponent->getBaseSpeed()));
+										}
+										else if (count == 1)
+										{
+											projectileMovementComponent->setXVelocity((sin((movementComponent->getOrientation() + 20) * (3.142 / 180)) * newProjectileComponent->getBaseSpeed()));
+											projectileMovementComponent->setYVelocity((-cos((movementComponent->getOrientation() + 20) * (3.142 / 180)) * newProjectileComponent->getBaseSpeed()));
+										}
+										else
+										{
+											projectileMovementComponent->setXVelocity((sin(movementComponent->getOrientation() * (3.142 / 180)) * newProjectileComponent->getBaseSpeed()));
+											projectileMovementComponent->setYVelocity((-cos(movementComponent->getOrientation()  * (3.142 / 180)) * newProjectileComponent->getBaseSpeed()));
+										}
+
+										//projectileMovementComponent->setXVelocity((sin(movementComponent->getOrientation()* (3.142 / 180)) * (temp / (deltaTime / 4))));
+										//projectileMovementComponent->setYVelocity((-cos(movementComponent->getOrientation() * (3.142 / 180)) * (temp / (deltaTime / 4))));
+
+										weaponComponent->setAttacking(false);
+										movementComponent->setLockedOrientation(false);
+
+										count++;
+									}
+								}
+								else
+								{
+									break;
+								}
+							}
+						}
+						else
+						{
+							float temp = weaponComponent->getTimeToAllowAttack();
+
+							// checks for if allowed to attack
 							if (temp > 0)
 							{
 								temp -= deltaTime;
 							}
 							else
 							{
-								temp = weaponComponent->getMaxTimeForAttack();
-								weaponComponent->setAttacking(false);
-								movementComponent->setLockedOrientation(false);
+								temp = weaponComponent->getMaxTimeToAllowAttack();
+								weaponComponent->setAllowAttack(true);
 							}
 
-							weaponComponent->setTimeForAttack(temp);
+							weaponComponent->setTimeToAllowAttack(temp);
 						}
-
-						float temp = weaponComponent->getTimeToAllowAttack();
-
-						// checks for if allowed to attack
-						if (temp > 0)
-						{
-							temp -= deltaTime;
-							//temp--;
-						}
-						else
-						{
-							temp = weaponComponent->getMaxTimeToAllowAttack();
-							weaponComponent->setAllowAttack(true);
-						}
-
-						weaponComponent->setTimeToAllowAttack(temp);
+						//{
+						//	float temp = weaponComponent->getTimeForAttack();
+						//
+						//	// checks for if still attacking
+						//	if (temp > 0)
+						//	{
+						//		temp -= deltaTime;
+						//	}
+						//	else
+						//	{
+						//		temp = weaponComponent->getMaxTimeForAttack();
+						//		weaponComponent->setAttacking(false);
+						//		movementComponent->setLockedOrientation(false);
+						//	}
+						//
+						//	weaponComponent->setTimeForAttack(temp);
+						//}
+						//
+						//float temp = weaponComponent->getTimeToAllowAttack();
+						//
+						//// checks for if allowed to attack
+						//if (temp > 0)
+						//{
+						//	temp -= deltaTime;
+						//}
+						//else
+						//{
+						//	temp = weaponComponent->getMaxTimeToAllowAttack();
+						//	weaponComponent->setAllowAttack(true);
+						//}
+						//
+						//weaponComponent->setTimeToAllowAttack(temp);
 					}
 					// if the entity has a ranged weapon
 					else if (weaponComponent->getWeaponType() == WeaponType::RANGE)
@@ -191,7 +272,6 @@ void AttackSystem::Update(float deltaTime)
 			{
 				if (projectileComponent->getTimeToLive() > 0)
 				{
-					std::cout << projectileComponent->getTimeToLive() << std::endl;
 					projectileComponent->setTimeToLive(projectileComponent->getTimeToLive() - deltaTime);
 				}
 				else
