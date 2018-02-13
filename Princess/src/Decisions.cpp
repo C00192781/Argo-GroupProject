@@ -72,6 +72,42 @@ void DecisionTree::AddNode1(int ExistingNodeID, int NewNodeID)
 }
 
 
+// function to print leaf 
+// nodes from left to right
+void DecisionTree::printLeafNodes(TreeNodes* root) //this perfectly searches the tree in order  1 2 4 5 1 3 6 7!
+{
+	// if node is null, return
+	if (!root)
+	{
+		return;
+	}
+
+	
+	MakeDecision(root); //try to make a decision at each node. NOTE: we only want to make decisions at the nodes we walk through ultimately! this tests every node!
+	cout << "DECIDE SOMETHING AT " << root->m_NodeID << " " << endl;
+
+	// if node is leaf node, print its data    
+	if (!root->NewBranch1 && !root->NewBranch2)
+	{
+		cout << "leaf: " << root->m_NodeID << endl;
+		return;
+	}
+
+	// if left child exists, check for leaf 
+	// recursively
+	if (root->NewBranch1)
+	{
+		printLeafNodes(root->NewBranch1);
+	}
+
+	// if right child exists, check for leaf 
+	// recursively
+	if (root->NewBranch2)
+	{
+		printLeafNodes(root->NewBranch2);
+	}
+}
+
 
 //Step 6.1!~ search and add new node to current node
 bool DecisionTree::SearchAddNode1(TreeNodes *CurrentNode, int ExistingNodeID, int NewNodeID)
@@ -337,37 +373,53 @@ void DecisionTree::MakeDecision(TreeNodes *node)
 
 	//good place to break off into different decision nodes, not just 'binary'
 
-	//if statement lower/higher query respective branch
-	if (PHealth > MHealth)
+
+	if (node->m_NodeID == 1)
 	{
-		cout << "mon adv hp " << endl;
+
+		//if statement lower/higher query respective branch
+		if (PHealth > MHealth)
+		{
+			cout << "mon adv hp " << endl;
+		}
+		else
+		{
+			cout << "no hp adv " << endl;
+		}
 	}
-	else
+
+
+	else if (node->m_NodeID == 2)
 	{
-		cout << "no hp adv " << endl;
+		if (PStrength < MStrength)
+		{
+			cout << "mon adv str " << endl;
+		}
+		else
+		{
+
+			cout << "no str adv " << endl;
+		}
 	}
 	//re-do question for next branch. Player strength: Monster strength: Player strength is lower/higher
 	//if statement lower/higher query respective branch
-	if (PStrength < MStrength)
+
+	else if (node->m_NodeID == 4)
 	{
-		cout << "mon adv str " << endl;
-	}
-	else
-	{
-		cout << "no str adv " << endl;
+		if (Distance < 60)
+		{
+			cout << "in range " << endl;
+		}
+		else
+		{
+			cout << "out of range" << endl;
+		}
 	}
 
 	//recursive question for next branch. Player distance from base/monster. 
 	int someValue = 10;
 
-	if (Distance < 60)
-	{
-		cout << "dist close " << endl;
-	}
-	else
-	{
-		cout << "dist too far " << endl;
-	}
+
 
 	//DECISION WOULD BE MADE
 	//if statement?

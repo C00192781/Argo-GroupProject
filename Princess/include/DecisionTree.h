@@ -22,7 +22,7 @@ public:
 	DecisionTree();
 
 	DecisionTree(int tarHp, int selfHP, int tarStr, int selfStr, int dist);
-	
+	void printLeafNodes(TreeNodes* root);
 
 	TreeNodes* m_lastNode;
 

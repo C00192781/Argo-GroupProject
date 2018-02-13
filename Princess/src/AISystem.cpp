@@ -116,11 +116,12 @@ void AiSystem::Spawn()
 	m_decisionTree->AddNode1(2, 4);
 	m_decisionTree->AddNode2(2, 5);
 
-	m_decisionTree->AddNode1(3,6);
+	m_decisionTree->AddNode1(3,6); //fix addnodes to support larger treesizes soontm.
 	m_decisionTree->AddNode2(3, 7);
 
-	m_decisionTree->AddNode1(4, 8); //maybe make these return a node so they can be fed into MAKEDECISION?
-	m_decisionTree->AddNode2(4, 9);
+
+
+	m_decisionTree->printLeafNodes(m_decisionTree->m_RootNode); //this worky workies
 
 
 	//////m_decisionTree->AddNode1(5, 10);
@@ -138,15 +139,16 @@ void AiSystem::Spawn()
 
 	//display information after creating all the nodes
 	//display the entire tree, i want to make it look like the actual diagram!
-	m_decisionTree->Output();
+
+
 
 	//ask/answer question decision making process
 
 
+	////////m_decisionTree->Output();
+	////////m_decisionTree->Query(); //this query needs to feed through all nodes and not just test the root node decision!!!!
 
-	m_decisionTree->Query(); //this query needs to feed through all nodes and not just test the root node decision!!!!
-
-	cout << "Decision Made." << endl;
+	//////cout << "Decision Made." << endl;
 
 	//pause quit, oh wait how did you do that again...look it up and put here
 
@@ -460,3 +462,4 @@ void AiSystem::Update(float deltaTime)
 	}
 
 }
+
