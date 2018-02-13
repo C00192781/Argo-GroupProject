@@ -116,8 +116,22 @@ void AiSystem::Spawn()
 	m_decisionTree->AddNode1(2, 4);
 	m_decisionTree->AddNode2(2, 5);
 
-	m_decisionTree->AddNode1(3,6); //this is going on the righthand branch and then being overwritten by the Node"
+	m_decisionTree->AddNode1(3,6);
 	m_decisionTree->AddNode2(3, 7);
+
+	m_decisionTree->AddNode1(4, 8); //maybe make these return a node so they can be fed into MAKEDECISION?
+	m_decisionTree->AddNode2(4, 9);
+
+
+	//////m_decisionTree->AddNode1(5, 10);
+	//////m_decisionTree->AddNode2(5, 11);
+
+
+	//////m_decisionTree->AddNode1(6, 12);
+	//////m_decisionTree->AddNode2(6, 13);
+
+	//////m_decisionTree->AddNode1(7, 14);
+	//////m_decisionTree->AddNode2(7, 15);
 
 	//Others: Run to Base ++ Strength, Surrender Monster/Player, 
 	//needs to be made recursive, that way when strength++ it affects decisions second time around DT
@@ -127,7 +141,10 @@ void AiSystem::Spawn()
 	m_decisionTree->Output();
 
 	//ask/answer question decision making process
-	m_decisionTree->Query();
+
+
+
+	m_decisionTree->Query(); //this query needs to feed through all nodes and not just test the root node decision!!!!
 
 	cout << "Decision Made." << endl;
 

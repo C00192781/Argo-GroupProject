@@ -269,7 +269,7 @@ bool DecisionTree::SearchAddNode2(TreeNodes *CurrentNode, int ExistingNodeID, in
 //Step 11
 void DecisionTree::QueryTree(TreeNodes* CurrentNode)
 {
-	if (CurrentNode->NewBranch1 == NULL)
+	if (CurrentNode->NewBranch1 == NULL) //this only visits first node decision, it should be eating more big ol decisions.
 	{
 		//if both branches are null, tree is at a decision outcome state
 		if (CurrentNode->NewBranch2 == NULL)
