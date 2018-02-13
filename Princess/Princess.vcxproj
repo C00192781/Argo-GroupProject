@@ -31,6 +31,7 @@
     <ClCompile Include="src\BattleMap.cpp" />
     <ClCompile Include="src\CollisionSystem.cpp" />
     <ClCompile Include="src\ControlSystem.cpp" />
+    <ClCompile Include="src\DungeonMap.cpp" />
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\GrassTileFactory.cpp" />
     <ClCompile Include="src\HealthSystem.cpp" />
@@ -62,6 +63,7 @@
     <ClInclude Include="include\Component.h" />
     <ClInclude Include="include\ControlComponent.h" />
     <ClInclude Include="include\ControlSystem.h" />
+    <ClInclude Include="include\DungeonMap.h" />
     <ClInclude Include="include\Entity.h" />
     <ClInclude Include="include\Factory.h" />
     <ClInclude Include="include\GrassTileFactory.h" />

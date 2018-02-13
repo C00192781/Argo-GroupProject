@@ -23,6 +23,8 @@
 #include "SystemManager.h"
 #include "LTimer.h"
 #include "WorldMap.h"
+#include "DungeonMap.h"
+
 int main()
 {
 	SDL_Window* gameWindow = SDL_CreateWindow("TEST", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 816, 624, SDL_WINDOW_SHOWN);
@@ -118,8 +120,11 @@ int main()
 	systemManager.collisionSystem->AddEntity(player);
 	systemManager.attackSystem->AddEntity(player);
 
-	WorldMap* m = new WorldMap(&systemManager, &state);
-	m->Generate(25, 25, 100);
+	//WorldMap* m = new WorldMap(&systemManager, &state);
+	//m->Generate(25, 25, 100);
+
+	DungeonMap* d = new DungeonMap(&systemManager, &state, resourceManager);
+	d->generate();
 
 	bool heartTest = true;
 
