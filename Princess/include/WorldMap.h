@@ -2,6 +2,7 @@
 #define _WORLDMAP_H
 
 #include "Instance.h"
+#include <time.h>
 #include "WorldTileFactory.h"
 
 class WorldMap : public Instance

@@ -22,12 +22,13 @@ public:
 	Entity* Glacier(std::string textureID, int x, int y);
 
 	Entity* Water(std::string textureID, int x, int y);
+	Entity* DeepWater(std::string textureID, int x, int y);
 	Entity* IceSheet(std::string textureID, int x, int y);
 
-	//Entity* Town(std::string textureID, int x, int y);
-	//Entity* Castle(std::string textureID, int x, int y);
-	//Entity* Dungeon(std::string textureID, int x, int y);
-	//Entity* DarkLordCastle(std::string textureID, int x, int y);
+	Entity* Town(std::string textureID, int x, int y);
+	Entity* Castle(std::string textureID, int x, int y);
+	Entity* Dungeon(std::string textureID, int x, int y);
+	Entity* DarkCastle(std::string textureID, int x, int y);
 
 };
 #endif

@@ -93,10 +93,59 @@ Entity* WorldTileFactory::Water(std::string textureID, int x, int y)
 	holder->Active(true);
 	return holder;
 }
+Entity* WorldTileFactory::DeepWater(std::string textureID, int x, int y)
+{
+	Entity *holder = new Entity("Water");
+	holder->AddComponent(new SpriteComponent(textureID, 0, 1, 2, 0, 16, 16, 1));
+	holder->AddComponent(new PositionComponent());
+	static_cast<PositionComponent*>(holder->GetComponents()->back())->setPosition(SDL_Point{ x,y });
+	holder->Active(true);
+	return holder;
+}
 Entity* WorldTileFactory::IceSheet(std::string textureID, int x, int y)
 {
 	Entity *holder = new Entity("IceSheet");
 	holder->AddComponent(new SpriteComponent(textureID, 0, 0, 2, 0, 16, 16, 3));
+	holder->AddComponent(new PositionComponent());
+	static_cast<PositionComponent*>(holder->GetComponents()->back())->setPosition(SDL_Point{ x,y });
+	holder->Active(true);
+	return holder;
+}
+
+Entity* WorldTileFactory::Town(std::string textureID, int x, int y)
+{
+	Entity *holder = new Entity("Town");
+	holder->AddComponent(new SpriteComponent(textureID, 0, 0, 3, 0, 16, 16, 0));
+	holder->AddComponent(new PositionComponent());
+	static_cast<PositionComponent*>(holder->GetComponents()->back())->setPosition(SDL_Point{ x,y });
+	holder->Active(true);
+	return holder;
+}
+
+Entity* WorldTileFactory::Dungeon(std::string textureID, int x, int y)
+{
+	Entity *holder = new Entity("Dungeon");
+	holder->AddComponent(new SpriteComponent(textureID, 0, 0, 3, 0, 16, 16, 2));
+	holder->AddComponent(new PositionComponent());
+	static_cast<PositionComponent*>(holder->GetComponents()->back())->setPosition(SDL_Point{ x,y });
+	holder->Active(true);
+	return holder;
+}
+
+Entity* WorldTileFactory::Castle(std::string textureID, int x, int y)
+{
+	Entity *holder = new Entity("Castle");
+	holder->AddComponent(new SpriteComponent(textureID, 0, 0, 3, 0, 16, 16, 1));
+	holder->AddComponent(new PositionComponent());
+	static_cast<PositionComponent*>(holder->GetComponents()->back())->setPosition(SDL_Point{ x,y });
+	holder->Active(true);
+	return holder;
+}
+
+Entity* WorldTileFactory::DarkCastle(std::string textureID, int x, int y)
+{
+	Entity *holder = new Entity("DarkCastle");
+	holder->AddComponent(new SpriteComponent(textureID, 0, 0, 3, 0, 16, 16, 3));
 	holder->AddComponent(new PositionComponent());
 	static_cast<PositionComponent*>(holder->GetComponents()->back())->setPosition(SDL_Point{ x,y });
 	holder->Active(true);

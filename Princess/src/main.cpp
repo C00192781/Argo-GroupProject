@@ -21,6 +21,7 @@
 #include "HeartComponent.h"
 #include "WorldMap.h"
 #include "SystemManager.h"
+#include "AchievementHandler.h"
 
 int main()
 {
@@ -73,12 +74,17 @@ int main()
 
 	bool heartTest = true;
 
+	AchievementHandler *achievements = new AchievementHandler(&systemManager);
+
+	achievements->Init();
 	
 	while (1 != 0)
 	{
 		input->handleInput();
 
 		m->Update();
+
+		achievements->HandleAchievements();
 
 		SDL_SetRenderDrawColor(gameRenderer, 255, 255, 255, 0);
 		SDL_RenderClear(gameRenderer);

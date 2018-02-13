@@ -22,6 +22,9 @@ public:
 
 protected:
 
+	virtual void LoadComponent() = 0;
+	virtual void UnloadComponent(int x) = 0;
+
 	std::vector<Entity*> m_entities;
 	bool m_active;
 };
