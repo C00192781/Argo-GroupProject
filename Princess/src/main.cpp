@@ -94,7 +94,7 @@ int main()
 	{
 		systemManager.RenderSystem->AddEntity(systemManager.menuSystem->GetMenuComponent("MainMenu")->Buttons()->at(i));
 	}
-	systemManager.ControlSystem->AddEntity(systemManager.menuSystem->getMenu("MainMenu"));
+	systemManager.menuSystem->AddEntity(systemManager.menuSystem->getMenu("MainMenu"));
 
 
 	Quadtree* quad = new Quadtree(0, SDL_Rect{0,0  , 816, 624 });

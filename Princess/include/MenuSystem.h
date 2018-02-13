@@ -8,6 +8,8 @@
 #include "PositionComponent.h"
 #include "EventListener.h"
 
+extern int GAME_SCALE;
+
 class MenuSystem : public System
 {
 public:
@@ -23,6 +25,7 @@ private:
 	int indexActiveMenu;
 	std::string activeMenuID;
 	EventListener *m_eventListener;
+	int menuTimer;
 };
 
 
