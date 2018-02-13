@@ -28,9 +28,13 @@ public:
 		}
 		else
 		{
-			m_range = 40 + (rand() % 20);
+			m_range = 20 + (rand() % 30);
 			m_damage = 1 + (rand() % 9);
-			setAttackSpeed(0.5 + ((float)(rand() % 250) / 100));
+			setAttackSpeed((0.5 + ((float)(rand() % 250) / 100)) * 10);
+
+			m_offsetVariance = 4 + (rand() % 6);
+			m_staffOffset = 0;
+			m_previousStaffOffset = -m_offsetVariance;
 		}
 
 		m_allowAttack = true;
@@ -43,10 +47,8 @@ public:
 	{ 
 		m_attackSpeed = attackSpeed;
 		m_maxTimeToAllowAttack = 1 / attackSpeed;
-		//m_maxTimeToAllowAttack = (1 / attackSpeed) * 1000; // TBD depends on deltatime
 		m_timeToAllowAttack = m_maxTimeToAllowAttack;
 		m_maxTimeForAttack = (1 / attackSpeed) / 2;
-		//m_maxTimeForAttack = ((1 / attackSpeed) / 2) * 1000; // TBD depends on deltatime
 		m_timeForAttack = m_maxTimeForAttack;
 	};
 
@@ -55,6 +57,8 @@ public:
 	void setTimeToAllowAttack(float time) {  m_timeToAllowAttack = time; };
 	void setAttacking(bool attacking) { m_attacking = attacking; };
 	void setTimeForAttack(float time) { m_timeForAttack = time; };
+	void setStaffOffset(float offset) { m_staffOffset = offset; };
+	void setPreviousStaffOffset(float offset) { m_previousStaffOffset = offset; };
 
 	int getRange() { return m_range; };
 	int getDamage() { return m_damage; };
@@ -66,6 +70,10 @@ public:
 	bool getAttacking() { return m_attacking; };
 	float getMaxTimeForAttack() { return m_maxTimeForAttack; };
 	float getTimeForAttack() { return m_timeForAttack; };
+
+	float getStaffOffset() { return m_staffOffset; }
+	float getPreviousStaffOffset() { return m_previousStaffOffset; };
+	float getOffsetVariance() { return m_offsetVariance; };
 
 private:
 	WeaponType m_weaponType;
@@ -81,4 +89,8 @@ private:
 	bool m_attacking;
 	float m_maxTimeForAttack;
 	float m_timeForAttack;
+
+	float m_staffOffset;
+	float m_previousStaffOffset;
+	float m_offsetVariance;
 };

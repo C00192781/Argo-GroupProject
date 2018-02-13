@@ -70,7 +70,6 @@ void AttackSystem::Update(float deltaTime)
 			}
 
 			if (positionComponent != nullptr && movementComponent != nullptr && weaponComponent != nullptr)
-			//if (pcKey >= 0 && mcKey >= 0 && wcKey >= 0)
 			{
 				// if the entity is not allowed to attack
 				if (weaponComponent->getAllowAttack() == false)
@@ -110,7 +109,6 @@ void AttackSystem::Update(float deltaTime)
 										}
 										m_projectiles->at(j)->Active(true);
 										newProjectileComponent->setShooterType(m_entities.at(i)->ID());
-										//float temp = newProjectileComponent->getBaseSpeed() * weaponComponent->getAttackSpeed() * deltaTime;
 										newProjectileComponent->setTimeToLive(weaponComponent->getRange() * deltaTime);
 										projectilePositionComponent->setPosition(positionComponent->getX(), positionComponent->getY());
 
@@ -129,9 +127,6 @@ void AttackSystem::Update(float deltaTime)
 											projectileMovementComponent->setXVelocity((sin(movementComponent->getOrientation() * (3.142 / 180)) * newProjectileComponent->getBaseSpeed()));
 											projectileMovementComponent->setYVelocity((-cos(movementComponent->getOrientation()  * (3.142 / 180)) * newProjectileComponent->getBaseSpeed()));
 										}
-
-										//projectileMovementComponent->setXVelocity((sin(movementComponent->getOrientation()* (3.142 / 180)) * (temp / (deltaTime / 4))));
-										//projectileMovementComponent->setYVelocity((-cos(movementComponent->getOrientation() * (3.142 / 180)) * (temp / (deltaTime / 4))));
 
 										weaponComponent->setAttacking(false);
 										movementComponent->setLockedOrientation(false);
@@ -264,7 +259,66 @@ void AttackSystem::Update(float deltaTime)
 					// if the entity has a magic weapon
 					else
 					{
+						// if the entity is already attacking
+						if (weaponComponent->getAttacking() == true)
+						{
+							for (int j = 0; j < m_projectiles->size(); j++)
+							{
+								if (m_projectiles->at(j)->Active() == false)
+								{
+									ProjectileComponent* newProjectileComponent = nullptr;
+									PositionComponent* projectilePositionComponent = nullptr;
+									MovementComponent* projectileMovementComponent = nullptr;
 
+									for (int k = 0; k < m_projectiles->at(j)->GetComponents()->size(); k++)
+									{
+										if (m_projectiles->at(j)->GetComponents()->at(k)->Type() == "movement")
+										{
+											projectileMovementComponent = static_cast<MovementComponent*>(m_projectiles->at(j)->GetComponents()->at(k));
+										}
+										else if (m_projectiles->at(j)->GetComponents()->at(k)->Type() == "PJ")
+										{
+											newProjectileComponent = static_cast<ProjectileComponent*>(m_projectiles->at(j)->GetComponents()->at(k));
+										}
+										else if (m_projectiles->at(j)->GetComponents()->at(k)->Type() == "PC")
+										{
+											projectilePositionComponent = static_cast<PositionComponent*>(m_projectiles->at(j)->GetComponents()->at(k));
+										}
+									}
+									m_projectiles->at(j)->Active(true);
+									newProjectileComponent->setShooterType(m_entities.at(i)->ID());
+									newProjectileComponent->setTimeToLive(weaponComponent->getRange() * deltaTime);
+									projectilePositionComponent->setPosition(positionComponent->getX(), positionComponent->getY());
+
+									projectileMovementComponent->setXVelocity((sin((movementComponent->getOrientation() + weaponComponent->getStaffOffset())* (3.142 / 180)) * newProjectileComponent->getBaseSpeed()));
+									projectileMovementComponent->setYVelocity((-cos((movementComponent->getOrientation() + weaponComponent->getStaffOffset()) * (3.142 / 180)) * newProjectileComponent->getBaseSpeed()));
+
+									weaponComponent->setAttacking(false);
+									movementComponent->setLockedOrientation(false);
+
+									setStaffOffset(weaponComponent);
+
+									break;
+								}
+							}
+						}
+						else
+						{
+							float temp = weaponComponent->getTimeToAllowAttack();
+
+							// checks for if allowed to attack
+							if (temp > 0)
+							{
+								temp -= deltaTime;
+							}
+							else
+							{
+								temp = weaponComponent->getMaxTimeToAllowAttack();
+								weaponComponent->setAllowAttack(true);
+							}
+
+							weaponComponent->setTimeToAllowAttack(temp);
+						}
 					}
 				}
 			}
@@ -280,5 +334,49 @@ void AttackSystem::Update(float deltaTime)
 				}
 			}
 		}
+	}
+}
+
+void AttackSystem::setStaffOffset(WeaponComponent* weapon)
+{
+	if (weapon->getStaffOffset() == -(weapon->getOffsetVariance() * 2))
+	{
+		weapon->setPreviousStaffOffset(weapon->getStaffOffset());
+		weapon->setStaffOffset(-weapon->getOffsetVariance());
+	}
+	else if (weapon->getStaffOffset() == -weapon->getOffsetVariance() && weapon->getPreviousStaffOffset() == -(weapon->getOffsetVariance() * 2))
+	{
+		weapon->setPreviousStaffOffset(weapon->getStaffOffset());
+		weapon->setStaffOffset(0);
+	}
+	else if (weapon->getStaffOffset() == -weapon->getOffsetVariance() && weapon->getPreviousStaffOffset() == 0)
+	{
+		weapon->setPreviousStaffOffset(weapon->getStaffOffset());
+		weapon->setStaffOffset(-(weapon->getOffsetVariance() * 2));
+	}
+	else if (weapon->getStaffOffset() == 0 && weapon->getPreviousStaffOffset() == -weapon->getOffsetVariance())
+	{
+		weapon->setPreviousStaffOffset(weapon->getStaffOffset());
+		weapon->setStaffOffset(weapon->getOffsetVariance());
+	}
+	else if (weapon->getStaffOffset() == 0 && weapon->getPreviousStaffOffset() == weapon->getOffsetVariance())
+	{
+		weapon->setPreviousStaffOffset(weapon->getStaffOffset());
+		weapon->setStaffOffset(-weapon->getOffsetVariance());
+	}
+	else if (weapon->getStaffOffset() == weapon->getOffsetVariance() && weapon->getPreviousStaffOffset() == (weapon->getOffsetVariance() * 2))
+	{
+		weapon->setPreviousStaffOffset(weapon->getStaffOffset());
+		weapon->setStaffOffset(0);
+	}
+	else if (weapon->getStaffOffset() == weapon->getOffsetVariance() && weapon->getPreviousStaffOffset() == 0)
+	{
+		weapon->setPreviousStaffOffset(weapon->getStaffOffset());
+		weapon->setStaffOffset((weapon->getOffsetVariance() * 2));
+	}
+	else
+	{
+		weapon->setPreviousStaffOffset(weapon->getStaffOffset());
+		weapon->setStaffOffset(weapon->getOffsetVariance());
 	}
 }
