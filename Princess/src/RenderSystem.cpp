@@ -86,6 +86,7 @@ void RenderSystem::Update()
 		holder.insert(holder.end(), foregroundHolder.begin(), foregroundHolder.end());
 		holder.insert(holder.end(), finalgroundHolder.begin(), finalgroundHolder.end());
 		holder.insert(holder.end(), hudHolder.begin(), hudHolder.end());
+
 		std::vector<Entity*> entHolder;
 		m_positionComponent.clear();
 		m_spriteComponent.clear();

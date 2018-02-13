@@ -3,6 +3,7 @@
 Entity* Princess::CharA(std::string ID, SDL_Point pos, int personality)
 {
 	Entity *princess = new Entity("Princess");
+	princess->Active(true);
 	princess->AddComponent(new AiLogicComponent);
 	princess->AddComponent(new SpriteComponent(ID, 0, 1, 0, 0, 16, 16, 0)); //textid
 	princess->AddComponent(new PositionComponent(pos));
@@ -35,6 +36,7 @@ Entity* Princess::CharA(std::string ID, SDL_Point pos, int personality)
 Entity* Princess::CharB(std::string ID, SDL_Point pos, int personality)
 {
 	Entity *princess = new Entity("Princess");
+	princess->Active(true);
 	princess->AddComponent(new AiLogicComponent);
 	princess->AddComponent(new SpriteComponent(ID, 0, 1, 0, 0, 16, 16, 0)); //textid
 	princess->AddComponent(new PositionComponent(pos));
@@ -50,6 +52,7 @@ Entity* Princess::CharB(std::string ID, SDL_Point pos, int personality)
 Entity* Princess::CharC(std::string ID, SDL_Point pos, int personality)
 {
 	Entity *princess = new Entity("Princess");
+	princess->Active(true);
 	princess->AddComponent(new AiLogicComponent);
 	princess->AddComponent(new SpriteComponent(ID, 0, 1, 0, 0, 16, 16, 0)); //textid
 	princess->AddComponent(new PositionComponent(pos));
@@ -65,6 +68,7 @@ Entity* Princess::CharC(std::string ID, SDL_Point pos, int personality)
 Entity* Princess::CharD(std::string ID, SDL_Point pos, int personality)
 {
 	Entity *princess = new Entity("Princess");
+	princess->Active(true);
 	princess->AddComponent(new AiLogicComponent);
 	princess->AddComponent(new SpriteComponent(ID, 0, 1, 0, 0, 16, 16, 0)); //textid
 	princess->AddComponent(new PositionComponent(pos));

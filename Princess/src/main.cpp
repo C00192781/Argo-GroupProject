@@ -81,7 +81,7 @@ int main()
 	systemManager.controlSystem = new ControlSystem(listener);
 	systemManager.controlSystem->Active(true);
 
-	systemManager.movementSystem = new MovementSystem();
+	systemManager.movementSystem = new MovementSystem(816, 624);
 	systemManager.movementSystem->Active(true);
 	systemManager.renderSystem = new RenderSystem(resourceManager, gameRenderer);
 	systemManager.renderSystem->Active(true);
@@ -94,12 +94,15 @@ int main()
 	systemManager.projectileSystem = new ProjectileSystem();
 	systemManager.projectileSystem->Active(true);
 
-	systemManager.collisionSystem = new CollisionSystem();
+	systemManager.collisionSystem = new CollisionSystem(SDL_Rect{ 0 , 0, 5000, 5000 });
 	systemManager.collisionSystem->Active(true);
 	systemManager.aiSystem = new AiSystem();
 	systemManager.aiSystem->Active(true);
 	systemManager.healthSystem = new HealthSystem();
 	systemManager.healthSystem->Active(true);
+
+	//BattleMap map1 = BattleMap(&systemManager, &state);
+	//map1.Generate("Grassland");
 
 	Entity * player = new Entity("Player");
 	player->Active(true);
@@ -107,7 +110,7 @@ int main()
 	player->AddComponent(new PositionComponent(SDL_Point{ 500, 380 }));
 	player->AddComponent(new AttributesComponent(26, 26, 10, 10, 100, 100));
 	player->AddComponent(new MovementComponent());
-	player->AddComponent(new WeaponComponent(WeaponType::RANGE));
+	player->AddComponent(new WeaponComponent(WeaponType::STAFF));
 	player->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
 	player->Transient(true);
 
@@ -148,6 +151,7 @@ int main()
 			SDL_Delay(SCREEN_TICKS_PER_FRAME - frameTicks);
 
 			currentTime = SDL_GetTicks();
+
 			if (currentTime > lastTime)
 			{
 				deltaTime = ((float)(currentTime - lastTime)) / 1000;

@@ -20,4 +20,6 @@ public:
 	void UnloadComponent(int x);
 private:
 	std::vector<Entity*>* m_projectiles;
+
+	void setStaffOffset(WeaponComponent* weapon);
 };
