@@ -54,9 +54,7 @@ public:
 	void IsAnimating(bool Animating) { m_IsAnimating = Animating; };
 	bool IsAnimating() { return m_IsAnimating; }
 
-	SDL_Rect GetRect() {
-		return SDL_Rect{ ((m_sheetX * m_noOfFrames) + m_frame) * m_width, ((m_sheetY * 4) + m_direction) * m_height, m_width, m_height };
-	}
+	SDL_Rect GetRect() { return SDL_Rect{ ((m_sheetX + (m_sheetX* m_noOfFrames)) + m_frame) * m_width, ((m_sheetY * 4) + m_direction) * m_height, m_width, m_height }; }
 
 private:
 

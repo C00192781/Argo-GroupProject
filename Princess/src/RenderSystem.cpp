@@ -118,7 +118,6 @@ void RenderSystem::Update()
 
 		m_entities.clear();
 		m_entities = entHolder;
-		m_sizeMemory = m_entities.size();
 	}
 	for (int i = 0; i < m_entities.size(); i++)
 	{
