@@ -3,7 +3,6 @@
 SystemManager::SystemManager(ResourceManager *resourceManager, SDL_Renderer* gameRenderer, EventListener *listener, std::vector<Entity*>* projectiles)
 {
 	
-
 }
 
 void SystemManager::Update(float deltaTime)
@@ -14,12 +13,5 @@ void SystemManager::Update(float deltaTime)
 	if (attackSystem->Active()) { attackSystem->Update(deltaTime); }
 	if (aiSystem->Active()) { aiSystem->Update(deltaTime); }
 	if (collisionSystem->Active()) { collisionSystem->Update(); }
+	if (buttonSystem->Active()) { buttonSystem->Update(); }
 }
-
-
-//void SystemManager::Update()
-//{
-//	if (MovementSystem->Active()) { MovementSystem->Update(); }
-//	if (ControlSystem->Active()) { ControlSystem->Update(); }
-//	if (RenderSystem->Active()) { RenderSystem->Update(); }
-//}

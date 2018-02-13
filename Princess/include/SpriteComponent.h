@@ -20,6 +20,7 @@ public:
 		m_frame = 0;
 		m_layer = layer;
 		m_IsAnimating = true;
+		m_relative = false;
 	}
 	~SpriteComponent() {};
 
@@ -52,7 +53,10 @@ public:
 	std::string Sheet() { return m_sheetID; };
 
 	void IsAnimating(bool Animating) { m_IsAnimating = Animating; };
-	bool IsAnimating() { return m_IsAnimating; }
+	bool IsAnimating() { return m_IsAnimating; };
+
+	void Relative(bool x) { m_relative = x; };
+	bool Relative() { return m_relative; };
 
 	SDL_Rect GetRect() { return SDL_Rect{ ((m_sheetX + (m_sheetX* m_noOfFrames)) + m_frame) * m_width, ((m_sheetY * 4) + m_direction) * m_height, m_width, m_height }; }
 
@@ -66,5 +70,6 @@ private:
 	int m_layer;
 	std::string m_sheetID;
 	bool m_IsAnimating;
+	bool m_relative;
 };
 #endif

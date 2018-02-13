@@ -24,6 +24,7 @@ void System::SelectiveClear()
 		if (!m_entities.at(i)->Transient())
 		{
 			m_entities.erase(m_entities.begin() + i);
+			UnloadComponent(i);
 		}
 	}
 	m_entities.shrink_to_fit();
@@ -31,5 +32,9 @@ void System::SelectiveClear()
 void System::FullClear()
 {
 	m_entities.clear();
+	for (int i = 0; i < m_entities.size(); i++)
+	{
+		UnloadComponent(i);
+	}
 	m_entities.shrink_to_fit();
 }

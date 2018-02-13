@@ -15,6 +15,7 @@
 #include "CollisionComponent.h"
 #include "CollisionSystem.h"
 #include "AttributesComponent.h"
+#include "ButtonComponent.h"
 #include "HealthSystem.h"
 #include "HeartComponent.h"
 #include "AISystem.h"
@@ -23,6 +24,7 @@
 #include "SystemManager.h"
 #include "LTimer.h"
 #include "WorldMap.h"
+
 int main()
 {
 	SDL_Window* gameWindow = SDL_CreateWindow("TEST", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 816, 624, SDL_WINDOW_SHOWN);
@@ -101,9 +103,22 @@ int main()
 	systemManager.healthSystem = new HealthSystem();
 	systemManager.healthSystem->Active(true);
 
+	systemManager.buttonSystem = new ButtonSystem(listener);
+	systemManager.buttonSystem->Active(true);
+
+	SpriteComponent * s = new SpriteComponent("Red", 4, 1, 0, 0, 16, 16, 0);
+	s->Relative(true);
+
+	Entity * leButton = new Entity("Button");
+	leButton->AddComponent(new ButtonComponent(0,0,48,48));
+	leButton->AddComponent(new PositionComponent(SDL_Point{ 100, 100 }));
+	leButton->AddComponent(s);
+	leButton->Transient(true);
+
+
 	Entity * player = new Entity("Player");
 	player->Active(true);
-	player->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
+	player->AddComponent(new SpriteComponent("Red", 3, 1, 0, 0, 16, 16, 0));
 	player->AddComponent(new PositionComponent(SDL_Point{ 500, 380 }));
 	player->AddComponent(new AttributesComponent(26, 26, 10, 10, 100, 100));
 	player->AddComponent(new MovementComponent());
@@ -117,6 +132,9 @@ int main()
 	systemManager.projectileSystem->AddEntity(player);
 	systemManager.collisionSystem->AddEntity(player);
 	systemManager.attackSystem->AddEntity(player);
+
+	systemManager.buttonSystem->AddEntity(leButton);
+	systemManager.renderSystem->AddEntity(leButton);
 
 	WorldMap* m = new WorldMap(&systemManager, &state);
 	m->Generate(25, 25, 100);
@@ -135,7 +153,7 @@ int main()
 		//Set text to be rendered
 		if (avgFPS > 1)
 		{
-			cout << "FPS (With Cap) " << avgFPS << endl;;
+			//cout << "FPS (With Cap) " << avgFPS << endl;;
 		}
 		//update ren
 		++countedFrames;

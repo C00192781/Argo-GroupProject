@@ -23,12 +23,11 @@
     <ClCompile Include="External Dependencies\ResourceManager\ResourceManager.cpp" />
     <ClCompile Include="External Dependencies\SimpleJSON\JSON.cpp" />
     <ClCompile Include="External Dependencies\SimpleJSON\JSONValue.cpp" />
-    <ClCompile Include="include\BasicEnemy.cpp" />
-    <ClCompile Include="include\Princess.cpp" />
-    <ClCompile Include="include\Quad.cpp" />
     <ClCompile Include="src\AISystem.cpp" />
     <ClCompile Include="src\AttackSystem.cpp" />
+    <ClCompile Include="src\BasicEnemy.cpp" />
     <ClCompile Include="src\BattleMap.cpp" />
+    <ClCompile Include="src\ButtonSystem.cpp" />
     <ClCompile Include="src\CollisionSystem.cpp" />
     <ClCompile Include="src\ControlSystem.cpp" />
     <ClCompile Include="src\Entity.cpp" />
@@ -38,10 +37,13 @@
     <ClCompile Include="src\LTimer.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MovementSystem.cpp" />
+    <ClCompile Include="src\Princess.cpp" />
     <ClCompile Include="src\ProjectileSystem.cpp" />
+    <ClCompile Include="src\Quad.cpp" />
     <ClCompile Include="src\RenderSystem.cpp" />
     <ClCompile Include="src\System.cpp" />
     <ClCompile Include="src\SystemManager.cpp" />
+    <ClCompile Include="src\TownInstance.cpp" />
     <ClCompile Include="src\WorldMap.cpp" />
     <ClCompile Include="src\WorldTileFactory.cpp" />
   </ItemGroup>
@@ -56,6 +58,9 @@
     <ClInclude Include="include\AttackSystem.h" />
     <ClInclude Include="include\BasicEnemy.h" />
     <ClInclude Include="include\BattleMap.h" />
+    <ClInclude Include="include\ButtonComponent.h" />
+    <ClInclude Include="include\ButtonSystem.h" />
+    <ClInclude Include="include\Character.h" />
     <ClInclude Include="include\CollisionComponent.h" />
     <ClInclude Include="include\CollisionSystem.h" />
     <ClInclude Include="include\AttributesComponent.h" />
@@ -68,12 +73,14 @@
     <ClInclude Include="include\HealthSystem.h" />
     <ClInclude Include="include\HeartComponent.h" />
     <ClInclude Include="include\EventListener.h" />
+    <ClInclude Include="include\HeartManagerComponent.h" />
     <ClInclude Include="include\InputHandler.h" />
     <ClInclude Include="include\Instance.h" />
     <ClInclude Include="include\LTimer.h" />
     <ClInclude Include="include\MovementComponent.h" />
     <ClInclude Include="include\MovementSystem.h" />
     <ClInclude Include="include\PositionComponent.h" />
+    <ClInclude Include="include\Princess.h" />
     <ClInclude Include="include\ProjectileComponent.h" />
     <ClInclude Include="include\ProjectileSystem.h" />
     <ClInclude Include="include\Quad.h" />
@@ -85,6 +92,7 @@
     <ClInclude Include="include\System.h" />
     <ClInclude Include="include\SystemManager.h" />
     <ClInclude Include="include\TileFactory.h" />
+    <ClInclude Include="include\TownInstance.h" />
     <ClInclude Include="include\WeaponComponent.h" />
     <ClInclude Include="include\WeaponType.h" />
     <ClInclude Include="include\WorldMap.h" />

@@ -15,7 +15,6 @@ public:
 	~Instance() {};
 
 	virtual void Update() = 0;
-	virtual void Render() = 0;
 
 	std::string ID() { return m_id; };
 
