@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Instance.h"
+#include "DungeonTileFactory.h"
 
 class DungeonMap : public Instance
 {
