@@ -14,15 +14,17 @@ public:
 	void CreateRootNode(int NodeID);
 	bool MakeDecision(TreeNodes* node);
 
+	int getDecision();
+
 	bool SearchAddNode1(TreeNodes* CurrentNode, int ExistingNodeID, int NewNodeID);
 	bool SearchAddNode2(TreeNodes* CurrentNode, int ExistingNodeID, int NewNodeID);
-	bool SearchAddJank1(TreeNodes* CurrentNode, int ExistingNodeID, int NewNodeID); //this perfectly searches the tree in order  1 2 4 5 1 3 6 7!
+	bool SearchAddNodesOn(TreeNodes* CurrentNode, int ExistingNodeID, int NewNodeID); //this perfectly searches the tree in order  1 2 4 5 1 3 6 7!
 	TreeNodes* m_RootNode;
 	bool searchNodes(TreeNodes* currentNode, int ExistingNodeID, int NewNodeID);
 	DecisionTree();
 
 	DecisionTree(int tarHp, int selfHP, int tarStr, int selfStr, int dist);
-	void printLeafNodes(TreeNodes* root);
+	int calculatePathNodes(TreeNodes* root);
 
 	TreeNodes* m_lastNode;
 
@@ -37,6 +39,7 @@ public:
 
 private: 
 	int m_Size = 0;
+	int m_decision = 0;
 
 	int PHealth;
 	int MHealth;

@@ -46,6 +46,7 @@ void LTimer::unpause()
 		mPaused = false;
 
 		//Reset the starting ticks
+
 		mStartTicks = SDL_GetTicks() - mPausedTicks;
 
 		//Reset the paused ticks

@@ -105,7 +105,7 @@ int Quadtree::getIndex(Entity* entity)
 }
 
 /*
-* Insert the object into the quadtree. If the node
+* Insert the object into the quadtree. If the node 
 * exceeds the capacity, it will split and add all
 * objects to their corresponding nodes.
 */

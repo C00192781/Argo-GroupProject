@@ -58,7 +58,7 @@ void DecisionTree::AddNode1(TreeNodes* base, int ExistingNodeID, int NewNodeID)
 		return;
 	}
 
-	if (SearchAddJank1(base, ExistingNodeID, NewNodeID))
+	if (SearchAddNodesOn(base, ExistingNodeID, NewNodeID))
 	{
 		cout << "Added Node Type1 With ID " << NewNodeID << " onto Branch Level " << ExistingNodeID << endl;
 	}
@@ -74,12 +74,12 @@ void DecisionTree::AddNode1(TreeNodes* base, int ExistingNodeID, int NewNodeID)
 
 // function to print leaf 
 // nodes from left to right
-void DecisionTree::printLeafNodes(TreeNodes* root) //this perfectly searches the tree in order  1 2 4 5 1 3 6 7!
+int DecisionTree::calculatePathNodes(TreeNodes* root) //this perfectly searches the tree in order  1 2 4 5 1 3 6 7!
 {
 	// if node is null, return
 	if (!root)
 	{
-		return;
+	//	return root->m_NodeID;
 	}
 
 	
@@ -91,24 +91,26 @@ void DecisionTree::printLeafNodes(TreeNodes* root) //this perfectly searches the
 	{
 	//	cout << "leaf: " << root->m_NodeID << endl;
 
-		return;
+		m_decision = root->m_NodeID;
 	}
 
 	// if left child exists, check for leaf 
 	// recursively
 	if (root->NewBranch1 && decision) //if option one, go left
 	{
-		cout << "go left at " << root->m_NodeID << endl;
-		printLeafNodes(root->NewBranch1);
+	//	cout << "go left at " << root->m_NodeID << endl;
+		calculatePathNodes(root->NewBranch1);
 	}
 
 	// if right child exists, check for leaf 
 	// recursively
 	if (root->NewBranch2 && !decision) //if option 2, go right
 	{
-		cout << "go right at " << root->m_NodeID << endl;
-		printLeafNodes(root->NewBranch2);
+	//	cout << "go right at " << root->m_NodeID << endl;
+		calculatePathNodes(root->NewBranch2);
 	}
+
+	return root->m_NodeID;
 }
 
 
@@ -198,7 +200,7 @@ bool DecisionTree::searchNodes(TreeNodes* currentNode, int ExistingNodeID, int N
 	{
 		cout << "go left at " << currentNode->m_NodeID << endl;
 
-		SearchAddJank1(currentNode->NewBranch1, ExistingNodeID, NewNodeID);
+		SearchAddNodesOn(currentNode->NewBranch1, ExistingNodeID, NewNodeID);
 	}
 
 	// if right child exists, check for leaf 
@@ -207,7 +209,7 @@ bool DecisionTree::searchNodes(TreeNodes* currentNode, int ExistingNodeID, int N
 	{
 		cout << "go right at " << currentNode->m_NodeID << endl;
 
-		SearchAddJank1(currentNode->NewBranch2, ExistingNodeID, NewNodeID);
+		SearchAddNodesOn(currentNode->NewBranch2, ExistingNodeID, NewNodeID);
 	}
 
 	if (currentNode->m_NodeID == NewNodeID) //get outta here when we're done
@@ -229,11 +231,14 @@ bool DecisionTree::searchNodes(TreeNodes* currentNode, int ExistingNodeID, int N
 
 }
 
-
+int DecisionTree::getDecision()
+{
+	return m_decision;
+}
 
 // function to print leaf 
 // nodes from left to right
-bool DecisionTree::SearchAddJank1(TreeNodes* CurrentNode, int ExistingNodeID, int NewNodeID) //this perfectly searches the tree in order  1 2 4 5 1 3 6 7!
+bool DecisionTree::SearchAddNodesOn(TreeNodes* CurrentNode, int ExistingNodeID, int NewNodeID) //this perfectly searches the tree in order  1 2 4 5 1 3 6 7!
 {
 	m_RootNode;
 
@@ -265,7 +270,7 @@ bool DecisionTree::SearchAddJank1(TreeNodes* CurrentNode, int ExistingNodeID, in
 		if (!CurrentNode->NewBranch1 && NewNodeID % 2 == 0) //
 		{
 			CurrentNode->NewBranch1 = new TreeNodes(NewNodeID);
-			SearchAddJank1(CurrentNode->NewBranch1, ExistingNodeID, NewNodeID);
+			SearchAddNodesOn(CurrentNode->NewBranch1, ExistingNodeID, NewNodeID);
 			//add left node
 		}
 	
@@ -282,7 +287,7 @@ bool DecisionTree::SearchAddJank1(TreeNodes* CurrentNode, int ExistingNodeID, in
 		if (!CurrentNode->NewBranch2 && NewNodeID % 2 != 0)
 		{
 			CurrentNode->NewBranch2 = new TreeNodes(NewNodeID);
-			SearchAddJank1(CurrentNode->NewBranch2, ExistingNodeID, NewNodeID);
+			SearchAddNodesOn(CurrentNode->NewBranch2, ExistingNodeID, NewNodeID);
 			//add right node
 		}
 
@@ -295,84 +300,14 @@ bool DecisionTree::SearchAddJank1(TreeNodes* CurrentNode, int ExistingNodeID, in
 
 	if (CurrentNode->m_NodeID % 2 == 0)
 	{
-		SearchAddJank1(CurrentNode->NewBranch1, ExistingNodeID, NewNodeID); //check left branch node next
+		SearchAddNodesOn(CurrentNode->NewBranch1, ExistingNodeID, NewNodeID); //check left branch node next
 	}
 	else
 	{
-		SearchAddJank1(CurrentNode->NewBranch2, ExistingNodeID, NewNodeID); //right branch node next
+		SearchAddNodesOn(CurrentNode->NewBranch2, ExistingNodeID, NewNodeID); //right branch node next
 	}
 
 }
-
-
-////Step 6.1!~ search and add new node to current node
-//bool DecisionTree::SearchAddNode1(TreeNodes *CurrentNode, int ExistingNodeID, int NewNodeID)
-//{
-//	if (CurrentNode->m_NodeID == 3)
-//	{
-//		int q = 5;
-//		q -= 5;
-//	}
-//
-//	if (m_RootNode->m_NodeID != 1)
-//	{
-//		int qq = 5;
-//		qq -= 5;
-//	}
-//
-////if a node exists
-//	if (CurrentNode->m_NodeID == ExistingNodeID)
-//	{
-//		//create the node
-//		if (CurrentNode->NewBranch1 == NULL)
-//		{
-//			CurrentNode->NewBranch1 = new TreeNodes(NewNodeID);
-//		}
-//		else
-//		{
-//			CurrentNode->NewBranch1 = new TreeNodes(NewNodeID);
-//		}
-//		return true;
-//	}
-//	else
-//	{
-//		//try branch if it exists
-//		//for a third, add another one of these too!
-//		if (CurrentNode->NewBranch1 != NULL)
-//		{
-//			if (SearchAddNode1(CurrentNode->NewBranch1, ExistingNodeID, NewNodeID)) // we got in here
-//			{
-//				return true;
-//			}
-//			else
-//			{
-//				//try second branch if it exists
-//				if (CurrentNode->NewBranch2 != NULL)
-//				{
-//					CurrentNode->setMarked(true);
-//					
-//
-//					return(SearchAddNode2(CurrentNode->NewBranch2, ExistingNodeID, NewNodeID));
-//				}
-//				else
-//				{
-//					if (CurrentNode->m_NodeID != 7) //temp test
-//					{
-//						
-//						return(SearchAddNode2(CurrentNode->NewBranch2, ExistingNodeID, NewNodeID));
-//					}
-//					//return false;
-//				}
-//			}
-//		}
-//
-//		if (CurrentNode->getEnd())
-//		{
-//			return false;
-//		}
-//		
-//	}
-//}
 
 //Step 5.2!~    does same thing as node 1.  if you wanted to have more decisions, 
 //create a node 3 which would be the same as this maybe with small differences
@@ -515,12 +450,12 @@ bool DecisionTree::MakeDecision(TreeNodes *node)
 		//if statement lower/higher query respective branch
 		if (PHealth > MHealth)
 		{
-			cout << "mon adv hp " << endl;
+			//cout << "mon adv hp " << endl;
 			return true;
 		}
 		else
 		{
-			cout << "no hp adv " << endl;
+		//	cout << "no hp adv " << endl;
 			return false;
 		}
 	}
@@ -530,13 +465,13 @@ bool DecisionTree::MakeDecision(TreeNodes *node)
 	{
 		if (PStrength < MStrength)
 		{
-			cout << "mon adv str " << endl;
+		//	cout << "mon adv str " << endl;
 			return true;
 		}
 		else
 		{
 
-			cout << "no str adv " << endl;
+		//	cout << "no str adv " << endl;
 			return false;
 		}
 	}
@@ -547,12 +482,12 @@ bool DecisionTree::MakeDecision(TreeNodes *node)
 	{
 		if (Distance < 60)
 		{
-			cout << "in range " << endl;
+			//cout << "in range " << endl;
 			return true;
 		}
 		else
 		{
-			cout << "out of range" << endl;
+		//	cout << "out of range" << endl;
 			return false;
 		}
 	}
@@ -562,12 +497,12 @@ bool DecisionTree::MakeDecision(TreeNodes *node)
 	{
 		if (Distance < 60)
 		{
-			cout << "distance case 2 close " << endl;
+			//cout << "distance case 2 close " << endl;
 			return true;
 		}
 		else
 		{
-			cout << "distance case 3 far" << endl;
+		//	cout << "distance case 3 far" << endl;
 			return false;
 		}
 	}
@@ -576,12 +511,12 @@ bool DecisionTree::MakeDecision(TreeNodes *node)
 	{
 		if (test1 < 1)
 		{
-			cout << "test 1 confirmed " << endl;
+		//	cout << "test 1 confirmed " << endl;
 			return true;
 		}
 		else
 		{
-			cout << "test 1 false " << endl;
+		//	cout << "test 1 false " << endl;
 			return false;
 		}
 	}
@@ -591,12 +526,12 @@ bool DecisionTree::MakeDecision(TreeNodes *node)
 	{
 		if (test2 < 1)
 		{
-			cout << "test 2 confirmed " << endl;
+			//cout << "test 2 confirmed " << endl;
 			return true;
 		}
 		else
 		{
-			cout << "test 2 false " << endl;
+		//	cout << "test 2 false " << endl;
 			return false;
 		}
 	}
@@ -606,12 +541,12 @@ bool DecisionTree::MakeDecision(TreeNodes *node)
 	{
 		if (test3 < 1)
 		{
-			cout << "test 3 confirmed " << endl;
+		//	cout << "test 3 confirmed " << endl;
 			return true;
 		}
 		else
 		{
-			cout << "test 3 false " << endl;
+		//	cout << "test 3 false " << endl;
 			return false;
 		}
 	}
