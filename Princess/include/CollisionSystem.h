@@ -2,6 +2,7 @@
 
 #include "System.h"
 #include "PositionComponent.h"
+#include "MovementComponent.h"
 #include "CollisionComponent.h"
 #include "WeaponComponent.h"
 #include "SpriteComponent.h"

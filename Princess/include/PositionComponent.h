@@ -41,7 +41,6 @@ public:
 	void setY(float y) { m_y = y; }
 
 private:
-	//SDL_Point m_pos;
 	float m_x;
 	float m_y;
 };

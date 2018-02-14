@@ -67,7 +67,7 @@ void CollisionSystem::Update()
 
 	for (int i = 0; i < m_entities.size(); i++)
 	{
-		if (m_entities.at(i)->Active())
+		if (m_entities.at(i)->Active() == true && m_entities.at(i)->ID() != "Wall")
 		{
 			int collisionKey1 = -1;
 
@@ -87,26 +87,26 @@ void CollisionSystem::Update()
 
 				if (!m_collidableEntities.empty())
 				{
-				////	for (int j = 0; j < m_collidableEntities.size(); j++)
-				////	{
-				////		if (m_collidableEntities.at(j)->Active())
-				////		{
-				////			if (m_entities.at(i) != m_collidableEntities.at(j)) // doesn't collide with itself
-				////			{
-				////				int collisionKey2 = -1;
-				////
-				////				for (int k = 0; k < m_collidableEntities.at(j)->GetComponents()->size(); k++)
-				////				{
-				////					if (m_collidableEntities.at(j)->GetComponents()->at(k)->Type() == "collision")
-				////					{
-				////						collisionKey2 = k;
-				////					}
-				////				}
-				////
-				////				filterCollisions(i, collisionKey1, j, collisionKey2);
-				////			}
-				////		}
-				////	}
+					for (int j = 0; j < m_collidableEntities.size(); j++)
+					{
+						if (m_collidableEntities.at(j)->Active())
+						{
+							if (m_entities.at(i) != m_collidableEntities.at(j)) // doesn't collide with itself
+							{
+								int collisionKey2 = -1;
+				
+								for (int k = 0; k < m_collidableEntities.at(j)->GetComponents()->size(); k++)
+								{
+									if (m_collidableEntities.at(j)->GetComponents()->at(k)->Type() == "collision")
+									{
+										collisionKey2 = k;
+									}
+								}
+				
+								filterCollisions(i, collisionKey1, j, collisionKey2);
+							}
+						}
+					}
 				}
 			}
 		}
@@ -115,32 +115,151 @@ void CollisionSystem::Update()
 
 void CollisionSystem::filterCollisions(int entityIndex, int entityColIndex, int collidableIndex, int collidableColIndex)
 {
-	SDL_Rect rectEntity = { static_cast<CollisionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(entityColIndex))->getX(),
-		static_cast<CollisionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(entityColIndex))->getY(),
-		static_cast<CollisionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(entityColIndex))->getWidth(),
-		static_cast<CollisionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(entityColIndex))->getHeight() };
+	CollisionComponent* entityCol;
+	CollisionComponent* collidableCol;
 
-	SDL_Rect rectCollidable = { static_cast<CollisionComponent*>(m_collidableEntities.at(collidableIndex)->GetComponents()->at(collidableColIndex))->getX(),
-		static_cast<CollisionComponent*>(m_collidableEntities.at(collidableIndex)->GetComponents()->at(collidableColIndex))->getY(),
-		static_cast<CollisionComponent*>(m_collidableEntities.at(collidableIndex)->GetComponents()->at(collidableColIndex))->getWidth(),
-		static_cast<CollisionComponent*>(m_collidableEntities.at(collidableIndex)->GetComponents()->at(collidableColIndex))->getHeight() };
-
-	SDL_Rect holder{ 0, 0, 0, 0 };
-
-	if (SDL_IntersectRect(&rectEntity, &rectCollidable, &holder))
+	entityCol = static_cast<CollisionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(entityColIndex));
+	collidableCol = static_cast<CollisionComponent*>(m_collidableEntities.at(collidableIndex)->GetComponents()->at(collidableColIndex));
+	if (m_collidableEntities.at(collidableIndex)->ID() == "Wall")
 	{
-		if (m_entities.at(entityIndex)->ID() == "Spellcaster Enemy")
+		SDL_Rect rectEntityX = { entityCol->getX(), entityCol->getPreviousY(), entityCol->getWidth(), entityCol->getHeight() };
+		SDL_Rect rectEntityY = { entityCol->getPreviousX(), entityCol->getPreviousY(), entityCol->getWidth(), entityCol->getHeight() };
+		
+		SDL_Rect rectCollidable = { collidableCol->getX(), collidableCol->getY(), collidableCol->getWidth(), collidableCol->getHeight() };
+
+		SDL_Rect holder{ 0, 0, 0, 0 };
+
+		if (SDL_IntersectRect(&rectEntityX, &rectCollidable, &holder))
 		{
-			if (m_collidableEntities.at(collidableIndex)->ID() == "Projectile")
+			if (m_entities.at(entityIndex)->ID() == "Player")
 			{
-				projectileCollision(collidableIndex);
+				if (entityCol->getPreviousX() < entityCol->getX())
+				{
+					entityCol->setX(entityCol->getX() - holder.w);
+					std::cout << "right" << std::endl;
+				}
+				else if (entityCol->getPreviousX() > entityCol->getX())
+				{
+					entityCol->setX(entityCol->getX() + holder.w);
+					std::cout << "left" << std::endl;
+				}
+			}
+		}
+
+		if (SDL_IntersectRect(&rectEntityY, &rectCollidable, &holder))
+		{
+			if (m_entities.at(entityIndex)->ID() == "Player")
+			{
+				if (entityCol->getPreviousY() < entityCol->getY())
+				{
+					entityCol->setY(entityCol->getY() - holder.h);
+					std::cout << "top" << std::endl;
+				}
+				else if (entityCol->getPreviousY() > entityCol->getY())
+				{
+					entityCol->setY(entityCol->getY() + holder.h);
+					std::cout << "bottom" << std::endl;
+				}
+			}
+		}
+
+				//for (int i = 0; i < m_entities.at(entityIndex)->GetComponents()->size(); i++)
+				//{
+				//	if (m_entities.at(entityIndex)->GetComponents()->at(i)->Type() == "movement")
+				//	{
+				//		if (entityCol->getPreviousX() < entityCol->getX())
+				//		{
+				//			static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(i))->setXVelocity(0);
+				//			//entityCol->setX(entityCol->getPreviousX());
+				//			std::cout << "right" << std::endl;
+				//		}
+				//		else if (entityCol->getPreviousX() > entityCol->getX())
+				//		{
+				//			static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(i))->setXVelocity(0);
+				//			//entityCol->setX(entityCol->getPreviousX());
+				//			std::cout << "left" << std::endl;
+				//		}
+				//
+				//		if (entityCol->getPreviousY() < entityCol->getY())
+				//		{
+				//			static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(i))->setYVelocity(0);
+				//			//entityCol->setY(entityCol->getPreviousY());
+				//			std::cout << "right" << std::endl;
+				//		}
+				//		else if (entityCol->getPreviousY() > entityCol->getY())
+				//		{
+				//			static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(i))->setYVelocity(0);
+				//			//entityCol->setY(entityCol->getPreviousY());
+				//			std::cout << "left" << std::endl;
+				//		}
+				//		
+				//		//if (entityCol->getPreviousY() < entityCol->getY())
+				//		//{
+				//		//	entityCol->setY(entityCol->getY() - holder.h);
+				//		//	std::cout << "bottom" << std::endl;
+				//		//}
+				//		//else if (entityCol->getPreviousY() > entityCol->getY())
+				//		//{
+				//		//	entityCol->setY(entityCol->getY() + holder.h);
+				//		//	std::cout << "top" << std::endl;
+				//		//}
+				//	}
+				//	//if (entityCol->getPreviousX() < entityCol->getX())
+				//	//{
+				//	//	entityCol->setX(entityCol->getX() - holder.w);
+				//	//	std::cout << "right" << std::endl;
+				//	//}
+				//	//else if (entityCol->getPreviousX() > entityCol->getX())
+				//	//{
+				//	//	entityCol->setX(entityCol->getX() + holder.w);
+				//	//	std::cout << "left" << std::endl;
+				//	//}
+				//	//
+				//	//if (entityCol->getPreviousY() < entityCol->getY())
+				//	//{
+				//	//	entityCol->setY(entityCol->getY() - holder.h);
+				//	//	std::cout << "bottom" << std::endl;
+				//	//}
+				//	//else if (entityCol->getPreviousY() > entityCol->getY())
+				//	//{
+				//	//	entityCol->setY(entityCol->getY() + holder.h);
+				//	//	std::cout << "top" << std::endl;
+				//	//}
+				//}
+				//if (entityCol->getPreviousX() < entityCol->getX())
+				//{
+				//	entityCol->setX(entityCol->getX() - holder.w);
+				//	std::cout << "right" << std::endl;
+				//}
+				//else if (entityCol->getPreviousX() > entityCol->getX())
+				//{
+				//	entityCol->setX(entityCol->getX() + holder.w);
+				//	std::cout << "left" << std::endl;
+				//}
+				//
+				//if (entityCol->getPreviousY() < entityCol->getY())
+				//{
+				//	entityCol->setY(entityCol->getY() - holder.h);
+				//	std::cout << "bottom" << std::endl;
+				//}
+				//else if (entityCol->getPreviousY() > entityCol->getY())
+				//{
+				//	entityCol->setY(entityCol->getY() + holder.h);
+				//	std::cout << "top" << std::endl;
+				//}
+			//}
+		//}
+	}
+	else
+	{
+		if (m_entities.at(entityIndex)->ID() == "Projectile")
+		{
+			if (m_collidableEntities.at(collidableIndex)->ID() == "Spellcaster Enemy")
+			{
+				projectileCollision(entityIndex);
 				spellcasterCollision(entityIndex);
 			}
 		}
-		//else if (m_entities.at(entityIndex)->ID() == "Princess")
-		//{
-		//
-		//}
 	}
 }
 
@@ -149,19 +268,16 @@ void CollisionSystem::projectileCollision(int index)
 	// find projectile component in collidable
 	// set ttl to 0
 
-
-
-	//for (int i = 0; i < m_collidableEntities.at(index)->GetComponents()->size(); i++)
-	//{
-	//	if (m_collidableEntities.at(index)->GetComponents()->at(i)->Type() == "PJ")
-	//	{
-	//		static_cast<ProjectileComponent*>(m_collidableEntities.at(index)->GetComponents()->at(i))->setTimeToLive(0);
-	//		std::cout << "DE WEI" << std::endl;
-	//	}
-	//}
+	for (int i = 0; i < m_entities.at(index)->GetComponents()->size(); i++)
+	{
+		if (m_entities.at(index)->GetComponents()->at(i)->Type() == "PJ")
+		{
+			static_cast<ProjectileComponent*>(m_entities.at(index)->GetComponents()->at(i))->setTimeToLive(0);
+		}
+	}
 }
 
 void CollisionSystem::spellcasterCollision(int index)
 {
-	//std::cout << "OH NO" << std::endl;
+	std::cout << "OH NO" << std::endl;
 }

@@ -9,17 +9,9 @@ SystemManager::SystemManager(ResourceManager *resourceManager, SDL_Renderer* gam
 void SystemManager::Update(float deltaTime)
 {
 	if (controlSystem->Active()) { controlSystem->Update(); }
-	if (movementSystem->Active()) { movementSystem->Update(deltaTime); }
-	if (renderSystem->Active()) { renderSystem->Update(); }
 	if (attackSystem->Active()) { attackSystem->Update(deltaTime); }
 	if (aiSystem->Active()) { aiSystem->Update(deltaTime); }
 	if (collisionSystem->Active()) { collisionSystem->Update(); }
+	if (movementSystem->Active()) { movementSystem->Update(deltaTime); }
+	if (renderSystem->Active()) { renderSystem->Update(); }
 }
-
-
-//void SystemManager::Update()
-//{
-//	if (MovementSystem->Active()) { MovementSystem->Update(); }
-//	if (ControlSystem->Active()) { ControlSystem->Update(); }
-//	if (RenderSystem->Active()) { RenderSystem->Update(); }
-//}

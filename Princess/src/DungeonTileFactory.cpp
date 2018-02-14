@@ -5,7 +5,7 @@ Entity* DungeonTileFactory::Wall(std::string textureID, int x, int y, int scale)
 	Entity* temp = new Entity("Wall");
 	temp->AddComponent(new SpriteComponent(textureID, 0, 0, 0, 0, 16, 16, 0));
 	temp->AddComponent(new PositionComponent(x * 16 * scale, y * 16 * scale));
-	temp->AddComponent(new CollisionComponent(x * 16, y * 16, 16, 16));
+	temp->AddComponent(new CollisionComponent(x * 16 * scale, y * 16 * scale, 16, 16));
 	temp->Active(true);
 
 	return temp;

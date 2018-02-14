@@ -2,8 +2,8 @@
 #include "stdafx.h"
 #include <list>
 #include "Entity.h"
-#include "PositionComponent.h"
-#include "SpriteComponent.h"
+#include "CollisionComponent.h"
+
 using namespace std;
 
 class Quadtree 
@@ -24,8 +24,8 @@ public:
 	void updateBounds(SDL_Rect b) { bounds = b; }
 
 private:
-	int MAX_OBJECTS = 16;
-	int MAX_LEVELS = 10;
+	int MAX_OBJECTS = 8;
+	int MAX_LEVELS = 8;
 
 	int level;
 	std::vector<Entity*> objects;
