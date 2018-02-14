@@ -49,7 +49,7 @@ void DecisionTree::CreateRootNode(int NodeID)
 }
 
 //Step 5.1!~
-void DecisionTree::AddNode1(int ExistingNodeID, int NewNodeID)
+void DecisionTree::AddNode1(TreeNodes* base, int ExistingNodeID, int NewNodeID)
 {
 	//check to make sure you have a root node. can't add another node without a root node
 	if (m_RootNode == NULL)
@@ -58,14 +58,14 @@ void DecisionTree::AddNode1(int ExistingNodeID, int NewNodeID)
 		return;
 	}
 
-	if (SearchAddNode1(m_RootNode, ExistingNodeID, NewNodeID))
+	if (SearchAddJank1(base, ExistingNodeID, NewNodeID))
 	{
 		cout << "Added Node Type1 With ID " << NewNodeID << " onto Branch Level " << ExistingNodeID << endl;
 	}
 	else
 	{
 		//check
-		cout << "Node: " << ExistingNodeID << " Not Found.";
+		/*cout << "Node: " << ExistingNodeID << " Not Found.";*/
 	}
 
 	m_Size++;
@@ -116,12 +116,6 @@ void DecisionTree::printLeafNodes(TreeNodes* root) //this perfectly searches the
 bool DecisionTree::SearchAddNode1(TreeNodes *CurrentNode, int ExistingNodeID, int NewNodeID)
 {
 
-	if (ExistingNodeID == 3 && NewNodeID == 6)
-	{
-		int q = 5;
-		q -= 5;
-	}
-
 	//if there is a node
 	if (CurrentNode->m_NodeID == ExistingNodeID)
 	{
@@ -165,12 +159,150 @@ bool DecisionTree::SearchAddNode1(TreeNodes *CurrentNode, int ExistingNodeID, in
 	//	m_lastNode = CurrentNode;
 		CurrentNode->setEnd(true);
 
-		return(SearchAddNode1(m_RootNode->NewBranch2, ExistingNodeID, NewNodeID));
+
+
+		return(SearchAddNode1(m_RootNode->NewBranch2, ExistingNodeID, NewNodeID)); //this is janky for dynamic tree size 
+
+
+
 		//return false;
 	}
 	return false;
 }
 
+bool DecisionTree::searchNodes(TreeNodes* currentNode, int ExistingNodeID, int NewNodeID) //this perfectly searches the tree in order  1 2 4 5 1 3 6 7!
+{
+	//// if node is null, return
+	//if (!currentNode)
+	//{
+	//	return false;
+	//}
+
+	//									// if node is leaf node, print its data   
+
+
+	//if (!currentNode->NewBranch1 && !currentNode->NewBranch2)
+	//{
+	//	//	cout << "leaf: " << currentNode->m_NodeID << endl;
+
+	////	return false;
+	//}
+
+	// if left child exists, check for leaf 
+	// recursively
+
+
+	
+
+	if (currentNode->NewBranch1) //if option one, go left
+	{
+		cout << "go left at " << currentNode->m_NodeID << endl;
+
+		SearchAddJank1(currentNode->NewBranch1, ExistingNodeID, NewNodeID);
+	}
+
+	// if right child exists, check for leaf 
+	// recursively
+	if (currentNode->NewBranch2) //if option 2, go right
+	{
+		cout << "go right at " << currentNode->m_NodeID << endl;
+
+		SearchAddJank1(currentNode->NewBranch2, ExistingNodeID, NewNodeID);
+	}
+
+	if (currentNode->m_NodeID == NewNodeID) //get outta here when we're done
+	{
+		return true;
+	}
+	else
+	{
+		if (currentNode->m_NodeID % 2 == 0)
+		{
+			searchNodes(currentNode->NewBranch1, ExistingNodeID, NewNodeID); //check left branch node next
+		}
+		else
+		{
+			searchNodes(currentNode->NewBranch2, ExistingNodeID, NewNodeID); //right branch node next
+		}
+	}
+
+
+}
+
+
+
+// function to print leaf 
+// nodes from left to right
+bool DecisionTree::SearchAddJank1(TreeNodes* CurrentNode, int ExistingNodeID, int NewNodeID) //this perfectly searches the tree in order  1 2 4 5 1 3 6 7!
+{
+	m_RootNode;
+
+
+	if (CurrentNode->m_NodeID == NewNodeID) //end it all when the current node ID is the added node.
+	{
+		return false; 
+	}
+
+	// if node is null, return
+	if (!CurrentNode)
+	{
+		return false;
+	}
+
+	//if (CurrentNode->NewBranch1 == NULL)
+	//{
+	//	CurrentNode->NewBranch1 = new TreeNodes(NewNodeID);
+	//}
+	//else
+	//{
+	//	CurrentNode->NewBranch1 = new TreeNodes(NewNodeID);
+	//}
+
+// if node is leaf node, print its data    
+
+	if (!CurrentNode->NewBranch1)// && CurrentNode->m_NodeID == ExistingNodeID) 
+	{
+		if (!CurrentNode->NewBranch1 && NewNodeID % 2 == 0) //
+		{
+			CurrentNode->NewBranch1 = new TreeNodes(NewNodeID);
+			SearchAddJank1(CurrentNode->NewBranch1, ExistingNodeID, NewNodeID);
+			//add left node
+		}
+	
+	/*	else
+		{
+			cout << "well that was unexpected" << endl;
+		}*/
+
+		return true;
+	}
+
+	if (!CurrentNode->NewBranch2)// && CurrentNode->m_NodeID == ExistingNodeID)
+	{
+		if (!CurrentNode->NewBranch2 && NewNodeID % 2 != 0)
+		{
+			CurrentNode->NewBranch2 = new TreeNodes(NewNodeID);
+			SearchAddJank1(CurrentNode->NewBranch2, ExistingNodeID, NewNodeID);
+			//add right node
+		}
+
+		//else
+		//{
+		//	cout << "well that was unexpected" << endl;
+		//}
+
+	}
+
+	if (CurrentNode->m_NodeID % 2 == 0)
+	{
+		SearchAddJank1(CurrentNode->NewBranch1, ExistingNodeID, NewNodeID); //check left branch node next
+	}
+	else
+	{
+		SearchAddJank1(CurrentNode->NewBranch2, ExistingNodeID, NewNodeID); //right branch node next
+	}
+
+}
 
 
 ////Step 6.1!~ search and add new node to current node

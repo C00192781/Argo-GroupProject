@@ -104,35 +104,49 @@ void AiSystem::Spawn()
 	//add nodes depending on decisions
 	//2nd decision to be made
 	//is monster strength greater than player strength?
-	m_decisionTree->AddNode1(1, 2);
 
-	//3rd decision
-	//is the monster closer than home base?
-	m_decisionTree->AddNode2(1, 3);
 
 	//depending on the weights of all three decisions, will return certain node result
 	//results!
 	//Run, Attack, 
-	m_decisionTree->AddNode1(2, 4);
-	m_decisionTree->AddNode2(2, 5);
-
-	m_decisionTree->AddNode1(3,6); //fix addnodes to support larger treesizes soontm.
-	m_decisionTree->AddNode2(3, 7);
 
 
 
+	//$$$
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode, 1, 2);
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode, 1, 3);
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1, 2, 4);
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1, 2, 5);
+
+
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch2, 3,6); //fix addnodes to support larger treesizes soontm.
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch2, 3, 7);
+//	m_decisionTree->printLeafNodes(m_decisionTree->m_RootNode); //this worky workies
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1->NewBranch1, 4,8);
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1->NewBranch1, 4, 9);
+
+
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1->NewBranch2, 5, 10);
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1->NewBranch2, 5, 11);
+
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch2->NewBranch1, 6, 12);
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch2->NewBranch1, 6, 13);
+
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch2->NewBranch2, 7, 14);
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch2->NewBranch2, 7, 15);
+
+	//$$$
 	m_decisionTree->printLeafNodes(m_decisionTree->m_RootNode); //this worky workies
 
 
-	//////m_decisionTree->AddNode1(5, 10);
-	//////m_decisionTree->AddNode2(5, 11);
+//	m_decisionTree->AddNode2(5, 11);
 
 
-	//////m_decisionTree->AddNode1(6, 12);
-	//////m_decisionTree->AddNode2(6, 13);
+	//m_decisionTree->AddNode1(6, 12);
+	//m_decisionTree->AddNode2(6, 13);
 
-	//////m_decisionTree->AddNode1(7, 14);
-	//////m_decisionTree->AddNode2(7, 15);
+	//m_decisionTree->AddNode1(7, 14);
+	//m_decisionTree->AddNode2(7, 15);
 
 	//Others: Run to Base ++ Strength, Surrender Monster/Player, 
 	//needs to be made recursive, that way when strength++ it affects decisions second time around DT
