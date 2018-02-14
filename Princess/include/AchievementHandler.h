@@ -2,6 +2,10 @@
 #include "ConcreteObserver.h"
 #include "ConcreteSubject.h"
 #include "SystemManager.h"
+#include "nlohmann\json.hpp"
+
+// for convenience
+using json = nlohmann::json;
 
 class AchievementHandler
 {
@@ -19,4 +23,6 @@ private:
 
 	bool activated1, activated2, activated3, activated4,
 		activated5, activated6;
+
+	json j;
 };

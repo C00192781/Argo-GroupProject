@@ -22,12 +22,31 @@ void AchievementHandler::Init()
 	observers.push_back(achievement5);
 	observers.push_back(achievement6);
 
-	activated1 = false;
-	activated2 = false;
-	activated3 = false;
-	activated4 = false;
-	activated5 = false;
-	activated6 = false;
+	// Read from JSON file
+	json achievement;
+	std::ifstream achievement_file("Achievements.json", std::ifstream::binary);
+	achievement_file >> achievement;
+
+	std::cout << achievement["achievement1"] << std::endl;
+
+	activated1 = achievement["achievement1"];
+	activated2 = achievement["achievement2"];
+	activated3 = achievement["achievement3"];
+	activated4 = achievement["achievement4"];
+	activated5 = achievement["achievement5"];
+	activated6 = achievement["achievement6"];
+
+	j["achievement1"] = achievement["achievement1"];
+	j["achievement2"] = achievement["achievement2"];
+	j["achievement3"] = achievement["achievement3"];
+	j["achievement4"] = achievement["achievement4"];
+	j["achievement5"] = achievement["achievement5"];
+	j["achievement6"] = achievement["achievement6"];
+
+	// write to JSON file
+	std::ofstream o("Achievements.json");
+	//o << std::setw(6) << j << std::endl;
+	o << j << std::endl;
 }
 
 void AchievementHandler::HandleAchievements()
@@ -44,6 +63,11 @@ void AchievementHandler::HandleAchievements()
 
 		subject.ChangeStatus(true);
 		activated1 = true;
+
+		j["achievement1"] = activated1;
+		std::ofstream o("Achievements.json");
+		o << j << std::endl;
+
 	}
 
 	//if (m_achievementListener->achievement1 == true && activated1 == false)
