@@ -22,10 +22,6 @@ void ControlSystem::Update()
 			{
 				mcKey = j;
 			}
-			//else if (m_entities.at(i)->GetComponents()->at(j)->Type() == "PJ")
-			//{
-			//	pjKey = j;
-			//}
 			else if (m_entities.at(i)->GetComponents()->at(j)->Type() == "weapon")
 			{
 				wcKey = j;
@@ -75,3 +71,4 @@ void ControlSystem::Update()
 		}
 	}
 }
+

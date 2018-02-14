@@ -86,7 +86,6 @@ void RenderSystem::Update()
 		holder.insert(holder.end(), foregroundHolder.begin(), foregroundHolder.end());
 		holder.insert(holder.end(), finalgroundHolder.begin(), finalgroundHolder.end());
 		holder.insert(holder.end(), hudHolder.begin(), hudHolder.end());
-
 		std::vector<Entity*> entHolder;
 		m_positionComponent.clear();
 		m_spriteComponent.clear();
@@ -128,14 +127,21 @@ void RenderSystem::Update()
 				m_positionComponent.at(i)->getY(),
 				m_spriteComponent.at(i)->Width() * (int)m_scale,
 				m_spriteComponent.at(i)->Height() * (int)m_scale };
-			if (m_cameraOn)
-			{
-				holderRect.x = (holderRect.x - offsetX) + m_camera.x / 2;
-				holderRect.y = (holderRect.y - offsetY) + m_camera.y / 2;
-			}
-			if (holderRect.x >= -(m_camera.x * 0.1) && holderRect.x <= m_camera.x && holderRect.y > -(m_camera.y * 0.1) && holderRect.y < m_camera.y)
+			if (m_spriteComponent.at(i)->Relative())
 			{
 				SDL_RenderCopy(m_renderer, m_resourceManager->GetTexture(m_spriteComponent.at(i)->Sheet()), &m_spriteComponent.at(i)->GetRect(), &holderRect);
+			}
+			else
+			{
+				if (m_cameraOn)
+				{
+					holderRect.x = (holderRect.x - offsetX) + m_camera.x / 2;
+					holderRect.y = (holderRect.y - offsetY) + m_camera.y / 2;
+				}
+				if (holderRect.x >= -(m_camera.x * 0.1) && holderRect.x <= m_camera.x && holderRect.y > -(m_camera.y * 0.1) && holderRect.y < m_camera.y)
+				{
+					SDL_RenderCopy(m_renderer, m_resourceManager->GetTexture(m_spriteComponent.at(i)->Sheet()), &m_spriteComponent.at(i)->GetRect(), &holderRect);
+				}
 			}
 		}
 	}

@@ -15,6 +15,9 @@
 #include "CollisionComponent.h"
 #include "CollisionSystem.h"
 #include "AttributesComponent.h"
+#include "TextComponent.h"
+#include "TextRenderSystem.h"
+#include "ButtonComponent.h"
 #include "HealthSystem.h"
 #include "HeartComponent.h"
 #include "AISystem.h"
@@ -23,6 +26,8 @@
 #include "SystemManager.h"
 #include "LTimer.h"
 #include "WorldMap.h"
+#include "TownInstance.h"
+
 int main()
 {
 	SDL_Window* gameWindow = SDL_CreateWindow("TEST", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 816, 624, SDL_WINDOW_SHOWN);
@@ -64,13 +69,14 @@ int main()
 	resourceManager->AddTexture("Arrow", "Arrow.png");
 	resourceManager->AddTexture("HeartsSheet", "heartSpriteSheet.png");
 	resourceManager->AddTexture("ArmourSheet", "armourSpriteSheet.png");
-
 	resourceManager->AddTexture("WorldTurf", "World_Turfs.png");
+	resourceManager->AddTexture("Button", "Button.png");
 
+	resourceManager->AddFont("ComicSans", "ComicSans.ttf", 32);
 
 	EventListener *listener = new EventListener();
 
-	InputHandler *input = new InputHandler(listener,e);
+	InputHandler *input = new InputHandler(listener, e);
 
 	StateManager state;
 
@@ -81,36 +87,43 @@ int main()
 	systemManager.controlSystem = new ControlSystem(listener);
 	systemManager.controlSystem->Active(true);
 
-	systemManager.movementSystem = new MovementSystem(816, 624);
+	systemManager.movementSystem = new MovementSystem();
 	systemManager.movementSystem->Active(true);
+
 	systemManager.renderSystem = new RenderSystem(resourceManager, gameRenderer);
 	systemManager.renderSystem->Active(true);
 	systemManager.renderSystem->SetScale(3);
 	systemManager.renderSystem->Camera(true);
 	systemManager.renderSystem->Camera(816, 624);
 
+	systemManager.textRenderSystem = new TextRenderSystem(resourceManager, gameRenderer);
+	systemManager.textRenderSystem->Active(true);
+
 	systemManager.attackSystem = new AttackSystem(projectiles);
 	systemManager.attackSystem->Active(true);
+
 	systemManager.projectileSystem = new ProjectileSystem();
 	systemManager.projectileSystem->Active(true);
 
-	systemManager.collisionSystem = new CollisionSystem(SDL_Rect{ 0 , 0, 5000, 5000 });
+	systemManager.collisionSystem = new CollisionSystem();
 	systemManager.collisionSystem->Active(true);
+
 	systemManager.aiSystem = new AiSystem();
 	systemManager.aiSystem->Active(true);
+
 	systemManager.healthSystem = new HealthSystem();
 	systemManager.healthSystem->Active(true);
 
-	//BattleMap map1 = BattleMap(&systemManager, &state);
-	//map1.Generate("Grassland");
+	systemManager.buttonSystem = new ButtonSystem(listener);
+	systemManager.buttonSystem->Active(true);
 
 	Entity * player = new Entity("Player");
 	player->Active(true);
-	player->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
-	player->AddComponent(new PositionComponent(SDL_Point{ 500, 380 }));
+	player->AddComponent(new SpriteComponent("Red", 3, 1, 0, 0, 16, 16, 0));
+	player->AddComponent(new PositionComponent(SDL_Point{ 0, 0 }));
 	player->AddComponent(new AttributesComponent(26, 26, 10, 10, 100, 100));
 	player->AddComponent(new MovementComponent());
-	player->AddComponent(new WeaponComponent(WeaponType::STAFF));
+	player->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
 	player->Transient(true);
 
@@ -121,8 +134,11 @@ int main()
 	systemManager.collisionSystem->AddEntity(player);
 	systemManager.attackSystem->AddEntity(player);
 
-	WorldMap* m = new WorldMap(&systemManager, &state);
-	m->Generate(25, 25, 100);
+	TownInstance t = TownInstance(&systemManager);
+	t.Generate("dicks");
+
+	//WorldMap* m = new WorldMap(&systemManager, &state);
+	//m->Generate(25, 25, 100);
 
 	bool heartTest = true;
 
@@ -138,7 +154,7 @@ int main()
 		//Set text to be rendered
 		if (avgFPS > 1)
 		{
-			cout << "FPS (With Cap) " << avgFPS << endl;;
+			//cout << "FPS (With Cap) " << avgFPS << endl;;
 		}
 		//update ren
 		++countedFrames;
@@ -151,7 +167,6 @@ int main()
 			SDL_Delay(SCREEN_TICKS_PER_FRAME - frameTicks);
 
 			currentTime = SDL_GetTicks();
-
 			if (currentTime > lastTime)
 			{
 				deltaTime = ((float)(currentTime - lastTime)) / 1000;
@@ -161,7 +176,7 @@ int main()
 				lastTime = currentTime;
 			}
 
-			SDL_SetRenderDrawColor(gameRenderer, 255, 255, 255, 0);
+			SDL_SetRenderDrawColor(gameRenderer, 0, 0, 0, 0);
 			SDL_RenderClear(gameRenderer);
 
 			systemManager.Update(deltaTime);

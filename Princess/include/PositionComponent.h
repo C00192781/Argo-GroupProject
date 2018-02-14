@@ -16,8 +16,8 @@ public:
 	PositionComponent(SDL_Point pos)
 	{
 		m_type = "PC";
-		m_x = 0;
-		m_y = 0;
+		m_x = pos.x;
+		m_y = pos.y;
 	};
 
 	~PositionComponent() {};

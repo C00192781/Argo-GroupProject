@@ -3,6 +3,9 @@
 HealthSystem::HealthSystem()
 {
 	timer = 0;
+	m_entities.push_back(new Entity("Null"));
+	delete m_entities.back();
+	m_entities.clear();
 }
 
 HealthSystem::~HealthSystem()
