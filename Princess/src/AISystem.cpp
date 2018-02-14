@@ -43,6 +43,7 @@ void AiSystem::Spawn()
 	//results!
 	//Run, Attack, 
 
+	
 
 
 	//$$$
@@ -72,6 +73,9 @@ void AiSystem::Spawn()
 
 	SDL_Point p{ 300,0 };
 	
+
+	m_compIDVec.clear();
+
 	characterFactory = new Princess();
 	m_entities.push_back(characterFactory->CharA("Red", p, 0));
 	m_entities.back()->Active(true);
@@ -82,11 +86,14 @@ void AiSystem::Spawn()
 	
 	for (int i = 0; i < 1; i++)
 	{
+		m_entities.push_back(characterFactory->CharC("Demon", SDL_Point{  }, 0));
 
-		m_entities.push_back(characterFactory->CharC("Demon", SDL_Point{ rand() % 812, rand() % 624 }, 0));
+		//m_entities.push_back(characterFactory->CharC("Demon", SDL_Point{ rand() % 812, rand() % 624 }, 0));
 
 		m_entities.back()->Active(true);
 	}
+
+
 }
 
 
@@ -109,7 +116,7 @@ std::vector<Entity*> AiSystem::getEntities()
 }
 
 
-void AiSystem::seek(int entityIndex, int pcKey, int mcKey, int seekKey, int attributeKey, float tarX, float tarY)
+void AiSystem::seek(int entityIndex, int pcKey, int mcKey, int seekKey, int attributeKey, float tarX, float tarY, int behaviour)
 {
 
 
@@ -128,9 +135,20 @@ void AiSystem::seek(int entityIndex, int pcKey, int mcKey, int seekKey, int attr
 		x *= static_cast<AttributesComponent*>(m_entities.at(entityIndex)->GetComponents()->at(attributeKey))->MovementSpeed();
 		y *= static_cast<AttributesComponent*>(m_entities.at(entityIndex)->GetComponents()->at(attributeKey))->MovementSpeed();
 
-		static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setXVelocity(x);
-		static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setYVelocity(y);
+		if (behaviour == 0)
+		{
+			static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setXVelocity(x);
+			static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setYVelocity(y);
+		}
+		if (behaviour == 1)
+		{
+			static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setXVelocity(-x);
+			static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setYVelocity(-y);
+		}
 	}
+
+
+
 	//else
 	//{
 	//	static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setXVelocity(0);
@@ -250,7 +268,7 @@ void AiSystem::Update(float deltaTime)
 
 		//	int decision = m_decisionTree->getDecision();
 
-			int decision = 10;
+			int decision = 15;
 
 			if (decision == 8 || decision == 9)
 			{
@@ -262,7 +280,7 @@ void AiSystem::Update(float deltaTime)
 
 			else if (decision == 10 || decision == 11)
 			{
-				int tw = m_entities.at(i)->FindComponentIndex("PC");
+				int tw = m_entities.at(i)->FindComponentIndex("PC"); //move index finding to spawn, 
 				int tx = m_entities.at(i)->FindComponentIndex("movement");
 				int ty = m_entities.at(i)->FindComponentIndex("seek");
 				int tz = m_entities.at(i)->FindComponentIndex("attribute");
@@ -284,7 +302,7 @@ void AiSystem::Update(float deltaTime)
 
 				cout << tarX << endl;
 				cout << tarY << endl;
-				seek(i, tw , tx, ty, tz, tarX, tarY); //refactor x and y to take in princess position or whatever player or whatever
+				seek(i, tw , tx, ty, tz, tarX, tarY, 0); //refactor x and y to take in princess position or whatever player or whatever
 				//seek
 			}
 		
@@ -294,6 +312,30 @@ void AiSystem::Update(float deltaTime)
 			}
 			else if (decision == 14 || decision == 15)
 			{
+				int tw = m_entities.at(i)->FindComponentIndex("PC");
+				int tx = m_entities.at(i)->FindComponentIndex("movement");
+				int ty = m_entities.at(i)->FindComponentIndex("seek");
+				int tz = m_entities.at(i)->FindComponentIndex("attribute");
+
+				float tarX = 0;
+				float tarY = 0;
+
+				for (int j = 0; j < m_entities.size(); j++)
+				{
+					if (m_entities.at(j)->ID() == "Princess")
+					{
+						//probably check for active here
+						auto tar = m_entities.at(j)->FindComponent("PC");
+						tarX = static_cast<PositionComponent*>(tar)->getX();
+						tarY = static_cast<PositionComponent*>(tar)->getY();
+						break;
+					}
+				}
+
+				cout << tarX << endl;
+				cout << tarY << endl;
+				seek(i, tw, tx, ty, tz, tarX, tarY, 1); //refactor x and y to take in princess position or whatever player or whatever
+														//seek
 				//flee
 			}
 						//do Spellcaster enemy things

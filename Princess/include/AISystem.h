@@ -22,7 +22,7 @@ public:
 	void Spawn(std::string id);
 	void Spawn();
 	std::vector<Entity*> getEntities();
-	void seek(int entityIndex, int pcKey, int mcKey, int seekKey, int attributeKey, float tarX, float tarY);
+	void seek(int entityIndex, int pcKey, int mcKey, int seekKey, int attributeKey, float tarX, float tarY, int behaviour);
 	void attack(int entityIndex, int attackKey, int mcKey);
 	void normalise(float &x, float &y);
 	float magnitude(float x, float y);
@@ -44,6 +44,8 @@ private:
 	std::vector<AttributesComponent*> m_attributesComponent;
 	std::vector<AttackComponent*> m_attackComponent;
 	std::vector<PositionComponent*> m_positionComponent;
+
+	std::vector<Entity*> m_compIDVec;
 
 	float m_time;
 };
