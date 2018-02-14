@@ -135,7 +135,7 @@ int main()
 	systemManager.attackSystem->AddEntity(player);
 
 	TownInstance t = TownInstance(&systemManager);
-	t.Generate("dicks");
+	t.Generate("jimmie");
 
 	//WorldMap* m = new WorldMap(&systemManager, &state);
 	//m->Generate(25, 25, 100);
