@@ -43,6 +43,7 @@
     <ClCompile Include="src\RenderSystem.cpp" />
     <ClCompile Include="src\System.cpp" />
     <ClCompile Include="src\SystemManager.cpp" />
+    <ClCompile Include="src\TextRenderSystem.cpp" />
     <ClCompile Include="src\TownInstance.cpp" />
     <ClCompile Include="src\WorldMap.cpp" />
     <ClCompile Include="src\WorldTileFactory.cpp" />
@@ -91,6 +92,8 @@
     <ClInclude Include="include\stdafx.h" />
     <ClInclude Include="include\System.h" />
     <ClInclude Include="include\SystemManager.h" />
+    <ClInclude Include="include\TextComponent.h" />
+    <ClInclude Include="include\TextRenderSystem.h" />
     <ClInclude Include="include\TileFactory.h" />
     <ClInclude Include="include\TownInstance.h" />
     <ClInclude Include="include\WeaponComponent.h" />

@@ -15,6 +15,7 @@ void ButtonSystem::Update()
 	SDL_GetMouseState(&x, &y);
 	for (int i = 0; i < m_entities.size(); i++)
 	{
+		std::cout << x << "," << y << std::endl;
 		SDL_Rect holderA = m_buttonComponents.at(i)->Rect();
 		holderA.x = m_positionComponents.at(i)->getX();
 		holderA.y = m_positionComponents.at(i)->getY();

@@ -33,6 +33,7 @@ public:
 		m_rect.w = width;
 		m_rect.h = height;
 		m_timer = 0;
+
 	};
 	~ButtonComponent() {};
 

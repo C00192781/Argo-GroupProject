@@ -12,6 +12,7 @@
 #include "CollisionSystem.h"
 #include "HealthSystem.h"
 #include "ButtonSystem.h"
+#include "TextRenderSystem.h"
 
 class SystemManager
 {
@@ -28,6 +29,7 @@ public:
 	HealthSystem * healthSystem;
 	AiSystem * aiSystem;
 	ButtonSystem * buttonSystem;
+	TextRenderSystem * textRenderSystem;
 
 
 	void Update(float deltaTime);

@@ -15,6 +15,8 @@
 #include "CollisionComponent.h"
 #include "CollisionSystem.h"
 #include "AttributesComponent.h"
+#include "TextComponent.h"
+#include "TextRenderSystem.h"
 #include "ButtonComponent.h"
 #include "HealthSystem.h"
 #include "HeartComponent.h"
@@ -24,6 +26,7 @@
 #include "SystemManager.h"
 #include "LTimer.h"
 #include "WorldMap.h"
+#include "TownInstance.h"
 
 int main()
 {
@@ -66,9 +69,10 @@ int main()
 	resourceManager->AddTexture("Arrow", "Arrow.png");
 	resourceManager->AddTexture("HeartsSheet", "heartSpriteSheet.png");
 	resourceManager->AddTexture("ArmourSheet", "armourSpriteSheet.png");
-
 	resourceManager->AddTexture("WorldTurf", "World_Turfs.png");
+	resourceManager->AddTexture("Button", "Button.png");
 
+	resourceManager->AddFont("ComicSans", "ComicSans.ttf", 32);
 
 	EventListener *listener = new EventListener();
 
@@ -85,41 +89,38 @@ int main()
 
 	systemManager.movementSystem = new MovementSystem();
 	systemManager.movementSystem->Active(true);
+
 	systemManager.renderSystem = new RenderSystem(resourceManager, gameRenderer);
 	systemManager.renderSystem->Active(true);
 	systemManager.renderSystem->SetScale(3);
 	systemManager.renderSystem->Camera(true);
 	systemManager.renderSystem->Camera(816, 624);
 
+	systemManager.textRenderSystem = new TextRenderSystem(resourceManager, gameRenderer);
+	systemManager.textRenderSystem->Active(true);
+
 	systemManager.attackSystem = new AttackSystem(projectiles);
 	systemManager.attackSystem->Active(true);
+
 	systemManager.projectileSystem = new ProjectileSystem();
 	systemManager.projectileSystem->Active(true);
 
 	systemManager.collisionSystem = new CollisionSystem();
 	systemManager.collisionSystem->Active(true);
+
 	systemManager.aiSystem = new AiSystem();
 	systemManager.aiSystem->Active(true);
+
 	systemManager.healthSystem = new HealthSystem();
 	systemManager.healthSystem->Active(true);
 
 	systemManager.buttonSystem = new ButtonSystem(listener);
 	systemManager.buttonSystem->Active(true);
 
-	SpriteComponent * s = new SpriteComponent("Red", 4, 1, 0, 0, 16, 16, 0);
-	s->Relative(true);
-
-	Entity * leButton = new Entity("Button");
-	leButton->AddComponent(new ButtonComponent(0,0,48,48));
-	leButton->AddComponent(new PositionComponent(SDL_Point{ 100, 100 }));
-	leButton->AddComponent(s);
-	leButton->Transient(true);
-
-
 	Entity * player = new Entity("Player");
 	player->Active(true);
 	player->AddComponent(new SpriteComponent("Red", 3, 1, 0, 0, 16, 16, 0));
-	player->AddComponent(new PositionComponent(SDL_Point{ 500, 380 }));
+	player->AddComponent(new PositionComponent(SDL_Point{ 0, 0 }));
 	player->AddComponent(new AttributesComponent(26, 26, 10, 10, 100, 100));
 	player->AddComponent(new MovementComponent());
 	player->AddComponent(new WeaponComponent(WeaponType::RANGE));
@@ -133,11 +134,11 @@ int main()
 	systemManager.collisionSystem->AddEntity(player);
 	systemManager.attackSystem->AddEntity(player);
 
-	systemManager.buttonSystem->AddEntity(leButton);
-	systemManager.renderSystem->AddEntity(leButton);
+	TownInstance t = TownInstance(&systemManager);
+	t.Generate("dicks");
 
-	WorldMap* m = new WorldMap(&systemManager, &state);
-	m->Generate(25, 25, 100);
+	//WorldMap* m = new WorldMap(&systemManager, &state);
+	//m->Generate(25, 25, 100);
 
 	bool heartTest = true;
 
@@ -175,7 +176,7 @@ int main()
 				lastTime = currentTime;
 			}
 
-			SDL_SetRenderDrawColor(gameRenderer, 255, 255, 255, 0);
+			SDL_SetRenderDrawColor(gameRenderer, 0, 0, 0, 0);
 			SDL_RenderClear(gameRenderer);
 
 			systemManager.Update(deltaTime);
