@@ -47,10 +47,15 @@ void CollisionSystem::UnloadComponent(int x)
 	//m_spriteComponent.shrink_to_fit();
 }
 
+void CollisionSystem::updateBounds(SDL_Rect bounds)
+{
+	m_bounds = bounds;
+	m_quadtree->updateBounds(bounds);
+}
+
 void CollisionSystem::Update()
 {
 	m_quadtree->clear();
-	m_quadtree->init();
 
 	for (int i = 0; i < m_entities.size(); i++)
 	{
@@ -82,26 +87,26 @@ void CollisionSystem::Update()
 
 				if (!m_collidableEntities.empty())
 				{
-					for (int j = 0; j < m_collidableEntities.size(); j++)
-					{
-						if (m_collidableEntities.at(j)->Active())
-						{
-							if (m_entities.at(i) != m_collidableEntities.at(j)) // doesn't collide with itself
-							{
-								int collisionKey2 = -1;
-
-								for (int k = 0; k < m_collidableEntities.at(j)->GetComponents()->size(); k++)
-								{
-									if (m_collidableEntities.at(j)->GetComponents()->at(k)->Type() == "collision")
-									{
-										collisionKey2 = k;
-									}
-								}
-
-								filterCollisions(i, collisionKey1, j, collisionKey2);
-							}
-						}
-					}
+				////	for (int j = 0; j < m_collidableEntities.size(); j++)
+				////	{
+				////		if (m_collidableEntities.at(j)->Active())
+				////		{
+				////			if (m_entities.at(i) != m_collidableEntities.at(j)) // doesn't collide with itself
+				////			{
+				////				int collisionKey2 = -1;
+				////
+				////				for (int k = 0; k < m_collidableEntities.at(j)->GetComponents()->size(); k++)
+				////				{
+				////					if (m_collidableEntities.at(j)->GetComponents()->at(k)->Type() == "collision")
+				////					{
+				////						collisionKey2 = k;
+				////					}
+				////				}
+				////
+				////				filterCollisions(i, collisionKey1, j, collisionKey2);
+				////			}
+				////		}
+				////	}
 				}
 			}
 		}

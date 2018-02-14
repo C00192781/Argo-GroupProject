@@ -15,16 +15,14 @@ public:
 	CollisionSystem();
 	CollisionSystem(SDL_Rect bounds);
 	~CollisionSystem();
-	int x1 = -22222;
-	int y1 = -22222;
-	int w1 = -22222;
-	int h1 = -22222;
-	int damage = 0;
-	bool collision = false;
+
+	//bool collision = false;
 	void LoadComponent();
 	void UnloadComponent(int x);
 
 	void Update();
+
+	void updateBounds(SDL_Rect bounds);
 private:
 	SDL_Rect m_bounds;
 	Quadtree* m_quadtree;

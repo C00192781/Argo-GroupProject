@@ -27,7 +27,8 @@ void DungeonMap::generate()
 	m_systemManager->renderSystem->SelectiveClear();
 	m_systemManager->movementSystem->SelectiveClear();
 
-	int randomMapNumber = rand() % 5;
+	//int randomMapNumber = rand() % 5;
+	int randomMapNumber = 0;
 	std::string mapName;
 
 	if (randomMapNumber == 0)
@@ -73,4 +74,6 @@ void DungeonMap::generate()
 			m_systemManager->renderSystem->AddEntity(m_entities.back());
 		}
 	}
+
+	m_systemManager->collisionSystem->updateBounds(SDL_Rect{0, 0, 16 * 24 * (int)m_systemManager->renderSystem->GetScale(), 16 * 24 * (int)m_systemManager->renderSystem->GetScale() });
 }

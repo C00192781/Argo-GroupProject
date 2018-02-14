@@ -35,20 +35,6 @@ void Quadtree::split()
 	nodes.push_back(new Quadtree(level + 1, SDL_Rect{ x + subWidth, y + subHeight, subWidth, subHeight }));
 }
 
-
-void Quadtree::init()
-{
-	int subWidth = (int)(bounds.w / 2);
-	int subHeight = (int)(bounds.h / 2);
-	int x = bounds.x;
-	int y = bounds.y;
-
-	nodes.push_back(new Quadtree(0, SDL_Rect{ x + subWidth, y, subWidth, subHeight }));
-	nodes.push_back(new Quadtree(0, SDL_Rect{ x, y, subWidth, subHeight }));
-	nodes.push_back(new Quadtree(0, SDL_Rect{ x, y + subHeight, subWidth, subHeight }));
-	nodes.push_back(new Quadtree(0, SDL_Rect{ x + subWidth, y + subHeight, subWidth, subHeight }));
-}
-
 /*
 * Determine which node the object belongs to. -1 means
 * object cannot completely fit within a child node and is part
