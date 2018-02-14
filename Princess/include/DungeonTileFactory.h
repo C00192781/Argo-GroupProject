@@ -8,8 +8,7 @@
 class DungeonTileFactory
 {
 public:
-	Entity* Wall(std::string textureID, int x, int y);
-	Entity* WallTop(std::string textureID, int x, int y);
-	Entity* Floor(std::string textureID, int x, int y);
-	Entity* Grass(std::string textureID, int x, int y);
+	Entity* Wall(std::string textureID, int x, int y, int scale);
+	Entity* Floor(std::string textureID, int x, int y, int scale);
+	Entity* Grass(std::string textureID, int x, int y, int scale);
 };

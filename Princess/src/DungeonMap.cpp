@@ -7,6 +7,10 @@ DungeonMap::DungeonMap(SystemManager * sm, StateManager * s, ResourceManager * r
 	m_resourceManager = rm;
 
 	m_resourceManager->AddMap("DungeonMap1", "DungeonMap1.json");
+	m_resourceManager->AddMap("DungeonMap2", "DungeonMap2.json");
+	m_resourceManager->AddMap("DungeonMap3", "DungeonMap3.json");
+	m_resourceManager->AddMap("DungeonMap4", "DungeonMap4.json");
+	m_resourceManager->AddMap("DungeonMap5", "DungeonMap5.json");
 
 	m_resourceManager->AddTexture("DungeonTiles", "Dungeon_Tiles.png");
 }
@@ -24,7 +28,6 @@ void DungeonMap::generate()
 	m_systemManager->movementSystem->SelectiveClear();
 
 	int randomMapNumber = rand() % 5;
-	randomMapNumber = 0; // ****REMOVE THIS LATER****
 	std::string mapName;
 
 	if (randomMapNumber == 0)
@@ -54,25 +57,20 @@ void DungeonMap::generate()
 	{
 		for (int j = 0; j < 24; j++)
 		{
-			if (m_resourceManager->GetMapElement(mapName, i, j) == "T")
+			if (m_resourceManager->GetMapElement(mapName, i, j) == "W")
 			{
-				m_entities.push_back(factory.WallTop("DungeonTiles", j, i));
-			}
-			else if (m_resourceManager->GetMapElement(mapName, j, i) == "W")
-			{
-				m_entities.push_back(factory.Wall("DungeonTiles", j, i));
+				m_entities.push_back(factory.Wall("DungeonTiles", j, i, m_systemManager->renderSystem->GetScale()));
+				m_systemManager->collisionSystem->AddEntity(m_entities.back());
 			}
 			else if (m_resourceManager->GetMapElement(mapName, i, j) == "F")
 			{
-				m_entities.push_back(factory.Floor("DungeonTiles", j, i));
+				m_entities.push_back(factory.Floor("DungeonTiles", j, i, m_systemManager->renderSystem->GetScale()));
 			}
 			else if (m_resourceManager->GetMapElement(mapName, i, j) == "B")
 			{
-				m_entities.push_back(factory.Grass("DungeonTiles", j, i));
+				m_entities.push_back(factory.Grass("DungeonTiles", j, i, m_systemManager->renderSystem->GetScale()));
 			}
 			m_systemManager->renderSystem->AddEntity(m_entities.back());
 		}
 	}
-
-	std::cout << "DONE" << std::endl;
 }
