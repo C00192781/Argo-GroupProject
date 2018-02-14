@@ -2,7 +2,9 @@
 
 ProjectileSystem::ProjectileSystem()
 {
-
+	m_entities.push_back(new Entity("Null"));
+	delete m_entities.back();
+	m_entities.clear();
 }
 
 

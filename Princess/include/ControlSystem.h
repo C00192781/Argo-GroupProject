@@ -22,6 +22,9 @@ public:
 		playerPos = SDL_Point{ 0,0 };
 		x = 0.0f;
 		y = 0.0f;
+		m_entities.push_back(new Entity("Null"));
+		delete m_entities.back();
+		m_entities.clear();
 	};
 	void LoadComponent() {};
 	void UnloadComponent(int x) {};

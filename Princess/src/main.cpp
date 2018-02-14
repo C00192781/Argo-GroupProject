@@ -76,7 +76,7 @@ int main()
 
 	EventListener *listener = new EventListener();
 
-	InputHandler *input = new InputHandler(listener,e);
+	InputHandler *input = new InputHandler(listener, e);
 
 	StateManager state;
 

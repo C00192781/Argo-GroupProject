@@ -4,6 +4,9 @@
 
 TextRenderSystem::TextRenderSystem(ResourceManager * r, SDL_Renderer * re)
 {
+	m_entities.push_back(new Entity("Null"));
+	delete m_entities.back();
+	m_entities.clear();
 	m_resources = r;
 	m_renderer = re;
 }

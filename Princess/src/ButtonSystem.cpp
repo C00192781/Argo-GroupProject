@@ -3,6 +3,9 @@
 ButtonSystem::ButtonSystem(EventListener * e)
 {
 	m_eventListener = e;
+	m_entities.push_back(new Entity("Null"));
+	delete m_entities.back();
+	m_entities.clear();
 }
 
 ButtonSystem::~ButtonSystem()

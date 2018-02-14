@@ -57,6 +57,7 @@
     <ClInclude Include="include\AISystem.h" />
     <ClInclude Include="include\AttackComponent.h" />
     <ClInclude Include="include\AttackSystem.h" />
+    <ClInclude Include="include\AttributesComponent.h" />
     <ClInclude Include="include\BasicEnemy.h" />
     <ClInclude Include="include\BattleMap.h" />
     <ClInclude Include="include\ButtonComponent.h" />
@@ -64,16 +65,15 @@
     <ClInclude Include="include\Character.h" />
     <ClInclude Include="include\CollisionComponent.h" />
     <ClInclude Include="include\CollisionSystem.h" />
-    <ClInclude Include="include\AttributesComponent.h" />
     <ClInclude Include="include\Component.h" />
     <ClInclude Include="include\ControlComponent.h" />
     <ClInclude Include="include\ControlSystem.h" />
     <ClInclude Include="include\Entity.h" />
+    <ClInclude Include="include\EventListener.h" />
     <ClInclude Include="include\Factory.h" />
     <ClInclude Include="include\GrassTileFactory.h" />
     <ClInclude Include="include\HealthSystem.h" />
     <ClInclude Include="include\HeartComponent.h" />
-    <ClInclude Include="include\EventListener.h" />
     <ClInclude Include="include\HeartManagerComponent.h" />
     <ClInclude Include="include\InputHandler.h" />
     <ClInclude Include="include\Instance.h" />

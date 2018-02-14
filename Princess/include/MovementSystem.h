@@ -8,7 +8,12 @@
 class MovementSystem : public System
 {
 public:
-	MovementSystem() {}
+	MovementSystem() 
+	{
+		m_entities.push_back(new Entity("Null"));
+		delete m_entities.back();
+		m_entities.clear();
+	}
 
 	void Update() {}
 	void Update(float deltaTime);

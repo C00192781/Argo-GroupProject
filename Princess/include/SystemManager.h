@@ -13,6 +13,16 @@
 #include "HealthSystem.h"
 #include "ButtonSystem.h"
 #include "TextRenderSystem.h"
+#include "PositionComponent.h"
+#include "SpriteComponent.h"
+#include "ProjectileComponent.h"
+#include "ProjectileSystem.h"
+#include "CollisionSystem.h"
+#include "AttributesComponent.h"
+#include "HeartManagerComponent.h"
+#include "AISystem.h"
+#include "CollisionSystem.h"
+#include "HealthSystem.h"
 
 class SystemManager
 {

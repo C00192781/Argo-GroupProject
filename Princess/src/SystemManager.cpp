@@ -2,7 +2,7 @@
 
 SystemManager::SystemManager(ResourceManager *resourceManager, SDL_Renderer* gameRenderer, EventListener *listener, std::vector<Entity*>* projectiles)
 {
-	
+
 }
 
 void SystemManager::Update(float deltaTime)

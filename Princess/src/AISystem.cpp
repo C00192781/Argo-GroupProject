@@ -4,6 +4,9 @@
 AiSystem::AiSystem()
 {
 	//m_thingy = 1;
+	m_entities.push_back(new Entity("Null"));
+	delete m_entities.back();
+	m_entities.clear();
 }
 
 

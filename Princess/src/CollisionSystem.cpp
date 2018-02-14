@@ -3,12 +3,18 @@
 CollisionSystem::CollisionSystem()
 {
 	m_quadtree = new Quadtree(0, SDL_Rect{ 0, 0, 812, 624 });
+	m_entities.push_back(new Entity("Null"));
+	delete m_entities.back();
+	m_entities.clear();
 }
 
 CollisionSystem::CollisionSystem(SDL_Rect bounds)
 {
 	m_bounds = bounds;
 	m_quadtree = new Quadtree(0, m_bounds);
+	m_entities.push_back(new Entity("Null"));
+	delete m_entities.back();
+	m_entities.clear();
 }
 
 CollisionSystem::~CollisionSystem()

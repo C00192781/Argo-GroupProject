@@ -1,6 +1,5 @@
 #include "MovementSystem.h"
 
-
 void MovementSystem::LoadComponent()
 {
 	//int pcKey = -1;
