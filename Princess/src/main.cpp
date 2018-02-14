@@ -36,6 +36,8 @@ int main()
 	SDL_Event *e = new SDL_Event();
 	unsigned int lastTime = 0;
 	float deltaTime = 0;
+
+
 	unsigned int currentTime = 0;
 	srand(time(NULL));
 

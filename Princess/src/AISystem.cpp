@@ -200,7 +200,6 @@ void AiSystem::Wander(int entityIndex, int pcKey, int mcKey, int seekKey, int at
 			static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->setYDestination(300 - mod2);
 		}
 
-
 	}
 
 
@@ -268,7 +267,7 @@ void AiSystem::Update(float deltaTime)
 
 		//	int decision = m_decisionTree->getDecision();
 
-			int decision = 15;
+			int decision = 10;
 
 			if (decision == 8 || decision == 9)
 			{
