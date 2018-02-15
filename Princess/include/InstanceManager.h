@@ -18,5 +18,6 @@ private:
 		EventListener *m_eventListener;
 		SystemManager * m_systemManager;
 		SDL_Renderer * m_sdlr;
+		int activeInstance;
 };
 
