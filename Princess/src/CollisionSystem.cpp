@@ -123,7 +123,7 @@ void CollisionSystem::filterCollisions(int entityIndex, int entityColIndex, int 
 	if (m_collidableEntities.at(collidableIndex)->ID() == "Wall")
 	{
 		SDL_Rect rectEntityX = { entityCol->getX(), entityCol->getPreviousY(), entityCol->getWidth(), entityCol->getHeight() };
-		SDL_Rect rectEntityY = { entityCol->getPreviousX(), entityCol->getPreviousY(), entityCol->getWidth(), entityCol->getHeight() };
+		SDL_Rect rectEntityY = { entityCol->getPreviousX(), entityCol->getY(), entityCol->getWidth(), entityCol->getHeight() };
 		
 		SDL_Rect rectCollidable = { collidableCol->getX(), collidableCol->getY(), collidableCol->getWidth(), collidableCol->getHeight() };
 
@@ -162,93 +162,6 @@ void CollisionSystem::filterCollisions(int entityIndex, int entityColIndex, int 
 				}
 			}
 		}
-
-				//for (int i = 0; i < m_entities.at(entityIndex)->GetComponents()->size(); i++)
-				//{
-				//	if (m_entities.at(entityIndex)->GetComponents()->at(i)->Type() == "movement")
-				//	{
-				//		if (entityCol->getPreviousX() < entityCol->getX())
-				//		{
-				//			static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(i))->setXVelocity(0);
-				//			//entityCol->setX(entityCol->getPreviousX());
-				//			std::cout << "right" << std::endl;
-				//		}
-				//		else if (entityCol->getPreviousX() > entityCol->getX())
-				//		{
-				//			static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(i))->setXVelocity(0);
-				//			//entityCol->setX(entityCol->getPreviousX());
-				//			std::cout << "left" << std::endl;
-				//		}
-				//
-				//		if (entityCol->getPreviousY() < entityCol->getY())
-				//		{
-				//			static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(i))->setYVelocity(0);
-				//			//entityCol->setY(entityCol->getPreviousY());
-				//			std::cout << "right" << std::endl;
-				//		}
-				//		else if (entityCol->getPreviousY() > entityCol->getY())
-				//		{
-				//			static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(i))->setYVelocity(0);
-				//			//entityCol->setY(entityCol->getPreviousY());
-				//			std::cout << "left" << std::endl;
-				//		}
-				//		
-				//		//if (entityCol->getPreviousY() < entityCol->getY())
-				//		//{
-				//		//	entityCol->setY(entityCol->getY() - holder.h);
-				//		//	std::cout << "bottom" << std::endl;
-				//		//}
-				//		//else if (entityCol->getPreviousY() > entityCol->getY())
-				//		//{
-				//		//	entityCol->setY(entityCol->getY() + holder.h);
-				//		//	std::cout << "top" << std::endl;
-				//		//}
-				//	}
-				//	//if (entityCol->getPreviousX() < entityCol->getX())
-				//	//{
-				//	//	entityCol->setX(entityCol->getX() - holder.w);
-				//	//	std::cout << "right" << std::endl;
-				//	//}
-				//	//else if (entityCol->getPreviousX() > entityCol->getX())
-				//	//{
-				//	//	entityCol->setX(entityCol->getX() + holder.w);
-				//	//	std::cout << "left" << std::endl;
-				//	//}
-				//	//
-				//	//if (entityCol->getPreviousY() < entityCol->getY())
-				//	//{
-				//	//	entityCol->setY(entityCol->getY() - holder.h);
-				//	//	std::cout << "bottom" << std::endl;
-				//	//}
-				//	//else if (entityCol->getPreviousY() > entityCol->getY())
-				//	//{
-				//	//	entityCol->setY(entityCol->getY() + holder.h);
-				//	//	std::cout << "top" << std::endl;
-				//	//}
-				//}
-				//if (entityCol->getPreviousX() < entityCol->getX())
-				//{
-				//	entityCol->setX(entityCol->getX() - holder.w);
-				//	std::cout << "right" << std::endl;
-				//}
-				//else if (entityCol->getPreviousX() > entityCol->getX())
-				//{
-				//	entityCol->setX(entityCol->getX() + holder.w);
-				//	std::cout << "left" << std::endl;
-				//}
-				//
-				//if (entityCol->getPreviousY() < entityCol->getY())
-				//{
-				//	entityCol->setY(entityCol->getY() - holder.h);
-				//	std::cout << "bottom" << std::endl;
-				//}
-				//else if (entityCol->getPreviousY() > entityCol->getY())
-				//{
-				//	entityCol->setY(entityCol->getY() + holder.h);
-				//	std::cout << "top" << std::endl;
-				//}
-			//}
-		//}
 	}
 	else
 	{
