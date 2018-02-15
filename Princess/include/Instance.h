@@ -15,7 +15,6 @@ public:
 	~Instance() {};
 
 	virtual void Update() = 0;
-	//virtual void Render() = 0;
 
 	std::string ID() { return m_id; };
 
@@ -23,8 +22,6 @@ protected:
 	std::string m_id;
 
 	std::vector<Entity*> m_entities;
-
-	TileFactory * m_factory;
 
 	SystemManager * m_systemManager;
 

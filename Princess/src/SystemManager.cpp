@@ -1,20 +1,20 @@
 #include "SystemManager.h"
 
+SystemManager::SystemManager(ResourceManager *resourceManager, SDL_Renderer* gameRenderer, EventListener *listener, std::vector<Entity*>* projectiles)
+{
+
+}
+
 void SystemManager::Update(float deltaTime)
 {
-	std::vector<Entity*>* projectiles = ProjectileSystem->getEntities();
-
-	if (CollisionSystem->Active()) { CollisionSystem->Update(); }
-	if (MovementSystem->Active()) { MovementSystem->Update(deltaTime); }
-	if (ControlSystem->Active())
-	{
-		ControlSystem->Update();
-		ControlSystem->getSystemEntities(projectiles);
-	}
-
-	if (RenderSystem->Active()) { RenderSystem->Update(); }
-	if (AiSystem->Active()) { AiSystem->Update(deltaTime); }
-	if (ProjectileSystem->Active()) { ProjectileSystem->Update(); }
+	if (controlSystem->Active()) { controlSystem->Update(); }
+	if (movementSystem->Active()) { movementSystem->Update(deltaTime); }
+	if (attackSystem->Active()) { attackSystem->Update(deltaTime); }
+	if (aiSystem->Active()) { aiSystem->Update(deltaTime); }
+	if (collisionSystem->Active()) { collisionSystem->Update(); }
+	if (buttonSystem->Active()) { buttonSystem->Update(); }
+	if (renderSystem->Active()) { renderSystem->Update(); }
+	if (textRenderSystem->Active()) { textRenderSystem->Update(); }
 	if (healthSystem->Active()) { healthSystem->Update(deltaTime); }
 	if (menuSystem->Active()) { menuSystem->Update(); }
 }

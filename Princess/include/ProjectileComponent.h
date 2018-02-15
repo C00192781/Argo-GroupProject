@@ -8,49 +8,65 @@ public:
 	ProjectileComponent()
 	{
 		m_type = "PJ";
-		shooterType = " ";
-		timeToLive = 0.0f;
-		m_orientation = 0.0f;
-		m_maxSpeed = 15;
-		
-	};
+		m_shooterType = "";
+		m_baseSpeed = 100;
+		m_timeToLive = 0;
+	}
 
-	ProjectileComponent(float orientation, std::string shooter, float timeLeft, float buttonPress, float maxSpeed, bool alive)
+	ProjectileComponent(float speed)
 	{
 		m_type = "PJ";
-		shooterType = shooter; 
-		timeToLive = timeLeft;
-		m_orientation = orientation; 
-		m_maxSpeed = maxSpeed;
-		buttonPressTime = buttonPress;
-		m_alive = alive;
-	};
+		m_shooterType = "";
+		m_baseSpeed = speed;
+		m_timeToLive = 0;
+	}
+	//ProjectileComponent()
+	//{
+	//	m_type = "PJ";
+	//	m_shooterType = " ";
+	//	m_timeToLive = 0.0f;
+	//	m_orientation = 0.0f;
+	//	m_maxSpeed = 15;
+	//	
+	//};
+	//
+	//ProjectileComponent(float orientation, std::string shooter, float timeLeft, float buttonPress, float maxSpeed, bool alive)
+	//{
+	//	m_type = "PJ";
+	//	m_shooterType = shooter; 
+	//	m_timeToLive = timeLeft;
+	//	m_orientation = orientation; 
+	//	m_maxSpeed = maxSpeed;
+	//	m_buttonPressTime = buttonPress;
+	//	m_alive = alive;
+	//};
 
 	~ProjectileComponent() {};
 
+	//void setMaxSpeed(float maxSpeed) { m_maxSpeed = maxSpeed; }
+	//void setButtonPressTime(float buttonPress) { m_buttonPressTime = buttonPress; }
+	//void setAliveStatus(bool alive) { m_alive = alive; }
+	//void setOrientation(float orientation) { m_orientation = orientation; };
+	void setShooterType(std::string type) { m_shooterType = type; }
+	void setTimeToLive(float timeLeft) { m_timeToLive = timeLeft; }
+	void setBaseSpeed(float speed) { m_baseSpeed = speed; }
 
-	void setOrientation(float orientation) { m_orientation = orientation; };
-	void setShooterType(std::string type) { shooterType = type; }
-	void setTimeToLive(float timeLeft) { timeToLive = timeLeft; }
-	void setMaxSpeed(float maxSpeed) { m_maxSpeed = maxSpeed; }
-	void setButtonPressTime(float buttonPress) { buttonPressTime = buttonPress; }
-	void setAliveStatus(bool alive) { m_alive = alive; }
+	//float getOrientation() { return m_orientation;  }
+	//float getMaxSpeed() { return m_maxSpeed; }
+	//float getButtonPressTime() { return m_buttonPressTime; }
+	float getTimeToLive() { return m_timeToLive; }
+	float getBaseSpeed() { return m_baseSpeed; }
+	std::string getType() { return m_shooterType; }
 
-	float getOrientation() { return m_orientation;  }
-	float getTimeToLive() { return timeToLive; }
-	float getMaxSpeed() { return m_maxSpeed; }
-	float getButtonPressTime() { return buttonPressTime; }
-	std::string getType() { return shooterType;  }
-
-	bool getAliveStatus() { return m_alive; }
+	//bool getAliveStatus() { return m_alive; }
 
 
 private:
-	float m_maxSpeed;
-	float m_orientation;
-	float timeToLive;
-	float buttonPressTime;
-	std::string shooterType;
-	bool m_alive;
+	float m_baseSpeed;
+	//float m_orientation;
+	float m_timeToLive;
+	//float m_buttonPressTime;
+	std::string m_shooterType;
+	//bool m_alive;
 };
 #endif

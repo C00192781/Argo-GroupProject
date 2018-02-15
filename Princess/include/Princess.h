@@ -8,6 +8,8 @@
 #include "MovementComponent.h"
 #include "AttributesComponent.h"
 #include "SeekComponent.h"
+#include "CollisionComponent.h"
+
 class Princess : public Character
 {
 public:

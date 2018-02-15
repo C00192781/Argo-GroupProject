@@ -58,10 +58,12 @@ void MenuSystem::Update()
 						SDL_Point p = SDL_Point{ -1, -1 };
 						SDL_GetMouseState(&p.x, &p.y);
 						SDL_Rect *r = &static_cast<SpriteComponent*>(menu->Buttons()->at(j)->GetComponents()->at(scKey))->GetRect();
-						SDL_Point *buttonPos = &static_cast<PositionComponent*>(menu->Buttons()->at(j)->GetComponents()->at(pcKey))->getPosition();
+						SDL_Point buttonPos = SDL_Point();
+						buttonPos.x = (int)static_cast<PositionComponent*>(menu->Buttons()->at(j)->GetComponents()->at(pcKey))->getX();
+						buttonPos.y = (int)static_cast<PositionComponent*>(menu->Buttons()->at(j)->GetComponents()->at(pcKey))->getY();
 						SDL_Rect rect = SDL_Rect();
-						rect.x = r->x + buttonPos->x;
-						rect.y = r->y + buttonPos->y;
+						rect.x = r->x + buttonPos.x;
+						rect.y = r->y + buttonPos.y;
 						rect.w = r->w*GAME_SCALE;
 						rect.h = r->h*GAME_SCALE;
 						if (SDL_PointInRect(&p, &rect) == true)
@@ -88,13 +90,13 @@ void MenuSystem::Update()
 								if (scKey >= 0 && buttonCKey >= 0)
 								{
 									static_cast<ButtonComponent*>(menu->Buttons()->at(menu->SelectedButtonIndex())->GetComponents()->at(buttonCTwoKey))->Selected(false);
-									static_cast<SpriteComponent*>(menu->Buttons()->at(menu->SelectedButtonIndex())->GetComponents()->at(scTwoKey))->Frame(0);
+									static_cast<SpriteComponent*>(menu->Buttons()->at(menu->SelectedButtonIndex())->GetComponents()->at(scTwoKey))->SheetX(0);
 
 									menu->SelectedButtonIndex(j);
 									std::cout << menu->SelectedButtonIndex() << std::endl;
 
 									static_cast<ButtonComponent*>(menu->Buttons()->at(menu->SelectedButtonIndex())->GetComponents()->at(buttonCKey))->Selected(true);
-									static_cast<SpriteComponent*>(menu->Buttons()->at(menu->SelectedButtonIndex())->GetComponents()->at(scKey))->Frame(1);
+									static_cast<SpriteComponent*>(menu->Buttons()->at(menu->SelectedButtonIndex())->GetComponents()->at(scKey))->SheetX(1);
 								}
 							}
 						}
@@ -141,10 +143,10 @@ void MenuSystem::Update()
 									if (scOneKey >= 0 && scTwoKey >= 0 && buttonCOneKey >= 0 && buttonCTwoKey >= 0)
 									{
 										static_cast<ButtonComponent*>(menu->Buttons()->at(0)->GetComponents()->at(buttonCOneKey))->Selected(false);
-										static_cast<SpriteComponent*>(menu->Buttons()->at(0)->GetComponents()->at(scOneKey))->Frame(0);
+										static_cast<SpriteComponent*>(menu->Buttons()->at(0)->GetComponents()->at(scOneKey))->SheetX(0);
 
 										static_cast<ButtonComponent*>(menu->Buttons()->at(menu->Buttons()->size() - 1)->GetComponents()->at(buttonCTwoKey))->Selected(true);
-										static_cast<SpriteComponent*>(menu->Buttons()->at(menu->Buttons()->size() - 1)->GetComponents()->at(scTwoKey))->Frame(1);
+										static_cast<SpriteComponent*>(menu->Buttons()->at(menu->Buttons()->size() - 1)->GetComponents()->at(scTwoKey))->SheetX(1);
 
 										menu->SelectedButtonIndex(menu->Buttons()->size() - 1);
 										std::cout << menu->SelectedButtonIndex() << std::endl;
@@ -186,10 +188,10 @@ void MenuSystem::Update()
 											if (scOneKey >= 0 && scTwoKey >= 0 && buttonOneCKey >= 0 && buttonTwoCKey >= 0)
 											{
 												static_cast<ButtonComponent*>(menu->Buttons()->at(j)->GetComponents()->at(buttonOneCKey))->Selected(false);
-												static_cast<SpriteComponent*>(menu->Buttons()->at(j)->GetComponents()->at(scOneKey))->Frame(0);
+												static_cast<SpriteComponent*>(menu->Buttons()->at(j)->GetComponents()->at(scOneKey))->SheetX(0);
 
 												static_cast<ButtonComponent*>(menu->Buttons()->at((j - 1))->GetComponents()->at(buttonTwoCKey))->Selected(true);
-												static_cast<SpriteComponent*>(menu->Buttons()->at((j - 1))->GetComponents()->at(scTwoKey))->Frame(1);
+												static_cast<SpriteComponent*>(menu->Buttons()->at((j - 1))->GetComponents()->at(scTwoKey))->SheetX(1);
 
 												menu->SelectedButtonIndex((j - 1));
 												std::cout << menu->SelectedButtonIndex() << std::endl;
@@ -235,10 +237,10 @@ void MenuSystem::Update()
 									if (buttonCOneKey >= 0 && buttonCTwoKey)
 									{
 										static_cast<ButtonComponent*>(menu->Buttons()->at(menu->Buttons()->size() - 1)->GetComponents()->at(buttonCOneKey))->Selected(false);
-										static_cast<SpriteComponent*>(menu->Buttons()->at(menu->Buttons()->size() - 1)->GetComponents()->at(scTwoKey))->Frame(0);
+										static_cast<SpriteComponent*>(menu->Buttons()->at(menu->Buttons()->size() - 1)->GetComponents()->at(scTwoKey))->SheetX(0);
 
 										static_cast<ButtonComponent*>(menu->Buttons()->at(0)->GetComponents()->at(buttonCTwoKey))->Selected(true);
-										static_cast<SpriteComponent*>(menu->Buttons()->at(0)->GetComponents()->at(scOneKey))->Frame(1);
+										static_cast<SpriteComponent*>(menu->Buttons()->at(0)->GetComponents()->at(scOneKey))->SheetX(1);
 										menu->SelectedButtonIndex(0);
 										std::cout << menu->SelectedButtonIndex() << std::endl;
 									}
@@ -281,10 +283,10 @@ void MenuSystem::Update()
 											if (buttonOneCKey >= 0 && buttonTwoCKey >= 0)
 											{
 												static_cast<ButtonComponent*>(menu->Buttons()->at(j)->GetComponents()->at(buttonOneCKey))->Selected(false);
-												static_cast<SpriteComponent*>(menu->Buttons()->at(j)->GetComponents()->at(scOneKey))->Frame(0);
+												static_cast<SpriteComponent*>(menu->Buttons()->at(j)->GetComponents()->at(scOneKey))->SheetX(0);
 
 												static_cast<ButtonComponent*>(menu->Buttons()->at((j + 1))->GetComponents()->at(buttonTwoCKey))->Selected(true);
-												static_cast<SpriteComponent*>(menu->Buttons()->at((j + 1))->GetComponents()->at(scTwoKey))->Frame(1);
+												static_cast<SpriteComponent*>(menu->Buttons()->at((j + 1))->GetComponents()->at(scTwoKey))->SheetX(1);
 
 												menu->SelectedButtonIndex((j + 1));
 												std::cout << menu->SelectedButtonIndex() << std::endl;
@@ -423,22 +425,19 @@ void MenuSystem::SetUpMainMenu()
 
 	Entity * buttonOne = new Entity("StartGame");
 	buttonOne->AddComponent(new PositionComponent(SDL_Point{ 100, 100 }));
-	buttonOne->AddComponent(new SpriteComponent("StartGameButton", 2, 2, 0, 0, 128, 32, 0));
-	static_cast<SpriteComponent*>(buttonOne->GetComponents()->at(1))->IsAnimating(false);
-	static_cast<SpriteComponent*>(buttonOne->GetComponents()->at(1))->Frame(1);
+	buttonOne->AddComponent(new SpriteComponent("StartGameButton", 2, 0, 0, 0, 128, 32, 0));
+	static_cast<SpriteComponent*>(buttonOne->GetComponents()->at(1))->SheetX(1);
 	buttonOne->AddComponent(new ButtonComponent(100, 100, 128, 32));
 
 
 	Entity * buttonTwo = new Entity("OpenOptions");
 	buttonTwo->AddComponent(new PositionComponent(SDL_Point{ 100, 300 }));
-	buttonTwo->AddComponent(new SpriteComponent("OptionsButton", 2, 2, 0, 0, 128, 32, 0));
-	static_cast<SpriteComponent*>(buttonTwo->GetComponents()->at(1))->IsAnimating(false);
+	buttonTwo->AddComponent(new SpriteComponent("OptionsButton", 2, 0, 0, 0, 128, 32, 0));
 	buttonTwo->AddComponent(new ButtonComponent(100, 300, 128, 32));
 
 	Entity * buttonThree = new Entity("ExitGame");
 	buttonThree->AddComponent(new PositionComponent(SDL_Point{ 100, 500 }));
-	buttonThree->AddComponent(new SpriteComponent("ExitGameButton", 2, 2, 0, 0, 128, 32, 0));
-	static_cast<SpriteComponent*>(buttonThree->GetComponents()->at(1))->IsAnimating(false);
+	buttonThree->AddComponent(new SpriteComponent("ExitGameButton", 2, 0, 0, 0, 128, 32, 0));
 	buttonThree->AddComponent(new ButtonComponent(100, 500, 128, 32));
 
 	menuC->Buttons()->push_back(buttonOne);
@@ -456,37 +455,39 @@ void MenuSystem::SetUpOptionsMenu()
 
 	Entity * buttonOne = new Entity("SoundLeft");
 	buttonOne->AddComponent(new PositionComponent(SDL_Point{ 100, 100 }));
-	buttonOne->AddComponent(new SpriteComponent("LeftArrowButton", 2, 2, 0, 0, 32, 32, 0));
+	buttonOne->AddComponent(new SpriteComponent("LeftArrowButton", 2, 0, 0, 0, 32, 32, 0));
 	static_cast<SpriteComponent*>(buttonOne->GetComponents()->at(1))->IsAnimating(false);
 	buttonOne->AddComponent(new ButtonComponent(100, 100, 32, 32));
 
 	Entity * buttonTwo = new Entity("SoundRight");
 	buttonTwo->AddComponent(new PositionComponent(SDL_Point{ 600, 100 }));
-	buttonTwo->AddComponent(new SpriteComponent("RightArrowButton", 2, 2, 0, 0, 32, 32, 0));
+	buttonTwo->AddComponent(new SpriteComponent("RightArrowButton", 2, 0, 0, 0, 32, 32, 0));
 	static_cast<SpriteComponent*>(buttonTwo->GetComponents()->at(1))->IsAnimating(false);
 	buttonTwo->AddComponent(new ButtonComponent(600, 100, 32, 32));
 
 	Entity * soundText = new Entity("SoundText");
+	soundText->AddComponent(new PositionComponent(SDL_Point{ 200, 100 }));
 	soundText->AddComponent(new SpriteComponent("SoundText", 2, 2, 0, 0, 128, 32, 0));
 
 	Entity * buttonThree = new Entity("MusicLeft");
 	buttonThree->AddComponent(new PositionComponent(SDL_Point{ 100, 300 }));
-	buttonThree->AddComponent(new SpriteComponent("LeftArrowButton", 2, 2, 0, 0, 32, 32, 0));
+	buttonThree->AddComponent(new SpriteComponent("LeftArrowButton", 2, 0, 0, 0, 32, 32, 0));
 	static_cast<SpriteComponent*>(buttonThree->GetComponents()->at(1))->IsAnimating(false);
 	buttonThree->AddComponent(new ButtonComponent(100, 300, 32, 32));
 
 	Entity * buttonFour = new Entity("MusicRight");
 	buttonFour->AddComponent(new PositionComponent(SDL_Point{ 600, 300 }));
-	buttonFour->AddComponent(new SpriteComponent("RightArrowButton", 2, 2, 0, 0, 32, 32, 0));
+	buttonFour->AddComponent(new SpriteComponent("RightArrowButton", 2, 0, 0, 0, 32, 32, 0));
 	static_cast<SpriteComponent*>(buttonFour->GetComponents()->at(1))->IsAnimating(false);
 	buttonFour->AddComponent(new ButtonComponent(600, 300, 32, 32));
 
 	Entity * musicText = new Entity("MusicText");
-	soundText->AddComponent(new SpriteComponent("MusicText", 2, 2, 0, 0, 128, 32, 0));
+	musicText->AddComponent(new PositionComponent(SDL_Point{ 200, 300 }));
+	musicText->AddComponent(new SpriteComponent("MusicText", 2, 0, 0, 0, 128, 32, 0));
 
 	Entity * buttonFive = new Entity("ReturnMainMenu");
 	buttonFive->AddComponent(new PositionComponent(SDL_Point{ 200, 450 }));
-	buttonFive->AddComponent(new SpriteComponent("MainMenuButton", 2, 2, 0, 0, 128, 32, 0));
+	buttonFive->AddComponent(new SpriteComponent("MainMenuButton", 2, 0, 0, 0, 128, 32, 0));
 	static_cast<SpriteComponent*>(buttonFive->GetComponents()->at(1))->IsAnimating(false);
 	buttonFive->AddComponent(new ButtonComponent(200, 450, 128, 32));
 
@@ -569,4 +570,16 @@ MenuComponent * MenuSystem::GetMenuComponent(std::string ID)
 			}
 		}
 	}
+}
+
+
+
+void MenuSystem::LoadComponent()
+{
+
+}
+
+void MenuSystem::UnloadComponent(int x)
+{
+
 }

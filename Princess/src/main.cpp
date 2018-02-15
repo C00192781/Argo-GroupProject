@@ -15,13 +15,20 @@
 #include "CollisionComponent.h"
 #include "CollisionSystem.h"
 #include "AttributesComponent.h"
+#include "TextComponent.h"
+#include "TextRenderSystem.h"
+#include "ButtonComponent.h"
 #include "HealthSystem.h"
 #include "HeartComponent.h"
-#include "AIsystem.h"
+#include "AISystem.h"
 #include "Princess.h"
 #include <chrono>
 #include "SystemManager.h"
 #include "InstanceManager.h"
+#include "LTimer.h"
+#include "WorldMap.h"
+#include "TownInstance.h"
+#include "MenuSystem.h"
 
 int GAME_SCALE = 3;
 
@@ -41,6 +48,25 @@ int main()
 
 	srand(time(NULL));
 
+	const int SCREEN_FPS = 500;
+	const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
+
+	//Set text color as black
+	SDL_Color textColor = { 0, 0, 0, 255 };
+
+	//The frames per second timer
+	LTimer fpsTimer;
+
+	//The frames per second cap timer
+	LTimer capTimer;
+
+	//In memory text stream
+	std::stringstream timeText;
+
+	//Start counting frames per second
+	int countedFrames = 0;
+	fpsTimer.start();
+
 	ResourceManager *resourceManager = new ResourceManager(gameRenderer, "Resources");
 
 	resourceManager->AddTexture("Red", "Sprite_Red.png");
@@ -49,6 +75,10 @@ int main()
 	resourceManager->AddTexture("Arrow", "Arrow.png");
 	resourceManager->AddTexture("HeartsSheet", "heartSpriteSheet.png");
 	resourceManager->AddTexture("ArmourSheet", "armourSpriteSheet.png");
+	resourceManager->AddTexture("WorldTurf", "World_Turfs.png");
+	resourceManager->AddTexture("Button", "Button.png");
+
+	resourceManager->AddFont("ComicSans", "ComicSans.ttf", 32);
 
 	resourceManager->AddTexture("StartGameButton", "StartGameButton.png");
 	resourceManager->AddTexture("OptionsButton", "OptionsButton.png");
@@ -63,31 +93,40 @@ int main()
 
 	EventListener *listener = new EventListener();
 
-	InputHandler *input = new InputHandler(listener);
+	InputHandler *input = new InputHandler(listener, e);
 
 	StateManager state;
-	
-	std::vector<Entity*>* projectiles = new std::vector<Entity*>();
 
-	SystemManager systemManager;
-	systemManager.ControlSystem = new ControlSystem(listener);
-	systemManager.ControlSystem->Active(true);
+	std::vector<Entity*>* projectiles = new std::vector<Entity*>;
 
-	systemManager.MovementSystem = new MovementSystem();
-	systemManager.MovementSystem->Active(true);
+	SystemManager systemManager(resourceManager, gameRenderer, listener, projectiles);
 
-	systemManager.RenderSystem = new RenderSystem(resourceManager, gameRenderer);
-	systemManager.RenderSystem->Active(true);
-	systemManager.RenderSystem->SetScale(GAME_SCALE);
+	systemManager.controlSystem = new ControlSystem(listener);
+	systemManager.controlSystem->Active(true);
 
-	systemManager.ProjectileSystem = new ProjectileSystem();
-	systemManager.ProjectileSystem->Active(true);
+	systemManager.movementSystem = new MovementSystem(816, 624);
+	systemManager.movementSystem->Active(true);
 
-	systemManager.CollisionSystem = new CollisionSystem();
-	systemManager.CollisionSystem->Active(true);
+	systemManager.renderSystem = new RenderSystem(resourceManager, gameRenderer);
+	systemManager.renderSystem->Active(true);
+	systemManager.renderSystem->SetScale(GAME_SCALE);
+	systemManager.renderSystem->Camera(true);
+	systemManager.renderSystem->Camera(816, 624);
 
-	systemManager.AiSystem = new AiSystem();
-	systemManager.AiSystem->Active(true);
+	systemManager.textRenderSystem = new TextRenderSystem(resourceManager, gameRenderer);
+	systemManager.textRenderSystem->Active(true);
+
+	systemManager.attackSystem = new AttackSystem(projectiles);
+	systemManager.attackSystem->Active(true);
+
+	systemManager.projectileSystem = new ProjectileSystem();
+	systemManager.projectileSystem->Active(true);
+
+	systemManager.collisionSystem = new CollisionSystem();
+	systemManager.collisionSystem->Active(true);
+
+	systemManager.aiSystem = new AiSystem();
+	systemManager.aiSystem->Active(true);
 
 	systemManager.healthSystem = new HealthSystem();
 	systemManager.healthSystem->Active(true);
@@ -108,38 +147,78 @@ int main()
 	//	systemManager.RenderSystem->AddEntity(systemManager.menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->at(i));
 	//}
 
-	Quadtree* quad = new Quadtree(0, SDL_Rect{0,0  , 816, 624 });
+	
+	systemManager.buttonSystem = new ButtonSystem(listener);
+	systemManager.buttonSystem->Active(true);
+
+	Entity * player = new Entity("Player");
+	player->Active(true);
+	player->AddComponent(new SpriteComponent("Red", 3, 1, 0, 0, 16, 16, 0));
+	player->AddComponent(new PositionComponent(SDL_Point{ 0, 0 }));
+	player->AddComponent(new AttributesComponent(26, 26, 10, 10, 100, 100));
+	player->AddComponent(new MovementComponent());
+	player->AddComponent(new WeaponComponent(WeaponType::RANGE));
+	player->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
+	player->Transient(true);
+
+	systemManager.controlSystem->AddEntity(player);
+	systemManager.movementSystem->AddEntity(player);
+	systemManager.renderSystem->AddEntity(player);
+	systemManager.projectileSystem->AddEntity(player);
+	systemManager.collisionSystem->AddEntity(player);
+	systemManager.attackSystem->AddEntity(player);
+
+	//TownInstance t = TownInstance(&systemManager);
+	//t.Generate("jimmie");
+
+	//WorldMap* m = new WorldMap(&systemManager, &state);
+	//m->Generate(25, 25, 100);
+
+	//BattleMap* b = new BattleMap(&systemManager, &state);
+	//b->Generate("");
+
 	while (state.ExitGame == false)
 	{
-		currentTime = SDL_GetTicks();
-		SDL_PollEvent(e);
-		if (currentTime > lastTime)
+		//Calculate and correct fps
+		int avgFPS = countedFrames / (fpsTimer.getTicks() / 1000.f);
+		if (avgFPS > 2000000)
 		{
-			deltaTime = ((float)(currentTime - lastTime)) / 1000;
-
-			input->handleInput(*e);
-
-			lastTime = currentTime;
+			avgFPS = 0;
 		}
 
-		instanceManager.Update();
-		auto aiSystemEntities = systemManager.AiSystem->getEntities();
-
-		quad->clear();
-		quad->init();
-		for (int i = 0; i < aiSystemEntities.size(); i++)
+		//Set text to be rendered
+		if (avgFPS > 1)
 		{
-			quad->insert(aiSystemEntities.at(i));
+			//cout << "FPS (With Cap) " << avgFPS << endl;;
 		}
+		//update ren
+		++countedFrames;
 
-		//map1.Update();
+		//If frame finished early
+		int frameTicks = capTimer.getTicks();
+		if (frameTicks < SCREEN_TICKS_PER_FRAME)
+		{
+			//Wait remaining time
+			SDL_Delay(SCREEN_TICKS_PER_FRAME - frameTicks);
 
-		SDL_SetRenderDrawColor(gameRenderer, 0, 0, 0, 0);
-		SDL_RenderClear(gameRenderer);
+			currentTime = SDL_GetTicks();
+			if (currentTime > lastTime)
+			{
+				deltaTime = ((float)(currentTime - lastTime)) / 1000;
 
-		systemManager.Update(deltaTime);
+				input->handleInput();
 
-		SDL_RenderPresent(gameRenderer);
+				lastTime = currentTime;
+			}
+
+			SDL_SetRenderDrawColor(gameRenderer, 0, 0, 0, 0);
+			SDL_RenderClear(gameRenderer);
+
+			systemManager.Update(deltaTime);
+			instanceManager.Update();
+
+			SDL_RenderPresent(gameRenderer);
+		}
 	}
 
 	SDL_RenderPresent(gameRenderer);

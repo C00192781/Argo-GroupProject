@@ -23,6 +23,8 @@ public:
 	Entity* getMenu(std::string ID);
 	void RemoveMenu(std::string ID);
 	MenuComponent* GetMenuComponent(std::string ID);
+	void LoadComponent();
+	void UnloadComponent(int x);
 private:
 	int indexActiveMenu;
 	std::string activeMenuID;

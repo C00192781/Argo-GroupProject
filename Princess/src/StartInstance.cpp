@@ -22,20 +22,16 @@ void StartInstance::Begin()
 	}
 	m_entities.clear();
 	m_entities.shrink_to_fit();
-	m_systemManager->ControlSystem->SelectiveClear();
-	m_systemManager->RenderSystem->SelectiveClear();
-	m_systemManager->MovementSystem->SelectiveClear();
-	m_systemManager->AiSystem->SelectiveClear();
-	m_systemManager->healthSystem->SelectiveClear();
-	m_systemManager->menuSystem->SelectiveClear();
-	delete m_factory;
+	m_systemManager->controlSystem->SelectiveClear();
+	m_systemManager->renderSystem->SelectiveClear();
+	m_systemManager->movementSystem->SelectiveClear();
 
 	m_systemManager->menuSystem->SetUpOptionsMenu();
 	m_systemManager->menuSystem->SetUpMainMenu();
 	m_systemManager->menuSystem->ChangeMenu("MainMenu");
 	for (int i = 0; i < m_systemManager->menuSystem->GetMenuComponent("MainMenu")->Buttons()->size(); i++)
 	{
-		m_systemManager->RenderSystem->AddEntity(m_systemManager->menuSystem->GetMenuComponent("MainMenu")->Buttons()->at(i));
+		m_systemManager->renderSystem->AddEntity(m_systemManager->menuSystem->GetMenuComponent("MainMenu")->Buttons()->at(i));
 	}
 }
 
@@ -43,15 +39,14 @@ void StartInstance::Update()
 {
 	if (m_stateManager->Options)
 	{
-
 		for (int i = 0; i < m_systemManager->menuSystem->GetMenuComponent("MainMenu")->Buttons()->size(); i++)
 		{
-			m_systemManager->RenderSystem->RemoveEntity(m_systemManager->menuSystem->GetMenuComponent("MainMenu")->Buttons()->at(i)->ID());
+			m_systemManager->renderSystem->RemoveEntity(m_systemManager->menuSystem->GetMenuComponent("MainMenu")->Buttons()->at(i)->ID());
 		}
 		m_systemManager->menuSystem->ChangeMenu("OptionsMenu");
 		for (int i = 0; i < m_systemManager->menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->size(); i++)
 		{
-			m_systemManager->RenderSystem->AddEntity(m_systemManager->menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->at(i));
+			m_systemManager->renderSystem->AddEntity(m_systemManager->menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->at(i));
 		}
 		m_stateManager->Options = false;
 	}
@@ -59,12 +54,12 @@ void StartInstance::Update()
 	{
 		for (int i = 0; i < m_systemManager->menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->size(); i++)
 		{
-			m_systemManager->RenderSystem->RemoveEntity(m_systemManager->menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->at(i)->ID());
+			m_systemManager->renderSystem->RemoveEntity(m_systemManager->menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->at(i)->ID());
 		}
 		m_systemManager->menuSystem->ChangeMenu("MainMenu");
 		for (int i = 0; i < m_systemManager->menuSystem->GetMenuComponent("MainMenu")->Buttons()->size(); i++)
 		{
-			m_systemManager->RenderSystem->AddEntity(m_systemManager->menuSystem->GetMenuComponent("MainMenu")->Buttons()->at(i));
+			m_systemManager->renderSystem->AddEntity(m_systemManager->menuSystem->GetMenuComponent("MainMenu")->Buttons()->at(i));
 		}
 		m_stateManager->MainMenu = false;
 	}

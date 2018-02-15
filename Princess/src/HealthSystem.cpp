@@ -3,6 +3,9 @@
 HealthSystem::HealthSystem()
 {
 	timer = 0;
+	m_entities.push_back(new Entity("Null"));
+	delete m_entities.back();
+	m_entities.clear();
 }
 
 HealthSystem::~HealthSystem()
@@ -10,79 +13,110 @@ HealthSystem::~HealthSystem()
 
 }
 
+void HealthSystem::LoadComponent()
+{
+	//int pcKey = -1;
+	//int scKey = -1;
+	//for (int j = 0; j < m_entities.back()->GetComponents()->size(); j++)
+	//{
+	//	if (m_entities.back()->GetComponents()->at(j)->Type() == "PC")
+	//	{
+	//		pcKey = j;
+	//	}
+	//	else if (m_entities.back()->GetComponents()->at(j)->Type() == "SC")
+	//	{
+	//		scKey = j;
+	//	}
+	//	if (scKey > 0 && pcKey > 0)
+	//	{
+	//		break;
+	//	}
+	//}
+	//m_positionComponent.push_back(static_cast<PositionComponent>(m_entities.back()->GetComponents()->at(pcKey)));
+	//m_spriteComponent.push_back(static_cast<SpriteComponent>(m_entities.back()->GetComponents()->at(scKey)));
+}
+
+void HealthSystem::UnloadComponent(int x)
+{
+	//m_positionComponent.erase(m_positionComponent.begin() + x);
+	//m_spriteComponent.erase(m_spriteComponent.begin() + x);
+	//m_positionComponent.shrink_to_fit();
+	//m_spriteComponent.shrink_to_fit();
+}
+
 void HealthSystem::Update(float deltaTime)
 {
 
-		for (int i = 0; i < m_entities.size(); i++)
+	for (int i = 0; i < m_entities.size(); i++)
+	{
+		int attributeKey = -1;
+		for (int j = 0; j < m_entities.at(i)->GetComponents()->size(); j++)
 		{
-			int acKey = -1;
-			for (int j = 0; j < m_entities.at(i)->GetComponents()->size(); j++)
+			if (m_entities.at(i)->GetComponents()->at(j)->Type() == "attribute")
 			{
-				if (m_entities.at(i)->GetComponents()->at(j)->Type() == "AC")
-				{
-					acKey = j;
-				}
+				attributeKey = j;
 			}
-			if (acKey >= 0)
+		}
+		if (attributeKey >= 0)
+		{
+			std::list<Modifer> * modifiers = static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(attributeKey))->Modifers();
+			if (modifiers->size() != 0)
 			{
-				std::list<Modifer> * modifiers = static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(acKey))->Modifers();
-				if (modifiers->size() != 0)
+				//Goes through all the modifiers the Attributes Component has
+				for (std::list<Modifer>::iterator it = modifiers->begin(); it != modifiers->end(); ++it)
 				{
-					//Goes through all the modifiers the Attributes Component has
-					for (std::list<Modifer>::iterator it = modifiers->begin(); it != modifiers->end(); ++it)
+					if (timer > 1)
 					{
-						if (timer > 1)
-						{
-							if ((*it).m_type == ModiferTypes::BURNING)
-							{
-								int damageCaused = (*it).m_amount;
-								int armour = static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(acKey))->Armour();
-								int health = static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(acKey))->Health();
-								DamageEntity(damageCaused, armour, health);
-								static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(acKey))->Armour(armour);
-								static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(acKey))->Health(health);
-							}
-
-							(*it).m_duration = (*it).m_duration - 1;
-							timer = 0;
-						}
-						else
-						{
-							timer += deltaTime;
-						}
-						//Applies Damage to the armour and health
-						if ((*it).m_type == ModiferTypes::DAMAGE)
+						if ((*it).m_type == ModiferTypes::BURNING)
 						{
 							int damageCaused = (*it).m_amount;
-							int armour = static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(acKey))->Armour();
-							int health = static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(acKey))->Health();
+							int armour = static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(attributeKey))->Armour();
+							int health = static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(attributeKey))->Health();
 							DamageEntity(damageCaused, armour, health);
-							static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(acKey))->Armour(armour);
-							static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(acKey))->Health(health);
-						}
-						//Updates Health and Armour UI
-						if (m_entities.at(i)->ID() == "Player")
-						{
-							UpdateHeartsUIStatus(m_entities.at(i), m_entities.at(i));
-							UpdateArmourUIStatus(m_entities.at(i), m_entities.at(i));
+							static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(attributeKey))->Armour(armour);
+							static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(attributeKey))->Health(health);
 						}
 
+						(*it).m_duration = (*it).m_duration - 1;
+						timer = 0;
 					}
-					//Remove Modifiers whose duration has ended
-					for (std::list<Modifer>::iterator it = modifiers->begin(); it != modifiers->end();)
+					else
 					{
-						if ((*it).m_duration <= 0)
-						{
-							it = modifiers->erase(it);
-						}
-						else
-						{
-							++it;
-						}
-
+						timer += deltaTime;
 					}
+					//Applies Damage to the armour and health
+					if ((*it).m_type == ModiferTypes::DAMAGE)
+					{
+						int damageCaused = (*it).m_amount;
+						int armour = static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(attributeKey))->Armour();
+						int health = static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(attributeKey))->Health();
+						DamageEntity(damageCaused, armour, health);
+						static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(attributeKey))->Armour(armour);
+						static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(attributeKey))->Health(health);
+					}
+					//Updates Health and Armour UI
+					if (m_entities.at(i)->ID() == "Player")
+					{
+						UpdateHeartsUIStatus(m_entities.at(i), m_entities.at(i));
+						UpdateArmourUIStatus(m_entities.at(i), m_entities.at(i));
+					}
+
+				}
+				//Remove Modifiers whose duration has ended
+				for (std::list<Modifer>::iterator it = modifiers->begin(); it != modifiers->end();)
+				{
+					if ((*it).m_duration <= 0)
+					{
+						it = modifiers->erase(it);
+					}
+					else
+					{
+						++it;
+					}
+
 				}
 			}
+		}
 	}
 }
 
@@ -102,12 +136,12 @@ void HealthSystem::DamageEntity(int& damageCaused, int& armour, int& health)
 
 void HealthSystem::UpdateHeartsUIStatus(Entity * HeartManager, Entity* player)
 {
-	int acKey = -1;
+	int attributeKey = -1;
 	for (int k = 0; k < player->GetComponents()->size(); k++)
 	{
-		if (player->GetComponents()->at(k)->Type() == "AC")
+		if (player->GetComponents()->at(k)->Type() == "attribute")
 		{
-			acKey = k;
+			attributeKey = k;
 		}
 	}
 	int hmcKey = -1;
@@ -127,7 +161,7 @@ void HealthSystem::UpdateHeartsUIStatus(Entity * HeartManager, Entity* player)
 		}
 
 	}
-	if (acKey >= 0 && hmcKey >= 0)
+	if (attributeKey >= 0 && hmcKey >= 0)
 	{
 		if (static_cast<HeartManagerComponent*>(HeartManager->GetComponents()->at(hmcKey))->HeartType() == HeartTypes::HEALTH)
 		{
@@ -152,7 +186,7 @@ void HealthSystem::UpdateHeartsUIStatus(Entity * HeartManager, Entity* player)
 					SpriteComponent* sc = static_cast<SpriteComponent*>(heartVector->at(i)->GetComponents()->at(scKey));
 					HeartComponent* hc = static_cast<HeartComponent*>(heartVector->at(i)->GetComponents()->at(hcKey));
 
-					AttributesComponent* playerAc = static_cast<AttributesComponent*>(player->GetComponents()->at(acKey));
+					AttributesComponent* playerAc = static_cast<AttributesComponent*>(player->GetComponents()->at(attributeKey));
 					if (hc->Index() < hc->HeartList()->size())
 					{
 						int numHearts = (playerAc->MaxHealth() / 2.0f);
@@ -163,7 +197,8 @@ void HealthSystem::UpdateHeartsUIStatus(Entity * HeartManager, Entity* player)
 							if (hc->State() != HeartState::HALF)
 							{
 								hc->State(HeartState::HALF);
-								sc->Frame(1);
+								sc->SheetX(1);
+								//sc->Frame(1);
 							}
 						}
 						else if (hc->Index() >= numFullHearts)
@@ -171,7 +206,8 @@ void HealthSystem::UpdateHeartsUIStatus(Entity * HeartManager, Entity* player)
 							if (hc->State() != HeartState::EMPTY)
 							{
 								hc->State(HeartState::EMPTY);
-								sc->Frame(2);
+								sc->SheetX(2);
+								//sc->Frame(2);
 							}
 						}
 						else
@@ -179,14 +215,15 @@ void HealthSystem::UpdateHeartsUIStatus(Entity * HeartManager, Entity* player)
 							if (hc->State() != HeartState::FULL)
 							{
 								hc->State(HeartState::FULL);
-								sc->Frame(0);
+								sc->SheetX(0);
+								//sc->Frame(0);
 							}
 						}
 					}
 					else
 					{
 						std::cout << "ERROR INDEX LARGER THAN LIST SIZE" << std::endl;
-					}			
+					}
 				}
 			}
 		}
@@ -199,12 +236,12 @@ void HealthSystem::UpdateHeartsUIStatus(Entity * HeartManager, Entity* player)
 
 void HealthSystem::UpdateMaxArmourUI(Entity * HeartManager, Entity* player)
 {
-	int acKey = -1;
+	int attributeKey = -1;
 	for (int k = 0; k < player->GetComponents()->size(); k++)
 	{
-		if (player->GetComponents()->at(k)->Type() == "AC")
+		if (player->GetComponents()->at(k)->Type() == "attribute")
 		{
-			acKey = k;
+			attributeKey = k;
 		}
 	}
 	int hmcKey = -1;
@@ -223,12 +260,12 @@ void HealthSystem::UpdateMaxArmourUI(Entity * HeartManager, Entity* player)
 			}
 		}
 	}
-	if (hmcKey >= 0 && acKey >= 0)
+	if (hmcKey >= 0 && attributeKey >= 0)
 	{
 		if (static_cast<HeartManagerComponent*>(HeartManager->GetComponents()->at(hmcKey))->HeartType() == HeartTypes::ARMOUR)
 		{
 			std::vector<Entity*>* heartVector = static_cast<HeartManagerComponent*>(HeartManager->GetComponents()->at(hmcKey))->HeartsVector();
-			AttributesComponent* ac = static_cast<AttributesComponent*>(player->GetComponents()->at(acKey));
+			AttributesComponent* ac = static_cast<AttributesComponent*>(player->GetComponents()->at(attributeKey));
 			int numFullHearts = heartVector->size();
 
 			for (int i = numFullHearts; i < (ac->MaxArmour() / 2); i++)
@@ -262,12 +299,12 @@ void HealthSystem::UpdateMaxArmourUI(Entity * HeartManager, Entity* player)
 
 void HealthSystem::UpdateArmourUIStatus(Entity * HeartManager, Entity* player)
 {
-	int acKey = -1;
+	int attributeKey = -1;
 	for (int k = 0; k < player->GetComponents()->size(); k++)
 	{
-		if (player->GetComponents()->at(k)->Type() == "AC")
+		if (player->GetComponents()->at(k)->Type() == "attribute")
 		{
-			acKey = k;
+			attributeKey = k;
 		}
 	}
 	int hmcKey = -1;
@@ -286,7 +323,7 @@ void HealthSystem::UpdateArmourUIStatus(Entity * HeartManager, Entity* player)
 			}
 		}
 	}
-	if (hmcKey >= 0 && acKey >= 0)
+	if (hmcKey >= 0 && attributeKey >= 0)
 	{
 		if (static_cast<HeartManagerComponent*>(HeartManager->GetComponents()->at(hmcKey))->HeartType() == HeartTypes::ARMOUR)
 		{
@@ -311,7 +348,7 @@ void HealthSystem::UpdateArmourUIStatus(Entity * HeartManager, Entity* player)
 					SpriteComponent* sc = static_cast<SpriteComponent*>(heartVector->at(i)->GetComponents()->at(scKey));
 					HeartComponent* hc = static_cast<HeartComponent*>(heartVector->at(i)->GetComponents()->at(hcKey));
 
-					AttributesComponent* playerAc = static_cast<AttributesComponent*>(player->GetComponents()->at(acKey));
+					AttributesComponent* playerAc = static_cast<AttributesComponent*>(player->GetComponents()->at(attributeKey));
 					if (hc->Index() < hc->HeartList()->size())
 					{
 						int numHearts = (playerAc->MaxArmour() / 2.0f);
@@ -321,7 +358,8 @@ void HealthSystem::UpdateArmourUIStatus(Entity * HeartManager, Entity* player)
 							if (hc->State() != HeartState::HALF)
 							{
 								hc->State(HeartState::HALF);
-								sc->Frame(1);
+								sc->SheetX(1);
+								//sc->Frame(1);
 							}
 						}
 						else if (hc->Index() >= numFullHearts)
@@ -329,7 +367,8 @@ void HealthSystem::UpdateArmourUIStatus(Entity * HeartManager, Entity* player)
 							if (hc->State() != HeartState::EMPTY)
 							{
 								hc->State(HeartState::EMPTY);
-								sc->Frame(2);
+								sc->SheetX(2);
+								//sc->Frame(2);
 							}
 						}
 						else
@@ -337,7 +376,8 @@ void HealthSystem::UpdateArmourUIStatus(Entity * HeartManager, Entity* player)
 							if (hc->State() != HeartState::FULL)
 							{
 								hc->State(HeartState::FULL);
-								sc->Frame(0);
+								sc->SheetX(0);
+								//sc->Frame(0);
 							}
 						}
 					}
@@ -353,12 +393,12 @@ void HealthSystem::UpdateArmourUIStatus(Entity * HeartManager, Entity* player)
 
 void HealthSystem::UpdateMaxHeartsUI(Entity * HeartManager, Entity* player)
 {
-	int acKey = -1;
+	int attributeKey = -1;
 	for (int k = 0; k < player->GetComponents()->size(); k++)
 	{
-		if (player->GetComponents()->at(k)->Type() == "AC")
+		if (player->GetComponents()->at(k)->Type() == "attribute")
 		{
-			acKey = k;
+			attributeKey = k;
 		}
 	}
 	int hmcKey = -1;
@@ -377,12 +417,12 @@ void HealthSystem::UpdateMaxHeartsUI(Entity * HeartManager, Entity* player)
 			}
 		}
 	}
-	if (hmcKey >= 0 && acKey >= 0)
+	if (hmcKey >= 0 && attributeKey >= 0)
 	{
 		if (static_cast<HeartManagerComponent*>(HeartManager->GetComponents()->at(hmcKey))->HeartType() == HeartTypes::HEALTH)
 		{
 			std::vector<Entity*>* heartVector = static_cast<HeartManagerComponent*>(HeartManager->GetComponents()->at(hmcKey))->HeartsVector();
-			AttributesComponent* ac = static_cast<AttributesComponent*>(player->GetComponents()->at(acKey));
+			AttributesComponent* ac = static_cast<AttributesComponent*>(player->GetComponents()->at(attributeKey));
 			int numFullHearts = heartVector->size();
 			for (int i = numFullHearts; i < (ac->MaxHealth() / 2); i++)
 			{
@@ -411,4 +451,3 @@ void HealthSystem::UpdateMaxHeartsUI(Entity * HeartManager, Entity* player)
 		}
 	}
 }
-

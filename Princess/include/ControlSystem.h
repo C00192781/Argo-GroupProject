@@ -4,9 +4,9 @@
 #include "ControlComponent.h"
 #include "MovementComponent.h"
 #include "ProjectileComponent.h"
+#include "WeaponComponent.h"
 #include "SpriteComponent.h"
 #include "CollisionSystem.h"
-#include "MovementComponent.h"
 #include "AttributesComponent.h"
 #include "MenuComponent.h"
 #include "ButtonComponent.h"
@@ -16,19 +16,22 @@ extern int GAME_SCALE;
 class ControlSystem : public System
 {
 public:
-	ControlSystem(EventListener *e) 
-	{ 
-		m_eventListener = e; 
-		lastTickTime = 0.0f; 
+	ControlSystem(EventListener *e)
+	{
+		m_eventListener = e;
+		lastTickTime = 0.0f;
 		delta = 0.0f;
 		tickTime = 0.0f;
 		shoot = false;
 		playerPos = SDL_Point{ 0,0 };
 		x = 0.0f;
 		y = 0.0f;
-
+		m_entities.push_back(new Entity("Null"));
+		delete m_entities.back();
+		m_entities.clear();
 	};
-
+	void LoadComponent() {};
+	void UnloadComponent(int x) {};
 	void Update();
 	void getSystemEntities(std::vector<Entity*>* projectiles) { m_projectiles = projectiles; }
 	int index = 0;
@@ -43,3 +46,4 @@ private:
 	int x, y;
 
 };
+

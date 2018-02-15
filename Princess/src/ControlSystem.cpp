@@ -7,132 +7,66 @@ void ControlSystem::Update()
 	{
 		int mcKey = -1;
 		int pjKey = -1;
-		int playerKey = -1;
-		int acKey = -1;
-		int menuCKey = -1;
-		// looks for if there is a movement component in the entity
+		int pcKey = -1;
+		int wcKey = -1;
+		int attributeKey = -1;
+		// looks for if there is are specific components in the entity
+
 		for (int j = 0; j < m_entities.at(i)->GetComponents()->size(); j++)
 		{
-			for (int j = 0; j < m_entities.at(i)->GetComponents()->size(); j++)
+			if (m_entities.at(i)->GetComponents()->at(j)->Type() == "PC")
 			{
-				if (m_entities.at(i)->GetComponents()->at(j)->Type() == "movement")
-				{
-					mcKey = j;
-				}
-				if (m_entities.at(i)->GetComponents()->at(j)->Type() == "PJ")
-				{
-					pjKey = j;
-				}
-				if (m_entities.at(i)->GetComponents()->at(j)->Type() == "MenuC")
-				{
-					menuCKey = j;
-				}
-				if (m_entities.at(i)->GetComponents()->at(j)->Type() == "PC" && m_entities.at(i)->ID() == "Player")
-				{
-					playerKey = j;
-					if (m_entities.at(i)->GetComponents()->at(j)->Type() == "AC")
-					{
-						acKey = j;
-					}
-				}
+				pcKey = j;
 			}
-			if (playerKey >= 0)
+			else if (m_entities.at(i)->GetComponents()->at(j)->Type() == "movement")
 			{
-				playerPos = static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(playerKey))->getPosition();
+				mcKey = j;
 			}
-			// makes sure it finds a movement component in the entity
-			if (mcKey >= 0 && acKey >=0)
+			else if (m_entities.at(i)->GetComponents()->at(j)->Type() == "weapon")
 			{
-				SDL_Point holder{ 0, 0 };
-				int speed = static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(acKey))->MovementSpeed();
-
-				if (m_eventListener->W)
-				{
-					holder.y = -speed;
-				}
-				if (m_eventListener->A)
-				{
-					holder.x = -speed;
-				}
-				if (m_eventListener->S)
-				{
-					holder.y = speed;
-				}
-				if (m_eventListener->D)
-				{
-					holder.x = speed;
-				}
-
-				static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setVelocity(holder);
+				wcKey = j;
+			}
+			else if (m_entities.at(i)->GetComponents()->at(j)->Type() == "attribute")
+			{
+				attributeKey = j;
 			}
 		}
-		if (m_projectiles != nullptr)
+
+		if (mcKey >= 0)
 		{
-			for (int i = 0; i < m_projectiles->size(); i++)
+			SDL_Point holder{ 0, 0 };
+			int speed = static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(attributeKey))->MovementSpeed();
+
+			if (m_eventListener->W)
 			{
-				int mcKey = -1;
-				int pjKey = -1;
-				int pcKey = -1;
+				holder.y = -speed;
+			}
+			if (m_eventListener->A)
+			{
+				holder.x = -speed;
+			}
+			if (m_eventListener->S)
+			{
+				holder.y = speed;
+			}
+			if (m_eventListener->D)
+			{
+				holder.x = speed;
+			}
 
-				// looks for if there is a movement component in the entity
-				for (int j = 0; j < m_projectiles->at(i)->GetComponents()->size(); j++)
+			static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setVelocity(holder.x, holder.y);
+		}
+
+		if (wcKey >= 0)
+		{
+			if (m_eventListener->LeftClick)
+			{
+				if (static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->getAllowAttack() == true)
 				{
-					for (int j = 0; j < m_projectiles->at(i)->GetComponents()->size(); j++)
-					{
-						if (m_projectiles->at(i)->GetComponents()->at(j)->Type() == "movement")
-						{
-							mcKey = j;
-						}
-						if (m_projectiles->at(i)->GetComponents()->at(j)->Type() == "PJ")
-						{
-							pjKey = j;
-						}
-						if (m_projectiles->at(i)->GetComponents()->at(j)->Type() == "PC")
-						{
-							pcKey = j;
-						}
-					}
+					static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->setAttacking(true);
+					static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setLockedOrientation(true);
+					static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(wcKey))->setAllowAttack(false);
 				}
-				if (m_eventListener->LeftClick == true)
-				{
-					lastTickTime = tickTime;
-					shoot = true;
-				}
-				if (m_eventListener->LeftClick == false)
-				{
-
-					SDL_GetMouseState(&x, &y);
-					float cosA = atan2(y - playerPos.y, x - playerPos.x) + 3.14159265359 / 180 * 90;
-					if (pjKey >= 0 && pcKey >= 0)
-					{
-						tickTime = SDL_GetTicks();
-
-						uint32_t difference;
-						difference = tickTime - lastTickTime;
-
-						float differenceInSeconds;
-						differenceInSeconds = (float)difference * 0.001f;
-
-						if (difference > 50 && shoot == true)
-						{
-							index++;
-							shoot = false;
-							if (index >= m_projectiles->size())
-							{
-								index = 0;
-							}
-							if (static_cast<ProjectileComponent*>(m_projectiles->at(index)->GetComponents()->at(pjKey))->getType() == "Player")
-							{
-								static_cast<ProjectileComponent*>(m_projectiles->at(index)->GetComponents()->at(pjKey))->setAliveStatus(true);
-								static_cast<ProjectileComponent*>(m_projectiles->at(index)->GetComponents()->at(pjKey))->setButtonPressTime(differenceInSeconds);
-								static_cast<ProjectileComponent*>(m_projectiles->at(index)->GetComponents()->at(pjKey))->setOrientation(cosA);
-								static_cast<PositionComponent*>(m_projectiles->at(index)->GetComponents()->at(pcKey))->setPosition(playerPos);
-								//static_cast<ProjectileComponent*>(m_projectiles->at(index)->GetComponents()->at(pjKey))->setMaxSpeed(15.0f);
-							}
-						}
-					}
-				}
-
 			}
 		}
 	}

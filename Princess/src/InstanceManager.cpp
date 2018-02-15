@@ -10,6 +10,7 @@ InstanceManager::InstanceManager(StateManager * stateManager, ResourceManager * 
 	m_systemManager = systemManager;
 	m_instances.push_back(new StartInstance(m_systemManager, m_sdlr, m_stateManager));
 	static_cast<StartInstance*>(m_instances.at(m_instances.size() - 1))->Begin();
+	m_systemManager->renderSystem->Camera(false);
 }
 
 InstanceManager::~InstanceManager()
@@ -30,7 +31,8 @@ void InstanceManager::Update()
 			static_cast<StartInstance*>(m_instances.at(m_instances.size() - 1))->~StartInstance();
 			m_instances.erase(m_instances.begin());
 		}
-		m_instances.push_back(new BattleMap(m_systemManager, m_sdlr, m_stateManager));
+		m_systemManager->renderSystem->Camera(true);
+		m_instances.push_back(new BattleMap(m_systemManager, m_stateManager));
 		static_cast<BattleMap*>(m_instances.at(m_instances.size() - 1))->Generate("Grassland");
 		m_stateManager->StartGame = false;
 	}
