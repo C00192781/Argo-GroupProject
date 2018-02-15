@@ -20,7 +20,7 @@ void MenuSystem::Update()
 {
 	for (int i = 0; i < m_entities.size(); i++)
 	{
-		if (indexActiveMenu != -1)
+		if (indexActiveMenu != -1 && i == indexActiveMenu)
 		{
 			int menuCKey = -1;
 			for (int j = 0; j < m_entities.at(indexActiveMenu)->GetComponents()->size(); j++)
@@ -318,61 +318,64 @@ void MenuSystem::Update()
 					menuTimer++;
 				}
 
-				for (int i = 0; i < menu->Buttons()->size(); i++)
+				for (int k = 0; k < menu->Buttons()->size(); k++)
 				{
 					int buttonCKey = -1;
-					for (int j = 0; j < menu->Buttons()->at(i)->GetComponents()->size(); j++)
+					for (int j = 0; j < menu->Buttons()->at(k)->GetComponents()->size(); j++)
 					{
-						if (menu->Buttons()->at(i)->GetComponents()->at(j)->Type() == "ButtonC")
+						if (menu->Buttons()->at(k)->GetComponents()->at(j)->Type() == "ButtonC")
 						{
 							buttonCKey = j;
 						}
 					}
 					if (buttonCKey >= 0)
 					{
-						if (static_cast<ButtonComponent*>(menu->Buttons()->at(i)->GetComponents()->at(buttonCKey))->Activated() == true)
+						if (static_cast<ButtonComponent*>(menu->Buttons()->at(k)->GetComponents()->at(buttonCKey))->Activated() == true)
 						{
-							if (menu->Buttons()->at(i)->ID() == "StartGame")
+							static_cast<ButtonComponent*>(menu->Buttons()->at(k)->GetComponents()->at(buttonCKey))->Activated(false);
+							if (menu->Buttons()->at(k)->ID() == "StartGame")
 							{
 								std::cout << "Start The Game" << std::endl;
 								m_states->StartGame = true;
-								//startGame;
 							}
-							else if (menu->Buttons()->at(i)->ID() == "ExitGame")
+							else if (menu->Buttons()->at(k)->ID() == "ExitGame")
 							{
 								std::cout << "Close The Application" << std::endl;
 								m_states->ExitGame = true;
-								//exitGame;
 							}
-							else if (menu->Buttons()->at(i)->ID() == "OpenOptions")
+							else if (menu->Buttons()->at(k)->ID() == "OpenOptions")
 							{
 								std::cout << "Open Options Menu" << std::endl;
 								m_states->Options = true;
 							}
-							else if (menu->Buttons()->at(i)->ID() == "SoundLeft")
+							else if (menu->Buttons()->at(k)->ID() == "SoundLeft")
 							{
 								std::cout << "Sound Decrease" << std::endl;
 								m_states->decreaseSound = true;
 							}
-							else if (menu->Buttons()->at(i)->ID() == "SoundRight")
+							else if (menu->Buttons()->at(k)->ID() == "SoundRight")
 							{
 								std::cout << "Sound Increase" << std::endl;
 								m_states->increaseSound = true;
 							}
-							else if (menu->Buttons()->at(i)->ID() == "MusicLeft")
+							else if (menu->Buttons()->at(k)->ID() == "MusicLeft")
 							{
 								std::cout << "Music Decrease" << std::endl;
 								m_states->decreaseMusic = true;
 							}
-							else if (menu->Buttons()->at(i)->ID() == "MusicRight")
+							else if (menu->Buttons()->at(k)->ID() == "MusicRight")
 							{
 								m_states->increaseMusic = true;
 								std::cout << "Music Increase" << std::endl;
 							}
-							else if (menu->Buttons()->at(i)->ID() == "ReturnMainMenu")
+							else if (menu->Buttons()->at(k)->ID() == "ReturnMainMenu")
 							{
 								std::cout << "Return To Main Menu" << std::endl;
 								m_states->MainMenu = true;
+							}
+							else
+							{
+
 							}
 						}
 					}
@@ -390,19 +393,24 @@ void MenuSystem::ChangeMenu(std::string ID)
 	{
 		for (int i = 0; i < m_entities.size(); i++)
 		{
-			if (ID == "MainMenu")
+			if (m_entities.at(i)->ID() == ID)
 			{
-				indexActiveMenu = i;
-				activeMenuID = "MainMenu";
-			}
-			if (ID == "OptionsMenu")
-			{
-				indexActiveMenu = i;
-				activeMenuID = "OptionsMenu";
-			}
-			else
-			{
-				std::cout << "Unknown ID" << std::endl;
+				if (ID == "MainMenu")
+				{
+					indexActiveMenu = i;
+					activeMenuID = "MainMenu";
+					//return;
+				}
+				else if (ID == "OptionsMenu")
+				{
+					indexActiveMenu = i;
+					activeMenuID = "OptionsMenu";
+					//return;
+				}
+				else
+				{
+					std::cout << "Unknown ID" << std::endl;
+				}
 			}
 		}
 	}
@@ -447,42 +455,48 @@ void MenuSystem::SetUpOptionsMenu()
 	MenuComponent * menuC = new MenuComponent();
 
 	Entity * buttonOne = new Entity("SoundLeft");
-	buttonOne->AddComponent(new PositionComponent(SDL_Point{ 100, 300 }));
+	buttonOne->AddComponent(new PositionComponent(SDL_Point{ 100, 100 }));
 	buttonOne->AddComponent(new SpriteComponent("LeftArrowButton", 2, 2, 0, 0, 32, 32, 0));
 	static_cast<SpriteComponent*>(buttonOne->GetComponents()->at(1))->IsAnimating(false);
-	buttonOne->AddComponent(new ButtonComponent(100, 300, 32, 32));
-
+	buttonOne->AddComponent(new ButtonComponent(100, 100, 32, 32));
 
 	Entity * buttonTwo = new Entity("SoundRight");
-	buttonTwo->AddComponent(new PositionComponent(SDL_Point{ 200, 300 }));
+	buttonTwo->AddComponent(new PositionComponent(SDL_Point{ 600, 100 }));
 	buttonTwo->AddComponent(new SpriteComponent("RightArrowButton", 2, 2, 0, 0, 32, 32, 0));
 	static_cast<SpriteComponent*>(buttonTwo->GetComponents()->at(1))->IsAnimating(false);
-	buttonTwo->AddComponent(new ButtonComponent(200, 300, 32, 32));
+	buttonTwo->AddComponent(new ButtonComponent(600, 100, 32, 32));
+
+	Entity * soundText = new Entity("SoundText");
+	soundText->AddComponent(new SpriteComponent("SoundText", 2, 2, 0, 0, 128, 32, 0));
 
 	Entity * buttonThree = new Entity("MusicLeft");
-	buttonThree->AddComponent(new PositionComponent(SDL_Point{ 100, 500 }));
+	buttonThree->AddComponent(new PositionComponent(SDL_Point{ 100, 300 }));
 	buttonThree->AddComponent(new SpriteComponent("LeftArrowButton", 2, 2, 0, 0, 32, 32, 0));
 	static_cast<SpriteComponent*>(buttonThree->GetComponents()->at(1))->IsAnimating(false);
-	buttonThree->AddComponent(new ButtonComponent(100, 500, 32, 32));
-
+	buttonThree->AddComponent(new ButtonComponent(100, 300, 32, 32));
 
 	Entity * buttonFour = new Entity("MusicRight");
-	buttonFour->AddComponent(new PositionComponent(SDL_Point{ 200, 500 }));
+	buttonFour->AddComponent(new PositionComponent(SDL_Point{ 600, 300 }));
 	buttonFour->AddComponent(new SpriteComponent("RightArrowButton", 2, 2, 0, 0, 32, 32, 0));
 	static_cast<SpriteComponent*>(buttonFour->GetComponents()->at(1))->IsAnimating(false);
-	buttonFour->AddComponent(new ButtonComponent(200, 500, 32, 32));
+	buttonFour->AddComponent(new ButtonComponent(600, 300, 32, 32));
+
+	Entity * musicText = new Entity("MusicText");
+	soundText->AddComponent(new SpriteComponent("MusicText", 2, 2, 0, 0, 128, 32, 0));
 
 	Entity * buttonFive = new Entity("ReturnMainMenu");
-	buttonFive->AddComponent(new PositionComponent(SDL_Point{ 100, 100 }));
+	buttonFive->AddComponent(new PositionComponent(SDL_Point{ 200, 450 }));
 	buttonFive->AddComponent(new SpriteComponent("MainMenuButton", 2, 2, 0, 0, 128, 32, 0));
 	static_cast<SpriteComponent*>(buttonFive->GetComponents()->at(1))->IsAnimating(false);
-	buttonFive->AddComponent(new ButtonComponent(100, 100, 128, 32));
+	buttonFive->AddComponent(new ButtonComponent(200, 450, 128, 32));
 
 	menuC->Buttons()->push_back(buttonOne);
 	menuC->Buttons()->push_back(buttonTwo);
 	menuC->Buttons()->push_back(buttonThree);
 	menuC->Buttons()->push_back(buttonFour);
 	menuC->Buttons()->push_back(buttonFive);
+	menuC->Buttons()->push_back(soundText);
+	menuC->Buttons()->push_back(musicText);
 
 	menu->AddComponent(menuC);
 	m_entities.push_back(menu);
@@ -508,13 +522,24 @@ void MenuSystem::RemoveMenu(std::string ID)
 	}
 	GetMenuComponent(ID)->Buttons()->clear();
 	GetMenuComponent(ID)->Buttons()->shrink_to_fit();
-	for (std::vector<Entity*>::iterator it = m_entities.begin(); it != m_entities.end() ; ++it)
+	std::vector<Entity*>::iterator it = m_entities.begin();
+	while (it != m_entities.end())
 	{
 		if ((*it)->ID() == ID)
 		{
-			m_entities.erase((it));
+			it = m_entities.erase((it));
 		}
+		else
+		{
+			it++;
+		}
+		
 	}
+	std::cout << "Finished";
+	//for (std::vector<Entity*>::iterator it = m_entities.begin(); it != m_entities.end() ; ++it)
+	//{
+
+	//}
 
 
 }
@@ -526,16 +551,16 @@ MenuComponent * MenuSystem::GetMenuComponent(std::string ID)
 		if (m_entities.at(i)->ID() == ID)
 		{
 			int menuCKey = -1;
-			for (int j = 0; j < m_entities.at(indexActiveMenu)->GetComponents()->size(); j++)
+			for (int j = 0; j < m_entities.at(i)->GetComponents()->size(); j++)
 			{
-				if (m_entities.at(indexActiveMenu)->GetComponents()->at(j)->Type() == "MenuC")
+				if (m_entities.at(i)->GetComponents()->at(j)->Type() == "MenuC")
 				{
 					menuCKey = j;
 				}
 			}
 			if (menuCKey >= 0)
 			{
-				return static_cast<MenuComponent*>(m_entities.at(indexActiveMenu)->GetComponents()->at(menuCKey));
+				return static_cast<MenuComponent*>(m_entities.at(i)->GetComponents()->at(menuCKey));
 			}
 			else
 			{

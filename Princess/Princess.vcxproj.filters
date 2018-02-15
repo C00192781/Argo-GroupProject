@@ -80,10 +80,10 @@
     <ClCompile Include="src\MenuSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="InstanceManager.cpp">
+    <ClCompile Include="src\InstanceManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StartInstance.cpp">
+    <ClCompile Include="src\StartInstance.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -217,10 +217,10 @@
     <ClInclude Include="include\MenuSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InstanceManager.h">
+    <ClInclude Include="include\InstanceManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StartInstance.h">
+    <ClInclude Include="include\StartInstance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

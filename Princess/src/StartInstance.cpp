@@ -30,8 +30,8 @@ void StartInstance::Begin()
 	m_systemManager->menuSystem->SelectiveClear();
 	delete m_factory;
 
-	m_systemManager->menuSystem->SetUpMainMenu();
 	m_systemManager->menuSystem->SetUpOptionsMenu();
+	m_systemManager->menuSystem->SetUpMainMenu();
 	m_systemManager->menuSystem->ChangeMenu("MainMenu");
 	for (int i = 0; i < m_systemManager->menuSystem->GetMenuComponent("MainMenu")->Buttons()->size(); i++)
 	{
@@ -43,26 +43,29 @@ void StartInstance::Update()
 {
 	if (m_stateManager->Options)
 	{
-		m_systemManager->menuSystem->ChangeMenu("OptionsMenu");
+
 		for (int i = 0; i < m_systemManager->menuSystem->GetMenuComponent("MainMenu")->Buttons()->size(); i++)
 		{
 			m_systemManager->RenderSystem->RemoveEntity(m_systemManager->menuSystem->GetMenuComponent("MainMenu")->Buttons()->at(i)->ID());
 		}
+		m_systemManager->menuSystem->ChangeMenu("OptionsMenu");
 		for (int i = 0; i < m_systemManager->menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->size(); i++)
 		{
 			m_systemManager->RenderSystem->AddEntity(m_systemManager->menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->at(i));
 		}
+		m_stateManager->Options = false;
 	}
 	else if (m_stateManager->MainMenu)
 	{
-		m_systemManager->menuSystem->ChangeMenu("MainMenu");
 		for (int i = 0; i < m_systemManager->menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->size(); i++)
 		{
 			m_systemManager->RenderSystem->RemoveEntity(m_systemManager->menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->at(i)->ID());
 		}
+		m_systemManager->menuSystem->ChangeMenu("MainMenu");
 		for (int i = 0; i < m_systemManager->menuSystem->GetMenuComponent("MainMenu")->Buttons()->size(); i++)
 		{
 			m_systemManager->RenderSystem->AddEntity(m_systemManager->menuSystem->GetMenuComponent("MainMenu")->Buttons()->at(i));
 		}
+		m_stateManager->MainMenu = false;
 	}
 }

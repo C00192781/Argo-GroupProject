@@ -26,7 +26,6 @@
     <ClCompile Include="include\BasicEnemy.cpp" />
     <ClCompile Include="include\Princess.cpp" />
     <ClCompile Include="include\Quad.cpp" />
-    <ClCompile Include="InstanceManager.cpp" />
     <ClCompile Include="src\AISystem.cpp" />
     <ClCompile Include="src\BattleMap.cpp" />
     <ClCompile Include="src\CollisionSystem.cpp" />
@@ -35,14 +34,15 @@
     <ClCompile Include="src\GrassTileFactory.cpp" />
     <ClCompile Include="src\HealthSystem.cpp" />
     <ClCompile Include="src\InputHandler.cpp" />
+    <ClCompile Include="src\InstanceManager.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MenuSystem.cpp" />
     <ClCompile Include="src\MovementSystem.cpp" />
     <ClCompile Include="src\ProjectileSystem.cpp" />
     <ClCompile Include="src\RenderSystem.cpp" />
+    <ClCompile Include="src\StartInstance.cpp" />
     <ClCompile Include="src\System.cpp" />
     <ClCompile Include="src\SystemManager.cpp" />
-    <ClCompile Include="StartInstance.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External Dependencies\ResourceManager\JSONReader.h" />
@@ -71,6 +71,7 @@
     <ClInclude Include="include\HeartManagerComponent.h" />
     <ClInclude Include="include\InputHandler.h" />
     <ClInclude Include="include\Instance.h" />
+    <ClInclude Include="include\InstanceManager.h" />
     <ClInclude Include="include\MenuComponent.h" />
     <ClInclude Include="include\MenuSystem.h" />
     <ClInclude Include="include\MovementComponent.h" />
@@ -83,13 +84,12 @@
     <ClInclude Include="include\RenderSystem.h" />
     <ClInclude Include="include\SeekComponent.h" />
     <ClInclude Include="include\SpriteComponent.h" />
+    <ClInclude Include="include\StartInstance.h" />
     <ClInclude Include="include\StateManager.h" />
     <ClInclude Include="include\stdafx.h" />
     <ClInclude Include="include\System.h" />
     <ClInclude Include="include\SystemManager.h" />
     <ClInclude Include="include\TileFactory.h" />
-    <ClInclude Include="InstanceManager.h" />
-    <ClInclude Include="StartInstance.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

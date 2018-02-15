@@ -1,10 +1,11 @@
 #include "Instance.h"
 #include "StartInstance.h"
+#include "BattleMap.h"
 
 class InstanceManager
 {
 public:
-	InstanceManager(StateManager * stateManager, ResourceManager * resourceManager, InputHandler *input,EventListener * eventListener, SDL_Renderer * sdlr);
+	InstanceManager(StateManager * stateManager, ResourceManager * resourceManager, InputHandler *input,EventListener * eventListener, SDL_Renderer * sdlr, SystemManager * systemManager);
 	~InstanceManager();
 
 	void Update();

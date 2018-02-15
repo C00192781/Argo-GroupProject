@@ -21,6 +21,7 @@
 #include "Princess.h"
 #include <chrono>
 #include "SystemManager.h"
+#include "InstanceManager.h"
 
 int GAME_SCALE = 3;
 
@@ -55,7 +56,9 @@ int main()
 
 	resourceManager->AddTexture("LeftArrowButton", "LeftArrow.png");
 	resourceManager->AddTexture("RightArrowButton", "RightArrow.png");
-	resourceManager->AddTexture("MainMenuButton", "ExitGameButton.png");
+	resourceManager->AddTexture("MainMenuButton", "ReturnMainMenu.png");
+	resourceManager->AddTexture("SoundText", "sound.png");
+	resourceManager->AddTexture("MusicText", "music.png");
 
 
 	EventListener *listener = new EventListener();
@@ -65,7 +68,6 @@ int main()
 	StateManager state;
 	
 	std::vector<Entity*>* projectiles = new std::vector<Entity*>();
-
 
 	SystemManager systemManager;
 	systemManager.ControlSystem = new ControlSystem(listener);
@@ -93,19 +95,21 @@ int main()
 	systemManager.menuSystem = new MenuSystem(listener, &state);
 	systemManager.menuSystem->Active(true);
 
-	BattleMap map1 = BattleMap(&systemManager, gameRenderer, &state);
-	map1.Generate("Grassland");
+	InstanceManager instanceManager = InstanceManager(&state, resourceManager, input, listener,gameRenderer,&systemManager);
+
+	//BattleMap map1 = BattleMap(&systemManager, gameRenderer, &state);
+	//map1.Generate("Grassland");
 
 	//systemManager.menuSystem->SetUpMainMenu();
-	systemManager.menuSystem->SetUpOptionsMenu();
-	systemManager.menuSystem->ChangeMenu("OptionsMenu");
-	for (int i = 0; i < systemManager.menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->size(); i++)
-	{
-		systemManager.RenderSystem->AddEntity(systemManager.menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->at(i));
-	}
+	//systemManager.menuSystem->SetUpOptionsMenu();
+	//systemManager.menuSystem->ChangeMenu("OptionsMenu");
+	//for (int i = 0; i < systemManager.menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->size(); i++)
+	//{
+	//	systemManager.RenderSystem->AddEntity(systemManager.menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->at(i));
+	//}
 
 	Quadtree* quad = new Quadtree(0, SDL_Rect{0,0  , 816, 624 });
-	while (running == true)
+	while (state.ExitGame == false)
 	{
 		currentTime = SDL_GetTicks();
 		SDL_PollEvent(e);
@@ -117,6 +121,8 @@ int main()
 
 			lastTime = currentTime;
 		}
+
+		instanceManager.Update();
 		auto aiSystemEntities = systemManager.AiSystem->getEntities();
 
 		quad->clear();
@@ -126,9 +132,9 @@ int main()
 			quad->insert(aiSystemEntities.at(i));
 		}
 
-		map1.Update();
+		//map1.Update();
 
-		SDL_SetRenderDrawColor(gameRenderer, 255, 255, 255, 0);
+		SDL_SetRenderDrawColor(gameRenderer, 0, 0, 0, 0);
 		SDL_RenderClear(gameRenderer);
 
 		systemManager.Update(deltaTime);
