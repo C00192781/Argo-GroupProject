@@ -49,7 +49,6 @@ int Quadtree::getIndex(Entity* entity)
 		if (entity->GetComponents()->at(i)->Type() == "collision")
 		{
 			CollisionComponent* collisionComponent = static_cast<CollisionComponent*>(entity->GetComponents()->at(i));
-<<<<<<< HEAD
 
 			double verticalMidpoint = bounds.x + (bounds.w / 2.0f);
 			double horizontalMidpoint = bounds.y + (bounds.h / 2.0f);
@@ -78,49 +77,9 @@ int Quadtree::getIndex(Entity* entity)
 					index = 3;
 				}
 			}
-			return index;
-=======
-
-			double verticalMidpoint = bounds.x + (bounds.w / 2.0f);
-			double horizontalMidpoint = bounds.y + (bounds.h / 2.0f);
-
-			bool topQuadrant = (collisionComponent->getY() < horizontalMidpoint
-				&& collisionComponent->getY() + collisionComponent->getHeight() < horizontalMidpoint);
-
-			bool bottomQuadrant = (collisionComponent->getY() > horizontalMidpoint);
-
-			if (collisionComponent->getX() < verticalMidpoint &&
-				collisionComponent->getX() + collisionComponent->getWidth() < verticalMidpoint)
-			{
-				if (topQuadrant) {
-					index = 1;
-				}
-				else if (bottomQuadrant) {
-					index = 2;
-				}
-			}
-			else if (collisionComponent->getX() > verticalMidpoint)
-			{
-				if (topQuadrant) {
-					index = 0;
-				}
-				else if (bottomQuadrant) {
-					index = 3;
-				}
-			}
-
-			if (entity->ID() == "Player")
-			{
-				std::cout << level;
-			}
->>>>>>> master
 		}
-		return index;
 	}
-<<<<<<< HEAD
 	return index;
-=======
->>>>>>> master
 }
 
 /*
@@ -129,24 +88,24 @@ int Quadtree::getIndex(Entity* entity)
 * objects to their corresponding nodes.
 */
 
-void Quadtree::insert(Entity* entity) 
+void Quadtree::insert(Entity* entities)
 {
 	if (!nodes.empty())
 	{
-		int index = getIndex(entity);
+		int index = getIndex(entities);
 
 
 		if (index != -1) {
-			nodes.at(index)->insert(entity);
+			nodes.at(index)->insert(entities);
 			return;
 		}
 	}
 
-	objects.push_back(entity);
+	objects.push_back(entities);
 
-	if (objects.size() > MAX_OBJECTS && level < MAX_LEVELS) 
+	if (objects.size() > MAX_OBJECTS && level < MAX_LEVELS)
 	{
-		if (nodes.empty()) 
+		if (nodes.empty())
 		{
 			split();
 		}
@@ -177,18 +136,18 @@ std::vector<Entity*> Quadtree::retrieve(std::vector<Entity*> &returnObjects, Ent
 
 
 	int index = getIndex(entity);
-	if (index != -1 && !nodes.empty()) 
+	if (index != -1 && !nodes.empty())
 	{
 		nodes.at(index)->retrieve(returnObjects, entity);
 	}
 
 	for (auto i = objects.begin(), e = objects.end(); i != e; i++)
 	{
-	//	auto tempid = (*i)->ID();
+		//	auto tempid = (*i)->ID();
 
-	
+
 		returnObjects.push_back(*i);
-//		returnObjects.push_back(objects);
+		//		returnObjects.push_back(objects);
 	}
 
 	return returnObjects;

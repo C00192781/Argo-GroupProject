@@ -6,6 +6,13 @@
 #include "ControlSystem.h"
 #include "MovementSystem.h"
 #include "AttackSystem.h"
+#include "ProjectileSystem.h"
+#include "CollisionSystem.h"
+#include "AISystem.h"
+#include "CollisionSystem.h"
+#include "HealthSystem.h"
+#include "ButtonSystem.h"
+#include "TextRenderSystem.h"
 #include "PositionComponent.h"
 #include "SpriteComponent.h"
 #include "ProjectileComponent.h"
@@ -31,6 +38,9 @@ public:
 	ProjectileSystem * projectileSystem;
 	HealthSystem * healthSystem;
 	AiSystem * aiSystem;
+	ButtonSystem * buttonSystem;
+	TextRenderSystem * textRenderSystem;
+
 
 	void Update(float deltaTime);
 
