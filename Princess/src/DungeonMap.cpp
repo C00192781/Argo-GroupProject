@@ -27,8 +27,7 @@ void DungeonMap::generate()
 	m_systemManager->renderSystem->SelectiveClear();
 	m_systemManager->movementSystem->SelectiveClear();
 
-	//int randomMapNumber = rand() % 5;
-	int randomMapNumber = 0;
+	int randomMapNumber = rand() % 5;
 	std::string mapName;
 
 	if (randomMapNumber == 0)
@@ -71,6 +70,27 @@ void DungeonMap::generate()
 			{
 				m_entities.push_back(factory.Grass("DungeonTiles", j, i, m_systemManager->renderSystem->GetScale()));
 			}
+			else if (m_resourceManager->GetMapElement(mapName, i, j) == "LD")
+			{
+				m_entities.push_back(factory.LeftDoor("DungeonTiles", j, i, m_systemManager->renderSystem->GetScale()));
+				m_systemManager->collisionSystem->AddEntity(m_entities.back());
+			}
+			else if (m_resourceManager->GetMapElement(mapName, i, j) == "RD")
+			{
+				m_entities.push_back(factory.RightDoor("DungeonTiles", j, i, m_systemManager->renderSystem->GetScale()));
+				m_systemManager->collisionSystem->AddEntity(m_entities.back());
+			}
+			else if (m_resourceManager->GetMapElement(mapName, i, j) == "TD")
+			{
+				m_entities.push_back(factory.TopDoor("DungeonTiles", j, i, m_systemManager->renderSystem->GetScale()));
+				m_systemManager->collisionSystem->AddEntity(m_entities.back());
+			}
+			else if (m_resourceManager->GetMapElement(mapName, i, j) == "BD")
+			{
+				m_entities.push_back(factory.BottomDoor("DungeonTiles", j, i, m_systemManager->renderSystem->GetScale()));
+				m_systemManager->collisionSystem->AddEntity(m_entities.back());
+			}
+
 			m_systemManager->renderSystem->AddEntity(m_entities.back());
 		}
 	}

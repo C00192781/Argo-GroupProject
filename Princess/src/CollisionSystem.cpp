@@ -67,7 +67,7 @@ void CollisionSystem::Update()
 
 	for (int i = 0; i < m_entities.size(); i++)
 	{
-		if (m_entities.at(i)->Active() == true && m_entities.at(i)->ID() != "Wall")
+		if (m_entities.at(i)->Active() == true && m_entities.at(i)->ID() != "Wall" && m_entities.at(i)->ID() != "Door")
 		{
 			int collisionKey1 = -1;
 
@@ -120,7 +120,7 @@ void CollisionSystem::filterCollisions(int entityIndex, int entityColIndex, int 
 
 	entityCol = static_cast<CollisionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(entityColIndex));
 	collidableCol = static_cast<CollisionComponent*>(m_collidableEntities.at(collidableIndex)->GetComponents()->at(collidableColIndex));
-	if (m_collidableEntities.at(collidableIndex)->ID() == "Wall")
+	if (m_collidableEntities.at(collidableIndex)->ID() == "Wall" || m_collidableEntities.at(collidableIndex)->ID() == "Door")
 	{
 		SDL_Rect rectEntityX = { entityCol->getX(), entityCol->getPreviousY(), entityCol->getWidth(), entityCol->getHeight() };
 		SDL_Rect rectEntityY = { entityCol->getPreviousX(), entityCol->getY(), entityCol->getWidth(), entityCol->getHeight() };
@@ -136,12 +136,10 @@ void CollisionSystem::filterCollisions(int entityIndex, int entityColIndex, int 
 				if (entityCol->getPreviousX() < entityCol->getX())
 				{
 					entityCol->setX(entityCol->getX() - holder.w);
-					std::cout << "right" << std::endl;
 				}
 				else if (entityCol->getPreviousX() > entityCol->getX())
 				{
 					entityCol->setX(entityCol->getX() + holder.w);
-					std::cout << "left" << std::endl;
 				}
 			}
 		}
@@ -153,12 +151,10 @@ void CollisionSystem::filterCollisions(int entityIndex, int entityColIndex, int 
 				if (entityCol->getPreviousY() < entityCol->getY())
 				{
 					entityCol->setY(entityCol->getY() - holder.h);
-					std::cout << "top" << std::endl;
 				}
 				else if (entityCol->getPreviousY() > entityCol->getY())
 				{
 					entityCol->setY(entityCol->getY() + holder.h);
-					std::cout << "bottom" << std::endl;
 				}
 			}
 		}
