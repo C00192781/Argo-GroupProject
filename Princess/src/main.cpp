@@ -162,7 +162,7 @@ int main()
 				lastTime = currentTime;
 			}
 
-			SDL_SetRenderDrawColor(gameRenderer, 255, 255, 255, 0);
+			SDL_SetRenderDrawColor(gameRenderer, 0, 0, 0, 0);
 			SDL_RenderClear(gameRenderer);
 
 			systemManager.Update(deltaTime);
