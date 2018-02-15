@@ -123,8 +123,11 @@ int main()
 	//WorldMap* m = new WorldMap(&systemManager, &state);
 	//m->Generate(25, 25, 100);
 
-	DungeonMap* d = new DungeonMap(&systemManager, &state, resourceManager);
-	d->generate();
+	//DungeonMap* d = new DungeonMap(&systemManager, &state, resourceManager);
+	//d->generate();
+
+	BattleMap* d = new BattleMap(&systemManager, &state);
+	d->Generate("");
 
 	bool heartTest = true;
 
