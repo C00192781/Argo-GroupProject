@@ -87,7 +87,7 @@ int main()
 	systemManager.controlSystem = new ControlSystem(listener);
 	systemManager.controlSystem->Active(true);
 
-	systemManager.movementSystem = new MovementSystem();
+	systemManager.movementSystem = new MovementSystem(816, 624);
 	systemManager.movementSystem->Active(true);
 
 	systemManager.renderSystem = new RenderSystem(resourceManager, gameRenderer);
@@ -134,11 +134,14 @@ int main()
 	systemManager.collisionSystem->AddEntity(player);
 	systemManager.attackSystem->AddEntity(player);
 
-	TownInstance t = TownInstance(&systemManager);
-	t.Generate("jimmie");
+	//TownInstance t = TownInstance(&systemManager);
+	//t.Generate("jimmie");
 
 	//WorldMap* m = new WorldMap(&systemManager, &state);
 	//m->Generate(25, 25, 100);
+
+	BattleMap* b = new BattleMap(&systemManager, &state);
+	b->Generate("");
 
 	bool heartTest = true;
 
@@ -154,7 +157,7 @@ int main()
 		//Set text to be rendered
 		if (avgFPS > 1)
 		{
-			//cout << "FPS (With Cap) " << avgFPS << endl;;
+			cout << "FPS (With Cap) " << avgFPS << endl;;
 		}
 		//update ren
 		++countedFrames;

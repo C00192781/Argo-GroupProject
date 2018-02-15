@@ -2,8 +2,8 @@
 #include "stdafx.h"
 #include <list>
 #include "Entity.h"
-#include "PositionComponent.h"
-#include "SpriteComponent.h"
+#include "CollisionComponent.h"
+
 using namespace std;
 
 class Quadtree 
