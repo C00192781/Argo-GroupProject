@@ -28,7 +28,7 @@
 #include "WorldMap.h"
 #include "DungeonMap.h"
 #include "TownInstance.h"
-
+#include "InstanceManager.h"
 
 int main()
 {
@@ -119,6 +119,8 @@ int main()
 	systemManager.buttonSystem = new ButtonSystem(listener);
 	systemManager.buttonSystem->Active(true);
 
+	InstanceManager instanceManager(&systemManager, &state, resourceManager);
+
 	Entity * player = new Entity("Player");
 	player->Active(true);
 	player->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
@@ -139,8 +141,8 @@ int main()
 	//WorldMap* m = new WorldMap(&systemManager, &state);
 	//m->Generate(25, 25, 100);
 
-	DungeonMap* d = new DungeonMap(&systemManager, &state, resourceManager);
-	d->generate();
+	//DungeonMap* d = new DungeonMap(&systemManager, &state, resourceManager);
+	//d->generate();
 
 	//BattleMap* d = new BattleMap(&systemManager, &state);
 	//d->Generate("");
@@ -185,6 +187,7 @@ int main()
 			SDL_RenderClear(gameRenderer);
 
 			systemManager.Update(deltaTime);
+			instanceManager.Update(deltaTime);
 
 			SDL_RenderPresent(gameRenderer);
 		}

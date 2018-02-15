@@ -9,10 +9,13 @@ public:
 	DungeonMap(SystemManager * sm, StateManager * s, ResourceManager *rm);
 	~DungeonMap();
 
-	void Update() {};
+	void Update() {}
+	void Update(float deltaTime);
 	void Render() {};
 
-	void generate();
+	void Generate();
 private:
 	ResourceManager * m_resourceManager;
+	std::vector<Entity*> m_enemies; // points to the enemies in collision system
+	float m_timeRemaining;
 };

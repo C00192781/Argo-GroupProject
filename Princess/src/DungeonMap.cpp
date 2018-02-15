@@ -14,10 +14,13 @@ DungeonMap::DungeonMap(SystemManager * sm, StateManager * s, ResourceManager * r
 	m_resourceManager->AddMap("SafeArea", "SafeArea.json");
 
 	m_resourceManager->AddTexture("DungeonTiles", "Dungeon_Tiles.png");
+	m_timeRemaining = 5;
 }
 
-void DungeonMap::generate()
+void DungeonMap::Generate()
 {
+	m_active = true;
+
 	for (int i = 0; i < m_entities.size(); i++)
 	{
 		delete m_entities.at(i);
@@ -29,7 +32,8 @@ void DungeonMap::generate()
 	m_systemManager->movementSystem->SelectiveClear();
 	m_systemManager->collisionSystem->SelectiveClear();
 
-	int randomMapNumber = rand() % 5;
+	//int randomMapNumber = rand() % 5;
+	int randomMapNumber = 0;
 	std::string mapName;
 
 	if (randomMapNumber == 0)
@@ -72,44 +76,22 @@ void DungeonMap::generate()
 			{
 				m_entities.push_back(factory.Grass("DungeonTiles", j, i, m_systemManager->renderSystem->GetScale()));
 			}
-			else if (m_resourceManager->GetMapElement(mapName, i, j) == "LD")
-			{
-				m_entities.push_back(factory.LeftDoor("DungeonTiles", j, i, m_systemManager->renderSystem->GetScale()));
-				m_systemManager->collisionSystem->AddEntity(m_entities.back());
-			}
-			else if (m_resourceManager->GetMapElement(mapName, i, j) == "RD")
-			{
-				m_entities.push_back(factory.RightDoor("DungeonTiles", j, i, m_systemManager->renderSystem->GetScale()));
-				m_systemManager->collisionSystem->AddEntity(m_entities.back());
-			}
-			else if (m_resourceManager->GetMapElement(mapName, i, j) == "TD")
-			{
-				m_entities.push_back(factory.TopDoor("DungeonTiles", j, i, m_systemManager->renderSystem->GetScale()));
-				m_systemManager->collisionSystem->AddEntity(m_entities.back());
-			}
-			else if (m_resourceManager->GetMapElement(mapName, i, j) == "BD")
-			{
-				m_entities.push_back(factory.BottomDoor("DungeonTiles", j, i, m_systemManager->renderSystem->GetScale()));
-				m_systemManager->collisionSystem->AddEntity(m_entities.back());
-			}
 			m_systemManager->renderSystem->AddEntity(m_entities.back());
 		}
 	}
 
-	mapName = "SafeArea";
+	m_systemManager->collisionSystem->updateBounds(SDL_Rect{0, 0, 16 * 24 * (int)m_systemManager->renderSystem->GetScale(), 16 * 24 * (int)m_systemManager->renderSystem->GetScale() });
+}
 
-	for (int i = 0; i < 4; i++)
+void DungeonMap::Update(float deltaTime)
+{
+	if (m_enemies.empty())
 	{
-		for (int j = 0; j < 24; j++)
-		{
-			if (m_resourceManager->GetMapElement(mapName, i, j) == "B")
-			{
-				m_entities.push_back(factory.Grass("DungeonTiles", j, 24 + i, m_systemManager->renderSystem->GetScale()));
-			}
+		m_timeRemaining -= deltaTime;
 
-			m_systemManager->renderSystem->AddEntity(m_entities.back());
+		if (m_timeRemaining <= 0)
+		{
+			m_active = false;
 		}
 	}
-
-	m_systemManager->collisionSystem->updateBounds(SDL_Rect{0, 0, 16 * 24 * (int)m_systemManager->renderSystem->GetScale(), 16 * 28 * (int)m_systemManager->renderSystem->GetScale() });
 }
