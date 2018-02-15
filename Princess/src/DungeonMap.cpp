@@ -90,7 +90,6 @@ void DungeonMap::generate()
 				m_entities.push_back(factory.BottomDoor("DungeonTiles", j, i, m_systemManager->renderSystem->GetScale()));
 				m_systemManager->collisionSystem->AddEntity(m_entities.back());
 			}
-
 			m_systemManager->renderSystem->AddEntity(m_entities.back());
 		}
 	}
