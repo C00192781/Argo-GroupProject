@@ -54,6 +54,13 @@ void InputHandler::handleInput()
 			m_eventListener->D = true;
 			break;
 
+		case SDLK_r:
+			m_eventListener->roll = true;
+			break;
+		case SDLK_v:
+			m_eventListener->roll = true;
+			break;
+
 		case SDLK_ESCAPE:
 			m_eventListener->Escape = true;
 			break;
@@ -84,6 +91,13 @@ void InputHandler::handleInput()
 
 		case SDLK_d:
 			m_eventListener->D = false;
+			break;
+
+		case SDLK_r:
+			m_eventListener->roll = false;
+			break;
+		case SDLK_v:
+			m_eventListener->roll = false;
 			break;
 
 		case SDLK_ESCAPE:

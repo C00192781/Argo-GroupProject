@@ -267,7 +267,7 @@ void AiSystem::Update(float deltaTime)
 
 		//	int decision = m_decisionTree->getDecision();
 
-			int decision = 15;
+			int decision = 10;
 
 			if (decision == 8 || decision == 9)
 			{

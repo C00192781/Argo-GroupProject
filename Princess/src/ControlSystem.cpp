@@ -37,6 +37,13 @@ void ControlSystem::Update()
 			SDL_Point holder{ 0, 0 };
 			int speed = static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(attributeKey))->MovementSpeed();
 
+			if (m_eventListener->roll)
+			{
+				//do roll stuff;
+				static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setRolling(true);
+			}
+
+
 			if (m_eventListener->W)
 			{
 				holder.y = -speed;
@@ -58,7 +65,10 @@ void ControlSystem::Update()
 				totalPlayerMovement += 1;
 			}
 
-			static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setVelocity(holder.x, holder.y);
+			if (!m_eventListener->roll) //course changable if not rolling
+			{
+				static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setVelocity(holder.x, holder.y);
+			}
 		}
 
 		if (wcKey >= 0)
@@ -73,6 +83,7 @@ void ControlSystem::Update()
 				}
 			}
 		}
+
 	}
 }
 
