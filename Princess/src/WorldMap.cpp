@@ -588,4 +588,24 @@ void WorldMap::Load()
 			m_systemManager->collisionSystem->AddEntity(m_entities.at(i));
 		}
 	}
+
+	// sets player's position to the start of the dungeon
+	Entity* player = m_systemManager->collisionSystem->FindEntity("Player");
+
+	if (player != nullptr)
+	{
+		CollisionComponent* pos = static_cast<CollisionComponent*>(player->FindComponent("collision"));
+
+		if (pos != nullptr)
+		{
+			CollisionComponent* dungeonPos = static_cast<CollisionComponent*>(m_systemManager->collisionSystem->getCurrentDungeon()->FindComponent("collision"));
+
+			if (dungeonPos != nullptr)
+			{
+				pos->setPosition(dungeonPos->getX(), dungeonPos->getY());
+			}
+		}
+	}
+
+	m_systemManager->collisionSystem->getCurrentDungeon()->Active(false);
 }

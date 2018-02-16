@@ -30,6 +30,7 @@ void InstanceManager::Update(float deltaTime)
 		Generate("Battle");
 		worldMap->Active(false);
 		battleMap->Active(true);
+		m_listener->WorldToEncounter = false;
 	}
 	else if (m_listener->DungeonToWorld == true)
 	{
@@ -43,6 +44,7 @@ void InstanceManager::Update(float deltaTime)
 		worldMap->Load();
 		worldMap->Active(true);
 		battleMap->Active(false);
+		m_listener->EncounterToWorld = false;
 	}
 }
 

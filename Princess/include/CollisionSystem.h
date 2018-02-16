@@ -26,12 +26,14 @@ public:
 	void Update();
 
 	void updateBounds(SDL_Rect bounds);
+	Entity* getCurrentDungeon() { return m_currentDungeon; }
 private:
 	SDL_Rect m_bounds;
 	Quadtree* m_quadtree;
 	EventListener* m_listener;
 
 	std::vector<Entity*> m_collidableEntities;
+	Entity* m_currentDungeon;
 
 	void filterCollisions(int entityIndex, int entityColIndex, int collidableIndex, int collidableColIndex);
 	void projectileCollision(int index);

@@ -5,6 +5,20 @@ void System::AddEntity(Entity * e)
 	m_entities.push_back(e);
 	LoadComponent();
 }
+
+Entity* System::FindEntity(std::string id)
+{
+	for (int i = 0; i < m_entities.size(); i++)
+	{
+		if (m_entities.at(i)->ID() == id)
+		{
+			return m_entities.at(i);
+		}
+	}
+
+	return nullptr;
+}
+
 void System::RemoveEntity(std::string id)
 {
 	for (int i = 0; i < m_entities.size(); i++)

@@ -17,6 +17,7 @@ public:
 private:
 	ResourceManager * m_resourceManager;
 	EventListener *m_listener;
+	SDL_Point m_startPoint;
 	std::vector<Entity*> m_enemies; // points to the enemies in collision system
 	float m_timeRemaining;
 };

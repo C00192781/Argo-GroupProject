@@ -36,7 +36,5 @@ private:
 	//Snow Stuff
 	void ApplySnowDune(std::vector<std::vector<std::string>>* map, int x, int y, int width);
 	void ApplyGlacier(std::vector<std::vector<std::string>>* map, int x, int y, int width);
-
-
 };
 #endif

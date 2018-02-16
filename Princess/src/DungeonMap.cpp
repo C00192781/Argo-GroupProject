@@ -34,8 +34,7 @@ void DungeonMap::Generate()
 	m_systemManager->movementSystem->SelectiveClear();
 	m_systemManager->collisionSystem->SelectiveClear();
 
-	//int randomMapNumber = rand() % 5;
-	int randomMapNumber = 0;
+	int randomMapNumber = rand() % 5;
 	std::string mapName;
 
 	if (randomMapNumber == 0)
@@ -68,17 +67,33 @@ void DungeonMap::Generate()
 			if (m_resourceManager->GetMapElement(mapName, i, j) == "W")
 			{
 				m_entities.push_back(factory.Wall("DungeonTiles", j, i, m_systemManager->renderSystem->GetScale()));
+				m_systemManager->renderSystem->AddEntity(m_entities.back());
 				m_systemManager->collisionSystem->AddEntity(m_entities.back());
 			}
 			else if (m_resourceManager->GetMapElement(mapName, i, j) == "F")
 			{
 				m_entities.push_back(factory.Floor("DungeonTiles", j, i, m_systemManager->renderSystem->GetScale()));
+				m_systemManager->renderSystem->AddEntity(m_entities.back());
 			}
-			else if (m_resourceManager->GetMapElement(mapName, i, j) == "B")
+			else if (m_resourceManager->GetMapElement(mapName, i, j) == "P")
 			{
-				m_entities.push_back(factory.Grass("DungeonTiles", j, i, m_systemManager->renderSystem->GetScale()));
+				m_entities.push_back(factory.Floor("DungeonTiles", j, i, m_systemManager->renderSystem->GetScale()));
+				m_systemManager->renderSystem->AddEntity(m_entities.back());
+				m_startPoint = { j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 };
+
+				// sets player's position to the start of the dungeon
+				Entity* player = m_systemManager->collisionSystem->FindEntity("Player");
+				
+				if (player != nullptr)
+				{
+					CollisionComponent* pos = static_cast<CollisionComponent*>(player->FindComponent("collision"));
+
+					if (pos != nullptr)
+					{
+						pos->setPosition(m_startPoint.x, m_startPoint.y);
+					}
+				}
 			}
-			m_systemManager->renderSystem->AddEntity(m_entities.back());
 		}
 	}
 
@@ -89,7 +104,7 @@ void DungeonMap::Update(float deltaTime)
 {
 	if (m_enemies.empty())
 	{
-		m_timeRemaining -= deltaTime * 5;
+		m_timeRemaining -= deltaTime;
 
 		if (m_timeRemaining <= 0)
 		{

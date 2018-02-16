@@ -12,6 +12,7 @@ public:
 	~System() {};
 
 	void AddEntity(Entity * e);
+	Entity* FindEntity(std::string id);
 	void RemoveEntity(std::string id);
 	void SelectiveClear();
 	void FullClear();

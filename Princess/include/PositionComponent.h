@@ -36,7 +36,10 @@ public:
 
 	//SDL_Point getPosition() { return SDL_Point{ m_x, m_y }; }
 
-	void setPosition(float x, float y) { m_x = x; m_y = y; }
+	void setPosition(float x, float y) { 
+		m_x = x; 
+		m_y = y;
+	}
 	void setX(float x) { m_x = x; }
 	void setY(float y) { m_y = y; }
 

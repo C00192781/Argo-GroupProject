@@ -184,6 +184,7 @@ void CollisionSystem::filterCollisions(int entityIndex, int entityColIndex, int 
 					if (m_listener->Space)
 					{
 						m_listener->WorldToDungeon = true;
+						m_currentDungeon = m_collidableEntities.at(collidableIndex);
 					}
 				}
 			}

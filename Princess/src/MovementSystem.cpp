@@ -16,14 +16,6 @@ void MovementSystem::Update(float deltaTime)
 			m_collisionComponent.at(i)->setPosition(m_collisionComponent.at(i)->getX() + m_movementComponent.at(i)->getXVelocity() * deltaTime,
 													m_collisionComponent.at(i)->getY() + m_movementComponent.at(i)->getYVelocity() * deltaTime);
 
-			//float* xPos = m_positionComponent.at(i)->getXRef();
-			//float* yPos = m_positionComponent.at(i)->getYRef();
-			//
-			//*xPos += m_movementComponent.at(i)->getXVelocity() * deltaTime;
-			//*yPos += m_movementComponent.at(i)->getYVelocity() * deltaTime;
-			//
-			//m_collisionComponent.at(i)->setPosition(*xPos, *yPos);
-
 			if (m_entities.at(i)->ID() == "Player")
 			{
 				if (m_movementComponent.at(i)->getLockedOrientation() == false)
