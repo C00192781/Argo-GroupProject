@@ -35,6 +35,7 @@ void BattleMap::Generate(std::string type)
 		factory = new GrassTileFactory();
 	}
 	std::vector<Entity*>* projectileEntities = m_systemManager->attackSystem->getProjectiles();
+	projectileEntities->clear();
 
 	for (int i = 0; i < 17; i++)
 	{
@@ -79,8 +80,6 @@ void BattleMap::Generate(std::string type)
 		m_systemManager->collisionSystem->AddEntity((*i));
 		m_systemManager->attackSystem->AddEntity((*i));
 	}
-
-	std::cout << projectileEntities->size() << std::endl;
 
 	m_systemManager->aiSystem->Spawn();
 

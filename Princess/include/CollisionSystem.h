@@ -19,7 +19,6 @@ public:
 	CollisionSystem(SDL_Rect bounds, EventListener* listener);
 	~CollisionSystem();
 
-	//bool collision = false;
 	void LoadComponent();
 	void UnloadComponent(int x);
 

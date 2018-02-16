@@ -128,7 +128,7 @@ void CollisionSystem::filterCollisions(int entityIndex, int entityColIndex, int 
 	entityCol = static_cast<CollisionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(entityColIndex));
 	collidableCol = static_cast<CollisionComponent*>(m_collidableEntities.at(collidableIndex)->GetComponents()->at(collidableColIndex));
 
-	if (m_collidableEntities.at(collidableIndex)->ID() == "Wall" || m_collidableEntities.at(collidableIndex)->ID() == "Door")
+	if (m_entities.at(entityIndex)->ID() == "Player" && m_collidableEntities.at(collidableIndex)->ID() == "Wall")
 	{
 		SDL_Rect rectEntityX = { entityCol->getX(), entityCol->getPreviousY(), entityCol->getWidth(), entityCol->getHeight() };
 		SDL_Rect rectEntityY = { entityCol->getPreviousX(), entityCol->getY(), entityCol->getWidth(), entityCol->getHeight() };
@@ -196,6 +196,10 @@ void CollisionSystem::filterCollisions(int entityIndex, int entityColIndex, int 
 					projectileCollision(entityIndex);
 					spellcasterCollision(entityIndex);
 				}
+				else if (m_collidableEntities.at(collidableIndex)->ID() == "Wall")
+				{
+					projectileCollision(entityIndex);
+				}
 			}
 		}
 	}
@@ -206,12 +210,11 @@ void CollisionSystem::projectileCollision(int index)
 	// find projectile component in collidable
 	// set ttl to 0
 
-	for (int i = 0; i < m_entities.at(index)->GetComponents()->size(); i++)
+	ProjectileComponent* p = static_cast<ProjectileComponent*>(m_entities.at(index)->FindComponent("PJ"));
+
+	if (p != nullptr)
 	{
-		if (m_entities.at(index)->GetComponents()->at(i)->Type() == "PJ")
-		{
-			static_cast<ProjectileComponent*>(m_entities.at(index)->GetComponents()->at(i))->setTimeToLive(0);
-		}
+		p->setTimeToLive(0);
 	}
 }
 

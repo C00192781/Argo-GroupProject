@@ -138,15 +138,6 @@ int main()
 	systemManager.collisionSystem->AddEntity(player);
 	systemManager.attackSystem->AddEntity(player);
 
-	//WorldMap* m = new WorldMap(&systemManager, &state);
-	//m->Generate(25, 25, 100);
-
-	//DungeonMap* d = new DungeonMap(&systemManager, &state, resourceManager);
-	//d->generate();
-
-	//BattleMap* d = new BattleMap(&systemManager, &state);
-	//d->Generate("");
-
 	bool heartTest = true;
 
 	while (true)

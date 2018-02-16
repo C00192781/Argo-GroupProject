@@ -97,6 +97,29 @@ void DungeonMap::Generate()
 		}
 	}
 
+	std::vector<Entity*>* projectileEntities = m_systemManager->attackSystem->getProjectiles();
+
+	for (int i = 0; i < 100; i++)
+	{
+		Entity* projectile = new Entity("Projectile");
+		projectile->AddComponent(new SpriteComponent("Arrow", 2, 0, 0, 0, 16, 8, 0));
+		projectile->AddComponent(new PositionComponent(SDL_Point{ -5000, -5000 }));
+		projectile->AddComponent(new ProjectileComponent(400));
+		projectile->AddComponent(new MovementComponent());
+		projectile->AddComponent(new CollisionComponent(-5000, -5000, 10, 10, 2));
+		projectile->Active(false);
+		projectileEntities->push_back(projectile);
+	}
+	for (auto i = projectileEntities->begin(), end = projectileEntities->end(); i != end; i++)
+	{
+		m_systemManager->renderSystem->AddEntity((*i));
+		m_systemManager->movementSystem->AddEntity((*i));
+		m_systemManager->collisionSystem->AddEntity((*i));
+		m_systemManager->attackSystem->AddEntity((*i));
+	}
+
+	std::cout << projectileEntities->size() << std::endl;
+
 	m_systemManager->collisionSystem->updateBounds(SDL_Rect{0, 0, 16 * 24 * (int)m_systemManager->renderSystem->GetScale(), 16 * 24 * (int)m_systemManager->renderSystem->GetScale() });
 }
 
