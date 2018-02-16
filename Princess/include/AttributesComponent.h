@@ -37,8 +37,6 @@ public:
 	{
 		m_type = "attribute";
 
-		//std::cout << m_type << std::endl;
-
 		m_armour = 5;
 		m_maxArmour = 6;
 
@@ -69,26 +67,33 @@ public:
 	int MovementSpeed() { return m_movementSpeed; };
 	void MovementSpeed(int movementSpeed) { m_movementSpeed = movementSpeed; };
 
-	int MaxArmour() { return m_maxArmour; };
+	int MaxArmour() { return m_maxArmour + m_additiveArmour; };
 	void MaxArmour(int armour) { m_maxArmour = armour; };
 
-	int MaxHealth() { return m_maxHealth; };
+	int MaxHealth() { return m_maxHealth + m_additiveHealth; };
 	void MaxHealth(int health) { m_maxHealth = health; };
 
-	int MaxMovementSpeed() { return m_maxMovementSpeed; };
+	int MaxMovementSpeed() { return m_maxMovementSpeed + m_additiveMovementSpeed; };
 	void MaxMovementSpeed(int movementSpeed) { m_maxMovementSpeed = movementSpeed; };
+
+	void AdditiveArmour(int x) { m_additiveArmour = x; };
+	void AdditiveHealth(int x) { m_additiveHealth = x; };
+	void AdditiveMovement(int x) { m_additiveMovementSpeed = x; };
 
 	std::list<Modifer> * Modifers() { return m_modifers; };
 
 private:
 	int m_armour;
 	int m_maxArmour;
+	int m_additiveArmour;
 
 	int m_health;
 	int m_maxHealth;
+	int m_additiveHealth;
 
 	int m_movementSpeed;
 	int m_maxMovementSpeed;
+	int m_additiveMovementSpeed;
 
 	std::list<Modifer> * m_modifers;
 };

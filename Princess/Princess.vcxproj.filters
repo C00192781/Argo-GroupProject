@@ -98,6 +98,9 @@
     <ClCompile Include="src\WorldTileFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\ShopInstance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External Dependencies\ResourceManager\JSONReader.h">
@@ -251,6 +254,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\WorldTileFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ValueComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ShopInstance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

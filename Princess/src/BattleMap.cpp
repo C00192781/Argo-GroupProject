@@ -93,26 +93,6 @@ void BattleMap::Generate(std::string type)
 		m_systemManager->collisionSystem->AddEntity((*i));
 	}
 
-	//HeartManagerComponent* hUI = new HeartManagerComponent(HeartTypes::HEALTH);
-	//player->AddComponent(hUI);
-	//
-	//HeartManagerComponent* aUI = new HeartManagerComponent(HeartTypes::ARMOUR);
-	//player->AddComponent(aUI);
-
-	//m_systemManager->healthSystem->AddEntity(player);
-	//
-	//m_systemManager->healthSystem->UpdateMaxHeartsUI(player, player);
-	//m_systemManager->healthSystem->UpdateMaxArmourUI(player, player);
-
-	//for (int c = 0; c < hUI->HeartsVector()->size(); c++)
-	//{
-	//	m_systemManager->renderSystem->AddEntity(hUI->HeartsVector()->at(c));
-	//}
-	//for (int i = 0; i < aUI->HeartsVector()->size(); i++)
-	//{
-	//	m_systemManager->renderSystem->AddEntity(aUI->HeartsVector()->at(i));
-	//}
-
 	delete factory;
 }
 void BattleMap::Update()

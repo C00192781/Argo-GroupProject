@@ -19,7 +19,6 @@
 #include "ProjectileSystem.h"
 #include "CollisionSystem.h"
 #include "AttributesComponent.h"
-#include "HeartManagerComponent.h"
 #include "AISystem.h"
 #include "CollisionSystem.h"
 #include "HealthSystem.h"
@@ -40,7 +39,7 @@ public:
 	AiSystem * aiSystem;
 	ButtonSystem * buttonSystem;
 	TextRenderSystem * textRenderSystem;
-
+	HealthSystem * h;
 
 	void Update(float deltaTime);
 

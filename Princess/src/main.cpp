@@ -19,7 +19,6 @@
 #include "TextRenderSystem.h"
 #include "ButtonComponent.h"
 #include "HealthSystem.h"
-#include "HeartComponent.h"
 #include "AISystem.h"
 #include "Princess.h"
 #include <chrono>
@@ -27,6 +26,7 @@
 #include "LTimer.h"
 #include "WorldMap.h"
 #include "TownInstance.h"
+#include "ShopInstance.h"
 
 int main()
 {
@@ -71,8 +71,11 @@ int main()
 	resourceManager->AddTexture("ArmourSheet", "armourSpriteSheet.png");
 	resourceManager->AddTexture("WorldTurf", "World_Turfs.png");
 	resourceManager->AddTexture("Button", "Button.png");
+	resourceManager->AddTexture("Plate", "Plate.png");
+	resourceManager->AddTexture("Heart", "Hearts.png");
+	resourceManager->AddTexture("Armor", "Armors.png");
 
-	resourceManager->AddFont("ComicSans", "ComicSans.ttf", 32);
+	resourceManager->AddFont("ComicSans", "ComicSans.ttf", 21);
 
 	EventListener *listener = new EventListener();
 
@@ -96,6 +99,9 @@ int main()
 	systemManager.renderSystem->Camera(true);
 	systemManager.renderSystem->Camera(816, 624);
 
+	systemManager.healthSystem = new HealthSystem();
+	systemManager.healthSystem->Active(true);
+
 	systemManager.textRenderSystem = new TextRenderSystem(resourceManager, gameRenderer);
 	systemManager.textRenderSystem->Active(true);
 
@@ -117,30 +123,61 @@ int main()
 	systemManager.buttonSystem = new ButtonSystem(listener);
 	systemManager.buttonSystem->Active(true);
 
-	Entity * player = new Entity("Player");
-	player->Active(true);
-	player->AddComponent(new SpriteComponent("Red", 3, 1, 0, 0, 16, 16, 0));
-	player->AddComponent(new PositionComponent(SDL_Point{ 0, 0 }));
-	player->AddComponent(new AttributesComponent(26, 26, 10, 10, 100, 100));
-	player->AddComponent(new MovementComponent());
-	player->AddComponent(new WeaponComponent(WeaponType::RANGE));
-	player->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
-	player->Transient(true);
+	for (int i = 0; i < 4; i++)
+	{
+		Entity * player = new Entity("Player");
+		player->Active(true);
+		player->AddComponent(new SpriteComponent("Red", 3, 1, 0, 0, 16, 16, 0));
+		player->AddComponent(new PositionComponent(SDL_Point{ 0, 0 }));
+		player->AddComponent(new AttributesComponent(21, 24, 9, 12, 100, 100));
+		player->AddComponent(new MovementComponent());
+		player->AddComponent(new WeaponComponent(WeaponType::RANGE));
+		player->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
+		player->Transient(true);
 
-	systemManager.controlSystem->AddEntity(player);
-	systemManager.movementSystem->AddEntity(player);
-	systemManager.renderSystem->AddEntity(player);
-	systemManager.projectileSystem->AddEntity(player);
-	systemManager.collisionSystem->AddEntity(player);
-	systemManager.attackSystem->AddEntity(player);
+		for (int j = 0; j < 12; j++)
+		{
+			SpriteComponent * s = new SpriteComponent("Heart", 5, 0, 0, 0, 4, 4, 0);
+			s->Relative(true);
+			Entity * heart = new Entity("Heart");
+			heart->AddComponent(new PositionComponent());
+			heart->AddComponent(s);
+			systemManager.healthSystem->AddEntity(heart, "PH" + std::to_string(i+1));
+			systemManager.renderSystem->AddEntity(heart);
+			heart->Transient(true);
+		}
+		for (int j = 0; j < 6; j++)
+		{
+			SpriteComponent * s = new SpriteComponent("Armor", 5, 0, 0, 0, 4, 4, 0);
+			s->Relative(true);
+			Entity * heart = new Entity("Heart");
+			heart->AddComponent(new PositionComponent());
+			heart->AddComponent(s);
+			systemManager.healthSystem->AddEntity(heart, "PH" + std::to_string(i+1));
+			systemManager.renderSystem->AddEntity(heart);
+			heart->Transient(true);
+		}
+		systemManager.healthSystem->AddEntity(player, "");
 
-	TownInstance t = TownInstance(&systemManager);
-	t.Generate("jimmie");
+		systemManager.controlSystem->AddEntity(player);
+		systemManager.movementSystem->AddEntity(player);
+		systemManager.renderSystem->AddEntity(player);
+		systemManager.projectileSystem->AddEntity(player);
+		systemManager.collisionSystem->AddEntity(player);
+		systemManager.attackSystem->AddEntity(player);
+	}
+
+	BattleMap m = BattleMap(&systemManager, &state);
+	m.Generate("jimmie");
+
+	//TownInstance t = TownInstance(&systemManager);
+	//t.Generate("jimmie");
 
 	//WorldMap* m = new WorldMap(&systemManager, &state);
 	//m->Generate(25, 25, 100);
 
-	bool heartTest = true;
+	//ShopInstance s = ShopInstance(&systemManager);
+	//s.Generate(1);
 
 	while (true)
 	{
