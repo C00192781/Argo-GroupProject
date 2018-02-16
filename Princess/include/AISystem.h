@@ -18,11 +18,11 @@ public:
 	AiSystem();
 	~AiSystem();
 	void Update();
-	void Update(float deltaTime, Entity* player);
+	void Update(float deltaTime, std::vector<Entity*> players);
 	void Spawn(std::string id);
 	void Spawn();
 	std::vector<Entity*> getEntities();
-	void seek(int entityIndex, int pcKey, int mcKey, int seekKey, int attributeKey, float tarX, float tarY, int behaviour);
+	void seek(int entityIndex, int pcKey, int mcKey, int seekKey, int attributeKey, float tarX, float tarY, int behaviour, string tag);
 	void attack(int entityIndex, int attackKey, int mcKey);
 	void normalise(float &x, float &y);
 	float magnitude(float x, float y);

@@ -42,7 +42,7 @@ public:
 	TextRenderSystem * textRenderSystem;
 	
 
-	void Update(float deltaTime, Entity* player);
+	void Update(float deltaTime, std::vector<Entity*> players);
 
 private:
 	bool flag = false;

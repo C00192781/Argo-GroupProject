@@ -128,7 +128,28 @@ int main()
 	player->AddComponent(new MovementComponent());
 	player->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
+//	player->AddComponent(new SeekComponent());
 	player->Transient(true);
+
+	Entity * player2 = new Entity("Player");
+	player2->Active(true);
+	player2->AddComponent(new AiLogicComponent());
+	player2->AddComponent(new SpriteComponent("Red", 3, 1, 0, 0, 16, 16, 0));
+	player2->AddComponent(new PositionComponent(SDL_Point{ 100, 300 }));
+	player2->AddComponent(new AttributesComponent(26, 26, 10, 10, 100, 100));
+	player2->AddComponent(new MovementComponent());
+	player2->AddComponent(new WeaponComponent(WeaponType::RANGE));
+	player2->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
+	player2->AddComponent(new SeekComponent());
+	player2->Transient(true);
+
+
+
+	systemManager.movementSystem->AddEntity(player2);
+	systemManager.renderSystem->AddEntity(player2);
+	systemManager.projectileSystem->AddEntity(player2);
+	systemManager.collisionSystem->AddEntity(player2);
+	systemManager.attackSystem->AddEntity(player2);
 
 	systemManager.controlSystem->AddEntity(player);
 	systemManager.movementSystem->AddEntity(player);
@@ -136,6 +157,14 @@ int main()
 	systemManager.projectileSystem->AddEntity(player);
 	systemManager.collisionSystem->AddEntity(player);
 	systemManager.attackSystem->AddEntity(player);
+
+
+	std::vector<Entity*> playerEntities;
+	playerEntities.push_back(player);
+	playerEntities.push_back(player2);
+
+//	systemManager.controlSystem->AddEntity(player2);
+
 
 	//TownInstance t = TownInstance(&systemManager);
 	//t.Generate("jimmie");
@@ -189,7 +218,7 @@ int main()
 			SDL_SetRenderDrawColor(gameRenderer, 0, 0, 0, 0);
 			SDL_RenderClear(gameRenderer);
 
-			systemManager.Update(deltaTime, player);
+			systemManager.Update(deltaTime, playerEntities);
 
 			SDL_RenderPresent(gameRenderer);
 		}

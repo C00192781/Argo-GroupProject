@@ -116,38 +116,67 @@ std::vector<Entity*> AiSystem::getEntities()
 }
 
 
-void AiSystem::seek(int entityIndex, int pcKey, int mcKey, int seekKey, int attributeKey, float tarX, float tarY, int behaviour)
+void AiSystem::seek(int entityIndex, int pcKey, int mcKey, int seekKey, int attributeKey, float tarX, float tarY, int behaviour, string tag)
 {
 
-
-//	SDL_Point{ rand() % 812, rand() % 624 }, 0));
-	
-	float x = tarX - static_cast<PositionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(pcKey))->getX();
-	float y = tarY - static_cast<PositionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(pcKey))->getY();
-
-	float dist = magnitude(x, y);
-
-	static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->setDistanceToDestination(dist);
-
-	if (dist > static_cast<AttributesComponent*>(m_entities.at(entityIndex)->GetComponents()->at(attributeKey))->MovementSpeed() / 60.0f)
+	if (tag != "Player")
 	{
-		normalise(x, y);
-		x *= static_cast<AttributesComponent*>(m_entities.at(entityIndex)->GetComponents()->at(attributeKey))->MovementSpeed();
-		y *= static_cast<AttributesComponent*>(m_entities.at(entityIndex)->GetComponents()->at(attributeKey))->MovementSpeed();
+		//	SDL_Point{ rand() % 812, rand() % 624 }, 0));
 
-		if (behaviour == 0)
+		float x = tarX - static_cast<PositionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(pcKey))->getX();
+		float y = tarY - static_cast<PositionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(pcKey))->getY();
+
+		float dist = magnitude(x, y);
+
+		static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->setDistanceToDestination(dist);
+
+		if (dist > static_cast<AttributesComponent*>(m_entities.at(entityIndex)->GetComponents()->at(attributeKey))->MovementSpeed() / 60.0f)
 		{
-			static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setXVelocity(x);
-			static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setYVelocity(y);
+			normalise(x, y);
+			x *= static_cast<AttributesComponent*>(m_entities.at(entityIndex)->GetComponents()->at(attributeKey))->MovementSpeed();
+			y *= static_cast<AttributesComponent*>(m_entities.at(entityIndex)->GetComponents()->at(attributeKey))->MovementSpeed();
+
+			if (behaviour == 0)
+			{
+				static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setXVelocity(x);
+				static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setYVelocity(y);
+			}
+			if (behaviour == 1)
+			{
+				static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setXVelocity(-x);
+				static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setYVelocity(-y);
+			}
 		}
-		if (behaviour == 1)
+
+	}
+	else
+	{
+
+		float x = tarX - static_cast<PositionComponent*>(m_playerEntities.at(entityIndex -1)->GetComponents()->at(pcKey))->getX();
+		float y = tarY - static_cast<PositionComponent*>(m_playerEntities.at(entityIndex -1)->GetComponents()->at(pcKey))->getY();
+
+		float dist = magnitude(x, y);
+
+		static_cast<SeekComponent*>(m_playerEntities.at(entityIndex -1)->GetComponents()->at(seekKey))->setDistanceToDestination(dist);
+
+		if (dist > static_cast<AttributesComponent*>(m_playerEntities.at(entityIndex - 1)->GetComponents()->at(attributeKey))->MovementSpeed() / 60.0f)
 		{
-			static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setXVelocity(-x);
-			static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setYVelocity(-y);
+			normalise(x, y);
+			x *= static_cast<AttributesComponent*>(m_playerEntities.at(entityIndex -1)->GetComponents()->at(attributeKey))->MovementSpeed();
+			y *= static_cast<AttributesComponent*>(m_playerEntities.at(entityIndex -1)->GetComponents()->at(attributeKey))->MovementSpeed();
+
+			if (behaviour == 0)
+			{
+				static_cast<MovementComponent*>(m_playerEntities.at(entityIndex -1)->GetComponents()->at(mcKey))->setXVelocity(x);
+				static_cast<MovementComponent*>(m_playerEntities.at(entityIndex -1)->GetComponents()->at(mcKey))->setYVelocity(y);
+			}
+			if (behaviour == 1)
+			{
+				static_cast<MovementComponent*>(m_playerEntities.at(entityIndex -1)->GetComponents()->at(mcKey))->setXVelocity(-x);
+				static_cast<MovementComponent*>(m_playerEntities.at(entityIndex -1)->GetComponents()->at(mcKey))->setYVelocity(-y);
+			}
 		}
 	}
-
-
 
 	//else
 	//{
@@ -255,11 +284,97 @@ float AiSystem::magnitude(float x, float y)
 	return sqrt((x * x) + (y * y));
 }
 
-void AiSystem::Update(float deltaTime, Entity* player)
+void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 {
 	m_time = deltaTime;
 
-	m_playerEntities.push_back(player);
+	//std::vector<Entity*> m_playerAIEntities;
+
+	for (int i = 0; i < players.size(); i++)
+	{
+		//m_playerEntities.push_back(players.at(i));
+		
+		int check = players.at(i)->FindComponentIndex("AIL");
+
+		if (check != -1)
+		{
+			m_playerEntities.push_back(players.at(i));
+		}
+	}
+
+
+
+
+	for (int i = 0; i < players.size(); i++)
+	{
+		int check = players.at(i)->FindComponentIndex("AIL");
+
+		if (check != -1)
+		{
+			//m_playerAIEntities.push_back(players.at(i));
+			//cout << "i: " << i << endl;
+			float tarX = 0;
+			float tarY = 0;
+			float dist = 0;
+
+			//for (int l= 0; l < m_entities.size(); l++)
+			//{
+			//	if (m_entities.size().) //get dist or so ####
+			//}
+			//
+
+			float x = tarX - static_cast<PositionComponent*>(players.at(i)->FindComponent("PC"))->getX();
+			float y = tarY - static_cast<PositionComponent*>(players.at(i)->FindComponent("PC"))->getY();
+
+			dist = magnitude(x, y);
+
+		/*	time_t t;
+
+			srand((unsigned)time(&t));*/
+
+			int mod1 = rand() % 790; //change these to useful numbers that actually seek an ai or something
+
+			int mod2 = rand() % 590;
+
+			int tw = players.at(i)->FindComponentIndex("PC"); //move index finding to spawn, 
+			int tx = players.at(i)->FindComponentIndex("movement");
+			int ty = players.at(i)->FindComponentIndex("seek");
+			int tz = players.at(i)->FindComponentIndex("attribute");
+
+			seek(i, tw, tx, ty, tz, mod1, mod2, 0, players.at(i)->ID());
+
+			//$$$$$$$$$$$$$$$$
+
+		}
+
+		//m_decisionTree->calculatePathNodes(m_decisionTree->m_RootNode, dist, 2, static_cast<eHPComp*>(hpComp)->getHP()); //make target HP and self HP gettable later,  hardcoded values for test purpose only.
+
+		//int decision = m_decisionTree->getDecision();
+
+
+		//if (decision == 8 || decision == 9) //if hp adv and in range
+		//{
+
+		//}
+
+		//else if (decision == 10 || decision == 11) //if hp adv and out of range
+		//{
+
+		//}
+
+		//else if (decision == 12 || decision == 13) //if no hp adv and out of range
+		//{
+
+		//}
+		//else if (decision == 14 || decision == 15) //if no hp adv and in range
+		//{
+	
+
+		//}//$$$$$$$$$$
+	}
+
+	
+
 
 	for (int i = 0; i < m_entities.size(); i++)
 	{
@@ -288,11 +403,11 @@ void AiSystem::Update(float deltaTime, Entity* player)
 					float tarY = 0;
 					float dist = 0;
 
-					for (int j = 0; j < m_playerEntities.size(); j++)
+					for (int j = 0; j < players.size(); j++)
 					{
-						if (m_playerEntities.at(j)->ID() == "Player") //some sort of target discerning goes here later
+						if (players.at(j)->ID() == "Player") //some sort of target discerning goes here later
 						{
-							auto tar = m_playerEntities.at(j)->FindComponent("PC");
+							auto tar = players.at(j)->FindComponent("PC");
 							tarX = static_cast<PositionComponent*>(tar)->getX();
 							tarY = static_cast<PositionComponent*>(tar)->getY();
 						/*	cout << "tarX: " << tarX << endl;
@@ -347,7 +462,7 @@ void AiSystem::Update(float deltaTime, Entity* player)
 
 									//cout << tarX << endl;
 									//cout << tarY << endl;
-						seek(i, tw, tx, ty, tz, tarX, tarY, 0); //refactor x and y to take in princess position or whatever player or whatever
+						seek(i, tw, tx, ty, tz, tarX, tarY, 0, m_entities.at(i)->ID()); //refactor x and y to take in princess position or whatever player or whatever
 						//seek
 					}
 
@@ -383,11 +498,11 @@ void AiSystem::Update(float deltaTime, Entity* player)
 						//	}
 						//}
 
-						for (int j = 0; j < m_playerEntities.size(); j++)
+						for (int j = 0; j < players.size(); j++)
 						{
-							if (m_playerEntities.at(j)->ID() == "Player") //some sort of target discerning goes here later
+							if (players.at(j)->ID() == "Player") //some sort of target discerning goes here later
 							{
-								auto tar = m_playerEntities.at(j)->FindComponent("PC");
+								auto tar = players.at(j)->FindComponent("PC");
 								tarX = static_cast<PositionComponent*>(tar)->getX();
 								tarY = static_cast<PositionComponent*>(tar)->getY();
 								/*	cout << "tarX: " << tarX << endl;
@@ -403,7 +518,7 @@ void AiSystem::Update(float deltaTime, Entity* player)
 
 						/*			cout << tarX << endl;
 									cout << tarY << endl;*/
-						seek(i, tw, tx, ty, tz, tarX, tarY, 1); //refactor x and y to take in princess position or whatever player or whatever
+						seek(i, tw, tx, ty, tz, tarX, tarY, 1, m_entities.at(i)->ID()); //refactor x and y to take in princess position or whatever player or whatever
 																//flee
 
 					}
@@ -415,6 +530,6 @@ void AiSystem::Update(float deltaTime, Entity* player)
 
 	}
 
-	m_playerEntities.clear();
+	players.clear();
 }
 
