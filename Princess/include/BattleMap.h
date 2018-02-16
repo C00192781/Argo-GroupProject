@@ -2,6 +2,7 @@
 #define _BATTLEMAP_H
 
 #include "Instance.h"
+#include "SystemManager.h"
 
 class BattleMap : public Instance
 {

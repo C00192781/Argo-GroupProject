@@ -1,48 +1,69 @@
 #include "MovementSystem.h"
 
-void MovementSystem::Update()
+void MovementSystem::Update(float deltaTime)
 {
+	SDL_GetMouseState(&m_mouseX, &m_mouseY);
+
 	// looks for if there is a position and movement component in the entity
 	for (int i = 0; i < m_entities.size(); i++)
 	{
 		if (m_entities.at(i)->Active())
 		{
-			int mcKey = -1;
-			int pcKey = -1;
-			bool skip = false;
+			float* xPos = m_positionComponent.at(i)->getXRef();
+			float* yPos = m_positionComponent.at(i)->getYRef();
 
-			for (int j = 0; j < m_entities.at(i)->GetComponents()->size(); j++)
+			*xPos += m_movementComponent.at(i)->getXVelocity() * deltaTime;
+			*yPos += m_movementComponent.at(i)->getYVelocity() * deltaTime;
+
+			m_collisionComponent.at(i)->setPosition(*xPos, *yPos);
+
+			if (m_entities.at(i)->ID() == "Player")
 			{
-				if (m_entities.at(i)->GetComponents()->at(j)->Type() == "PC")
+				if (m_movementComponent.at(i)->getLockedOrientation() == false)
 				{
-					pcKey = j;
+					m_movementComponent.at(i)->setOrientation((atan2((float)m_mouseY - (m_windowHeight / 2), (float)m_mouseX - (m_windowWidth / 2))) * (180 / 3.142) + 90);
 				}
-				else if (m_entities.at(i)->GetComponents()->at(j)->Type() == "movement")
-				{
-					mcKey = j;
-					if (static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->getVelocity().x == 0 && static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->getVelocity().y == 0)
-					{
-						skip = true;
-						break;
-					}
-				}
-				if (pcKey >= 0 && mcKey >= 0)
-				{
-					break;
-				}
-			}
-
-			// makes sure it finds a position and movement component in the entity
-			if (mcKey >= 0 && pcKey >= 0 && !skip)
-			{
-				SDL_Point position = static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getPosition();
-				SDL_Point velocity = static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->getVelocity();
-
-				position.x += velocity.x;
-				position.y += velocity.y;
-
-				static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->setPosition(position);
 			}
 		}
 	}
+}
+
+void MovementSystem::LoadComponent()
+{
+	int pcKey = -1;
+	int movementKey = -1;
+	int collisionKey = -1;
+
+	for (int j = 0; j < m_entities.back()->GetComponents()->size(); j++)
+	{
+		if (m_entities.back()->GetComponents()->at(j)->Type() == "PC")
+		{
+			pcKey = j;
+		}
+		else if (m_entities.back()->GetComponents()->at(j)->Type() == "movement")
+		{
+			movementKey = j;
+		}
+		else if (m_entities.back()->GetComponents()->at(j)->Type() == "collision")
+		{
+			collisionKey = j;
+		}
+		if (movementKey >= 0 && pcKey >= 0 && collisionKey >= 0)
+		{
+			break;
+		}
+	}
+	m_positionComponent.push_back(static_cast<PositionComponent*>(m_entities.back()->GetComponents()->at(pcKey)));
+	m_movementComponent.push_back(static_cast<MovementComponent*>(m_entities.back()->GetComponents()->at(movementKey)));
+	m_collisionComponent.push_back(static_cast<CollisionComponent*>(m_entities.back()->GetComponents()->at(collisionKey)));
+}
+
+void MovementSystem::UnloadComponent(int x)
+{
+	m_positionComponent.erase(m_positionComponent.begin() + x);
+	m_movementComponent.erase(m_movementComponent.begin() + x);
+	m_collisionComponent.erase(m_collisionComponent.begin() + x);
+	m_positionComponent.shrink_to_fit();
+	m_movementComponent.shrink_to_fit();
+	m_collisionComponent.shrink_to_fit();
 }

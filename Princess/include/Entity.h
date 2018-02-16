@@ -4,6 +4,7 @@
 #include "Component.h"
 #include <vector>
 #include "stdafx.h"
+#include <cstring>
 class Entity
 {
 public:
@@ -15,12 +16,14 @@ public:
 	std::string ID() { return m_id; };
 	bool Active() { return m_active; };
 	void Active(bool x) { m_active = x; };
-	bool Transient() { return m_transient; };		
+	bool Transient() { return m_transient; };
 	void Transient(bool x) { m_transient = x; };
+	Component* FindComponent(std::string ID);
 private:
 	std::vector<Component*> m_components;
 	std::string m_id;
 	bool m_transient;
 	bool m_active;
 };
+
 #endif

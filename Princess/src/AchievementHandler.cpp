@@ -23,123 +23,146 @@ void AchievementHandler::Init()
 	observers.push_back(achievement6);
 
 	// Read from JSON file
-	json achievement;
+	json jAchievement;
 	std::ifstream achievement_file("Achievements.json", std::ifstream::binary);
-	achievement_file >> achievement;
+	achievement_file >> jAchievement;
 
-	std::cout << achievement["achievement1"] << std::endl;
+	std::cout << "First achievement is " << jAchievement["achievement1"] << std::endl;
 
-	activated1 = achievement["achievement1"];
-	activated2 = achievement["achievement2"];
-	activated3 = achievement["achievement3"];
-	activated4 = achievement["achievement4"];
-	activated5 = achievement["achievement5"];
-	activated6 = achievement["achievement6"];
 
-	j["achievement1"] = achievement["achievement1"];
-	j["achievement2"] = achievement["achievement2"];
-	j["achievement3"] = achievement["achievement3"];
-	j["achievement4"] = achievement["achievement4"];
-	j["achievement5"] = achievement["achievement5"];
-	j["achievement6"] = achievement["achievement6"];
+	// If the player has triggered an achievement in a previous playthrough
+	// we keep track of this using JSON
+	// initialize initial values with values from previous play session
+	A1.activated = jAchievement["achievement1"];
+	A2.activated = jAchievement["achievement2"];
+	A3.activated = jAchievement["achievement3"];
+	A4.activated = jAchievement["achievement4"];
+	A5.activated = jAchievement["achievement5"];
+	A6.activated = jAchievement["achievement6"];
+
+	j["achievement1"] = jAchievement["achievement1"];
+	j["achievement2"] = jAchievement["achievement2"];
+	j["achievement3"] = jAchievement["achievement3"];
+	j["achievement4"] = jAchievement["achievement4"];
+	j["achievement5"] = jAchievement["achievement5"];
+	j["achievement6"] = jAchievement["achievement6"];
 
 	// write to JSON file
 	std::ofstream o("Achievements.json");
-	//o << std::setw(6) << j << std::endl;
 	o << j << std::endl;
 }
 
 void AchievementHandler::HandleAchievements()
 {
-	//std::cout << m_systemManager->ControlSystem->totalMovement << std::endl;
-	if (m_systemManager->ControlSystem->totalMovement >= 1000 && activated1 == false)
-	{	
-		subject.AttachObserver(&observers[0]);
-		subject.DetachObserver(&observers[1]);
-		subject.DetachObserver(&observers[2]);
-		subject.DetachObserver(&observers[3]);
-		subject.DetachObserver(&observers[4]);
-		subject.DetachObserver(&observers[5]);
+	if (m_systemManager->controlSystem->getTotalPlayerMovement() >= 500)
+	{
+		static float startTime = SDL_GetTicks();
+		if (A1.activated == false)
+		{
+			subject.AttachObserver(&observers[0]);
+			subject.DetachObserver(&observers[1]);
+			subject.DetachObserver(&observers[2]);
+			subject.DetachObserver(&observers[3]);
+			subject.DetachObserver(&observers[4]);
+			subject.DetachObserver(&observers[5]);
 
-		subject.ChangeStatus(true);
-		activated1 = true;
+			subject.ChangeStatus(true);
+			A1.activated = true;
 
-		j["achievement1"] = activated1;
-		std::ofstream o("Achievements.json");
-		o << j << std::endl;
+			j["achievement1"] = A1.activated;
+			std::ofstream o("Achievements.json");
+			o << j << std::endl;
+
+			Generate("Achievement");
+		}
+		else
+		{
+			Removal("Achievement", startTime);
+		}
 
 	}
+	if (m_systemManager->controlSystem->getTotalPlayerMovement() >= 1000)
+	{
+		static float startTime = SDL_GetTicks();
+		if (A2.activated == false)
+		{
+			subject.DetachObserver(&observers[0]);
+			subject.AttachObserver(&observers[1]);
+			subject.DetachObserver(&observers[2]);
+			subject.DetachObserver(&observers[3]);
+			subject.DetachObserver(&observers[4]);
+			subject.DetachObserver(&observers[5]);
 
-	//if (m_achievementListener->achievement1 == true && activated1 == false)
-	//{
-	//	subject.AttachObserver(&observers[0]);
-	//	subject.DetachObserver(&observers[1]);
-	//	subject.DetachObserver(&observers[2]);
-	//	subject.DetachObserver(&observers[3]);
-	//	subject.DetachObserver(&observers[4]);
-	//	subject.DetachObserver(&observers[5]);
+			subject.ChangeStatus(true);
+			A2.activated = true;
 
-	//	subject.ChangeStatus(true);
-	//	activated1 = true;
-	//}
-	//if (m_achievementListener->achievement2 == true && activated2 == false)
-	//{
-	//	subject.DetachObserver(&observers[0]);
-	//	subject.AttachObserver(&observers[1]);
-	//	subject.DetachObserver(&observers[2]);
-	//	subject.DetachObserver(&observers[3]);
-	//	subject.DetachObserver(&observers[4]);
-	//	subject.DetachObserver(&observers[5]);
+			j["achievement2"] = A2.activated;
+			std::ofstream o("Achievements.json");
+			o << j << std::endl;
 
-	//	subject.ChangeStatus(true);
-	//	activated2 = true;
-	//}
-	//if (m_achievementListener->achievement3 == true && activated3 == false)
-	//{
-	//	subject.DetachObserver(&observers[0]);
-	//	subject.DetachObserver(&observers[1]);
-	//	subject.AttachObserver(&observers[2]);
-	//	subject.DetachObserver(&observers[3]);
-	//	subject.DetachObserver(&observers[4]);
-	//	subject.DetachObserver(&observers[5]);
+			Generate("Achievement2");
+		}
+		else
+		{
+			Removal("Achievement2", startTime);
+		}
+	
+	}
+}
 
-	//	subject.ChangeStatus(true);
-	//	activated3 = true;
-	//}
-	//if (m_achievementListener->achievement4 == true && activated4 == false)
-	//{
-	//	subject.DetachObserver(&observers[0]);
-	//	subject.DetachObserver(&observers[1]);
-	//	subject.DetachObserver(&observers[2]);
-	//	subject.AttachObserver(&observers[3]);
-	//	subject.DetachObserver(&observers[4]);
-	//	subject.DetachObserver(&observers[5]);
+void AchievementHandler::Removal(std::string identifier, float startTime)
+{
+	if (displayQueue.size() > 0)
+	{
+		if (displayQueue.at(0)->ID() == identifier)
+		{
+			uint32_t tickTime = SDL_GetTicks();
 
-	//	subject.ChangeStatus(true);
-	//	activated4 = true;
-	//}
-	//if (m_achievementListener->achievement5 == true && activated5 == false)
-	//{
-	//	subject.DetachObserver(&observers[0]);
-	//	subject.DetachObserver(&observers[1]);
-	//	subject.DetachObserver(&observers[2]);
-	//	subject.DetachObserver(&observers[3]);
-	//	subject.AttachObserver(&observers[4]);
-	//	subject.DetachObserver(&observers[5]);
+			uint32_t lastTickTime = tickTime - startTime;
+			/*uint32_t lastTickTimeInSeconds = lastTickTime * 0.001f;*/
+			if (lastTickTime > 5000)
+			{
+				if (displayQueue.at(0)->ID() == identifier)
+				{
+					Replace();
+				}
+			}
+		}
+	}
+}
 
-	//	subject.ChangeStatus(true);
-	//	activated5 = true;
-	//}
-	//if (m_achievementListener->achievement6 == true && activated6 == false)
-	//{
-	//	subject.DetachObserver(&observers[0]);
-	//	subject.DetachObserver(&observers[1]);
-	//	subject.DetachObserver(&observers[2]);
-	//	subject.DetachObserver(&observers[3]);
-	//	subject.DetachObserver(&observers[4]);
-	//	subject.AttachObserver(&observers[5]);
+void AchievementHandler::Replace()
+{
+	if (displayQueue.size() > 0)
+	{
+		m_systemManager->renderSystem->RemoveEntity(displayQueue.back()->ID());
+		displayQueue.erase(displayQueue.begin());
+	}
+}
 
-	//	subject.ChangeStatus(true);
-	//	activated6 = true;
-	//}
+void AchievementHandler::Generate(std::string identifier)
+{
+	Entity *AchievementEntity = new Entity(identifier);;
+	SpriteComponent * sprite = new SpriteComponent(identifier, 2, 0, 0, 0, 148, 32, 0);
+	sprite->Relative(true);
+	AchievementEntity->AddComponent(sprite);
+	AchievementEntity->Transient(true);
+	AchievementEntity->AddComponent(new PositionComponent(SDL_Point{ 0, 535 }));
+
+	Replace();
+
+	m_systemManager->renderSystem->AddEntity(AchievementEntity);
+	displayQueue.push_back(AchievementEntity);
+}
+
+
+
+void AchievementHandler::Animate(PositionComponent *positionComponent)
+{
+
+	/*Vector2f position;
+	position.X = positionComponent->getX();
+	position.Y = positionComponent->getY();
+	positionComponent->setPosition(position.X, position.Y);*/
+
 }

@@ -19,26 +19,28 @@ public:
 		m_type = "SC";
 		m_frame = 0;
 		m_layer = layer;
-	 }
+		m_IsAnimating = true;
+		m_relative = false;
+	}
 	~SpriteComponent() {};
 
 	void Direction(int dir) { m_direction = dir; };
-	int Direction(){ return m_direction; };
+	int Direction() { return m_direction; };
 
-	void Frame(int frame) { 
+	void Frame(int frame) {
 		if (frame < 0)
 		{
 			frame = m_noOfFrames;
 		}
-		else if( frame > m_noOfFrames)
+		else if (frame > m_noOfFrames)
 		{
 			frame = 0;
 		}
-		m_frame = frame; 
+		m_frame = frame;
 	};
 	int Frame() { return m_frame; };
 
-	void Width(int width) {m_width = width; };
+	void Width(int width) { m_width = width; };
 	int Width() { return m_width; };
 
 	void Height(int height) { m_height = height; };
@@ -50,7 +52,13 @@ public:
 	void Sheet(std::string x) { m_sheetID = x; };
 	std::string Sheet() { return m_sheetID; };
 
-	SDL_Rect GetRect() { return SDL_Rect{ ((m_sheetX +(m_sheetX* m_noOfFrames)) + m_frame) * m_width, ((m_sheetY * 4) + m_direction) * m_height, m_width, m_height };}
+	void IsAnimating(bool Animating) { m_IsAnimating = Animating; };
+	bool IsAnimating() { return m_IsAnimating; };
+
+	void Relative(bool x) { m_relative = x; };
+	bool Relative() { return m_relative; };
+
+	SDL_Rect GetRect() { return SDL_Rect{ ((m_sheetX + (m_sheetX* m_noOfFrames)) + m_frame) * m_width, ((m_sheetY * 4) + m_direction) * m_height, m_width, m_height }; }
 
 private:
 
@@ -61,7 +69,7 @@ private:
 	int m_direction; // 0 Up, 1 Down, 2 Left, 3 Right
 	int m_layer;
 	std::string m_sheetID;
-
+	bool m_IsAnimating;
+	bool m_relative;
 };
 #endif
-

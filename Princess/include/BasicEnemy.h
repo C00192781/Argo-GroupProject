@@ -9,6 +9,8 @@
 #include "SeekComponent.h"
 #include "AttackComponent.h"
 #include "AttributesComponent.h"
+#include "CollisionComponent.h"
+
 class BasicEnemy : public Character
 {
 public:

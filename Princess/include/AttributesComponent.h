@@ -35,7 +35,7 @@ class AttributesComponent : public Component
 public:
 	AttributesComponent()
 	{
-		m_type = "AC";
+		m_type = "attribute";
 
 		//std::cout << m_type << std::endl;
 
@@ -50,6 +50,9 @@ public:
 
 		m_modifers = new std::list<Modifer>();
 	};
+
+
+	AttributesComponent(int health, int maxHealth, int armour, int maxArmour, int movement, int maxMovement) :m_health(health), m_maxHealth(maxHealth), m_armour(armour), m_maxArmour(maxArmour), m_movementSpeed(movement), m_maxMovementSpeed(maxMovement) { m_type = "attribute"; };
 
 	~AttributesComponent() 
 	{
