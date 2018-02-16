@@ -107,7 +107,7 @@ int main()
 	systemManager.projectileSystem = new ProjectileSystem();
 	systemManager.projectileSystem->Active(true);
 
-	systemManager.collisionSystem = new CollisionSystem();
+	systemManager.collisionSystem = new CollisionSystem(listener);
 	systemManager.collisionSystem->Active(true);
 
 	systemManager.aiSystem = new AiSystem();
@@ -119,7 +119,7 @@ int main()
 	systemManager.buttonSystem = new ButtonSystem(listener);
 	systemManager.buttonSystem->Active(true);
 
-	InstanceManager instanceManager(&systemManager, &state, resourceManager);
+	InstanceManager instanceManager(&systemManager, &state, resourceManager, listener);
 
 	Entity * player = new Entity("Player");
 	player->Active(true);
@@ -186,8 +186,9 @@ int main()
 			SDL_SetRenderDrawColor(gameRenderer, 0, 0, 0, 0);
 			SDL_RenderClear(gameRenderer);
 
-			systemManager.Update(deltaTime);
 			instanceManager.Update(deltaTime);
+			systemManager.Update(deltaTime);
+
 
 			SDL_RenderPresent(gameRenderer);
 		}

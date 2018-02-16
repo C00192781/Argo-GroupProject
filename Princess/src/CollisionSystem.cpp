@@ -5,9 +5,16 @@ CollisionSystem::CollisionSystem()
 	m_quadtree = new Quadtree(0, SDL_Rect{ 0, 0, 812, 624 });
 }
 
-CollisionSystem::CollisionSystem(SDL_Rect bounds)
+CollisionSystem::CollisionSystem(EventListener* listener)
+{
+	m_listener = listener;
+	m_quadtree = new Quadtree(0, SDL_Rect{ 0, 0, 812, 624 });
+}
+
+CollisionSystem::CollisionSystem(SDL_Rect bounds, EventListener* listener)
 {
 	m_bounds = bounds;
+	m_listener = listener;
 	m_quadtree = new Quadtree(0, m_bounds);
 }
 
@@ -120,6 +127,7 @@ void CollisionSystem::filterCollisions(int entityIndex, int entityColIndex, int 
 
 	entityCol = static_cast<CollisionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(entityColIndex));
 	collidableCol = static_cast<CollisionComponent*>(m_collidableEntities.at(collidableIndex)->GetComponents()->at(collidableColIndex));
+
 	if (m_collidableEntities.at(collidableIndex)->ID() == "Wall" || m_collidableEntities.at(collidableIndex)->ID() == "Door")
 	{
 		SDL_Rect rectEntityX = { entityCol->getX(), entityCol->getPreviousY(), entityCol->getWidth(), entityCol->getHeight() };
@@ -161,12 +169,32 @@ void CollisionSystem::filterCollisions(int entityIndex, int entityColIndex, int 
 	}
 	else
 	{
-		if (m_entities.at(entityIndex)->ID() == "Projectile")
+		SDL_Rect rectEntity = { entityCol->getX(), entityCol->getY(), entityCol->getWidth(), entityCol->getHeight() };
+
+		SDL_Rect rectCollidable = { collidableCol->getX(), collidableCol->getY(), collidableCol->getWidth(), collidableCol->getHeight() };
+
+		SDL_Rect holder{ 0, 0, 0, 0 };
+
+		if (SDL_IntersectRect(&rectEntity, &rectCollidable, &holder))
 		{
-			if (m_collidableEntities.at(collidableIndex)->ID() == "Spellcaster Enemy")
+			if (m_entities.at(entityIndex)->ID() == "Player")
 			{
-				projectileCollision(entityIndex);
-				spellcasterCollision(entityIndex);
+				if (m_collidableEntities.at(collidableIndex)->ID() == "Dungeon")
+				{
+					if (m_listener->Space)
+					{
+						m_listener->WorldToDungeon = true;
+					}
+				}
+			}
+
+			if (m_entities.at(entityIndex)->ID() == "Projectile")
+			{
+				if (m_collidableEntities.at(collidableIndex)->ID() == "Spellcaster Enemy")
+				{
+					projectileCollision(entityIndex);
+					spellcasterCollision(entityIndex);
+				}
 			}
 		}
 	}

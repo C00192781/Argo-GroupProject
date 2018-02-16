@@ -218,16 +218,12 @@ void WorldMap::Generate(int width, int height, int chaosFactor)
 				mapHolder.at(xHolder).at(yHolder) = "Dungeon";
 				m_entities.push_back(factory.Dungeon("WorldTurf", xHolder * (16 * m_systemManager->renderSystem->GetScale()), yHolder * (16 * m_systemManager->renderSystem->GetScale())));
 				m_systemManager->renderSystem->AddEntity(m_entities.back());
+				m_systemManager->collisionSystem->AddEntity(m_entities.back());
 				done = true;
 			}
 			giveUp--;
 		}
 	}
-
-}
-
-void WorldMap::Load()
-{
 
 }
 
@@ -570,6 +566,26 @@ void WorldMap::ApplyRock(std::vector<std::vector<std::string>>* map, int x, int 
 				}
 			}
 			holderRad--;
+		}
+	}
+}
+
+void WorldMap::Load()
+{
+	m_systemManager->controlSystem->SelectiveClear();
+	m_systemManager->renderSystem->SelectiveClear();
+	m_systemManager->movementSystem->SelectiveClear();
+	m_systemManager->collisionSystem->SelectiveClear();
+	m_systemManager->attackSystem->SelectiveClear();
+	m_systemManager->aiSystem->SelectiveClear();
+
+	for (int i = 0; i < m_entities.size(); i++)
+	{
+		m_systemManager->renderSystem->AddEntity(m_entities.at(i));
+
+		if (m_entities.at(i)->ID() == "Dungeon")
+		{
+			m_systemManager->collisionSystem->AddEntity(m_entities.at(i));
 		}
 	}
 }

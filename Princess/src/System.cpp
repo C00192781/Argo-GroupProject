@@ -19,12 +19,16 @@ void System::RemoveEntity(std::string id)
 }
 void System::SelectiveClear()
 {
-	for (int i = 0; i < m_entities.size(); i++)
+	for (int i = 0; i < m_entities.size();)
 	{
 		if (!m_entities.at(i)->Transient())
 		{
 			m_entities.erase(m_entities.begin() + i);
 			UnloadComponent(i);
+		}
+		else
+		{
+			i++;
 		}
 	}
 	m_entities.shrink_to_fit();

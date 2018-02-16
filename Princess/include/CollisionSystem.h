@@ -9,12 +9,14 @@
 #include "Quad.h"
 #include "AttributesComponent.h"
 #include "ProjectileComponent.h"
+#include "EventListener.h"
 
 class CollisionSystem : public System
 {
 public:
 	CollisionSystem();
-	CollisionSystem(SDL_Rect bounds);
+	CollisionSystem(EventListener* listener);
+	CollisionSystem(SDL_Rect bounds, EventListener* listener);
 	~CollisionSystem();
 
 	//bool collision = false;
@@ -27,6 +29,7 @@ public:
 private:
 	SDL_Rect m_bounds;
 	Quadtree* m_quadtree;
+	EventListener* m_listener;
 
 	std::vector<Entity*> m_collidableEntities;
 

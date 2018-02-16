@@ -1,10 +1,11 @@
 #include "DungeonMap.h"
 
-DungeonMap::DungeonMap(SystemManager * sm, StateManager * s, ResourceManager * rm)
+DungeonMap::DungeonMap(SystemManager * sm, StateManager * s, ResourceManager * rm, EventListener *listener)
 {
 	m_systemManager = sm;
 	m_stateManager = s;
 	m_resourceManager = rm;
+	m_listener = listener;
 
 	m_resourceManager->AddMap("DungeonMap1", "DungeonMap1.json");
 	m_resourceManager->AddMap("DungeonMap2", "DungeonMap2.json");
@@ -19,6 +20,7 @@ DungeonMap::DungeonMap(SystemManager * sm, StateManager * s, ResourceManager * r
 
 void DungeonMap::Generate()
 {
+	m_timeRemaining = 5;
 	m_active = true;
 
 	for (int i = 0; i < m_entities.size(); i++)
@@ -87,11 +89,11 @@ void DungeonMap::Update(float deltaTime)
 {
 	if (m_enemies.empty())
 	{
-		m_timeRemaining -= deltaTime;
+		m_timeRemaining -= deltaTime * 5;
 
 		if (m_timeRemaining <= 0)
 		{
-			m_active = false;
+			m_listener->DungeonToWorld = true;
 		}
 	}
 }

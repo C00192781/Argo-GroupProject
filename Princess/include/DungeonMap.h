@@ -6,7 +6,7 @@
 class DungeonMap : public Instance
 {
 public:
-	DungeonMap(SystemManager * sm, StateManager * s, ResourceManager *rm);
+	DungeonMap(SystemManager * sm, StateManager * s, ResourceManager *rm, EventListener *listener);
 	~DungeonMap();
 
 	void Update() {}
@@ -16,6 +16,7 @@ public:
 	void Generate();
 private:
 	ResourceManager * m_resourceManager;
+	EventListener *m_listener;
 	std::vector<Entity*> m_enemies; // points to the enemies in collision system
 	float m_timeRemaining;
 };

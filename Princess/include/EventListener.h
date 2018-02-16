@@ -13,5 +13,10 @@ public:
 	bool S = false;
 	bool D = false;
 	bool Escape = false;
+
+	bool WorldToDungeon = false;
+	bool WorldToEncounter = false;
+	bool DungeonToWorld = false;
+	bool EncounterToWorld = false;
 };
 #endif

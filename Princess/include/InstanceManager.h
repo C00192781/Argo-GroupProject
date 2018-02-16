@@ -4,12 +4,13 @@
 #include "BattleMap.h"
 #include "DungeonMap.h"
 #include "TownInstance.h"
+#include "EventListener.h"
 #include <vector>
 
 class InstanceManager
 {
 public:
-	InstanceManager(SystemManager * sm, StateManager * s, ResourceManager *rm);
+	InstanceManager(SystemManager * sm, StateManager * s, ResourceManager *rm, EventListener *listener);
 
 	WorldMap *worldMap;
 	BattleMap* battleMap;
@@ -19,4 +20,6 @@ public:
 	void Update(float deltaTime);
 
 	void Generate(string instanceID);
+private:
+	EventListener *m_listener;
 };
