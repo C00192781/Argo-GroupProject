@@ -24,7 +24,7 @@ public:
 	DecisionTree();
 
 	DecisionTree(int tarHp, int selfHP, int tarStr, int selfStr, int dist);
-	int calculatePathNodes(TreeNodes* root);
+	int calculatePathNodes(TreeNodes* root, int dist, int tarHP, int selfHp);
 
 	TreeNodes* m_lastNode;
 

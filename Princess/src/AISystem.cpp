@@ -60,7 +60,7 @@ void AiSystem::Spawn()
 	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1->NewBranch1, 4, 9);
 
 
-	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1->NewBranch2, 5, 10);
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1->NewBranch2, 5, 10); //move to init prolly
 	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1->NewBranch2, 5, 11);
 
 	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch2->NewBranch1, 6, 12);
@@ -84,9 +84,9 @@ void AiSystem::Spawn()
 	characterFactory = new BasicEnemy();
 
 	
-	for (int i = 0; i < 15; i++)
+	for (int i = 0; i < 20; i++)
 	{
-	//	m_entities.push_back(characterFactory->CharC("Demon", SDL_Point{  }, 0));
+	//	m_entities.push_back(characterFactory->CharC("Demon", SDL_Point{ p.x + 20, p.y + 20 }, 0));
 
 		m_entities.push_back(characterFactory->CharC("Demon", SDL_Point{ rand() % 812, rand() % 624 }, 0));
 
@@ -263,13 +263,44 @@ void AiSystem::Update(float deltaTime)
 	{
 		if (m_entities.at(i)->ID() == "Spellcaster Enemy")
 		{
-			m_decisionTree->calculatePathNodes(m_decisionTree->m_RootNode);
 
-		//	int decision = m_decisionTree->getDecision();
+		/*	int PHealth;
+			int MHealth;
+			int PStrength;
+			int MStrength;
+			int Distance;*/
 
-			int decision = 10;
+			float tarX = 0;
+			float tarY = 0;
+			float dist = 0;
 
-			if (decision == 8 || decision == 9)
+			for (int j = 0; j < m_entities.size(); j++)
+			{
+				if (m_entities.at(j)->ID() == "Princess") //some sort of target discerning goes here
+				{
+					auto tar = m_entities.at(j)->FindComponent("PC");
+					tarX = static_cast<PositionComponent*>(tar)->getX();
+					tarY = static_cast<PositionComponent*>(tar)->getY();
+
+				//	auto selfPos = 
+
+					float x = tarX - static_cast<PositionComponent*>(m_entities.at(i)->FindComponent("PC"))->getX();
+					float y = tarY - static_cast<PositionComponent*>(m_entities.at(i)->FindComponent("PC"))->getY();
+
+					dist = magnitude(x, y);
+				}
+			}
+
+		/*	auto xp = static_cast<PositionComponent*>(m_entities.at(i)->FindComponent("PC"))->getX();
+			auto yp = static_cast<PositionComponent*>(m_entities.at(i)->FindComponent("PC"))->getY();*/
+
+			m_decisionTree->calculatePathNodes(m_decisionTree->m_RootNode, dist, 5, 15); //make target HP and self HP gettable later,  hardcoded values for test purpose only.
+
+			int decision = m_decisionTree->getDecision();
+		//	cout << "decision: " << decision << endl;
+		   // = 10;
+
+			if (decision == 8 || decision == 9) //if hp adv and in range
 			{
 				int tw = m_entities.at(i)->FindComponentIndex("attack");
 				int tx = m_entities.at(i)->FindComponentIndex("movement");
@@ -277,27 +308,27 @@ void AiSystem::Update(float deltaTime)
 				//attack
 			}
 
-			else if (decision == 10 || decision == 11)
+			else if (decision == 10 || decision == 11) //if hp adv and out of range
 			{
 				int tw = m_entities.at(i)->FindComponentIndex("PC"); //move index finding to spawn, 
 				int tx = m_entities.at(i)->FindComponentIndex("movement");
 				int ty = m_entities.at(i)->FindComponentIndex("seek");
 				int tz = m_entities.at(i)->FindComponentIndex("attribute");
 				
-				float tarX = 0;
-				float tarY = 0;
+	/*			float tarX = 0;
+				float tarY = 0;*/
 
-				for (int j = 0; j < m_entities.size(); j++)
-				{
-					if (m_entities.at(j)->ID() == "Princess")
-					{
-						//probably check for active here
-						auto tar = m_entities.at(j)->FindComponent("PC");
-						tarX = static_cast<PositionComponent*>(tar)->getX();
-						tarY = static_cast<PositionComponent*>(tar)->getY();
-						break;
-					}
-				}
+				//for (int j = 0; j < m_entities.size(); j++)
+				//{
+				//	if (m_entities.at(j)->ID() == "Princess")
+				//	{
+				//		//probably check for active here
+				//	/*	auto tar = m_entities.at(j)->FindComponent("PC");
+				//		tarX = static_cast<PositionComponent*>(tar)->getX();
+				//		tarY = static_cast<PositionComponent*>(tar)->getY();*/
+				//		break;
+				//	}
+				//}
 
 				//cout << tarX << endl;
 				//cout << tarY << endl;
@@ -305,11 +336,17 @@ void AiSystem::Update(float deltaTime)
 				//seek
 			}
 		
-			else if (decision == 12 || decision == 13)
+			else if (decision == 12 || decision == 13) //if no hp adv and out of range
 			{
+				auto move = m_entities.at(i)->FindComponent("movement");
+
+				static_cast<MovementComponent*>(move)->setXVelocity(0);
+				static_cast<MovementComponent*>(move)->setYVelocity(0);
+
+			//	static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(tx)->setYVelocity(0));
 				//do nothing
 			}
-			else if (decision == 14 || decision == 15)
+			else if (decision == 14 || decision == 15) //if no hp adv and in range
 			{
 				int tw = m_entities.at(i)->FindComponentIndex("PC");
 				int tx = m_entities.at(i)->FindComponentIndex("movement");
@@ -334,8 +371,8 @@ void AiSystem::Update(float deltaTime)
 	/*			cout << tarX << endl;
 				cout << tarY << endl;*/
 				seek(i, tw, tx, ty, tz, tarX, tarY, 1); //refactor x and y to take in princess position or whatever player or whatever
-														//seek
-				//flee
+														//flee
+				
 			}
 						//do Spellcaster enemy things
 		}

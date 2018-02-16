@@ -162,7 +162,7 @@ int main()
 		//Set text to be rendered
 		if (avgFPS > 1)
 		{
-			cout << "FPS (With Cap) " << avgFPS << endl;;
+	//		cout << "FPS (With Cap) " << avgFPS << endl;;
 		}
 		//update ren
 		++countedFrames;

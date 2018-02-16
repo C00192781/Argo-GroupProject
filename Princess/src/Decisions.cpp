@@ -74,8 +74,13 @@ void DecisionTree::AddNode1(TreeNodes* base, int ExistingNodeID, int NewNodeID)
 
 // function to print leaf 
 // nodes from left to right
-int DecisionTree::calculatePathNodes(TreeNodes* root) //this perfectly searches the tree in order  1 2 4 5 1 3 6 7!
+int DecisionTree::calculatePathNodes(TreeNodes* root, int dist, int tarHP, int selfHp) //this perfectly searches the tree in order  1 2 4 5 1 3 6 7!
 {
+	PHealth = tarHP;
+	MHealth = selfHp;
+	Distance = dist;
+
+
 	// if node is null, return
 	if (!root)
 	{
@@ -99,7 +104,7 @@ int DecisionTree::calculatePathNodes(TreeNodes* root) //this perfectly searches 
 	if (root->NewBranch1 && decision) //if option one, go left
 	{
 	//	cout << "go left at " << root->m_NodeID << endl;
-		calculatePathNodes(root->NewBranch1);
+		calculatePathNodes(root->NewBranch1, dist, tarHP, selfHp);
 	}
 
 	// if right child exists, check for leaf 
@@ -107,7 +112,7 @@ int DecisionTree::calculatePathNodes(TreeNodes* root) //this perfectly searches 
 	if (root->NewBranch2 && !decision) //if option 2, go right
 	{
 	//	cout << "go right at " << root->m_NodeID << endl;
-		calculatePathNodes(root->NewBranch2);
+		calculatePathNodes(root->NewBranch2, dist, tarHP, selfHp);
 	}
 
 	return root->m_NodeID;
@@ -444,13 +449,13 @@ bool DecisionTree::MakeDecision(TreeNodes *node)
 	//good place to break off into different decision nodes, not just 'binary'
 
 
-	if (node->m_NodeID == 1)
+	if (node->m_NodeID == 1) //MAKE DECISIONS AND NODE PATHING HERE
 	{
 
 		//if statement lower/higher query respective branch
-		if (PHealth > MHealth)
+		if (PHealth < MHealth)
 		{
-			//cout << "mon adv hp " << endl;
+		//	cout << "mon adv hp " << endl;
 			return true;
 		}
 		else
@@ -460,96 +465,144 @@ bool DecisionTree::MakeDecision(TreeNodes *node)
 		}
 	}
 
-
 	else if (node->m_NodeID == 2)
 	{
-		if (PStrength < MStrength)
+		if (Distance < 50) //if in range, atk
 		{
-		//	cout << "mon adv str " << endl;
+			//cout << "mon adv str " << endl;
 			return true;
 		}
-		else
+		else //else seek
 		{
-
 		//	cout << "no str adv " << endl;
 			return false;
 		}
 	}
-	//re-do question for next branch. Player strength: Monster strength: Player strength is lower/higher
-	//if statement lower/higher query respective branch
 
-	else if (node->m_NodeID == 4)
-	{
-		if (Distance < 60)
-		{
-			//cout << "in range " << endl;
-			return true;
-		}
-		else
-		{
-		//	cout << "out of range" << endl;
-			return false;
-		}
-	}
-
-	//recursive question for next branch. Player distance from base/monster. 
-	else if (node->m_NodeID == 5)
-	{
-		if (Distance < 60)
-		{
-			//cout << "distance case 2 close " << endl;
-			return true;
-		}
-		else
-		{
-		//	cout << "distance case 3 far" << endl;
-			return false;
-		}
-	}
 
 	else if (node->m_NodeID == 3)
 	{
-		if (test1 < 1)
+		if (Distance > 300) //if in range flee
 		{
-		//	cout << "test 1 confirmed " << endl;
+			//cout << "mon adv str " << endl;
 			return true;
 		}
-		else
+		else //else chill
 		{
-		//	cout << "test 1 false " << endl;
+
+			//	cout << "no str adv " << endl;
 			return false;
 		}
 	}
 
 
-	else if (node->m_NodeID == 6)
-	{
-		if (test2 < 1)
-		{
-			//cout << "test 2 confirmed " << endl;
-			return true;
-		}
-		else
-		{
-		//	cout << "test 2 false " << endl;
-			return false;
-		}
-	}
+	//else if (node->m_NodeID == 4)
+	//{
+	//	if (Distance < 100)
+	//	{
+	//		//cout << "mon adv str " << endl;
+	//		return true;
+	//	}
+	//	else
+	//	{
+
+	//		//	cout << "no str adv " << endl;
+	//		return false;
+	//	}
+	//}
 
 
-	else if (node->m_NodeID == 7)
-	{
-		if (test3 < 1)
-		{
-		//	cout << "test 3 confirmed " << endl;
-			return true;
-		}
-		else
-		{
-		//	cout << "test 3 false " << endl;
-			return false;
-		}
-	}
+
+
+	//else if (node->m_NodeID == 2)
+	//{
+	//	if (PStrength < MStrength)
+	//	{
+	//		//cout << "mon adv str " << endl;
+	//		return true;
+	//	}
+	//	else
+	//	{
+
+	//	//	cout << "no str adv " << endl;
+	//		return false;
+	//	}
+	//}
+	////re-do question for next branch. Player strength: Monster strength: Player strength is lower/higher
+	////if statement lower/higher query respective branch
+
+	//else if (node->m_NodeID == 3)
+	//{
+	//	if (test1 < 1)
+	//	{
+	//		//	cout << "test 1 confirmed " << endl;
+	//		return true;
+	//	}
+	//	else
+	//	{
+	//		//	cout << "test 1 false " << endl;
+	//		return false;
+	//	}
+	//}
+
+	//else if (node->m_NodeID == 4)
+	//{
+	//	if (Distance < 60)
+	//	{
+	//	//	cout << "in range " << endl;
+	//		return true;
+	//	}
+	//	else
+	//	{
+	//		//cout << "out of range" << endl;
+	//		return false;
+	//	}
+	//}
+
+	////recursive question for next branch. Player distance from base/monster. 
+	//else if (node->m_NodeID == 5)
+	//{
+	//	if (Distance < 60)
+	//	{
+	//	//	cout << "distance case 2 close " << endl;
+	//		return true;
+	//	}
+	//	else
+	//	{
+	//	//	cout << "distance case 3 far" << endl;
+	//		return false;
+	//	}
+	//}
+
+
+	//else if (node->m_NodeID == 6)
+	//{
+	//	if (test2 < 1)
+	//	{
+	//		//cout << "test 2 confirmed " << endl;
+	//		return true;
+	//	}
+	//	else
+	//	{
+	//	//	cout << "test 2 false " << endl;
+	//		return false;
+	//	}
+	//}
+
+
+	//else if (node->m_NodeID == 7)
+	//{
+	//	if (test3 < 1)
+	//	{
+	//	//	cout << "test 3 confirmed " << endl;
+	//		return true;
+	//	}
+	//	else
+	//	{
+	//	//	cout << "test 3 false " << endl;
+	//		return false;
+	//	}
+	//}
 
 	//default CASE?
 

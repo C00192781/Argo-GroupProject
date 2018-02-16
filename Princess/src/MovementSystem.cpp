@@ -32,7 +32,7 @@ void MovementSystem::Update(float deltaTime)
 				countedFrames = 0;
 				cooldownFrames = 120; //
 
-				auto temp = m_entities.at(i)->FindComponent("SC");
+				auto temp = m_entities.at(i)->FindComponent("SC"); 
 
 				static_cast<SpriteComponent*>(temp)->Direction(0); //undo temporary roll animation
 
