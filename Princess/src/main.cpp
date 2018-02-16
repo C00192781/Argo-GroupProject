@@ -43,7 +43,7 @@ int main()
 
 	srand(time(NULL));
 
-	const int SCREEN_FPS = 500;
+	const int SCREEN_FPS = 800;
 	const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
 
 	//Set text color as black
@@ -162,7 +162,7 @@ int main()
 		//Set text to be rendered
 		if (avgFPS > 1)
 		{
-	//		cout << "FPS (With Cap) " << avgFPS << endl;;
+			cout << "FPS (With Cap) " << avgFPS << endl;;
 		}
 		//update ren
 		++countedFrames;

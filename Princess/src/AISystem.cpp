@@ -84,7 +84,7 @@ void AiSystem::Spawn()
 	characterFactory = new BasicEnemy();
 
 	
-	for (int i = 0; i < 20; i++)
+	for (int i = 0; i < 15; i++)
 	{
 	//	m_entities.push_back(characterFactory->CharC("Demon", SDL_Point{ p.x + 20, p.y + 20 }, 0));
 
@@ -177,7 +177,6 @@ void AiSystem::Wander(int entityIndex, int pcKey, int mcKey, int seekKey, int at
 
 	if (temp % 22 == 0 || temp % 23 == 0)
 	{
-
 	//	srand((unsigned)time(&t));
 
 
@@ -310,7 +309,7 @@ void AiSystem::Update(float deltaTime, Entity* player)
 					/*	auto xp = static_cast<PositionComponent*>(m_entities.at(i)->FindComponent("PC"))->getX();
 						auto yp = static_cast<PositionComponent*>(m_entities.at(i)->FindComponent("PC"))->getY();*/
 
-					m_decisionTree->calculatePathNodes(m_decisionTree->m_RootNode, dist, 5, 15); //make target HP and self HP gettable later,  hardcoded values for test purpose only.
+					m_decisionTree->calculatePathNodes(m_decisionTree->m_RootNode, dist, 2, static_cast<eHPComp*>(hpComp)->getHP()); //make target HP and self HP gettable later,  hardcoded values for test purpose only.
 
 					int decision = m_decisionTree->getDecision();
 					//	cout << "decision: " << decision << endl;
