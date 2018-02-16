@@ -169,6 +169,7 @@ int main()
 
 		//If frame finished early
 		int frameTicks = capTimer.getTicks();
+
 		if (frameTicks < SCREEN_TICKS_PER_FRAME)
 		{
 			//Wait remaining time
