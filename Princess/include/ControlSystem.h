@@ -25,11 +25,13 @@ public:
 		m_entities.push_back(new Entity("Null"));
 		delete m_entities.back();
 		m_entities.clear();
+		totalPlayerMovement = 0;
 	};
 	void LoadComponent() {};
 	void UnloadComponent(int x) {};
 	void Update();
 	void getSystemEntities(std::vector<Entity*>* projectiles) { m_projectiles = projectiles; }
+	float getTotalPlayerMovement() { return totalPlayerMovement; }
 	int index = 0;
 private:
 
@@ -40,5 +42,7 @@ private:
 	bool shoot;
 	SDL_Point playerPos;
 	int x, y;
+
+	float totalPlayerMovement;
 };
 	

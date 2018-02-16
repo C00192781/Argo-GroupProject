@@ -40,18 +40,22 @@ void ControlSystem::Update()
 			if (m_eventListener->W)
 			{
 				holder.y = -speed;
+				totalPlayerMovement += 1;
 			}
 			if (m_eventListener->A)
 			{
 				holder.x = -speed;
+				totalPlayerMovement += 1;
 			}
 			if (m_eventListener->S)
 			{
 				holder.y = speed;
+				totalPlayerMovement += 1;
 			}
 			if (m_eventListener->D)
 			{
 				holder.x = speed;
+				totalPlayerMovement += 1;
 			}
 
 			static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setVelocity(holder.x, holder.y);

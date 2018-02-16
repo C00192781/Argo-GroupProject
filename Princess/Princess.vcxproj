@@ -23,12 +23,15 @@
     <ClCompile Include="External Dependencies\ResourceManager\ResourceManager.cpp" />
     <ClCompile Include="External Dependencies\SimpleJSON\JSON.cpp" />
     <ClCompile Include="External Dependencies\SimpleJSON\JSONValue.cpp" />
+    <ClCompile Include="src\AchievementHandler.cpp" />
     <ClCompile Include="src\AISystem.cpp" />
     <ClCompile Include="src\AttackSystem.cpp" />
     <ClCompile Include="src\BasicEnemy.cpp" />
     <ClCompile Include="src\BattleMap.cpp" />
     <ClCompile Include="src\ButtonSystem.cpp" />
     <ClCompile Include="src\CollisionSystem.cpp" />
+    <ClCompile Include="src\ConcreteObserver.cpp" />
+    <ClCompile Include="src\ConcreteSubject.cpp" />
     <ClCompile Include="src\ControlSystem.cpp" />
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\GrassTileFactory.cpp" />
@@ -41,6 +44,7 @@
     <ClCompile Include="src\ProjectileSystem.cpp" />
     <ClCompile Include="src\Quad.cpp" />
     <ClCompile Include="src\RenderSystem.cpp" />
+    <ClCompile Include="src\Subject.cpp" />
     <ClCompile Include="src\System.cpp" />
     <ClCompile Include="src\SystemManager.cpp" />
     <ClCompile Include="src\TextRenderSystem.cpp" />
@@ -53,6 +57,7 @@
     <ClInclude Include="External Dependencies\ResourceManager\ResourceManager.h" />
     <ClInclude Include="External Dependencies\SimpleJSON\JSON.h" />
     <ClInclude Include="External Dependencies\SimpleJSON\JSONValue.h" />
+    <ClInclude Include="include\AchievementHandler.h" />
     <ClInclude Include="include\AiLogicComponent.h" />
     <ClInclude Include="include\AISystem.h" />
     <ClInclude Include="include\AttackComponent.h" />
@@ -66,6 +71,8 @@
     <ClInclude Include="include\CollisionComponent.h" />
     <ClInclude Include="include\CollisionSystem.h" />
     <ClInclude Include="include\Component.h" />
+    <ClInclude Include="include\ConcreteObserver.h" />
+    <ClInclude Include="include\ConcreteSubject.h" />
     <ClInclude Include="include\ControlComponent.h" />
     <ClInclude Include="include\ControlSystem.h" />
     <ClInclude Include="include\Entity.h" />
@@ -80,6 +87,7 @@
     <ClInclude Include="include\LTimer.h" />
     <ClInclude Include="include\MovementComponent.h" />
     <ClInclude Include="include\MovementSystem.h" />
+    <ClInclude Include="include\Observer.h" />
     <ClInclude Include="include\PositionComponent.h" />
     <ClInclude Include="include\Princess.h" />
     <ClInclude Include="include\ProjectileComponent.h" />
@@ -90,6 +98,7 @@
     <ClInclude Include="include\SpriteComponent.h" />
     <ClInclude Include="include\StateManager.h" />
     <ClInclude Include="include\stdafx.h" />
+    <ClInclude Include="include\Subject.h" />
     <ClInclude Include="include\System.h" />
     <ClInclude Include="include\SystemManager.h" />
     <ClInclude Include="include\TextComponent.h" />

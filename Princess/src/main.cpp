@@ -27,6 +27,7 @@
 #include "LTimer.h"
 #include "WorldMap.h"
 #include "TownInstance.h"
+#include "AchievementHandler.h"
 
 int main()
 {
@@ -71,6 +72,8 @@ int main()
 	resourceManager->AddTexture("ArmourSheet", "armourSpriteSheet.png");
 	resourceManager->AddTexture("WorldTurf", "World_Turfs.png");
 	resourceManager->AddTexture("Button", "Button.png");
+	resourceManager->AddTexture("Achievement", "PlaceholderAchievement.png");
+	resourceManager->AddTexture("Achievement2", "PlaceholderAchievement2.png");
 
 	resourceManager->AddFont("ComicSans", "ComicSans.ttf", 32);
 
@@ -140,6 +143,8 @@ int main()
 	//WorldMap* m = new WorldMap(&systemManager, &state);
 	//m->Generate(25, 25, 100);
 
+	AchievementHandler *achievements = new AchievementHandler(&systemManager);
+
 	BattleMap* b = new BattleMap(&systemManager, &state);
 	b->Generate("");
 
@@ -175,6 +180,7 @@ int main()
 				deltaTime = ((float)(currentTime - lastTime)) / 1000;
 
 				input->handleInput();
+				achievements->HandleAchievements();
 
 				lastTime = currentTime;
 			}
