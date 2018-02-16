@@ -19,6 +19,8 @@ public:
 	void Camera(int width, int height) { m_camera.x = width; m_camera.y = height; };
 
 private:
+	void LoadComponent();
+	void UnloadComponent(int x);
 	SDL_Renderer * m_renderer;
 	ResourceManager * m_resourceManager;
 	int m_scale;
@@ -26,5 +28,8 @@ private:
 	int m_sizeMemory;
 	bool m_cameraOn;
 	SDL_Point m_camera;
+
+	std::vector<PositionComponent*> m_positionComponent;
+	std::vector<SpriteComponent*> m_spriteComponent;
 };
 #endif
