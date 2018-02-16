@@ -40,9 +40,9 @@ public:
 	AiSystem * aiSystem;
 	ButtonSystem * buttonSystem;
 	TextRenderSystem * textRenderSystem;
+	
 
-
-	void Update(float deltaTime);
+	void Update(float deltaTime, Entity* player);
 
 private:
 	bool flag = false;

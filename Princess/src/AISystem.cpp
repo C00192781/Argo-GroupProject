@@ -256,139 +256,166 @@ float AiSystem::magnitude(float x, float y)
 	return sqrt((x * x) + (y * y));
 }
 
-void AiSystem::Update(float deltaTime)
+void AiSystem::Update(float deltaTime, Entity* player)
 {
 	m_time = deltaTime;
 
+	m_playerEntities.push_back(player);
+
 	for (int i = 0; i < m_entities.size(); i++)
 	{
-		auto hpComp = m_entities.at(i)->FindComponent("eHP");
-
-		if (static_cast<eHPComp*>(hpComp)->getHP() < 1)
+		if (m_entities.at(i)->ID() != "Player")
 		{
-			m_entities.at(i)->Active(false);
-		}
+			auto hpComp = m_entities.at(i)->FindComponent("eHP");
 
-		if (m_entities.at(i)->Active())
-		{ 
-			
-			if (m_entities.at(i)->ID() == "Spellcaster Enemy")
+			if (static_cast<eHPComp*>(hpComp)->getHP() < 1)
+			{
+				m_entities.at(i)->Active(false);
+			}
+
+			if (m_entities.at(i)->Active())
 			{
 
-				/*	int PHealth;
-					int MHealth;
-					int PStrength;
-					int MStrength;
-					int Distance;*/
-
-				float tarX = 0;
-				float tarY = 0;
-				float dist = 0;
-
-				for (int j = 0; j < m_entities.size(); j++)
+				if (m_entities.at(i)->ID() == "Spellcaster Enemy")
 				{
-					if (m_entities.at(j)->ID() == "Princess") //some sort of target discerning goes here
-					{
-						auto tar = m_entities.at(j)->FindComponent("PC");
-						tarX = static_cast<PositionComponent*>(tar)->getX();
-						tarY = static_cast<PositionComponent*>(tar)->getY();
 
-						//	auto selfPos = 
-
-						float x = tarX - static_cast<PositionComponent*>(m_entities.at(i)->FindComponent("PC"))->getX();
-						float y = tarY - static_cast<PositionComponent*>(m_entities.at(i)->FindComponent("PC"))->getY();
-
-						dist = magnitude(x, y);
-					}
-				}
-
-				/*	auto xp = static_cast<PositionComponent*>(m_entities.at(i)->FindComponent("PC"))->getX();
-					auto yp = static_cast<PositionComponent*>(m_entities.at(i)->FindComponent("PC"))->getY();*/
-
-				m_decisionTree->calculatePathNodes(m_decisionTree->m_RootNode, dist, 5, 2); //make target HP and self HP gettable later,  hardcoded values for test purpose only.
-
-				int decision = m_decisionTree->getDecision();
-				//	cout << "decision: " << decision << endl;
-				   // = 10;
-
-				if (decision == 8 || decision == 9) //if hp adv and in range
-				{
-					int tw = m_entities.at(i)->FindComponentIndex("attack");
-					int tx = m_entities.at(i)->FindComponentIndex("movement");
-					attack(i, tw, tx);
-					//attack
-				}
-
-				else if (decision == 10 || decision == 11) //if hp adv and out of range
-				{
-					int tw = m_entities.at(i)->FindComponentIndex("PC"); //move index finding to spawn, 
-					int tx = m_entities.at(i)->FindComponentIndex("movement");
-					int ty = m_entities.at(i)->FindComponentIndex("seek");
-					int tz = m_entities.at(i)->FindComponentIndex("attribute");
-
-					/*			float tarX = 0;
-								float tarY = 0;*/
-
-								//for (int j = 0; j < m_entities.size(); j++)
-								//{
-								//	if (m_entities.at(j)->ID() == "Princess")
-								//	{
-								//		//probably check for active here
-								//	/*	auto tar = m_entities.at(j)->FindComponent("PC");
-								//		tarX = static_cast<PositionComponent*>(tar)->getX();
-								//		tarY = static_cast<PositionComponent*>(tar)->getY();*/
-								//		break;
-								//	}
-								//}
-
-								//cout << tarX << endl;
-								//cout << tarY << endl;
-					seek(i, tw, tx, ty, tz, tarX, tarY, 0); //refactor x and y to take in princess position or whatever player or whatever
-					//seek
-				}
-
-				else if (decision == 12 || decision == 13) //if no hp adv and out of range
-				{
-					auto move = m_entities.at(i)->FindComponent("movement");
-
-					static_cast<MovementComponent*>(move)->setXVelocity(0);
-					static_cast<MovementComponent*>(move)->setYVelocity(0);
-
-					//	static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(tx)->setYVelocity(0));
-						//do nothing
-				}
-				else if (decision == 14 || decision == 15) //if no hp adv and in range
-				{
-					int tw = m_entities.at(i)->FindComponentIndex("PC");
-					int tx = m_entities.at(i)->FindComponentIndex("movement");
-					int ty = m_entities.at(i)->FindComponentIndex("seek");
-					int tz = m_entities.at(i)->FindComponentIndex("attribute");
+					/*	int PHealth;
+						int MHealth;
+						int PStrength;
+						int MStrength;
+						int Distance;*/
 
 					float tarX = 0;
 					float tarY = 0;
+					float dist = 0;
 
-					for (int j = 0; j < m_entities.size(); j++)
+					for (int j = 0; j < m_playerEntities.size(); j++)
 					{
-						if (m_entities.at(j)->ID() == "Princess")
+						if (m_playerEntities.at(j)->ID() == "Player") //some sort of target discerning goes here later
 						{
-							//probably check for active here
-							auto tar = m_entities.at(j)->FindComponent("PC");
+							auto tar = m_playerEntities.at(j)->FindComponent("PC");
 							tarX = static_cast<PositionComponent*>(tar)->getX();
 							tarY = static_cast<PositionComponent*>(tar)->getY();
-							break;
+						/*	cout << "tarX: " << tarX << endl;
+							cout << "tarY: " << tarY << endl;*/
+							//	auto selfPos = 
+
+							float x = tarX - static_cast<PositionComponent*>(m_entities.at(i)->FindComponent("PC"))->getX();
+							float y = tarY - static_cast<PositionComponent*>(m_entities.at(i)->FindComponent("PC"))->getY();
+
+							dist = magnitude(x, y);
 						}
 					}
 
-					/*			cout << tarX << endl;
-								cout << tarY << endl;*/
-					seek(i, tw, tx, ty, tz, tarX, tarY, 1); //refactor x and y to take in princess position or whatever player or whatever
-															//flee
+					/*	auto xp = static_cast<PositionComponent*>(m_entities.at(i)->FindComponent("PC"))->getX();
+						auto yp = static_cast<PositionComponent*>(m_entities.at(i)->FindComponent("PC"))->getY();*/
 
-				}
+					m_decisionTree->calculatePathNodes(m_decisionTree->m_RootNode, dist, 5, 15); //make target HP and self HP gettable later,  hardcoded values for test purpose only.
 
-			}	//end active enemy things
-		}
+					int decision = m_decisionTree->getDecision();
+					//	cout << "decision: " << decision << endl;
+					   // = 10;
+
+					if (decision == 8 || decision == 9) //if hp adv and in range
+					{
+						int tw = m_entities.at(i)->FindComponentIndex("attack");
+						int tx = m_entities.at(i)->FindComponentIndex("movement");
+						attack(i, tw, tx);
+						//attack
+					}
+
+					else if (decision == 10 || decision == 11) //if hp adv and out of range
+					{
+						int tw = m_entities.at(i)->FindComponentIndex("PC"); //move index finding to spawn, 
+						int tx = m_entities.at(i)->FindComponentIndex("movement");
+						int ty = m_entities.at(i)->FindComponentIndex("seek");
+						int tz = m_entities.at(i)->FindComponentIndex("attribute");
+
+						/*			float tarX = 0;
+									float tarY = 0;*/
+
+									//for (int j = 0; j < m_entities.size(); j++)
+									//{
+									//	if (m_entities.at(j)->ID() == "Princess")
+									//	{
+									//		//probably check for active here
+									//	/*	auto tar = m_entities.at(j)->FindComponent("PC");
+									//		tarX = static_cast<PositionComponent*>(tar)->getX();
+									//		tarY = static_cast<PositionComponent*>(tar)->getY();*/
+									//		break;
+									//	}
+									//}
+
+									//cout << tarX << endl;
+									//cout << tarY << endl;
+						seek(i, tw, tx, ty, tz, tarX, tarY, 0); //refactor x and y to take in princess position or whatever player or whatever
+						//seek
+					}
+
+					else if (decision == 12 || decision == 13) //if no hp adv and out of range
+					{
+						auto move = m_entities.at(i)->FindComponent("movement");
+
+						static_cast<MovementComponent*>(move)->setXVelocity(0);
+						static_cast<MovementComponent*>(move)->setYVelocity(0);
+
+						//	static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(tx)->setYVelocity(0));
+							//do nothing
+					}
+					else if (decision == 14 || decision == 15) //if no hp adv and in range
+					{
+						int tw = m_entities.at(i)->FindComponentIndex("PC");
+						int tx = m_entities.at(i)->FindComponentIndex("movement");
+						int ty = m_entities.at(i)->FindComponentIndex("seek");
+						int tz = m_entities.at(i)->FindComponentIndex("attribute");
+
+						float tarX = 0;
+						float tarY = 0;
+
+						//for (int j = 0; j < m_entities.size(); j++)
+						//{
+						//	if (m_entities.at(j)->ID() == "Princess")
+						//	{
+						//		//probably check for active here
+						//		auto tar = m_entities.at(j)->FindComponent("PC");
+						//		tarX = static_cast<PositionComponent*>(tar)->getX();
+						//		tarY = static_cast<PositionComponent*>(tar)->getY();
+						//		break;
+						//	}
+						//}
+
+						for (int j = 0; j < m_playerEntities.size(); j++)
+						{
+							if (m_playerEntities.at(j)->ID() == "Player") //some sort of target discerning goes here later
+							{
+								auto tar = m_playerEntities.at(j)->FindComponent("PC");
+								tarX = static_cast<PositionComponent*>(tar)->getX();
+								tarY = static_cast<PositionComponent*>(tar)->getY();
+								/*	cout << "tarX: " << tarX << endl;
+								cout << "tarY: " << tarY << endl;*/
+								//	auto selfPos = 
+
+								float x = tarX - static_cast<PositionComponent*>(m_entities.at(i)->FindComponent("PC"))->getX();
+								float y = tarY - static_cast<PositionComponent*>(m_entities.at(i)->FindComponent("PC"))->getY();
+
+								dist = magnitude(x, y);
+							}
+						}
+
+						/*			cout << tarX << endl;
+									cout << tarY << endl;*/
+						seek(i, tw, tx, ty, tz, tarX, tarY, 1); //refactor x and y to take in princess position or whatever player or whatever
+																//flee
+
+					}
+
+				}	//end active enemy things
+
+			}
+		} //end not player
 
 	}
+
+	m_playerEntities.clear();
 }
 

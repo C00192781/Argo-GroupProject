@@ -189,7 +189,7 @@ int main()
 			SDL_SetRenderDrawColor(gameRenderer, 0, 0, 0, 0);
 			SDL_RenderClear(gameRenderer);
 
-			systemManager.Update(deltaTime);
+			systemManager.Update(deltaTime, player);
 
 			SDL_RenderPresent(gameRenderer);
 		}

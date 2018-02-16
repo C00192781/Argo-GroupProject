@@ -18,7 +18,7 @@ public:
 	AiSystem();
 	~AiSystem();
 	void Update();
-	void Update(float deltaTime);
+	void Update(float deltaTime, Entity* player);
 	void Spawn(std::string id);
 	void Spawn();
 	std::vector<Entity*> getEntities();
@@ -46,7 +46,7 @@ private:
 	std::vector<AttackComponent*> m_attackComponent;
 	std::vector<PositionComponent*> m_positionComponent;
 	
-
+	std::vector<Entity*> m_playerEntities;
 	std::vector<eHPComp*> m_eHPComp;
 	std::vector<Entity*> m_compIDVec;
 
