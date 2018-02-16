@@ -10,7 +10,7 @@ Entity* Princess::CharA(std::string ID, SDL_Point pos, int personality)
 	princess->AddComponent(new SeekComponent());
 	princess->AddComponent(new AttributesComponent());
 	princess->AddComponent(new CollisionComponent(pos.x, pos.y, 16, 16, 2));
-
+	princess->AddComponent(new eHPComp());
 	//princess->AddComponent(new AttributesComponent(10, 10, 0, 0, 80, 80));
 	int posKey = -1;
 	for (int i = 0; i < princess->GetComponents()->size(); i++)
@@ -42,6 +42,7 @@ Entity* Princess::CharB(std::string ID, SDL_Point pos, int personality)
 	princess->AddComponent(new SeekComponent());
 	static_cast<PositionComponent*>(princess->GetComponents()->back())->setPosition(pos.x, pos.y);
 	princess->AddComponent(new AttributesComponent(10, 10, 0, 0, 80, 80));
+	princess->AddComponent(new eHPComp());
 	return princess;
 }
 
@@ -57,6 +58,7 @@ Entity* Princess::CharC(std::string ID, SDL_Point pos, int personality)
 	princess->AddComponent(new SeekComponent());
 	static_cast<PositionComponent*>(princess->GetComponents()->back())->setPosition(pos.x, pos.y);
 	princess->AddComponent(new AttributesComponent(10, 10, 0, 0, 80, 80));
+	princess->AddComponent(new eHPComp());
 	return princess;
 }
 
@@ -72,6 +74,7 @@ Entity* Princess::CharD(std::string ID, SDL_Point pos, int personality)
 	princess->AddComponent(new SeekComponent());
 	static_cast<PositionComponent*>(princess->GetComponents()->back())->setPosition(pos.x, pos.y);
 	princess->AddComponent(new AttributesComponent(10, 10, 0, 0, 80, 80));
+	princess->AddComponent(new eHPComp());
 	return princess;
 }
 

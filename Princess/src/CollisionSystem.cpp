@@ -128,7 +128,7 @@ void CollisionSystem::filterCollisions(int entityIndex, int entityColIndex, int 
 			if (m_collidableEntities.at(collidableIndex)->ID() == "Spellcaster Enemy")
 			{
 				projectileCollision(entityIndex);
-				spellcasterCollision(entityIndex);
+				spellcasterCollision(collidableIndex); //swapped for spell id
 			}
 		}
 		//else if (m_entities.at(entityIndex)->ID() == "Princess")
@@ -155,4 +155,11 @@ void CollisionSystem::projectileCollision(int index)
 void CollisionSystem::spellcasterCollision(int index)
 {
 	std::cout << "OH NO" << std::endl;
+
+	auto temp = m_collidableEntities.at(index)->FindComponent("eHP");
+	static_cast<eHPComp*>(temp)->setHP(static_cast<eHPComp*>(temp)->getHP() - 1);
+
+		/*auto tar = m_entities.at(j)->FindComponent("PC");
+	tarX = static_cast<PositionComponent*>(tar)->getX();*/
+
 }

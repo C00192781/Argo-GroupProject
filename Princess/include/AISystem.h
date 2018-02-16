@@ -11,7 +11,7 @@
 #include "AttributesComponent.h"
 #include "BasicEnemy.h"
 #include "DecisionTree.h"
-
+#include "eHPComp.h"
 class AiSystem : public System
 {
 public:
@@ -29,13 +29,14 @@ public:
 	void Wander(int i,int pcKey,int mcKey,int seekKey, int attributeKey);
 	void LoadComponent();
 	void UnloadComponent(int x);
+	
 
 private:
 
 	std::vector<Character*> CharFactory;
 	Character* characterFactory;
 
-	DecisionTree* m_decisionTree = new DecisionTree(15, 5, 5, 5, 50);
+	DecisionTree* m_decisionTree = new DecisionTree(15, 5, 5, 5, 50); //debug values, overwrite in update -> pathNode
 
 	std::vector<AiLogicComponent*> m_aiLogicComponent;
 	std::vector<SpriteComponent*> m_spriteComponent;
@@ -44,8 +45,13 @@ private:
 	std::vector<AttributesComponent*> m_attributesComponent;
 	std::vector<AttackComponent*> m_attackComponent;
 	std::vector<PositionComponent*> m_positionComponent;
+	
 
+	std::vector<eHPComp*> m_eHPComp;
 	std::vector<Entity*> m_compIDVec;
+
+	int m_health;
+	int m_MAXHEALTH;
 
 	float m_time;
 };

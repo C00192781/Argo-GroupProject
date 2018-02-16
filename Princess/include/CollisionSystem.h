@@ -8,6 +8,7 @@
 #include "Quad.h"
 #include "AttributesComponent.h"
 #include "ProjectileComponent.h"
+#include "eHPComp.h"
 
 class CollisionSystem : public System
 {

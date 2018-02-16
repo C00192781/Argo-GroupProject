@@ -10,6 +10,7 @@
 #include "AttackComponent.h"
 #include "AttributesComponent.h"
 #include "CollisionComponent.h"
+#include "eHPComp.h"
 
 class BasicEnemy : public Character
 {

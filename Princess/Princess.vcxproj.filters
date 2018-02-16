@@ -292,5 +292,8 @@
     <ClInclude Include="include\TreeNodes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\eHPComp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
