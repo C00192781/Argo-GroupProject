@@ -33,8 +33,10 @@ void DungeonMap::Generate()
 	m_systemManager->renderSystem->SelectiveClear();
 	m_systemManager->movementSystem->SelectiveClear();
 	m_systemManager->collisionSystem->SelectiveClear();
+	m_systemManager->aiSystem->SelectiveClear();
 
-	int randomMapNumber = rand() % 5;
+	//int randomMapNumber = rand() % 5;
+	int randomMapNumber = 0;
 	std::string mapName;
 
 	if (randomMapNumber == 0)
@@ -59,6 +61,7 @@ void DungeonMap::Generate()
 	}
 
 	DungeonTileFactory factory;
+	BasicEnemy enemyFactory;
 
 	for (int i = 0; i < 24; i++)
 	{
@@ -93,6 +96,38 @@ void DungeonMap::Generate()
 						pos->setPosition(m_startPoint.x, m_startPoint.y);
 					}
 				}
+			}
+			else if (m_resourceManager->GetMapElement(mapName, i, j) == "E")
+			{
+				int randNum = rand() % 4;
+
+				Entity* enemy;
+
+				if (randNum == 0) {
+					//enemy = enemyFactory.CharA("Demon", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
+					enemy = enemyFactory.CharC("Demon", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
+				}
+				else if (randNum == 1)
+				{
+					//enemy = enemyFactory.CharB("Demon", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
+					enemy = enemyFactory.CharC("Demon", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
+				}
+				else if (randNum == 2)
+				{
+					enemy = enemyFactory.CharC("Demon", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
+				}
+				else
+				{
+					//enemy = enemyFactory.CharD("Demon", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
+					enemy = enemyFactory.CharC("Demon", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
+				}
+
+				enemy->Active(true);
+
+				m_systemManager->renderSystem->AddEntity(enemy);
+				m_systemManager->movementSystem->AddEntity(enemy); //consider tag discrimination here
+				m_systemManager->collisionSystem->AddEntity(enemy);
+				m_systemManager->aiSystem->AddEntity(enemy);
 			}
 		}
 	}

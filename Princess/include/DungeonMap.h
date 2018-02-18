@@ -2,6 +2,7 @@
 
 #include "Instance.h"
 #include "DungeonTileFactory.h"
+#include "BasicEnemy.h"
 
 class DungeonMap : public Instance
 {
