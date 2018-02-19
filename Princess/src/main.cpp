@@ -136,7 +136,7 @@ int main()
 	player2->Active(true);
 
 	player2->AddComponent(new SpriteComponent("Red", 3, 1, 0, 0, 16, 16, 0));
-	player2->AddComponent(new PositionComponent(SDL_Point{ 100, 100 }));
+	player2->AddComponent(new PositionComponent(SDL_Point{ 1000, 1000 }));
 	player2->AddComponent(new AttributesComponent(26, 26, 10, 10, 100, 100));
 	player2->AddComponent(new MovementComponent());
 	player2->AddComponent(new WeaponComponent(WeaponType::RANGE));
@@ -201,7 +201,7 @@ int main()
 		//Set text to be rendered
 		if (avgFPS > 1)
 		{
-			cout << "FPS (With Cap) " << avgFPS << endl;;
+		//	cout << "FPS (With Cap) " << avgFPS << endl;;
 		}
 		//update ren
 		++countedFrames;

@@ -4,6 +4,31 @@
 AiSystem::AiSystem()
 {
 	//m_thingy = 1;
+	//add root node
+	m_decisionTree->CreateRootNode(1);
+
+	//$$$
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode, 1, 2);
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode, 1, 3);
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1, 2, 4);
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1, 2, 5);
+
+
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch2, 3, 6); //fix addnodes to support larger treesizes soontm.
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch2, 3, 7);
+	//	m_decisionTree->printLeafNodes(m_decisionTree->m_RootNode); //this worky workies
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1->NewBranch1, 4, 8);
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1->NewBranch1, 4, 9);
+
+
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1->NewBranch2, 5, 10); //move to init prolly
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1->NewBranch2, 5, 11);
+
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch2->NewBranch1, 6, 12);
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch2->NewBranch1, 6, 13);
+
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch2->NewBranch2, 7, 14);
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch2->NewBranch2, 7, 15);
 }
 
 
@@ -30,31 +55,7 @@ void AiSystem::UnloadComponent(int x)
 
 void AiSystem::Spawn()
 {
-	//add root node
-	m_decisionTree->CreateRootNode(1);
 
-	//$$$
-	m_decisionTree->AddNode1(m_decisionTree->m_RootNode, 1, 2);
-	m_decisionTree->AddNode1(m_decisionTree->m_RootNode, 1, 3);
-	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1, 2, 4);
-	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1, 2, 5);
-
-
-	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch2, 3,6); //fix addnodes to support larger treesizes soontm.
-	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch2, 3, 7);
-//	m_decisionTree->printLeafNodes(m_decisionTree->m_RootNode); //this worky workies
-	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1->NewBranch1, 4,8);
-	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1->NewBranch1, 4, 9);
-
-
-	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1->NewBranch2, 5, 10); //move to init prolly
-	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1->NewBranch2, 5, 11);
-
-	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch2->NewBranch1, 6, 12);
-	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch2->NewBranch1, 6, 13);
-
-	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch2->NewBranch2, 7, 14);
-	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch2->NewBranch2, 7, 15);
 
 
 
@@ -71,7 +72,7 @@ void AiSystem::Spawn()
 	characterFactory = new BasicEnemy();
 
 	
-	for (int i = 0; i < 15; i++)
+	for (int i = 0; i < 1; i++)
 	{
 	//	m_entities.push_back(characterFactory->CharC("Demon", SDL_Point{ p.x + 20, p.y + 20 }, 0));
 
@@ -273,8 +274,6 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 	}
 
 
-
-
 	for (int i = 0; i < players.size(); i++)
 	{
 		int check = players.at(i)->FindComponentIndex("AIL");
@@ -301,7 +300,7 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 			int ty = players.at(i)->FindComponentIndex("seek");
 			int tz = players.at(i)->FindComponentIndex("attribute");
 
-			seek(i, tw, tx, ty, tz, mod1, mod2, 0, players.at(i)->ID());
+			seek(i, tw, tx, ty, tz, mod1, mod2, 0, players.at(i)->ID()); //ai players seek to things
 
 
 		}
@@ -337,15 +336,29 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 						if (players.at(j)->ID() == "Player") //some sort of target discerning goes here later
 						{
 							auto tar = players.at(j)->FindComponent("PC");
-							tarX = static_cast<PositionComponent*>(tar)->getX();
-							tarY = static_cast<PositionComponent*>(tar)->getY();
+							int tempX = static_cast<PositionComponent*>(tar)->getX();
+							int tempY = static_cast<PositionComponent*>(tar)->getY();
 
-							float x = tarX - static_cast<PositionComponent*>(m_entities.at(i)->FindComponent("PC"))->getX();
-							float y = tarY - static_cast<PositionComponent*>(m_entities.at(i)->FindComponent("PC"))->getY();
+							float x = tempX - static_cast<PositionComponent*>(m_entities.at(i)->FindComponent("PC"))->getX();
+							float y = tempY - static_cast<PositionComponent*>(m_entities.at(i)->FindComponent("PC"))->getY();
 
-							dist = magnitude(x, y);
+							if (dist == 0)
+							{
+								dist = magnitude(x, y);
+								tarX = tempX;
+								tarY = tempY;
+							}
+							else if (dist > magnitude(x, y))
+							{
+								dist = magnitude(x, y);
+								tarY = tempY;
+								tarX = tempX;
+							}
+							
 						}
 					}
+
+					cout << dist << endl;
 
 
 					m_decisionTree->calculatePathNodes(m_decisionTree->m_RootNode, dist, 2, static_cast<eHPComp*>(hpComp)->getHP()); //make target HP and self HP gettable later,  hardcoded values for test purpose only.
@@ -364,7 +377,7 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 
 					else if (decision == 10 || decision == 11) //if hp adv and out of range
 					{
-						int tw = m_entities.at(i)->FindComponentIndex("PC"); //move index finding to spawn, 
+						int tw = m_entities.at(i)->FindComponentIndex("PC"); //note:move index finding to spawn, 
 						int tx = m_entities.at(i)->FindComponentIndex("movement");
 						int ty = m_entities.at(i)->FindComponentIndex("seek");
 						int tz = m_entities.at(i)->FindComponentIndex("attribute");
@@ -386,35 +399,12 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 					}
 					else if (decision == 14 || decision == 15) //if no hp adv and in range
 					{
-						int tw = m_entities.at(i)->FindComponentIndex("PC");
+						int tw = m_entities.at(i)->FindComponentIndex("PC"); //note:move index finding to spawn, 
 						int tx = m_entities.at(i)->FindComponentIndex("movement");
 						int ty = m_entities.at(i)->FindComponentIndex("seek");
 						int tz = m_entities.at(i)->FindComponentIndex("attribute");
 
-						float tarX = 0;
-						float tarY = 0;
 
-
-						for (int j = 0; j < players.size(); j++)
-						{
-							if (players.at(j)->ID() == "Player") //some sort of target discerning goes here later
-							{
-								auto tar = players.at(j)->FindComponent("PC");
-								tarX = static_cast<PositionComponent*>(tar)->getX();
-								tarY = static_cast<PositionComponent*>(tar)->getY();
-								/*	cout << "tarX: " << tarX << endl;
-								cout << "tarY: " << tarY << endl;*/
-								//	auto selfPos = 
-
-								float x = tarX - static_cast<PositionComponent*>(m_entities.at(i)->FindComponent("PC"))->getX();
-								float y = tarY - static_cast<PositionComponent*>(m_entities.at(i)->FindComponent("PC"))->getY();
-
-								dist = magnitude(x, y);
-							}
-						}
-
-						/*			cout << tarX << endl;
-									cout << tarY << endl;*/
 						seek(i, tw, tx, ty, tz, tarX, tarY, 1, m_entities.at(i)->ID()); //refactor x and y to take in princess position or whatever player or whatever
 																//flee
 
