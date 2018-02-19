@@ -30,6 +30,7 @@ private:
 	int indexActiveMenu;
 	std::string activeMenuID;
 	int menuTimer;
+	int clickTimer;
 	EventListener * m_eventListener;
 	StateManager * m_states;
 };

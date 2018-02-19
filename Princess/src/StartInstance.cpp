@@ -98,6 +98,43 @@ void StartInstance::Update()
 		}
 		m_stateManager->MainMenu = false;
 	}
+	if (m_stateManager->increaseSound || m_stateManager->decreaseSound)
+	{
+		if (m_stateManager->increaseSound)
+		{
+			if (m_systemManager->soundSystem->GetSoundVolume() < 100)
+			{
+				m_systemManager->soundSystem->SetSoundVolume(m_systemManager->soundSystem->GetSoundVolume() + 10);
+			}
+		}
+		if (m_stateManager->decreaseSound)
+		{
+			if (m_systemManager->soundSystem->GetSoundVolume() > 0)
+			{
+				m_systemManager->soundSystem->SetSoundVolume(m_systemManager->soundSystem->GetSoundVolume() - 10);
+			}
+		}
+		if (m_systemManager->menuSystem->GetMenuComponent("OptionsMenu") != nullptr)
+		{
+			for (int i = 0; i < m_systemManager->menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->size(); i++)
+			{
+				if (m_systemManager->menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->at(i)->ID() == "SoundText")
+				{
+					if (m_systemManager->menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->at(i)->FindComponent("TextComponent") != nullptr)
+					{
+						std::string text;
+						text = "Sound :";
+						text += std::to_string(m_systemManager->soundSystem->GetSoundVolume());
+						text += "%";
+						static_cast<TextComponent*>(m_systemManager->menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->at(i)->FindComponent("TextComponent"))->Text(text);
+					}
+					break;
+				}
+			}
+		}
+		m_stateManager->increaseSound = false;
+		m_stateManager->decreaseSound = false;
+	}
 }
 
 

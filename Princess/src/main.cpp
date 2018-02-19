@@ -185,9 +185,9 @@ int main()
 	player->AddComponent(new MovementComponent());
 	player->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
-	player->AddComponent(new SoundComponent("Scream", "play", true, 1, 0, 50));
+	player->AddComponent(new SoundComponent("Scream", "play", true, 1, 5, 50));
 	//player->AddComponent(new SoundComponent("Placeholder", "play", true, 0, 0, 80));
-	player->AddComponent(new MusicComponent("Test", "play", true, 0, 100));
+	player->AddComponent(new MusicComponent("Test", "play", true, 0, 0));
 	player->Transient(true);
 
 	systemManager.controlSystem->AddEntity(player);
@@ -222,7 +222,7 @@ int main()
 		//Set text to be rendered
 		if (avgFPS > 1)
 		{
-			cout << "FPS (With Cap) " << avgFPS << endl;;
+			//cout << "FPS (With Cap) " << avgFPS << endl;;
 		}
 		//update ren
 		++countedFrames;
