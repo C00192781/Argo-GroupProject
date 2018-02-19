@@ -77,20 +77,39 @@ void BattleMap::Generate(std::string type)
 
 	BasicEnemy enemyFactory;
 
-	Entity* enemy = nullptr;
-
-	enemy = enemyFactory.CharA("Demon", SDL_Point{ rand() % 816, rand() % 624 }, 0);
-
-	// chance for spawner to not spawn anything
-	if (enemy != nullptr)
+	for (int i = 0; i < numOfEnemies; i++)
 	{
-		enemy->Active(true);
+		int randNum = rand() % 5;
 
-		m_enemies.push_back(enemy);
-		m_systemManager->renderSystem->AddEntity(enemy);
-		m_systemManager->movementSystem->AddEntity(enemy);
-		m_systemManager->collisionSystem->AddEntity(enemy);
-		m_systemManager->aiSystem->AddEntity(enemy);
+		Entity* enemy = nullptr;
+
+		if (randNum == 0) {
+			enemy = enemyFactory.CharA("Demon", SDL_Point{ rand() % 816, rand() % 624 }, 0);
+		}
+		else if (randNum == 1)
+		{
+			enemy = enemyFactory.CharB("Demon", SDL_Point{ rand() % 816, rand() % 624 }, 0);
+		}
+		else if (randNum == 2)
+		{
+			enemy = enemyFactory.CharC("Demon", SDL_Point{ rand() % 816, rand() % 624 }, 0);
+		}
+		else if (randNum == 3)
+		{
+			enemy = enemyFactory.CharD("Demon", SDL_Point{ rand() % 816, rand() % 624 }, 0);
+		}
+
+		// chance for spawner to not spawn anything
+		if (enemy != nullptr)
+		{
+			enemy->Active(true);
+
+			m_enemies.push_back(enemy);
+			m_systemManager->renderSystem->AddEntity(enemy);
+			m_systemManager->movementSystem->AddEntity(enemy);
+			m_systemManager->collisionSystem->AddEntity(enemy);
+			m_systemManager->aiSystem->AddEntity(enemy);
+		}
 	}
 	
 	for (int i = 0; i < 100; i++)
