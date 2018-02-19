@@ -32,6 +32,21 @@ Component* Entity::FindComponent(std::string ID)
 	return nullptr;
 }
 
+
+int Entity::FindComponentIndex(std::string ID)
+{
+	for (int i = 0; i < m_components.size(); i++)
+	{
+		if (m_components.at(i)->Type() == ID)
+		{
+			return i;
+		}
+	}
+
+	return -1;
+}
+
+
 void Entity::RemoveComponent(Component* c)
 {
 	for (int i = 0; i < m_components.size(); i++)

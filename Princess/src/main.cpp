@@ -29,6 +29,9 @@
 #include "WorldMap.h"
 #include "TownInstance.h"
 #include "MenuSystem.h"
+#include "AchievementHandler.h"
+#include "SoundComponent.h"
+#include "SoundSystem.h"
 
 int GAME_SCALE = 3;
 
@@ -46,7 +49,14 @@ int main()
 
 	bool running = true;
 
-	srand(time(NULL));
+	if (Mix_OpenAudio(22050, AUDIO_S16, 2, 1024) == -1) //Check return type
+	{
+		printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+	}
+	else
+	{
+		Mix_VolumeMusic(MIX_MAX_VOLUME);
+	}
 
 	const int SCREEN_FPS = 500;
 	const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
@@ -90,6 +100,16 @@ int main()
 	resourceManager->AddTexture("SoundText", "sound.png");
 	resourceManager->AddTexture("MusicText", "music.png");
 
+	resourceManager->AddTexture("Achievement", "PlaceholderAchievement.png");
+	resourceManager->AddTexture("Achievement2", "PlaceholderAchievement2.png");
+	
+	resourceManager->AddMusic("Test", "test.wav");
+	resourceManager->AddSound("Scream", "test.wav");
+	resourceManager->AddSound("Placeholder", "placeholder.wav");
+	
+	resourceManager->AddFont("ComicSans", "ComicSans.ttf", 32);
+
+	Mix_AllocateChannels(6);
 
 	EventListener *listener = new EventListener();
 
@@ -134,6 +154,12 @@ int main()
 	systemManager.menuSystem = new MenuSystem(listener, &state);
 	systemManager.menuSystem->Active(true);
 
+	systemManager.buttonSystem = new ButtonSystem(listener);
+	systemManager.buttonSystem->Active(true);
+
+	systemManager.soundSystem = new SoundSystem(resourceManager);
+	systemManager.soundSystem->Active(true);
+
 	InstanceManager instanceManager = InstanceManager(&state, resourceManager, input, listener,gameRenderer,&systemManager);
 
 	//BattleMap map1 = BattleMap(&systemManager, gameRenderer, &state);
@@ -159,6 +185,9 @@ int main()
 	player->AddComponent(new MovementComponent());
 	player->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
+	player->AddComponent(new SoundComponent("Scream", "play", true, 1, 0, 50));
+	//player->AddComponent(new SoundComponent("Placeholder", "play", true, 0, 0, 80));
+	player->AddComponent(new MusicComponent("Test", "play", true, 0, 100));
 	player->Transient(true);
 
 	systemManager.controlSystem->AddEntity(player);
@@ -167,12 +196,16 @@ int main()
 	systemManager.projectileSystem->AddEntity(player);
 	systemManager.collisionSystem->AddEntity(player);
 	systemManager.attackSystem->AddEntity(player);
+	systemManager.soundSystem->AddEntity(player);
+
 
 	//TownInstance t = TownInstance(&systemManager);
 	//t.Generate("jimmie");
 
 	//WorldMap* m = new WorldMap(&systemManager, &state);
 	//m->Generate(25, 25, 100);
+
+	AchievementHandler *achievements = new AchievementHandler(&systemManager);
 
 	//BattleMap* b = new BattleMap(&systemManager, &state);
 	//b->Generate("");
@@ -189,13 +222,14 @@ int main()
 		//Set text to be rendered
 		if (avgFPS > 1)
 		{
-			//cout << "FPS (With Cap) " << avgFPS << endl;;
+			cout << "FPS (With Cap) " << avgFPS << endl;;
 		}
 		//update ren
 		++countedFrames;
 
 		//If frame finished early
 		int frameTicks = capTimer.getTicks();
+
 		if (frameTicks < SCREEN_TICKS_PER_FRAME)
 		{
 			//Wait remaining time
@@ -207,6 +241,7 @@ int main()
 				deltaTime = ((float)(currentTime - lastTime)) / 1000;
 
 				input->handleInput();
+				achievements->HandleAchievements();
 
 				lastTime = currentTime;
 			}

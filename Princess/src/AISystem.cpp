@@ -23,102 +23,80 @@ AiSystem::~AiSystem()
 
 void AiSystem::LoadComponent()
 {
-	//std::vector<AiLogicComponent*> m_aiLogicComponent;
-	//std::vector<SpriteComponent*> m_spriteComponent;
-	//std::vector<MovementComponent*> m_movementComponent;
-	//std::vector<SeekComponent*> m_seekComponent;
-	//std::vector<AttributesComponent*> m_attributesComponent;
-	//std::vector<AttackComponent*> m_attackComponent;
 
-
-
-	//int pcKey = -1;
-	//int scKey = -1;
-	//int acKey = -1;
-	//int skKey = -1;
-	//int atkKey = -1;
-	//int ailKey = -1;
-	//int seekKey = -1;
-	//for (int j = 0; j < m_entities.back()->GetComponents()->size(); j++)
-	//{
-	//	if (m_entities.back()->GetComponents()->at(j)->Type() == "PC")
-	//	{
-	//		pcKey = j;
-	//	}
-	//	else if (m_entities.back()->GetComponents()->at(j)->Type() == "SC")
-	//	{
-	//		scKey = j;
-	//	}
-	//	else if (m_entities.back()->GetComponents()->at(j)->Type() == "AC")
-	//	{
-	//		acKey = j;
-	//	}
-	//	else if (m_entities.back()->GetComponents()->at(j)->Type() == "attack")
-	//	{
-	//		atkKey = j;
-	//	}
-	//	else if (m_entities.back()->GetComponents()->at(j)->Type() == "AIL")
-	//	{
-	//		ailKey = j;
-	//	}
-	//	//else if (m_entities.back()->GetComponents()->at(j)->Type() == "AIL")
-	//	//{
-	//	//	ailKey = j;
-	//	//}
-	//	else if (m_entities.back()->GetComponents()->at(j)->Type() == "seek")
-	//	{
-	//		seekKey = j;
-	//	}
-	//	
-	//	if (scKey > 0 && pcKey > 0)
-	//	{
-	//		break;
-	//	}
-	//}
-
-	//m_positionComponent.push_back(static_cast<PositionComponent*>(m_entities.back()->GetComponents()->at(pcKey)));
-	//m_spriteComponent.push_back(static_cast<SpriteComponent*>(m_entities.back()->GetComponents()->at(scKey)));
-
-
-	//m_aiLogicComponent.push_back(static_cast<AiLogicComponent*>(m_entities.back()->GetComponents()->at(pcKey));
-
-	//static_cast<SpriteComponent*> m_spriteComponent;
-	//static_cast<MovementComponent*> m_movementComponent;
-	//static_cast<SeekComponent*> m_seekComponent;
-	//static_cast<AttributesComponent*> m_attributesComponent;
-	//static_cast<AttackComponent*> m_attackComponent;
-	//static_cast<PositionComponent*> m_positionComponent;
 }
 
 void AiSystem::UnloadComponent(int x)
 {
-	//m_positionComponent.erase(m_positionComponent.begin() + x);
-	//m_spriteComponent.erase(m_spriteComponent.begin() + x);
-	//m_positionComponent.shrink_to_fit();
-	//m_spriteComponent.shrink_to_fit();
+
 }
 
 void AiSystem::Spawn()
 {
+	//add root node   the very first 'Question' or decision to be made
+	//is monster health greater than player health?
+	m_decisionTree->CreateRootNode(1);
+
+	//add nodes depending on decisions
+	//2nd decision to be made
+	//is monster strength greater than player strength?
+
+
+	//depending on the weights of all three decisions, will return certain node result
+	//results!
+	//Run, Attack, 
+
+	
+
+
+	//$$$
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode, 1, 2);
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode, 1, 3);
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1, 2, 4);
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1, 2, 5);
+
+
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch2, 3,6); //fix addnodes to support larger treesizes soontm.
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch2, 3, 7);
+//	m_decisionTree->printLeafNodes(m_decisionTree->m_RootNode); //this worky workies
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1->NewBranch1, 4,8);
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1->NewBranch1, 4, 9);
+
+
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1->NewBranch2, 5, 10);
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1->NewBranch2, 5, 11);
+
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch2->NewBranch1, 6, 12);
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch2->NewBranch1, 6, 13);
+
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch2->NewBranch2, 7, 14);
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch2->NewBranch2, 7, 15);
+
+
+
 	SDL_Point p{ 300,0 };
 	
+
+	m_compIDVec.clear();
+
 	characterFactory = new Princess();
 	m_entities.push_back(characterFactory->CharA("Red", p, 0));
 	m_entities.back()->Active(true);
 
-	//p =  SDL_Point{ 10,100 };
 
 	characterFactory = new BasicEnemy();
-	//m_entities.push_back(characterFactory->CharC("Demon", p, 0));
-	//m_entities.back()->Active(true);
+
+
 	
-	for (int i = 0; i < 20; i++)
+	for (int i = 0; i < 15; i++)
 	{
-	//	characterFactory = new BasicEnemy();
+	//	m_entities.push_back(characterFactory->CharC("Demon", SDL_Point{  }, 0));
+
 		m_entities.push_back(characterFactory->CharC("Demon", SDL_Point{ rand() % 812, rand() % 624 }, 0));
-		//m_entities.push_back(characterFactory->CharC("Demon", SDL_Point{ 500, 500 }, 0));
+
 		m_entities.back()->Active(true);
 	}
+
 }
 
 
@@ -141,14 +119,16 @@ std::vector<Entity*> AiSystem::getEntities()
 }
 
 
-void AiSystem::seek(int entityIndex, int pcKey, int mcKey, int seekKey, int attributeKey)
+
+void AiSystem::seek(int entityIndex, int pcKey, int mcKey, int seekKey, int attributeKey, float tarX, float tarY, int behaviour)
 {
 
 
 //	SDL_Point{ rand() % 812, rand() % 624 }, 0));
 	
-	float x = (rand() % 812) - static_cast<PositionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(pcKey))->getX();
-	float y = (rand() % 624) - static_cast<PositionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(pcKey))->getY();
+
+	float x = tarX - static_cast<PositionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(pcKey))->getX();
+	float y = tarY - static_cast<PositionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(pcKey))->getY();
 
 	float dist = magnitude(x, y);
 
@@ -160,8 +140,16 @@ void AiSystem::seek(int entityIndex, int pcKey, int mcKey, int seekKey, int attr
 		x *= static_cast<AttributesComponent*>(m_entities.at(entityIndex)->GetComponents()->at(attributeKey))->MovementSpeed();
 		y *= static_cast<AttributesComponent*>(m_entities.at(entityIndex)->GetComponents()->at(attributeKey))->MovementSpeed();
 
-		static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setXVelocity(x);
-		static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setYVelocity(y);
+		if (behaviour == 0)
+		{
+			static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setXVelocity(x);
+			static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setYVelocity(y);
+		}
+		if (behaviour == 1)
+		{
+			static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setXVelocity(-x);
+			static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setYVelocity(-y);
+		}
 	}
 	//else
 	//{
@@ -213,7 +201,6 @@ void AiSystem::Wander(int entityIndex, int pcKey, int mcKey, int seekKey, int at
 		{
 			static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->setYDestination(300 - mod2);
 		}
-
 
 	}
 
@@ -274,130 +261,89 @@ void AiSystem::Update(float deltaTime)
 {
 	m_time = deltaTime;
 
-	//for (int i = 0; i < m_entities.size(); i++)
-	//{
-	//	int pcKey = -1;
-	//	int ailKey = -1;
-	//	for (int j = 0; j < m_entities.at(i)->GetComponents()->size(); j++)
-	//	{
-	//		if (m_entities.at(i)->GetComponents()->at(j)->Type() == "PC") //position comp
-	//		{
-	//			pcKey = j;
-	//		}
-	//		else if (m_entities.at(i)->GetComponents()->at(j)->Type() == "AIL") //ai logic comp
-	//		{
-	//			ailKey = j;
-	//		}
-	//	}
-	//	if (pcKey >= 0 && ailKey >= 0)
-	//	{
-	//		if (m_entities.at(i)->ID() == "Princess")
-	//		{
-	//			//if it's a princess, do something special
-	//		}
-
-	//		static_cast<AiLogicComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->Speed(1); //set speed
-
-	//		SDL_Point holder{ static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getX(), static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->getY() };
-	//		//update position with speed
-	//		holder.x += static_cast<AiLogicComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->Speed();
-	//		holder.y += static_cast<AiLogicComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->Speed();
-
-	//		static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->setPosition(holder);
-
-	//	}
-	//}
 
 	for (int i = 0; i < m_entities.size(); i++)
 	{
-		int pcKey = -1;
-		int mcKey = -1;
-		int seekKey = -1;
-		int attackKey = -1;
-		int attributeKey = -1;
-
-		for (int j = 0; j < m_entities.at(i)->GetComponents()->size(); j++)
+		if (m_entities.at(i)->ID() == "Spellcaster Enemy")
 		{
-			if (m_entities.at(i)->GetComponents()->at(j)->Type() == "PC")
-			{
-				pcKey = j;
-			}
-			else if (m_entities.at(i)->GetComponents()->at(j)->Type() == "movement")
-			{
-				mcKey = j;
-			}
-			else if (m_entities.at(i)->GetComponents()->at(j)->Type() == "seek")
-			{
-				seekKey = j;
-			}
-			else if (m_entities.at(i)->GetComponents()->at(j)->Type() == "attack")
-			{
-				attackKey = j;
-			}
-			else if (m_entities.at(i)->GetComponents()->at(j)->Type() == "attribute")
-			{
-				attributeKey = j;
-			}
-		}
+			m_decisionTree->calculatePathNodes(m_decisionTree->m_RootNode);
 
+		//	int decision = m_decisionTree->getDecision();
 
-		if (seekKey >= 0 && pcKey >= 0 && mcKey >= 0 && attributeKey >= 0)
-		{
-			if (attackKey >= 0)
+			int decision = 10;
+
+			if (decision == 8 || decision == 9)
 			{
-	/*			if (static_cast<SeekComponent*>(m_entities.at(i)->GetComponents()->at(seekKey))->getDistanceToDestination() < static_cast<AttackComponent*>(m_entities.at(i)->GetComponents()->at(attackKey))->getRange())
+				int tw = m_entities.at(i)->FindComponentIndex("attack");
+				int tx = m_entities.at(i)->FindComponentIndex("movement");
+				attack(i, tw, tx);
+				//attack
+			}
+
+			else if (decision == 10 || decision == 11)
+			{
+
+				int tw = m_entities.at(i)->FindComponentIndex("PC"); //move index finding to spawn, 
+				int tx = m_entities.at(i)->FindComponentIndex("movement");
+				int ty = m_entities.at(i)->FindComponentIndex("seek");
+				int tz = m_entities.at(i)->FindComponentIndex("attribute");
+				
+				float tarX = 0;
+				float tarY = 0;
+
+				for (int j = 0; j < m_entities.size(); j++)
 				{
-					attack(i, attackKey, mcKey);
+					if (m_entities.at(j)->ID() == "Princess")
+					{
+						//probably check for active here
+						auto tar = m_entities.at(j)->FindComponent("PC");
+						tarX = static_cast<PositionComponent*>(tar)->getX();
+						tarY = static_cast<PositionComponent*>(tar)->getY();
+						break;
+					}
 				}
-				else
-				{*/
-					seek(i, pcKey, mcKey, seekKey,attributeKey);
-			//	}
+
+				//cout << tarX << endl;
+				//cout << tarY << endl;
+				seek(i, tw , tx, ty, tz, tarX, tarY, 0); //refactor x and y to take in princess position or whatever player or whatever
+				//seek
 			}
-			else
-			{
-				seek(i, pcKey, mcKey, seekKey,attributeKey);
-			}
-
-			if (m_entities.at(i)->ID() == "Princess")
-			{
-				Wander(i, pcKey, mcKey, seekKey,attributeKey);
-
-
-				//m_entities.at(i)->RemoveComponent(new MovementComponent*);
-				//
-				//SDL_Point holder = SDL_Point{100 , 100};
-				//
-				//static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(pcKey))->setPosition(holder);
-
-				//Wander(i, pcKey, mcKey, seekKey);
-				//do Princess things
-			}
-
-			else if (m_entities.at(i)->ID() == "Melee Enemy")
-			{
-				//do melee enemy things
-			}
-
-			else if (m_entities.at(i)->ID() == "Ranged Enemy")
-			{
-				//do ranged enemy things
-			}
-
-			else if (m_entities.at(i)->ID() == "Spellcaster Enemy")
-			{
-				//do Spellcaster enemy things
-			}
-
-			else if (m_entities.at(i)->ID() == "Basic Enemy")
-			{
-				//do basic enemy things
-			}
-		}
-	
-
 		
+			else if (decision == 12 || decision == 13)
+			{
+				//do nothing
+			}
+			else if (decision == 14 || decision == 15)
+			{
+				int tw = m_entities.at(i)->FindComponentIndex("PC");
+				int tx = m_entities.at(i)->FindComponentIndex("movement");
+				int ty = m_entities.at(i)->FindComponentIndex("seek");
+				int tz = m_entities.at(i)->FindComponentIndex("attribute");
+
+				float tarX = 0;
+				float tarY = 0;
+
+				for (int j = 0; j < m_entities.size(); j++)
+				{
+					if (m_entities.at(j)->ID() == "Princess")
+					{
+						//probably check for active here
+						auto tar = m_entities.at(j)->FindComponent("PC");
+						tarX = static_cast<PositionComponent*>(tar)->getX();
+						tarY = static_cast<PositionComponent*>(tar)->getY();
+						break;
+					}
+				}
+
+	/*			cout << tarX << endl;
+				cout << tarY << endl;*/
+				seek(i, tw, tx, ty, tz, tarX, tarY, 1); //refactor x and y to take in princess position or whatever player or whatever
+														//seek
+				//flee
+			}
+						//do Spellcaster enemy things
+		}
 
 	}
-
 }
+

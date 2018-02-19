@@ -81,27 +81,6 @@ void BattleMap::Generate(std::string type)
 		m_systemManager->attackSystem->AddEntity((*i));
 	}
 
-	//Entity * player = new Entity("Player");
-
-	//player->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
-	//player->AddComponent(new PositionComponent(SDL_Point{ 100, 300 }));
-	//player->AddComponent(new AttributesComponent());
-	//player->AddComponent(new MovementComponent(3));
-	//player->AddComponent(new CollisionComponent());
-	//player->AddComponent(new AttributesComponent());
-
-	//m_systemManager->ControlSystem->AddEntity(player);
-	//m_systemManager->MovementSystem->AddEntity(player);
-	//m_systemManager->RenderSystem->AddEntity(player);
-	//m_systemManager->ProjectileSystem->AddEntity(player);
-	//m_systemManager->CollisionSystem->AddEntity(player);
-	//m_systemManager->healthSystem->AddEntity(player);
-
-	//AttributesComponent* ac = new AttributesComponent();
-	//player->AddComponent(ac);
-
-	//HeartManagerComponent* hUI = new HeartManagerComponent(HeartTypes::HEALTH);
-	//player->AddComponent(hUI);
 
 	std::cout << projectileEntities->size() << std::endl;
 

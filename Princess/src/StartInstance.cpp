@@ -31,7 +31,14 @@ void StartInstance::Begin()
 	m_systemManager->menuSystem->ChangeMenu("MainMenu");
 	for (int i = 0; i < m_systemManager->menuSystem->GetMenuComponent("MainMenu")->Buttons()->size(); i++)
 	{
-		m_systemManager->renderSystem->AddEntity(m_systemManager->menuSystem->GetMenuComponent("MainMenu")->Buttons()->at(i));
+		if (m_systemManager->menuSystem->GetMenuComponent("MainMenu")->Buttons()->at(i)->FindComponent("TextComponent") != nullptr)
+		{
+			m_systemManager->textRenderSystem->AddEntity(m_systemManager->menuSystem->GetMenuComponent("MainMenu")->Buttons()->at(i));
+		}
+		if (m_systemManager->menuSystem->GetMenuComponent("MainMenu")->Buttons()->at(i)->FindComponent("SC") != nullptr)
+		{
+			m_systemManager->renderSystem->AddEntity(m_systemManager->menuSystem->GetMenuComponent("MainMenu")->Buttons()->at(i));
+		}
 	}
 }
 
@@ -41,12 +48,26 @@ void StartInstance::Update()
 	{
 		for (int i = 0; i < m_systemManager->menuSystem->GetMenuComponent("MainMenu")->Buttons()->size(); i++)
 		{
-			m_systemManager->renderSystem->RemoveEntity(m_systemManager->menuSystem->GetMenuComponent("MainMenu")->Buttons()->at(i)->ID());
+			if (m_systemManager->menuSystem->GetMenuComponent("MainMenu")->Buttons()->at(i)->FindComponent("TextComponent") != nullptr)
+			{
+				m_systemManager->textRenderSystem->RemoveEntity(m_systemManager->menuSystem->GetMenuComponent("MainMenu")->Buttons()->at(i)->ID());
+			}
+			if (m_systemManager->menuSystem->GetMenuComponent("MainMenu")->Buttons()->at(i)->FindComponent("SC") != nullptr)
+			{
+				m_systemManager->renderSystem->RemoveEntity(m_systemManager->menuSystem->GetMenuComponent("MainMenu")->Buttons()->at(i)->ID());
+			}
 		}
 		m_systemManager->menuSystem->ChangeMenu("OptionsMenu");
 		for (int i = 0; i < m_systemManager->menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->size(); i++)
 		{
-			m_systemManager->renderSystem->AddEntity(m_systemManager->menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->at(i));
+			if (m_systemManager->menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->at(i)->FindComponent("TextComponent") != nullptr)
+			{
+				m_systemManager->textRenderSystem->AddEntity(m_systemManager->menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->at(i));
+			}
+			if (m_systemManager->menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->at(i)->FindComponent("SC") != nullptr)
+			{
+				m_systemManager->renderSystem->AddEntity(m_systemManager->menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->at(i));
+			}
 		}
 		m_stateManager->Options = false;
 	}
@@ -54,13 +75,29 @@ void StartInstance::Update()
 	{
 		for (int i = 0; i < m_systemManager->menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->size(); i++)
 		{
-			m_systemManager->renderSystem->RemoveEntity(m_systemManager->menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->at(i)->ID());
+			if (m_systemManager->menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->at(i)->FindComponent("TextComponent") != nullptr)
+			{
+				m_systemManager->textRenderSystem->RemoveEntity(m_systemManager->menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->at(i)->ID());
+			}
+			if (m_systemManager->menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->at(i)->FindComponent("SC") != nullptr)
+			{
+				m_systemManager->renderSystem->RemoveEntity(m_systemManager->menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->at(i)->ID());
+			}
 		}
 		m_systemManager->menuSystem->ChangeMenu("MainMenu");
 		for (int i = 0; i < m_systemManager->menuSystem->GetMenuComponent("MainMenu")->Buttons()->size(); i++)
 		{
-			m_systemManager->renderSystem->AddEntity(m_systemManager->menuSystem->GetMenuComponent("MainMenu")->Buttons()->at(i));
+			if (m_systemManager->menuSystem->GetMenuComponent("MainMenu")->Buttons()->at(i)->FindComponent("TextComponent") != nullptr)
+			{
+				m_systemManager->textRenderSystem->AddEntity(m_systemManager->menuSystem->GetMenuComponent("MainMenu")->Buttons()->at(i));
+			}
+			if (m_systemManager->menuSystem->GetMenuComponent("MainMenu")->Buttons()->at(i)->FindComponent("SC") != nullptr)
+			{
+				m_systemManager->renderSystem->AddEntity(m_systemManager->menuSystem->GetMenuComponent("MainMenu")->Buttons()->at(i));
+			}
 		}
 		m_stateManager->MainMenu = false;
 	}
 }
+
+

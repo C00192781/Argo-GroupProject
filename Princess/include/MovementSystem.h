@@ -5,6 +5,7 @@
 #include "MovementComponent.h"
 #include "CollisionComponent.h"
 #include <vector>
+#include "SpriteComponent.h"
 
 class MovementSystem : public System
 {
@@ -24,9 +25,13 @@ private:
 
 	int m_mouseX;
 	int m_mouseY;
-
+	int countedFrames;
+	int cooldownFrames;
 	int m_windowWidth;
 	int m_windowHeight;
+	bool m_rollAnim;
+	int m_lastXVel;
+	int m_lastYVel;
 
 	std::vector<PositionComponent*> m_positionComponent;
 	std::vector<MovementComponent*> m_movementComponent;

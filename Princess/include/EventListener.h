@@ -13,5 +13,6 @@ public:
 	bool S = false;
 	bool D = false;
 	bool Escape = false;
+	bool roll = false;
 };
 #endif

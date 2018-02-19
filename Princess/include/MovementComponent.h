@@ -41,11 +41,15 @@ public:
 	void setXVelocity(float xVel) { m_xVel = xVel; }
 	void setYVelocity(float yVel) { m_yVel = yVel; }
 
+	bool getRolling() { return m_rolling; }
+	void setRolling(bool roll) { m_rolling = roll; }
+
 private:
 	//int m_speed;
 
 	float m_xVel;
 	float m_yVel;
+	bool m_rolling = false;
 
 	float m_orientation;
 	bool m_lockOrientation;

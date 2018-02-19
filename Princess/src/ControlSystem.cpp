@@ -10,6 +10,7 @@ void ControlSystem::Update()
 		int pcKey = -1;
 		int wcKey = -1;
 		int attributeKey = -1;
+
 		// looks for if there is are specific components in the entity
 
 		for (int j = 0; j < m_entities.at(i)->GetComponents()->size(); j++)
@@ -37,24 +38,37 @@ void ControlSystem::Update()
 			SDL_Point holder{ 0, 0 };
 			int speed = static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(attributeKey))->MovementSpeed();
 
+			if (m_eventListener->roll)
+			{
+				//do roll stuff;
+				static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setRolling(true);
+			}
+
 			if (m_eventListener->W)
 			{
 				holder.y = -speed;
+				totalPlayerMovement += 1;
 			}
 			if (m_eventListener->A)
 			{
 				holder.x = -speed;
+				totalPlayerMovement += 1;
 			}
 			if (m_eventListener->S)
 			{
 				holder.y = speed;
+				totalPlayerMovement += 1;
 			}
 			if (m_eventListener->D)
 			{
 				holder.x = speed;
+				totalPlayerMovement += 1;
 			}
-
 			static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setVelocity(holder.x, holder.y);
+			if (!m_eventListener->roll) //course changable if not rolling
+			{
+				static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(mcKey))->setVelocity(holder.x, holder.y);
+			}
 		}
 
 		if (wcKey >= 0)
@@ -69,5 +83,6 @@ void ControlSystem::Update()
 				}
 			}
 		}
+
 	}
 }

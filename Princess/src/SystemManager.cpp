@@ -17,4 +17,5 @@ void SystemManager::Update(float deltaTime)
 	if (textRenderSystem->Active()) { textRenderSystem->Update(); }
 	if (healthSystem->Active()) { healthSystem->Update(deltaTime); }
 	if (menuSystem->Active()) { menuSystem->Update(); }
+	if (soundSystem->Active()) { soundSystem->Update(); }
 }

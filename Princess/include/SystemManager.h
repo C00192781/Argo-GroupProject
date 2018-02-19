@@ -24,6 +24,8 @@
 #include "CollisionSystem.h"
 #include "HealthSystem.h"
 #include "MenuSystem.h"
+#include "SoundComponent.h"
+#include "SoundSystem.h"
 
 class SystemManager
 {
@@ -42,6 +44,7 @@ public:
 	AiSystem * aiSystem;
 	ButtonSystem * buttonSystem;
 	TextRenderSystem * textRenderSystem;
+	SoundSystem * soundSystem;
 
 	void Update(float deltaTime);
 

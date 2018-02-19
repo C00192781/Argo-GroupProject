@@ -6,6 +6,7 @@
 #include "ButtonComponent.h"
 #include "SpriteComponent.h"
 #include "PositionComponent.h"
+#include "TextComponent.h"
 #include "StateManager.h"
 #include "EventListener.h"
 

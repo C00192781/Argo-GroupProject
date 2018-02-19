@@ -50,5 +50,4 @@ public:
 	void Rect(SDL_Rect rect) { m_rect = rect; };
 
 };
-
 #endif

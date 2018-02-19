@@ -19,11 +19,13 @@ public:
 	bool Transient() { return m_transient; };
 	void Transient(bool x) { m_transient = x; };
 	Component* FindComponent(std::string ID);
+	int FindComponentIndex(std::string ID);
 private:
 	std::vector<Component*> m_components;
 	std::string m_id;
 	bool m_transient;
 	bool m_active;
+
 };
 
 #endif

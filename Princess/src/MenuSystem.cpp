@@ -424,19 +424,19 @@ void MenuSystem::SetUpMainMenu()
 	MenuComponent * menuC = new MenuComponent();
 
 	Entity * buttonOne = new Entity("StartGame");
-	buttonOne->AddComponent(new PositionComponent(SDL_Point{ 100, 100 }));
+	buttonOne->AddComponent(new PositionComponent(SDL_Point{ 200, 100 }));
 	buttonOne->AddComponent(new SpriteComponent("StartGameButton", 2, 0, 0, 0, 128, 32, 0));
 	static_cast<SpriteComponent*>(buttonOne->GetComponents()->at(1))->SheetX(1);
 	buttonOne->AddComponent(new ButtonComponent(100, 100, 128, 32));
 
 
 	Entity * buttonTwo = new Entity("OpenOptions");
-	buttonTwo->AddComponent(new PositionComponent(SDL_Point{ 100, 300 }));
+	buttonTwo->AddComponent(new PositionComponent(SDL_Point{ 200, 300 }));
 	buttonTwo->AddComponent(new SpriteComponent("OptionsButton", 2, 0, 0, 0, 128, 32, 0));
 	buttonTwo->AddComponent(new ButtonComponent(100, 300, 128, 32));
 
 	Entity * buttonThree = new Entity("ExitGame");
-	buttonThree->AddComponent(new PositionComponent(SDL_Point{ 100, 500 }));
+	buttonThree->AddComponent(new PositionComponent(SDL_Point{ 200, 500 }));
 	buttonThree->AddComponent(new SpriteComponent("ExitGameButton", 2, 0, 0, 0, 128, 32, 0));
 	buttonThree->AddComponent(new ButtonComponent(100, 500, 128, 32));
 
@@ -466,8 +466,8 @@ void MenuSystem::SetUpOptionsMenu()
 	buttonTwo->AddComponent(new ButtonComponent(600, 100, 32, 32));
 
 	Entity * soundText = new Entity("SoundText");
-	soundText->AddComponent(new PositionComponent(SDL_Point{ 200, 100 }));
-	soundText->AddComponent(new SpriteComponent("SoundText", 2, 2, 0, 0, 128, 32, 0));
+	soundText->AddComponent(new PositionComponent(SDL_Point{ 325, 125 }));
+	soundText->AddComponent(new TextComponent("ComicSans", "Sound :", SDL_Color{ 255,255,255,255 }, 64 * 3, 16 * 3));
 
 	Entity * buttonThree = new Entity("MusicLeft");
 	buttonThree->AddComponent(new PositionComponent(SDL_Point{ 100, 300 }));
@@ -482,8 +482,8 @@ void MenuSystem::SetUpOptionsMenu()
 	buttonFour->AddComponent(new ButtonComponent(600, 300, 32, 32));
 
 	Entity * musicText = new Entity("MusicText");
-	musicText->AddComponent(new PositionComponent(SDL_Point{ 200, 300 }));
-	musicText->AddComponent(new SpriteComponent("MusicText", 2, 0, 0, 0, 128, 32, 0));
+	musicText->AddComponent(new PositionComponent(SDL_Point{ 325, 325 }));
+	musicText->AddComponent(new TextComponent("ComicSans", "Music :", SDL_Color{ 255,255,255,255 }, 64 * 3, 16 * 3));
 
 	Entity * buttonFive = new Entity("ReturnMainMenu");
 	buttonFive->AddComponent(new PositionComponent(SDL_Point{ 200, 450 }));
