@@ -129,8 +129,10 @@ int main()
 	player->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
 	player->AddComponent(new SeekComponent());
+	player->AddComponent(new AttackComponent(100, 1, 1));
 	player->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
 	player->AddComponent(new SeekComponent()); //and this if AI is to control that player
+	
 	player->Transient(true);
 	//player->Control(true);
 
@@ -143,6 +145,7 @@ int main()
 	player2->AddComponent(new MovementComponent());
 	player2->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player2->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
+	//player2->AddComponent(new AttackComponent(100, 1, 1));
 //	player2->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
 	//player2->AddComponent(new SeekComponent()); //and this if AI is to control that player
 	player2->Transient(true);
