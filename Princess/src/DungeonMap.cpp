@@ -171,18 +171,25 @@ void DungeonMap::Generate()
 
 void DungeonMap::Update(float deltaTime)
 {
-	//for (int i = 0; i < m_enemies.size(); i++)
-	//{
-	//	delete m_enemies.at(i);
-	//}
+	for (int i = 0; i < m_enemies.size();)
+	{
+		if (m_enemies.at(i)->Active() == false)
+		{
+			m_enemies.erase(m_enemies.begin() + i);
+		}
+		else
+		{
+			i++;
+		}
+	}
 
-	//if (m_enemies.empty())
-	//{
+	if (m_enemies.empty())
+	{
 		m_timeRemaining -= deltaTime;
 
 		if (m_timeRemaining <= 0)
 		{
 			m_listener->DungeonToWorld = true;
 		}
-	//}
+	}
 }

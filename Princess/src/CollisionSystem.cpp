@@ -187,7 +187,7 @@ void CollisionSystem::filterCollisions(int entityIndex, int entityColIndex, int 
 				if (m_collidableEntities.at(collidableIndex)->ID() == "Spellcaster Enemy")
 				{
 					projectileCollision(entityIndex);
-					spellcasterCollision(entityIndex);
+					spellcasterCollision(collidableIndex);
 				}
 				else if (m_collidableEntities.at(collidableIndex)->ID() == "Wall")
 				{
@@ -213,5 +213,5 @@ void CollisionSystem::projectileCollision(int index)
 
 void CollisionSystem::spellcasterCollision(int index)
 {
-	std::cout << "OH NO" << std::endl;
+	m_collidableEntities.at(index)->Active(false);
 }

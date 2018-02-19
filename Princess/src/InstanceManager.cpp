@@ -4,8 +4,8 @@ InstanceManager::InstanceManager(SystemManager * sm, StateManager * s, ResourceM
 {
 	m_listener = listener;
 
-	worldMap = new WorldMap(sm, s);
-	battleMap = new BattleMap(sm, s);
+	worldMap = new WorldMap(sm, s, listener);
+	battleMap = new BattleMap(sm, s, listener);
 	dungeonMap = new DungeonMap(sm, s, rm, listener);
 
 	Generate("World");
@@ -13,9 +13,17 @@ InstanceManager::InstanceManager(SystemManager * sm, StateManager * s, ResourceM
 
 void InstanceManager::Update(float deltaTime)
 {
-	if (dungeonMap->Active())
+	if (worldMap->Active())
+	{
+		worldMap->Update();
+	}
+	else if (dungeonMap->Active())
 	{
 		dungeonMap->Update(deltaTime);
+	}
+	else
+	{
+		battleMap->Update(deltaTime);
 	}
 
 	if (m_listener->WorldToDungeon == true)

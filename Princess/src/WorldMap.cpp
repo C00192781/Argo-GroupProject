@@ -1,9 +1,10 @@
 #include "WorldMap.h"
 
-WorldMap::WorldMap(SystemManager * sm, StateManager * s)
+WorldMap::WorldMap(SystemManager * sm, StateManager * s, EventListener* listener)
 {
 	m_systemManager = sm;
 	m_stateManager = s;
+	m_listener = listener;
 }
 
 WorldMap::~WorldMap()
@@ -12,6 +13,8 @@ WorldMap::~WorldMap()
 
 void WorldMap::Generate(int width, int height, int chaosFactor)
 {
+	m_active = true;
+
 	for (int i = 0; i < m_entities.size(); i++)
 	{
 		delete m_entities.at(i);
@@ -572,6 +575,8 @@ void WorldMap::ApplyRock(std::vector<std::vector<std::string>>* map, int x, int 
 
 void WorldMap::Load()
 {
+	m_active = true;
+
 	m_systemManager->controlSystem->SelectiveClear();
 	m_systemManager->renderSystem->SelectiveClear();
 	m_systemManager->movementSystem->SelectiveClear();
@@ -589,23 +594,71 @@ void WorldMap::Load()
 		}
 	}
 
-	// sets player's position to the start of the dungeon
-	Entity* player = m_systemManager->collisionSystem->FindEntity("Player");
-
-	if (player != nullptr)
+	// sets player's position to the the previous location on the world map after random encounter
+	if (m_listener->EncounterToWorld == true)
 	{
-		CollisionComponent* pos = static_cast<CollisionComponent*>(player->FindComponent("collision"));
+		Entity* player = m_systemManager->collisionSystem->FindEntity("Player");
 
-		if (pos != nullptr)
+		if (player != nullptr)
 		{
-			CollisionComponent* dungeonPos = static_cast<CollisionComponent*>(m_systemManager->collisionSystem->getCurrentDungeon()->FindComponent("collision"));
-
-			if (dungeonPos != nullptr)
+			CollisionComponent* pos = static_cast<CollisionComponent*>(player->FindComponent("collision"));
+		
+			if (pos != nullptr)
 			{
-				pos->setPosition(dungeonPos->getX(), dungeonPos->getY());
+				pos->setPosition(m_randomEncounterLocation.x, m_randomEncounterLocation.y);
 			}
 		}
 	}
 
-	m_systemManager->collisionSystem->getCurrentDungeon()->Active(false);
+	// sets player's position to the start of the dungeon
+	if (m_listener->DungeonToWorld == true)
+	{
+		Entity* player = m_systemManager->collisionSystem->FindEntity("Player");
+
+		if (player != nullptr)
+		{
+			CollisionComponent* pos = static_cast<CollisionComponent*>(player->FindComponent("collision"));
+
+			if (pos != nullptr)
+			{
+				CollisionComponent* dungeonPos = static_cast<CollisionComponent*>(m_systemManager->collisionSystem->getCurrentDungeon()->FindComponent("collision"));
+
+				if (dungeonPos != nullptr)
+				{
+					pos->setPosition(dungeonPos->getX(), dungeonPos->getY());
+				}
+			}
+
+			m_systemManager->collisionSystem->getCurrentDungeon()->Active(false);
+		}
+	}
+}
+
+void WorldMap::Update()
+{
+	// sets player's position to the start of the dungeon
+	Entity* player = m_systemManager->movementSystem->FindEntity("Player");
+
+	if (player != nullptr)
+	{
+		MovementComponent* movement = static_cast<MovementComponent*>(player->FindComponent("movement"));
+
+		if (movement != nullptr)
+		{
+			if (movement->getMoving() == true)
+			{
+				if ((rand() % 10000) >= 9950)
+				{
+					PositionComponent* pos = static_cast<PositionComponent*>(player->FindComponent("PC"));
+
+					if (pos != nullptr)
+					{
+						m_randomEncounterLocation = { (int)pos->getX(), (int)pos->getY() };
+					}
+
+					m_listener->WorldToEncounter = true;
+				}
+			}
+		}
+	}
 }

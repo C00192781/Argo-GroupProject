@@ -13,6 +13,7 @@ public:
 		m_yVel = 0;
 		m_orientation = 0;
 		m_lockOrientation = false;
+		m_moving = false;
 	}
 
 	MovementComponent(int speed)
@@ -22,10 +23,8 @@ public:
 		m_yVel = 0;
 		m_orientation = 0;
 		m_lockOrientation = false;
+		m_moving = false;
 	}
-
-	//void setSpeed(int speed) { m_speed = speed; };
-	//int getSpeed() { return m_speed; };
 
 	void setOrientation(float orientation) { m_orientation = orientation; };
 	float getOrientation() { return m_orientation; };
@@ -34,19 +33,21 @@ public:
 	bool getLockedOrientation() { return m_lockOrientation; };
 
 	float getXVelocity() { return m_xVel; }
-	//float* getXVelocityRef() { return &m_yVel; }
 	float getYVelocity() { return m_yVel; }
-	//float* getYVelocityRef() { return &m_yVel; }
+
+	bool getMoving() { return m_moving; }
+
 	void setVelocity(float x, float y) { m_xVel = x;  m_yVel = y; }
 	void setXVelocity(float xVel) { m_xVel = xVel; }
 	void setYVelocity(float yVel) { m_yVel = yVel; }
+	void setMoving(bool moving) { m_moving = moving; }
 
 private:
-	//int m_speed;
-
 	float m_xVel;
 	float m_yVel;
 
 	float m_orientation;
 	bool m_lockOrientation;
+
+	bool m_moving;
 };
