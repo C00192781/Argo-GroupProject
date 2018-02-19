@@ -27,16 +27,22 @@ void DungeonMap::Generate()
 	{
 		delete m_entities.at(i);
 	}
+
+	for (int i = 0; i < m_enemies.size(); i++)
+	{
+		delete m_enemies.at(i);
+	}
 	m_entities.clear();
+	m_enemies.clear();
 	m_entities.shrink_to_fit();
+	m_enemies.shrink_to_fit();
 	m_systemManager->controlSystem->SelectiveClear();
 	m_systemManager->renderSystem->SelectiveClear();
 	m_systemManager->movementSystem->SelectiveClear();
 	m_systemManager->collisionSystem->SelectiveClear();
 	m_systemManager->aiSystem->SelectiveClear();
 
-	//int randomMapNumber = rand() % 5;
-	int randomMapNumber = 0;
+	int randomMapNumber = rand() % 5;
 	std::string mapName;
 
 	if (randomMapNumber == 0)
@@ -99,35 +105,40 @@ void DungeonMap::Generate()
 			}
 			else if (m_resourceManager->GetMapElement(mapName, i, j) == "E")
 			{
-				int randNum = rand() % 4;
+				m_entities.push_back(factory.Floor("DungeonTiles", j, i, m_systemManager->renderSystem->GetScale()));
+				m_systemManager->renderSystem->AddEntity(m_entities.back());
 
-				Entity* enemy;
+				int randNum = rand() % 5;
+
+				Entity* enemy = nullptr;
 
 				if (randNum == 0) {
-					//enemy = enemyFactory.CharA("Demon", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
-					enemy = enemyFactory.CharC("Demon", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
+					enemy = enemyFactory.CharA("Demon", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
 				}
 				else if (randNum == 1)
 				{
-					//enemy = enemyFactory.CharB("Demon", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
-					enemy = enemyFactory.CharC("Demon", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
+					enemy = enemyFactory.CharB("Demon", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
 				}
 				else if (randNum == 2)
 				{
 					enemy = enemyFactory.CharC("Demon", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
 				}
-				else
+				else if(randNum == 3)
 				{
-					//enemy = enemyFactory.CharD("Demon", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
-					enemy = enemyFactory.CharC("Demon", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
+					enemy = enemyFactory.CharD("Demon", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
 				}
 
-				enemy->Active(true);
+				// chance for spawner to not spawn anything
+				if (enemy != nullptr)
+				{
+					enemy->Active(true);
 
-				m_systemManager->renderSystem->AddEntity(enemy);
-				m_systemManager->movementSystem->AddEntity(enemy); //consider tag discrimination here
-				m_systemManager->collisionSystem->AddEntity(enemy);
-				m_systemManager->aiSystem->AddEntity(enemy);
+					m_enemies.push_back(enemy);
+					m_systemManager->renderSystem->AddEntity(enemy);
+					m_systemManager->movementSystem->AddEntity(enemy);
+					m_systemManager->collisionSystem->AddEntity(enemy);
+					m_systemManager->aiSystem->AddEntity(enemy);
+				}
 			}
 		}
 	}
@@ -160,13 +171,18 @@ void DungeonMap::Generate()
 
 void DungeonMap::Update(float deltaTime)
 {
-	if (m_enemies.empty())
-	{
+	//for (int i = 0; i < m_enemies.size(); i++)
+	//{
+	//	delete m_enemies.at(i);
+	//}
+
+	//if (m_enemies.empty())
+	//{
 		m_timeRemaining -= deltaTime;
 
 		if (m_timeRemaining <= 0)
 		{
 			m_listener->DungeonToWorld = true;
 		}
-	}
+	//}
 }

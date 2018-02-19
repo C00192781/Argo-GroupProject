@@ -62,6 +62,10 @@ void InputHandler::handleInput()
 			m_eventListener->Space = true;
 			break;
 
+		case SDLK_BACKSPACE:
+			m_eventListener->WorldToDungeon = true;
+			break;
+
 		default:
 			break;
 		}

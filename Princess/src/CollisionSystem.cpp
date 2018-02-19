@@ -74,7 +74,7 @@ void CollisionSystem::Update()
 
 	for (int i = 0; i < m_entities.size(); i++)
 	{
-		if (m_entities.at(i)->Active() == true && m_entities.at(i)->ID() != "Wall" && m_entities.at(i)->ID() != "Door")
+		if (m_entities.at(i)->Active() == true && m_entities.at(i)->ID() != "Wall")
 		{
 			int collisionKey1 = -1;
 
@@ -83,6 +83,7 @@ void CollisionSystem::Update()
 				if (m_entities.at(i)->GetComponents()->at(j)->Type() == "collision")
 				{
 					collisionKey1 = j;
+					break;
 				}
 			}
 
@@ -107,6 +108,7 @@ void CollisionSystem::Update()
 									if (m_collidableEntities.at(j)->GetComponents()->at(k)->Type() == "collision")
 									{
 										collisionKey2 = k;
+										break;
 									}
 								}
 				
@@ -122,13 +124,10 @@ void CollisionSystem::Update()
 
 void CollisionSystem::filterCollisions(int entityIndex, int entityColIndex, int collidableIndex, int collidableColIndex)
 {
-	CollisionComponent* entityCol;
-	CollisionComponent* collidableCol;
+	CollisionComponent* entityCol = static_cast<CollisionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(entityColIndex));
+	CollisionComponent* collidableCol = static_cast<CollisionComponent*>(m_collidableEntities.at(collidableIndex)->GetComponents()->at(collidableColIndex));
 
-	entityCol = static_cast<CollisionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(entityColIndex));
-	collidableCol = static_cast<CollisionComponent*>(m_collidableEntities.at(collidableIndex)->GetComponents()->at(collidableColIndex));
-
-	if (m_entities.at(entityIndex)->ID() == "Player" && m_collidableEntities.at(collidableIndex)->ID() == "Wall")
+	if ((m_entities.at(entityIndex)->ID() == "Player" || m_entities.at(entityIndex)->ID() == "Spellcaster Enemy") && m_collidableEntities.at(collidableIndex)->ID() == "Wall")
 	{
 		SDL_Rect rectEntityX = { entityCol->getX(), entityCol->getPreviousY(), entityCol->getWidth(), entityCol->getHeight() };
 		SDL_Rect rectEntityY = { entityCol->getPreviousX(), entityCol->getY(), entityCol->getWidth(), entityCol->getHeight() };
@@ -139,31 +138,25 @@ void CollisionSystem::filterCollisions(int entityIndex, int entityColIndex, int 
 
 		if (SDL_IntersectRect(&rectEntityX, &rectCollidable, &holder))
 		{
-			if (m_entities.at(entityIndex)->ID() == "Player")
+			if (entityCol->getPreviousX() < entityCol->getX())
 			{
-				if (entityCol->getPreviousX() < entityCol->getX())
-				{
-					entityCol->setX(entityCol->getX() - holder.w);
-				}
-				else if (entityCol->getPreviousX() > entityCol->getX())
-				{
-					entityCol->setX(entityCol->getX() + holder.w);
-				}
+				entityCol->setX(entityCol->getX() - holder.w);
+			}
+			else if (entityCol->getPreviousX() > entityCol->getX())
+			{
+				entityCol->setX(entityCol->getX() + holder.w);
 			}
 		}
 
 		if (SDL_IntersectRect(&rectEntityY, &rectCollidable, &holder))
 		{
-			if (m_entities.at(entityIndex)->ID() == "Player")
+			if (entityCol->getPreviousY() < entityCol->getY())
 			{
-				if (entityCol->getPreviousY() < entityCol->getY())
-				{
-					entityCol->setY(entityCol->getY() - holder.h);
-				}
-				else if (entityCol->getPreviousY() > entityCol->getY())
-				{
-					entityCol->setY(entityCol->getY() + holder.h);
-				}
+				entityCol->setY(entityCol->getY() - holder.h);
+			}
+			else if (entityCol->getPreviousY() > entityCol->getY())
+			{
+				entityCol->setY(entityCol->getY() + holder.h);
 			}
 		}
 	}

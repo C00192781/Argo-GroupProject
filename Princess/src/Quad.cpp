@@ -133,8 +133,6 @@ void Quadtree::insert(Entity* entities)
 * Return all objects that could collide with the given object
 */
 std::vector<Entity*> Quadtree::retrieve(std::vector<Entity*> &returnObjects, Entity* entity) {
-
-
 	int index = getIndex(entity);
 	if (index != -1 && !nodes.empty())
 	{
@@ -143,11 +141,11 @@ std::vector<Entity*> Quadtree::retrieve(std::vector<Entity*> &returnObjects, Ent
 
 	for (auto i = objects.begin(), e = objects.end(); i != e; i++)
 	{
-		//	auto tempid = (*i)->ID();
-
-
-		returnObjects.push_back(*i);
-		//		returnObjects.push_back(objects);
+		// cuts down for loop checks
+		if (!((*i)->ID() == "Spellcaster Enemy" && entity->ID() == "Spellcaster Enemy") && !((*i)->ID() == "Projectile" && entity->ID() == "Projectile"))
+		{
+			returnObjects.push_back(*i);
+		}
 	}
 
 	return returnObjects;

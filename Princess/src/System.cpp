@@ -37,6 +37,7 @@ void System::SelectiveClear()
 	{
 		if (!m_entities.at(i)->Transient())
 		{
+//			delete m_entities.at(i);
 			m_entities.erase(m_entities.begin() + i);
 			UnloadComponent(i);
 		}
