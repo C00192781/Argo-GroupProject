@@ -131,11 +131,11 @@ int main()
 //	player->AddComponent(new SeekComponent());
 	player->Transient(true);
 
-	Entity * player2 = new Entity("Player");
+	Entity * player2 = new Entity("Player2");
 	player2->Active(true);
 	player2->AddComponent(new AiLogicComponent());
 	player2->AddComponent(new SpriteComponent("Red", 3, 1, 0, 0, 16, 16, 0));
-	player2->AddComponent(new PositionComponent(SDL_Point{ 100, 300 }));
+	player2->AddComponent(new PositionComponent(SDL_Point{ 100, 100 }));
 	player2->AddComponent(new AttributesComponent(26, 26, 10, 10, 100, 100));
 	player2->AddComponent(new MovementComponent());
 	player2->AddComponent(new WeaponComponent(WeaponType::RANGE));
@@ -151,7 +151,7 @@ int main()
 	systemManager.collisionSystem->AddEntity(player2);
 	systemManager.attackSystem->AddEntity(player2);
 
-	systemManager.controlSystem->AddEntity(player);
+	//systemManager.controlSystem->AddEntity(player);
 	systemManager.movementSystem->AddEntity(player);
 	systemManager.renderSystem->AddEntity(player);
 	systemManager.projectileSystem->AddEntity(player);
@@ -159,11 +159,15 @@ int main()
 	systemManager.attackSystem->AddEntity(player);
 
 
+
+
+	systemManager.controlSystem->AddEntity(player2);
+
+
+
 	std::vector<Entity*> playerEntities;
 	playerEntities.push_back(player);
 	playerEntities.push_back(player2);
-
-//	systemManager.controlSystem->AddEntity(player2);
 
 
 	//TownInstance t = TownInstance(&systemManager);
