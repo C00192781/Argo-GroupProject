@@ -10,14 +10,10 @@ public:
 	void Query();
 	void QueryTree(TreeNodes* rootNode);
 	void AddNode1(TreeNodes* base, int ExistingNodeID, int NewNodeID);
-	void AddNode2(int ExistingNodeID, int NewNodeID);
 	void CreateRootNode(int NodeID);
 	bool MakeDecision(TreeNodes* node);
 
 	int getDecision();
-
-	bool SearchAddNode1(TreeNodes* CurrentNode, int ExistingNodeID, int NewNodeID);
-	bool SearchAddNode2(TreeNodes* CurrentNode, int ExistingNodeID, int NewNodeID);
 	bool SearchAddNodesOn(TreeNodes* CurrentNode, int ExistingNodeID, int NewNodeID); //this perfectly searches the tree in order  1 2 4 5 1 3 6 7!
 	TreeNodes* m_RootNode;
 	bool searchNodes(TreeNodes* currentNode, int ExistingNodeID, int NewNodeID);

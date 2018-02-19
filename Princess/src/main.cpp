@@ -130,20 +130,21 @@ int main()
 	player->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
 //	player->AddComponent(new SeekComponent());
 	player->Transient(true);
-	//player->Control(true);
+	player->Control(true);
 
 	Entity * player2 = new Entity("Player");
 	player2->Active(true);
-//	player2->AddComponent(new AiLogicComponent());
+
 	player2->AddComponent(new SpriteComponent("Red", 3, 1, 0, 0, 16, 16, 0));
 	player2->AddComponent(new PositionComponent(SDL_Point{ 100, 100 }));
 	player2->AddComponent(new AttributesComponent(26, 26, 10, 10, 100, 100));
 	player2->AddComponent(new MovementComponent());
 	player2->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player2->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
-	//player2->AddComponent(new SeekComponent());
+	player2->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
+	player2->AddComponent(new SeekComponent()); //and this if AI is to control that player
 	player2->Transient(true);
-	player2->Control(true);
+//	player2->Control(true); //enable only if the client controlled player
 
 
 	systemManager.movementSystem->AddEntity(player2);
