@@ -20,4 +20,5 @@ private:
 	bool test = false;
 	std::vector<SoundComponent> sounds;
 	ResourceManager * m_resourceManager;
+	int timer = 0;
 };

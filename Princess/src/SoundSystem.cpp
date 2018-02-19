@@ -19,30 +19,27 @@ void SoundSystem::assignSounds()
 		{
 			if (m_entities.at(i)->GetComponents()->at(j)->Type() == "sound")
 			{
-				std::cout << "better out than in" << std::endl;
 				soundKey = j;
-				//m_entities.at(i)->GetComponents()->at(j)->
-				/*static_cast<SoundComponent*>(m_entities.at(i)->GetComponents()->at(j)->)*/
 			}
 		}
-
 
 		if (soundKey >= 0)
 		{
 			Mix_Chunk* sound = m_resourceManager->GetSound(static_cast<SoundComponent*>(m_entities.at(i)->GetComponents()->at(soundKey))->getIdentifier());
 			static_cast<SoundComponent*>(m_entities.at(i)->GetComponents()->at(soundKey))->setSound(sound);
-
 		}
 	}
 }
 
 void SoundSystem::Update()
 {
+	timer++;
 	if (assigned == false)
 	{
 		assignSounds();
 		assigned = true;
 	}
+	
 
 	for (int i = 0; i < m_entities.size(); i++)
 	{
@@ -57,52 +54,69 @@ void SoundSystem::Update()
 
 		if (soundKey >= 0)
 		{
-			// set play is for testing
+			// this is for testing
 			if (test == false)
 			{
 				static_cast<SoundComponent*>(m_entities.at(i)->GetComponents()->at(soundKey))->setPlay();
 				test = true;
 			}
+			if (timer > 100)
+			{
+				static_cast<SoundComponent*>(m_entities.at(i)->GetComponents()->at(soundKey))->setPause();
+			}
+			if (timer > 150)
+			{
+				static_cast<SoundComponent*>(m_entities.at(i)->GetComponents()->at(soundKey))->setResume();
+			}
 
-
-			std::string mode = static_cast<SoundComponent*>(m_entities.at(i)->GetComponents()->at(soundKey))->getMode();
 			bool active = static_cast<SoundComponent*>(m_entities.at(i)->GetComponents()->at(soundKey))->getActive();
+			bool volumeSetter = static_cast<SoundComponent*>(m_entities.at(i)->GetComponents()->at(soundKey))->getVolumeSetter();
 
-			if (mode == "play" && active == true)
+			if (volumeSetter == true)
 			{
 				int channel = static_cast<SoundComponent*>(m_entities.at(i)->GetComponents()->at(soundKey))->getChannel();
 				Mix_Chunk* sound = static_cast<SoundComponent*>(m_entities.at(i)->GetComponents()->at(soundKey))->getSound();
-				int loops = static_cast<SoundComponent*>(m_entities.at(i)->GetComponents()->at(soundKey))->getLoops();
-				if (Mix_Playing(channel) == 0)
-				{
-					// plays sound
-					Mix_PlayChannel(channel, sound, loops);
-					static_cast<SoundComponent*>(m_entities.at(i)->GetComponents()->at(soundKey))->setActive(false);
-				}
+				int volume = static_cast<SoundComponent*>(m_entities.at(i)->GetComponents()->at(soundKey))->getVolume();
+
+				Mix_Volume(channel, MIX_MAX_VOLUME / 100 * volume);
+				static_cast<SoundComponent*>(m_entities.at(i)->GetComponents()->at(soundKey))->setVolumeSetter(false);
+				volumeSetter = false;
 			}
-			if (mode == "pause" && active == true)
+			
+			if (active == true)
 			{
+				std::string mode = static_cast<SoundComponent*>(m_entities.at(i)->GetComponents()->at(soundKey))->getMode();
 				int channel = static_cast<SoundComponent*>(m_entities.at(i)->GetComponents()->at(soundKey))->getChannel();
 				Mix_Chunk* sound = static_cast<SoundComponent*>(m_entities.at(i)->GetComponents()->at(soundKey))->getSound();
 				int loops = static_cast<SoundComponent*>(m_entities.at(i)->GetComponents()->at(soundKey))->getLoops();
-				if (Mix_Playing(channel) == 1)
+
+				if (mode == "play")
 				{
-					// pauses sound
-					Mix_Pause(channel);
-					static_cast<SoundComponent*>(m_entities.at(i)->GetComponents()->at(soundKey))->setActive(false);
+					if (Mix_Playing(channel) == 0)
+					{
+						// plays sound
+						Mix_PlayChannel(channel, sound, loops);
+						static_cast<SoundComponent*>(m_entities.at(i)->GetComponents()->at(soundKey))->setActive(false);
+					}
 				}
-			}
-			if (mode == "resume" && active == true)
-			{
-				int channel = static_cast<SoundComponent*>(m_entities.at(i)->GetComponents()->at(soundKey))->getChannel();
-				Mix_Chunk* sound = static_cast<SoundComponent*>(m_entities.at(i)->GetComponents()->at(soundKey))->getSound();
-				int loops = static_cast<SoundComponent*>(m_entities.at(i)->GetComponents()->at(soundKey))->getLoops();
-				if (Mix_Paused(channel) == 1)
+				else if (mode == "pause")
 				{
-					// resumes sound
-					Mix_Resume(channel);
-					static_cast<SoundComponent*>(m_entities.at(i)->GetComponents()->at(soundKey))->setActive(false);
+					if (Mix_Playing(channel) == 1)
+					{
+						// pauses sound
+						Mix_Pause(channel);
+						static_cast<SoundComponent*>(m_entities.at(i)->GetComponents()->at(soundKey))->setActive(false);
+					}
 				}
+				else if (mode == "resume")
+				{
+					if (Mix_Paused(channel) == 1)
+					{
+						// resumes sound
+						Mix_Resume(channel);
+						static_cast<SoundComponent*>(m_entities.at(i)->GetComponents()->at(soundKey))->setActive(false);
+					}
+				}	
 			}
 		}
 	}

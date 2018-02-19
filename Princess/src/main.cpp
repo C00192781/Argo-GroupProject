@@ -36,6 +36,16 @@ int main()
 	SDL_Window* gameWindow = SDL_CreateWindow("TEST", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 816, 624, SDL_WINDOW_SHOWN);
 	SDL_Renderer* gameRenderer = SDL_CreateRenderer(gameWindow, -1, SDL_RENDERER_PRESENTVSYNC);
 	SDL_Event *e = new SDL_Event();
+
+	if (Mix_OpenAudio(22050, AUDIO_S16, 2, 1024) == -1) //Check return type
+	{
+		printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+	}
+	else
+	{
+		Mix_VolumeMusic(MIX_MAX_VOLUME);
+	}
+
 	unsigned int lastTime = 0;
 	float deltaTime = 0;
 	unsigned int currentTime = 0;
@@ -47,15 +57,6 @@ int main()
 
 	const int SCREEN_FPS = 500;
 	const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
-
-	if (Mix_OpenAudio(22050, AUDIO_S16, 2, 1024) == -1) //Check return type
-	{
-		printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
-	}
-	else
-	{
-		Mix_VolumeMusic(MIX_MAX_VOLUME);
-	}
 
 	//Set text color as black
 	SDL_Color textColor = { 0, 0, 0, 255 };
@@ -85,14 +86,14 @@ int main()
 	resourceManager->AddTexture("Button", "Button.png");
 	resourceManager->AddTexture("Achievement", "PlaceholderAchievement.png");
 	resourceManager->AddTexture("Achievement2", "PlaceholderAchievement2.png");
-
-	Mix_AllocateChannels(6);
-
+	
 	resourceManager->AddMusic("Test", "test.wav");
 	resourceManager->AddSound("Scream", "test.wav");
 	resourceManager->AddSound("Placeholder", "placeholder.wav");
-
+	
 	resourceManager->AddFont("ComicSans", "ComicSans.ttf", 32);
+
+	Mix_AllocateChannels(6);
 
 	EventListener *listener = new EventListener();
 
@@ -148,8 +149,7 @@ int main()
 	player->AddComponent(new MovementComponent());
 	player->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
-
-	player->AddComponent(new SoundComponent("Scream", "play", false, 1, 0));
+	player->AddComponent(new SoundComponent("Scream", "play", false, 1, 0, 20));
 	player->Transient(true);
 
 	systemManager.controlSystem->AddEntity(player);

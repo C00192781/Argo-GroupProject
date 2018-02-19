@@ -301,8 +301,5 @@
     <ClInclude Include="include\SoundSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MusicComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

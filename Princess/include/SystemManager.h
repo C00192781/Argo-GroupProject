@@ -44,7 +44,6 @@ public:
 	TextRenderSystem * textRenderSystem;
 	SoundSystem * soundSystem;
 
-
 	void Update(float deltaTime);
 
 private:
