@@ -275,7 +275,7 @@ bool DecisionTree::MakeDecision(TreeNodes *node)
 
 	else if (node->m_NodeID == 3)
 	{
-		if (Distance > 300) //if in range flee
+		if (Distance > 100) //if in range flee
 		{
 			//cout << "mon adv str " << endl;
 			return true;

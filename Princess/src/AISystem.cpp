@@ -63,16 +63,16 @@ void AiSystem::Spawn()
 	
 
 	m_compIDVec.clear();
-
+/*
 	characterFactory = new Princess();
 	m_entities.push_back(characterFactory->CharA("Red", p, 0));
 	m_entities.back()->Active(true);
 
-
+*/
 	characterFactory = new BasicEnemy();
 
 	
-	for (int i = 0; i < 15; i++)
+	for (int i = 0; i < 6; i++)
 	{
 	//	m_entities.push_back(characterFactory->CharC("Demon", SDL_Point{ p.x + 20, p.y + 20 }, 0));
 
@@ -281,22 +281,111 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 			float tarY = 0;
 			float dist = 0;
 
+			int tarIndex = -1;
 
-			float x = tarX - static_cast<PositionComponent*>(m_playerEntities.at(i)->FindComponent("PC"))->getX();
+			for (int j = 0; j < m_entities.size(); j++)
+			{
+				if (m_entities.at(j)->Active())
+				{
+					if (m_entities.at(j)->ID() == "Spellcaster Enemy")
+					{
+
+						auto tar = m_entities.at(j)->FindComponent("PC");
+						int tempX = static_cast<PositionComponent*>(tar)->getX();
+						int tempY = static_cast<PositionComponent*>(tar)->getY();
+
+						float x = tempX - static_cast<PositionComponent*>(m_playerEntities.at(i)->FindComponent("PC"))->getX();
+						float y = tempY - static_cast<PositionComponent*>(m_playerEntities.at(i)->FindComponent("PC"))->getY();
+
+						if (dist == 0)
+						{
+							dist = magnitude(x, y);
+							tarX = tempX;
+							tarY = tempY;
+							tarIndex = j;
+						}
+
+						else if (dist > magnitude(x, y))
+						{
+							dist = magnitude(x, y);
+							tarY = tempY;
+							tarX = tempX;
+							tarIndex = j;
+						}
+
+					}
+				}
+			}
+
+
+
+
+			//m_decisionTree->calculatePathNodes(m_decisionTree->m_RootNode, dist, 1,8); //make target HP and self HP gettable later,  hardcoded values for test purpose only.
+			//cout << "dist: " << dist << endl;
+			//int decision = m_decisionTree->getDecision();
+			//	cout << "decision: " << decision << endl;
+			//// = 10;
+
+			//if (decision == 8 || decision == 9) //if hp adv and in range
+			//{
+			//	int tw = m_playerEntities.at(i)->FindComponentIndex("attack");
+			//	int tx = m_playerEntities.at(i)->FindComponentIndex("movement");
+			//	attack(i, tw, tx);
+			//	//attack
+			//}
+
+			//else if (decision == 10 || decision == 11) //if hp adv and out of range
+			//{
+			//	int tw = m_playerEntities.at(i)->FindComponentIndex("PC"); //note:move index finding to spawn, 
+			//	int tx = m_playerEntities.at(i)->FindComponentIndex("movement");
+			//	int ty = m_playerEntities.at(i)->FindComponentIndex("seek");
+			//	int tz = m_playerEntities.at(i)->FindComponentIndex("attribute");
+
+			//	seek(i, tw, tx, ty, tz, tarX, tarY, 0, m_playerEntities.at(i)->ID()); //refactor x and y to take in princess position or whatever player or whatever
+			//																	//seek
+			//}
+
+			//else if (decision == 12 || decision == 13) //if no hp adv and out of range
+			//{
+			//	auto move = m_playerEntities.at(i)->FindComponent("movement");
+
+			//	static_cast<MovementComponent*>(move)->setXVelocity(0);
+			//	static_cast<MovementComponent*>(move)->setYVelocity(0);
+
+			//	//	static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(tx)->setYVelocity(0));
+			//	//do nothing
+			//}
+			//else if (decision == 14 || decision == 15) //if no hp adv and in range
+			//{
+			//	int tw = m_playerEntities.at(i)->FindComponentIndex("PC"); //note:move index finding to spawn, 
+			//	int tx = m_playerEntities.at(i)->FindComponentIndex("movement");
+			//	int ty = m_playerEntities.at(i)->FindComponentIndex("seek");
+			//	int tz = m_playerEntities.at(i)->FindComponentIndex("attribute");
+
+
+			//	seek(i, tw, tx, ty, tz, tarX, tarY, 1, m_playerEntities.at(i)->ID()); //refactor x and y to take in princess position or whatever player or whatever
+			//																	//flee
+
+			//}
+
+
+			/*		float x = tarX - static_cast<PositionComponent*>(m_playerEntities.at(i)->FindComponent("PC"))->getX();
 			float y = tarY - static_cast<PositionComponent*>(m_playerEntities.at(i)->FindComponent("PC"))->getY();
 
-			dist = magnitude(x, y);
+			dist = magnitude(x, y);*/
 
-			int mod1 = rand() % 790; //change these to useful numbers that actually seek an ai or something
+			//int mod1 = rand() % 790; //change these to useful numbers that actually seek an ai or something
 
-			int mod2 = rand() % 590;
+			//int mod2 = rand() % 590;
 
 			int tw = m_playerEntities.at(i)->FindComponentIndex("PC"); //move index finding to spawn, 
 			int tx = m_playerEntities.at(i)->FindComponentIndex("movement");
 			int ty = m_playerEntities.at(i)->FindComponentIndex("seek");
 			int tz = m_playerEntities.at(i)->FindComponentIndex("attribute");
 
-			seek(i, tw, tx, ty, tz, mod1, mod2, 0, m_playerEntities.at(i)->ID()); //ai players seek to things
+
+	
+			seek(i, tw, tx, ty, tz, tarX, tarY, 0, m_playerEntities.at(i)->ID()); //ai players seek to things
 
 
 	}

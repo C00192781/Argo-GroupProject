@@ -159,6 +159,11 @@ void CollisionSystem::spellcasterCollision(int index)
 	auto temp = m_collidableEntities.at(index)->FindComponent("eHP");
 	static_cast<eHPComp*>(temp)->setHP(static_cast<eHPComp*>(temp)->getHP() - 1);
 
+	if (static_cast<eHPComp*>(temp)->getHP() < 1)
+	{
+		m_collidableEntities.at(index)->Active(false);
+	}
+
 		/*auto tar = m_entities.at(j)->FindComponent("PC");
 	tarX = static_cast<PositionComponent*>(tar)->getX();*/
 

@@ -147,6 +147,7 @@ void RenderSystem::Update()
 	}
 }
 
+
 void RenderSystem::LoadComponent()
 {
 	int pcKey = -1;
