@@ -26,7 +26,7 @@ void MovementSystem::Update(float deltaTime)
 			}
 			
 
-			if (countedFrames[0] > 30 && m_entities.at(i)->ID() == "Player") //if all 30 roll frames have passed.
+			if (countedFrames[0] > 30 && m_entities.at(i)->ID() == "Player" && m_entities.at(i)->Control()) //if all 30 roll frames have passed.
 			{
 				//cooldown on rolling
 				countedFrames[0] = 0;
@@ -53,7 +53,7 @@ void MovementSystem::Update(float deltaTime)
 				float* xPos = static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(posIndex))->getXRef();
 				float* yPos = static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(posIndex))->getYRef();
 
-				if (static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(moveIndex))->getRolling() && cooldownFrames[0] < 1) //if roll isnt on cooldown and we wanna roll
+				if (static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(moveIndex))->getRolling() && cooldownFrames[0] < 1 && m_entities.at(i)->Control()) //if roll isnt on cooldown and we wanna roll
 				{
 
 					//assign roll invincibility here at some point.
@@ -119,7 +119,7 @@ void MovementSystem::Update(float deltaTime)
 					//			std::cout << "on cd" << cooldownFrames << std::endl;
 				}
 
-				if (m_entities.at(i)->ID() == "Player")
+				if (m_entities.at(i)->ID() == "Player" && m_entities.at(i)->Control())
 				{
 					if (static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(moveIndex))->getLockedOrientation() == false)
 					{
@@ -132,7 +132,7 @@ void MovementSystem::Update(float deltaTime)
 
 			}
 
-			if (m_entities.at(i)->ID() == "Player")
+			if (m_entities.at(i)->ID() == "Player" && m_entities.at(i)->Control())
 			{
 				if (m_movementComponent.at(i)->getLockedOrientation() == false)
 				{
@@ -140,126 +140,6 @@ void MovementSystem::Update(float deltaTime)
 				}
 			}
 
-
-			/// <summary>
-			/// /$$$$$$$$$$$$$$$$$$$$$$$$$$
-			/// </summary>
-			/// <param name="deltaTime"></param>
-			/// 
-			/// 
-			if (countedFrames[1] > 30 && m_entities.at(i)->ID() == "Player2") //if all 30 roll frames have passed.
-			{
-				//cooldown on rolling
-				countedFrames[1] = 0;
-				cooldownFrames[1] = 120; //
-
-				auto temp = m_entities.at(i)->FindComponent("SC");
-
-				static_cast<SpriteComponent*>(temp)->Direction(0); //undo temporary roll animation
-
-																   //	std::cout << "cd " << std::endl;
-																   //	int moveIndex = (m_entities.at(i)->FindComponentIndex("movement"));
-				static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(moveIndex))->setLockedOrientation(false);
-
-			}
-
-
-
-			if (moveIndex != -1 && m_entities.at(i)->ID() == "Player2" && posIndex != -1)
-			{
-				//	std::cout << "roll: " << static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(moveIndex))->getRolling() << std::endl;
-
-
-
-				float* xPos = static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(posIndex))->getXRef();
-				float* yPos = static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(posIndex))->getYRef();
-
-				if (static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(moveIndex))->getRolling() && cooldownFrames[1] < 1) //if roll isnt on cooldown and we wanna roll
-				{
-
-					//assign roll invincibility here at some point.
-					countedFrames[1]++;
-					//		std::cout << "timer: " << countedFrames << std::endl;
-
-					if (!static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(moveIndex))->getLockedOrientation())
-					{
-						*xPos += (static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(moveIndex))->getXVelocity() * 4) * deltaTime; //rolls are fast.
-						*yPos += (static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(moveIndex))->getYVelocity() * 4) * deltaTime;
-
-						m_lastXVel = (static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(moveIndex))->getXVelocity() * 4) * deltaTime; //lock roll to last given velocity
-						m_lastYVel = (static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(moveIndex))->getYVelocity() * 4) * deltaTime;
-
-						if (m_lastXVel == 0 && m_lastYVel == 0) //default a roll orientation if no velo
-						{
-							m_lastXVel = 7; //future note: careful of clipping thru walls in this kinda scenario
-							m_lastYVel = 7;
-						}
-
-					}
-					else
-					{
-						*xPos += m_lastXVel; //locked roll rolls in given dir
-						*yPos += m_lastYVel;
-					}
-
-					static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(moveIndex))->setLockedOrientation(true);
-
-					if (countedFrames[1] > 30) //after 30f, roll ends. 
-					{
-						//end invincibility here.
-						static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(moveIndex))->setRolling(false);
-					}
-
-					else if (countedFrames[1] < 30 && countedFrames[1] > 0)
-					{
-
-						auto temp = m_entities.at(i)->FindComponent("SC");
-
-						static_cast<SpriteComponent*>(temp)->Direction(1); //temporary roll animation
-																		   //play anim
-
-
-					}
-
-				}
-
-				else
-				{
-					*xPos += (static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(moveIndex))->getXVelocity()) * deltaTime;
-					*yPos += (static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(moveIndex))->getYVelocity()) * deltaTime;
-					if (cooldownFrames[1] > 0)
-					{
-						cooldownFrames[1]--; //30frame cooldown on spamming roll.
-					}
-
-					if (cooldownFrames[1] > 5)
-					{
-						static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(moveIndex))->setRolling(false);
-					}
-
-					//			std::cout << "on cd" << cooldownFrames << std::endl;
-				}
-
-				if (m_entities.at(i)->ID() == "Player2")
-				{
-					if (static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(moveIndex))->getLockedOrientation() == false)
-					{
-						static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(moveIndex))->setOrientation((atan2((float)m_mouseY - *yPos, (float)m_mouseX - *xPos)) * (180 / 3.142) + 90);
-					}
-
-				}
-
-				static_cast<CollisionComponent*>(m_entities.at(i)->GetComponents()->at(collIndex))->setPosition(*xPos, *yPos);
-
-			}
-
-			if (m_entities.at(i)->ID() == "Player2")
-			{
-				if (m_movementComponent.at(i)->getLockedOrientation() == false)
-				{
-					m_movementComponent.at(i)->setOrientation((atan2((float)m_mouseY - (m_windowHeight / 2), (float)m_mouseX - (m_windowWidth / 2))) * (180 / 3.142) + 90);
-				}
-			}
 
 
 		}//end active

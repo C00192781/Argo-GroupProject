@@ -130,19 +130,20 @@ int main()
 	player->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
 //	player->AddComponent(new SeekComponent());
 	player->Transient(true);
+	//player->Control(true);
 
-	Entity * player2 = new Entity("Player2");
+	Entity * player2 = new Entity("Player");
 	player2->Active(true);
-	player2->AddComponent(new AiLogicComponent());
+//	player2->AddComponent(new AiLogicComponent());
 	player2->AddComponent(new SpriteComponent("Red", 3, 1, 0, 0, 16, 16, 0));
 	player2->AddComponent(new PositionComponent(SDL_Point{ 100, 100 }));
 	player2->AddComponent(new AttributesComponent(26, 26, 10, 10, 100, 100));
 	player2->AddComponent(new MovementComponent());
 	player2->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player2->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
-	player2->AddComponent(new SeekComponent());
+	//player2->AddComponent(new SeekComponent());
 	player2->Transient(true);
-
+	player2->Control(true);
 
 
 	systemManager.movementSystem->AddEntity(player2);
@@ -151,7 +152,7 @@ int main()
 	systemManager.collisionSystem->AddEntity(player2);
 	systemManager.attackSystem->AddEntity(player2);
 
-	//systemManager.controlSystem->AddEntity(player);
+	
 	systemManager.movementSystem->AddEntity(player);
 	systemManager.renderSystem->AddEntity(player);
 	systemManager.projectileSystem->AddEntity(player);
@@ -159,10 +160,14 @@ int main()
 	systemManager.attackSystem->AddEntity(player);
 
 
-
-
-	systemManager.controlSystem->AddEntity(player2);
-
+	if (player->Control())
+	{
+		systemManager.controlSystem->AddEntity(player);
+	}
+	else if (player2->Control())
+	{
+		systemManager.controlSystem->AddEntity(player2);
+	}
 
 
 	std::vector<Entity*> playerEntities;
