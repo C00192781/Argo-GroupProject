@@ -2,6 +2,7 @@
 
 #include "System.h"
 #include "SoundComponent.h"
+#include "MusicComponent.h"
 #include "ResourceManager.h"
 
 class SoundSystem : public System
@@ -18,7 +19,8 @@ public:
 private:
 	bool assigned;
 	bool test = false;
-	std::vector<SoundComponent> sounds;
+	std::vector<SoundComponent*> sounds;
+	std::vector<MusicComponent*> music;
 	ResourceManager * m_resourceManager;
 	int timer = 0;
 };

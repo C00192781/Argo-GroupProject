@@ -149,7 +149,9 @@ int main()
 	player->AddComponent(new MovementComponent());
 	player->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
-	player->AddComponent(new SoundComponent("Scream", "play", false, 1, 0, 20));
+	player->AddComponent(new SoundComponent("Scream", "play", true, 1, 0, 50));
+	//player->AddComponent(new SoundComponent("Placeholder", "play", true, 0, 0, 80));
+	player->AddComponent(new MusicComponent("Test", "play", true, 0, 100));
 	player->Transient(true);
 
 	systemManager.controlSystem->AddEntity(player);
