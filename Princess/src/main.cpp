@@ -128,11 +128,11 @@ int main()
 	player->AddComponent(new MovementComponent());
 	player->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
-//	player->AddComponent(new SeekComponent());
-//	player->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
-	//player->AddComponent(new SeekComponent()); //and this if AI is to control that player
+	player->AddComponent(new SeekComponent());
+	player->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
+	player->AddComponent(new SeekComponent()); //and this if AI is to control that player
 	player->Transient(true);
-	player->Control(true);
+	//player->Control(true);
 
 	Entity * player2 = new Entity("Player");
 	player2->Active(true);
@@ -143,10 +143,10 @@ int main()
 	player2->AddComponent(new MovementComponent());
 	player2->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player2->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
-	player2->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
-	player2->AddComponent(new SeekComponent()); //and this if AI is to control that player
+//	player2->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
+	//player2->AddComponent(new SeekComponent()); //and this if AI is to control that player
 	player2->Transient(true);
-//	player2->Control(true); //enable only if the client controlled player
+	player2->Control(true); //enable only if the client controlled player
 
 
 	systemManager.movementSystem->AddEntity(player2);

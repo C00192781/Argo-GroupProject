@@ -136,6 +136,7 @@ void MovementSystem::Update(float deltaTime)
 			{
 				if (m_movementComponent.at(i)->getLockedOrientation() == false)
 				{
+					auto posThing = static_cast<PositionComponent*>(m_entities.at(i)->FindComponent("PC"));
 					m_movementComponent.at(i)->setOrientation((atan2((float)m_mouseY - (m_windowHeight / 2), (float)m_mouseX - (m_windowWidth / 2))) * (180 / 3.142) + 90);
 				}
 			}
