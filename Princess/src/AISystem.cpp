@@ -72,7 +72,7 @@ void AiSystem::Spawn()
 	characterFactory = new BasicEnemy();
 
 	
-	for (int i = 0; i < 1; i++)
+	for (int i = 0; i < 6; i++)
 	{
 	//	m_entities.push_back(characterFactory->CharC("Demon", SDL_Point{ p.x + 20, p.y + 20 }, 0));
 
@@ -332,14 +332,15 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 				}
 			} //end ent for
 
-			
-			
-	/*			auto selfRange = static_cast<WeaponComponent*>(m_playerEntities.at(i)->FindComponent("weapon"))->getRange();
+	
+				auto selfRange = static_cast<WeaponComponent*>(m_playerEntities.at(i)->FindComponent("weapon"))->getRange();
+				int enemyRange = 200;
 
-		
-				auto enemyRange = static_cast<WeaponComponent*>(m_entities.at(tarIndex)->FindComponent("weapon"))->getRange();*/
-
-				m_decisionTree->calculatePathNodes(m_decisionTree->m_RootNode, dist, 1, 8, 100, 200); //make target HP and self HP gettable later,  hardcoded values for test purpose only.
+		/*		if (!m_entities.empty())
+				{
+					enemyRange = static_cast<WeaponComponent*>(m_entities.at(tarIndex)->FindComponent("weapon"))->getRange();
+				}*/
+				m_decisionTree->calculatePathNodes(m_decisionTree->m_RootNode, dist, 1, 8, selfRange, enemyRange); //make target HP and self HP gettable later,  hardcoded values for test purpose only.
 			//	cout << "dist: " << dist << endl;
 				int decision = m_decisionTree->getDecision();
 				//		cout << "decision: " << decision << endl;
@@ -449,7 +450,7 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 					m_decisionTree->calculatePathNodes(m_decisionTree->m_RootNode, dist, 2, static_cast<eHPComp*>(hpComp)->getHP(), selfRange, 300); //make target HP and self HP gettable later,  hardcoded values for test purpose only.
 
 					int decision = m_decisionTree->getDecision();
-						cout << "decision: " << decision << endl;
+					//	cout << "decision: " << decision << endl;
 					   // = 10;
 
 					if (decision == 8 || decision == 9) //if hp adv and in range
