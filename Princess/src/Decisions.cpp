@@ -34,7 +34,6 @@ DecisionTree::~DecisionTree()
 	RemoveNode(m_RootNode);
 }
 
-//Step 2!
 void DecisionTree::CreateRootNode(int NodeID)
 {
 	//create root
@@ -42,7 +41,7 @@ void DecisionTree::CreateRootNode(int NodeID)
 	m_Size++;
 }
 
-//Step 5.1!~
+
 void DecisionTree::AddNode1(TreeNodes* base, int ExistingNodeID, int NewNodeID)
 {
 	//check to make sure you have a root node. can't add another node without a root node
@@ -261,7 +260,7 @@ bool DecisionTree::MakeDecision(TreeNodes *node)
 
 	else if (node->m_NodeID == 2)
 	{
-		if (Distance < 50) //if in range, atk
+		if (Distance < 50) //if in range, atk //FEED IN ACTUAL WEAPON MAX_RANGE TO THIS THING pls
 		{
 			//cout << "mon adv str " << endl;
 			return true;
@@ -288,7 +287,6 @@ bool DecisionTree::MakeDecision(TreeNodes *node)
 			return false;
 		}
 	}
-
 }
 
 void DecisionTree::Output()
@@ -297,7 +295,6 @@ void DecisionTree::Output()
 	DisplayTree(m_RootNode);
 }
 
-//Step 9
 void DecisionTree::DisplayTree(TreeNodes* CurrentNode)
 {
 	//doesn't exist, don't display
@@ -331,7 +328,7 @@ void DecisionTree::RemoveNode(TreeNodes *node)
 
 		cout << "Deleting Node" << node->m_NodeID << endl;
 
-		//delete node from memory
+		//delete node
 		delete node;
 		//reset node
 		node = NULL;

@@ -129,6 +129,8 @@ int main()
 	player->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
 //	player->AddComponent(new SeekComponent());
+//	player->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
+	//player->AddComponent(new SeekComponent()); //and this if AI is to control that player
 	player->Transient(true);
 	player->Control(true);
 
@@ -201,7 +203,7 @@ int main()
 		//Set text to be rendered
 		if (avgFPS > 1)
 		{
-		//	cout << "FPS (With Cap) " << avgFPS << endl;;
+			cout << "FPS (With Cap) " << avgFPS << endl;;
 		}
 		//update ren
 		++countedFrames;
