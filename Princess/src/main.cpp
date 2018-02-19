@@ -87,7 +87,7 @@ int main()
 	resourceManager->AddTexture("Achievement", "PlaceholderAchievement.png");
 	resourceManager->AddTexture("Achievement2", "PlaceholderAchievement2.png");
 	
-	resourceManager->AddMusic("Test", "test.wav");
+	resourceManager->AddMusic("Test", "kevin.mp3");
 	resourceManager->AddSound("Scream", "test.wav");
 	resourceManager->AddSound("Placeholder", "placeholder.wav");
 	
@@ -149,7 +149,7 @@ int main()
 	player->AddComponent(new MovementComponent());
 	player->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
-	player->AddComponent(new SoundComponent("Scream", "play", true, 1, 0, 50));
+	player->AddComponent(new SoundComponent("Scream", "play", false, 1, 30, 50));
 	//player->AddComponent(new SoundComponent("Placeholder", "play", true, 0, 0, 80));
 	player->AddComponent(new MusicComponent("Test", "play", true, 0, 100));
 	player->Transient(true);
