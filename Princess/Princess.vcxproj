@@ -45,6 +45,7 @@
     <ClCompile Include="src\ProjectileSystem.cpp" />
     <ClCompile Include="src\Quad.cpp" />
     <ClCompile Include="src\RenderSystem.cpp" />
+    <ClCompile Include="src\SoundSystem.cpp" />
     <ClCompile Include="src\Subject.cpp" />
     <ClCompile Include="src\System.cpp" />
     <ClCompile Include="src\SystemManager.cpp" />
@@ -90,6 +91,7 @@
     <ClInclude Include="include\LTimer.h" />
     <ClInclude Include="include\MovementComponent.h" />
     <ClInclude Include="include\MovementSystem.h" />
+    <ClInclude Include="include\MusicComponent.h" />
     <ClInclude Include="include\Observer.h" />
     <ClInclude Include="include\PositionComponent.h" />
     <ClInclude Include="include\Princess.h" />
@@ -98,6 +100,8 @@
     <ClInclude Include="include\Quad.h" />
     <ClInclude Include="include\RenderSystem.h" />
     <ClInclude Include="include\SeekComponent.h" />
+    <ClInclude Include="include\SoundComponent.h" />
+    <ClInclude Include="include\SoundSystem.h" />
     <ClInclude Include="include\SpriteComponent.h" />
     <ClInclude Include="include\StateManager.h" />
     <ClInclude Include="include\stdafx.h" />

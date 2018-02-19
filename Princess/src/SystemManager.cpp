@@ -15,4 +15,5 @@ void SystemManager::Update(float deltaTime)
 	if (buttonSystem->Active()) { buttonSystem->Update(); }
 	if (renderSystem->Active()) { renderSystem->Update(); }
 	if (textRenderSystem->Active()) { textRenderSystem->Update(); }
+	if (soundSystem->Active()) { soundSystem->Update(); }
 }
