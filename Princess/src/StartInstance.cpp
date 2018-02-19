@@ -40,6 +40,36 @@ void StartInstance::Begin()
 			m_systemManager->renderSystem->AddEntity(m_systemManager->menuSystem->GetMenuComponent("MainMenu")->Buttons()->at(i));
 		}
 	}
+	if (m_systemManager->menuSystem->GetMenuComponent("OptionsMenu") != nullptr)
+	{
+		for (int i = 0; i < m_systemManager->menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->size(); i++)
+		{
+			if (m_systemManager->menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->at(i)->ID() == "SoundText")
+			{
+				if (m_systemManager->menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->at(i)->FindComponent("TextComponent") != nullptr)
+				{
+					std::string text;
+					text = "Sound :";
+					text += std::to_string(m_systemManager->soundSystem->GetSoundVolume());
+					text += "%";
+					static_cast<TextComponent*>(m_systemManager->menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->at(i)->FindComponent("TextComponent"))->Text(text);
+				}
+				
+			}
+			if (m_systemManager->menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->at(i)->ID() == "MusicText")
+			{
+				if (m_systemManager->menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->at(i)->FindComponent("TextComponent") != nullptr)
+				{
+					std::string text;
+					text = "Music :";
+					text += std::to_string(m_systemManager->soundSystem->GetMusicVolume());
+					text += "%";
+					static_cast<TextComponent*>(m_systemManager->menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->at(i)->FindComponent("TextComponent"))->Text(text);
+				}
+
+			}
+		}
+	}
 }
 
 void StartInstance::Update()
@@ -134,6 +164,43 @@ void StartInstance::Update()
 		}
 		m_stateManager->increaseSound = false;
 		m_stateManager->decreaseSound = false;
+	}
+	if (m_stateManager->increaseMusic || m_stateManager->decreaseMusic)
+	{
+		if (m_stateManager->increaseMusic)
+		{
+			if (m_systemManager->soundSystem->GetMusicVolume() < 100)
+			{
+				m_systemManager->soundSystem->SetMusicVolume(m_systemManager->soundSystem->GetMusicVolume() + 10);
+			}
+		}
+		if (m_stateManager->decreaseMusic)
+		{
+			if (m_systemManager->soundSystem->GetMusicVolume() > 0)
+			{
+				m_systemManager->soundSystem->SetMusicVolume(m_systemManager->soundSystem->GetMusicVolume() - 10);
+			}
+		}
+		if (m_systemManager->menuSystem->GetMenuComponent("OptionsMenu") != nullptr)
+		{
+			for (int i = 0; i < m_systemManager->menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->size(); i++)
+			{
+				if (m_systemManager->menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->at(i)->ID() == "MusicText")
+				{
+					if (m_systemManager->menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->at(i)->FindComponent("TextComponent") != nullptr)
+					{
+						std::string text;
+						text = "Music :";
+						text += std::to_string(m_systemManager->soundSystem->GetMusicVolume());
+						text += "%";
+						static_cast<TextComponent*>(m_systemManager->menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->at(i)->FindComponent("TextComponent"))->Text(text);
+					}
+					break;
+				}
+			}
+		}
+		m_stateManager->increaseMusic = false;
+		m_stateManager->decreaseMusic = false;
 	}
 }
 

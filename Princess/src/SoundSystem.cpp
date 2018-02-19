@@ -143,6 +143,11 @@ int SoundSystem::GetMusicVolume()
 void SoundSystem::SetMusicVolume(int volume)
 {
 	m_musicVolume = volume;
+	for (std::vector<MusicComponent*>::iterator it = music.begin(); it != music.end(); ++it)
+	{
+		std::cout << "Volume : " + std::to_string(m_musicVolume) << std::endl;
+		(*it)->setVolumeSetter(true);
+	}
 }
 
 
