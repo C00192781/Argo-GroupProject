@@ -16,28 +16,42 @@ void ControlSystem::Update()
 
 			movementComponent->setMoving(false);
 
+			if (m_eventListener->roll)
+			{
+				//do roll stuff;
+				movementComponent->setRolling(true);
+			}
+
+
 			if (m_eventListener->W)
 			{
 				holder.y = -atrributeComponent->MovementSpeed();
 				movementComponent->setMoving(true);
+				totalPlayerMovement += 1;
 			}
 			if (m_eventListener->A)
 			{
 				holder.x = -atrributeComponent->MovementSpeed();
 				movementComponent->setMoving(true);
+				totalPlayerMovement += 1;
 			}
 			if (m_eventListener->S)
 			{
 				holder.y = atrributeComponent->MovementSpeed();
 				movementComponent->setMoving(true);
+				totalPlayerMovement += 1;
 			}
 			if (m_eventListener->D)
 			{
 				holder.x = atrributeComponent->MovementSpeed();
 				movementComponent->setMoving(true);
+				totalPlayerMovement += 1;
 			}
 
-			movementComponent->setVelocity(holder.x, holder.y);
+			if (!m_eventListener->roll) //course changable if not rolling
+			{
+				movementComponent->setVelocity(holder.x, holder.y);
+			}
 		}
 
 		if (movementComponent != nullptr && weaponComponent != nullptr)
@@ -52,6 +66,7 @@ void ControlSystem::Update()
 				}
 			}
 		}
+
 	}
 }
 

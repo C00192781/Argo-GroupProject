@@ -18,5 +18,6 @@ public:
 	bool WorldToEncounter = false;
 	bool DungeonToWorld = false;
 	bool EncounterToWorld = false;
+	bool roll = false;
 };
 #endif

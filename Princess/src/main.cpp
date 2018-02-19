@@ -29,12 +29,25 @@
 #include "DungeonMap.h"
 #include "TownInstance.h"
 #include "InstanceManager.h"
+#include "AchievementHandler.h"
+#include "SoundComponent.h"
+#include "SoundSystem.h"
 
 int main()
 {
 	SDL_Window* gameWindow = SDL_CreateWindow("TEST", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 816, 624, SDL_WINDOW_SHOWN);
 	SDL_Renderer* gameRenderer = SDL_CreateRenderer(gameWindow, -1, SDL_RENDERER_PRESENTVSYNC);
 	SDL_Event *e = new SDL_Event();
+
+	if (Mix_OpenAudio(22050, AUDIO_S16, 2, 1024) == -1) //Check return type
+	{
+		printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+	}
+	else
+	{
+		Mix_VolumeMusic(MIX_MAX_VOLUME);
+	}
+
 	unsigned int lastTime = 0;
 	float deltaTime = 0;
 	unsigned int currentTime = 0;
@@ -73,8 +86,16 @@ int main()
 	resourceManager->AddTexture("ArmourSheet", "armourSpriteSheet.png");
 	resourceManager->AddTexture("WorldTurf", "World_Turfs.png");
 	resourceManager->AddTexture("Button", "Button.png");
-
+	resourceManager->AddTexture("Achievement", "PlaceholderAchievement.png");
+	resourceManager->AddTexture("Achievement2", "PlaceholderAchievement2.png");
+	
+	resourceManager->AddMusic("Test", "kevin.mp3");
+	resourceManager->AddSound("Scream", "test.wav");
+	resourceManager->AddSound("Placeholder", "placeholder.wav");
+	
 	resourceManager->AddFont("ComicSans", "ComicSans.ttf", 32);
+
+	Mix_AllocateChannels(6);
 
 	EventListener *listener = new EventListener();
 
@@ -118,6 +139,9 @@ int main()
 
 	systemManager.buttonSystem = new ButtonSystem(listener);
 	systemManager.buttonSystem->Active(true);
+	
+	systemManager.soundSystem = new SoundSystem(resourceManager);
+	systemManager.soundSystem->Active(true);
 
 	InstanceManager instanceManager(&systemManager, &state, resourceManager, listener);
 
@@ -129,6 +153,9 @@ int main()
 	player->AddComponent(new MovementComponent());
 	player->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
+	player->AddComponent(new SoundComponent("Scream", "play", false, 1, 30, 50));
+	//player->AddComponent(new SoundComponent("Placeholder", "play", true, 0, 0, 80));
+	player->AddComponent(new MusicComponent("Test", "play", true, 0, 100));
 	player->Transient(true);
 
 	systemManager.controlSystem->AddEntity(player);
@@ -137,6 +164,9 @@ int main()
 	systemManager.projectileSystem->AddEntity(player);
 	systemManager.collisionSystem->AddEntity(player);
 	systemManager.attackSystem->AddEntity(player);
+	systemManager.soundSystem->AddEntity(player);
+
+	AchievementHandler *achievements = new AchievementHandler(&systemManager);
 
 	bool heartTest = true;
 
@@ -159,6 +189,7 @@ int main()
 
 		//If frame finished early
 		int frameTicks = capTimer.getTicks();
+
 		if (frameTicks < SCREEN_TICKS_PER_FRAME)
 		{
 			//Wait remaining time
@@ -170,6 +201,7 @@ int main()
 				deltaTime = ((float)(currentTime - lastTime)) / 1000;
 
 				input->handleInput();
+				achievements->HandleAchievements();
 
 				lastTime = currentTime;
 			}
