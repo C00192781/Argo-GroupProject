@@ -17,7 +17,7 @@ DecisionTree::DecisionTree()
 	m_RootNode = NULL;
 }
 
-DecisionTree::DecisionTree(int tarHp, int selfHP, int tarStr, int selfStr, int dist) //overload with ai params
+DecisionTree::DecisionTree(int tarHp, int selfHP, int tarStr, int selfStr, int dist, int range, int eRange) //overload with ai params
 {
 	m_RootNode = NULL;
 
@@ -26,6 +26,8 @@ DecisionTree::DecisionTree(int tarHp, int selfHP, int tarStr, int selfStr, int d
 	PStrength = tarStr;
 	MStrength = selfStr;
 	Distance = dist;
+	Range = range;
+	EnemyRange = eRange;
 }
 
 //destructor
@@ -67,11 +69,13 @@ void DecisionTree::AddNode1(TreeNodes* base, int ExistingNodeID, int NewNodeID)
 
 // function to print leaf 
 // nodes from left to right
-int DecisionTree::calculatePathNodes(TreeNodes* root, int dist, int tarHP, int selfHp) //this perfectly searches the tree in order  1 2 4 5 1 3 6 7!
+int DecisionTree::calculatePathNodes(TreeNodes* root, int dist, int tarHP, int selfHp, int range, int enemyRange) //this perfectly searches the tree in order  1 2 4 5 1 3 6 7!
 {
 	PHealth = tarHP;
 	MHealth = selfHp;
 	Distance = dist;
+	Range = range;
+	EnemyRange = enemyRange;
 
 
 	// if node is null, return
@@ -98,7 +102,7 @@ int DecisionTree::calculatePathNodes(TreeNodes* root, int dist, int tarHP, int s
 	if (root->NewBranch1 && decision) //if option one, go left
 	{
 	//	cout << "go left at " << root->m_NodeID << endl;
-		calculatePathNodes(root->NewBranch1, dist, tarHP, selfHp);
+		calculatePathNodes(root->NewBranch1, dist, tarHP, selfHp, Range, EnemyRange);
 	}
 
 	// if right child exists, check for leaf 
@@ -106,7 +110,7 @@ int DecisionTree::calculatePathNodes(TreeNodes* root, int dist, int tarHP, int s
 	if (root->NewBranch2 && !decision) //if option 2, go right
 	{
 	//	cout << "go right at " << root->m_NodeID << endl;
-		calculatePathNodes(root->NewBranch2, dist, tarHP, selfHp);
+		calculatePathNodes(root->NewBranch2, dist, tarHP, selfHp, Range, EnemyRange);
 	}
 
 	return root->m_NodeID;
@@ -260,7 +264,7 @@ bool DecisionTree::MakeDecision(TreeNodes *node)
 
 	else if (node->m_NodeID == 2)
 	{
-		if (Distance < 50) //if in range, atk //FEED IN ACTUAL WEAPON MAX_RANGE TO THIS THING pls
+		if (Distance < Range) //if in range, atk //FEED IN ACTUAL WEAPON MAX_RANGE TO THIS THING pls
 		{
 			//cout << "mon adv str " << endl;
 			return true;
@@ -275,7 +279,7 @@ bool DecisionTree::MakeDecision(TreeNodes *node)
 
 	else if (node->m_NodeID == 3)
 	{
-		if (Distance > 100) //if in range flee
+		if (Distance > EnemyRange) //if in range flee
 		{
 			//cout << "mon adv str " << endl;
 			return true;

@@ -12,6 +12,7 @@
 #include "BasicEnemy.h"
 #include "DecisionTree.h"
 #include "eHPComp.h"
+#include "WeaponComponent.h"
 class AiSystem : public System
 {
 public:
@@ -36,7 +37,7 @@ private:
 	std::vector<Character*> CharFactory;
 	Character* characterFactory;
 
-	DecisionTree* m_decisionTree = new DecisionTree(15, 5, 5, 5, 50); //debug values, overwrite in update -> pathNode
+	DecisionTree* m_decisionTree = new DecisionTree(15, 5, 5, 5, 50, 50, 100); //debug values, overwrite in update -> pathNode
 
 	std::vector<AiLogicComponent*> m_aiLogicComponent;
 	std::vector<SpriteComponent*> m_spriteComponent;

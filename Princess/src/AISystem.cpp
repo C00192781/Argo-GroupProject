@@ -72,7 +72,7 @@ void AiSystem::Spawn()
 	characterFactory = new BasicEnemy();
 
 	
-	for (int i = 0; i < 6; i++)
+	for (int i = 0; i < 1; i++)
 	{
 	//	m_entities.push_back(characterFactory->CharC("Demon", SDL_Point{ p.x + 20, p.y + 20 }, 0));
 
@@ -265,6 +265,12 @@ float AiSystem::magnitude(float x, float y)
 
 void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 {
+	if (m_entities.empty())
+	{
+		int q = 5;
+		q -= 5;
+	}
+
 	m_time = deltaTime;
 
 	//std::vector<Entity*> m_playerAIEntities;
@@ -284,7 +290,8 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 
 	for (int i = 0; i < m_playerEntities.size(); i++)
 	{
-
+		if (!m_entities.empty()) //dont check empty vectors for stuff
+		{
 			float tarX = 0;
 			float tarY = 0;
 			float dist = 0;
@@ -323,77 +330,65 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 
 					}
 				}
-			}
+			} //end ent for
 
-			m_decisionTree->calculatePathNodes(m_decisionTree->m_RootNode, dist, 1,8); //make target HP and self HP gettable later,  hardcoded values for test purpose only.
-			cout << "dist: " << dist << endl;
-			int decision = m_decisionTree->getDecision();
-				cout << "decision: " << decision << endl;
-			// = 10;
+			
+			
+	/*			auto selfRange = static_cast<WeaponComponent*>(m_playerEntities.at(i)->FindComponent("weapon"))->getRange();
 
-			if (decision == 8 || decision == 9) //if hp adv and in range
-			{
-				int tw = m_playerEntities.at(i)->FindComponentIndex("attack");
-				int tx = m_playerEntities.at(i)->FindComponentIndex("movement");
-				attack(i, tw, tx, m_playerEntities.at(i)->ID());
-				//attack
-			}
+		
+				auto enemyRange = static_cast<WeaponComponent*>(m_entities.at(tarIndex)->FindComponent("weapon"))->getRange();*/
 
-			else if (decision == 10 || decision == 11) //if hp adv and out of range
-			{
-				int tw = m_playerEntities.at(i)->FindComponentIndex("PC"); //note:move index finding to spawn, 
-				int tx = m_playerEntities.at(i)->FindComponentIndex("movement");
-				int ty = m_playerEntities.at(i)->FindComponentIndex("seek");
-				int tz = m_playerEntities.at(i)->FindComponentIndex("attribute");
+				m_decisionTree->calculatePathNodes(m_decisionTree->m_RootNode, dist, 1, 8, 100, 200); //make target HP and self HP gettable later,  hardcoded values for test purpose only.
+			//	cout << "dist: " << dist << endl;
+				int decision = m_decisionTree->getDecision();
+				//		cout << "decision: " << decision << endl;
+					// = 10;
 
-				seek(i, tw, tx, ty, tz, tarX, tarY, 0, m_playerEntities.at(i)->ID()); //refactor x and y to take in princess position or whatever player or whatever
-																				//seek
-			}
+				if (decision == 8 || decision == 9) //if hp adv and in range
+				{
+					int tw = m_playerEntities.at(i)->FindComponentIndex("weapon");
+					int tx = m_playerEntities.at(i)->FindComponentIndex("movement");
+					attack(i, tw, tx, m_playerEntities.at(i)->ID());
+					//attack
+				}
 
-			else if (decision == 12 || decision == 13) //if no hp adv and out of range
-			{
-				auto move = m_playerEntities.at(i)->FindComponent("movement");
+				else if (decision == 10 || decision == 11) //if hp adv and out of range
+				{
+					int tw = m_playerEntities.at(i)->FindComponentIndex("PC"); //note:move index finding to spawn, 
+					int tx = m_playerEntities.at(i)->FindComponentIndex("movement");
+					int ty = m_playerEntities.at(i)->FindComponentIndex("seek");
+					int tz = m_playerEntities.at(i)->FindComponentIndex("attribute");
 
-				static_cast<MovementComponent*>(move)->setXVelocity(0);
-				static_cast<MovementComponent*>(move)->setYVelocity(0);
+					seek(i, tw, tx, ty, tz, tarX, tarY, 0, m_playerEntities.at(i)->ID()); //refactor x and y to take in princess position or whatever player or whatever
+																					//seek
+				}
 
-				//	static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(tx)->setYVelocity(0));
-				//do nothing
-			}
-			else if (decision == 14 || decision == 15) //if no hp adv and in range
-			{
-				int tw = m_playerEntities.at(i)->FindComponentIndex("PC"); //note:move index finding to spawn, 
-				int tx = m_playerEntities.at(i)->FindComponentIndex("movement");
-				int ty = m_playerEntities.at(i)->FindComponentIndex("seek");
-				int tz = m_playerEntities.at(i)->FindComponentIndex("attribute");
+				else if (decision == 12 || decision == 13) //if no hp adv and out of range
+				{
+					auto move = m_playerEntities.at(i)->FindComponent("movement");
 
+					static_cast<MovementComponent*>(move)->setXVelocity(0);
+					static_cast<MovementComponent*>(move)->setYVelocity(0);
 
-				seek(i, tw, tx, ty, tz, tarX, tarY, 1, m_playerEntities.at(i)->ID()); //refactor x and y to take in princess position or whatever player or whatever
-																				//flee
-
-			}
-
-
-			/*		float x = tarX - static_cast<PositionComponent*>(m_playerEntities.at(i)->FindComponent("PC"))->getX();
-			float y = tarY - static_cast<PositionComponent*>(m_playerEntities.at(i)->FindComponent("PC"))->getY();
-
-			dist = magnitude(x, y);*/
-
-			//int mod1 = rand() % 790; //change these to useful numbers that actually seek an ai or something
-
-			//int mod2 = rand() % 590;
-
-			////int tw = m_playerEntities.at(i)->FindComponentIndex("PC"); //move index finding to spawn, 
-			////int tx = m_playerEntities.at(i)->FindComponentIndex("movement");
-			////int ty = m_playerEntities.at(i)->FindComponentIndex("seek");
-			////int tz = m_playerEntities.at(i)->FindComponentIndex("attribute");
+					//	static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(tx)->setYVelocity(0));
+					//do nothing
+				}
+				else if (decision == 14 || decision == 15) //if no hp adv and in range
+				{
+					int tw = m_playerEntities.at(i)->FindComponentIndex("PC"); //note:move index finding to spawn, 
+					int tx = m_playerEntities.at(i)->FindComponentIndex("movement");
+					int ty = m_playerEntities.at(i)->FindComponentIndex("seek");
+					int tz = m_playerEntities.at(i)->FindComponentIndex("attribute");
 
 
-	
-			////seek(i, tw, tx, ty, tz, tarX, tarY, 0, m_playerEntities.at(i)->ID()); //ai players seek to things
+					seek(i, tw, tx, ty, tz, tarX, tarY, 1, m_playerEntities.at(i)->ID()); //refactor x and y to take in princess position or whatever player or whatever
+																					//flee
 
+				}
+			} //end vector.empty
 
-	}
+	} //end for player
 
 	
 
@@ -448,17 +443,18 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 					}
 
 				//	cout << dist << endl;
+					//auto enemyRange = static_cast<WeaponComponent*>(m_playerEntities.at(i)->FindComponent("weapon"))->getRange();
+					auto selfRange = static_cast<WeaponComponent*>(m_entities.at(i)->FindComponent("weapon"))->getRange();
 
-
-					m_decisionTree->calculatePathNodes(m_decisionTree->m_RootNode, dist, 2, static_cast<eHPComp*>(hpComp)->getHP()); //make target HP and self HP gettable later,  hardcoded values for test purpose only.
+					m_decisionTree->calculatePathNodes(m_decisionTree->m_RootNode, dist, 2, static_cast<eHPComp*>(hpComp)->getHP(), selfRange, 300); //make target HP and self HP gettable later,  hardcoded values for test purpose only.
 
 					int decision = m_decisionTree->getDecision();
-					//	cout << "decision: " << decision << endl;
+						cout << "decision: " << decision << endl;
 					   // = 10;
 
 					if (decision == 8 || decision == 9) //if hp adv and in range
 					{
-						int tw = m_entities.at(i)->FindComponentIndex("attack");
+						int tw = m_entities.at(i)->FindComponentIndex("weapon");
 						int tx = m_entities.at(i)->FindComponentIndex("movement");
 						attack(i, tw, tx, m_entities.at(i)->ID());
 						//attack

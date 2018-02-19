@@ -11,6 +11,7 @@
 #include "AttributesComponent.h"
 #include "CollisionComponent.h"
 #include "eHPComp.h"
+#include "WeaponComponent.h"
 
 class BasicEnemy : public Character
 {

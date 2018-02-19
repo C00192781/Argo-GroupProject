@@ -19,8 +19,8 @@ public:
 	bool searchNodes(TreeNodes* currentNode, int ExistingNodeID, int NewNodeID);
 	DecisionTree();
 
-	DecisionTree(int tarHp, int selfHP, int tarStr, int selfStr, int dist);
-	int calculatePathNodes(TreeNodes* root, int dist, int tarHP, int selfHp);
+	DecisionTree(int tarHp, int selfHP, int tarStr, int selfStr, int dist, int range, int eRange);
+	int calculatePathNodes(TreeNodes* root, int dist, int tarHP, int selfHp, int range, int eRange);
 
 	TreeNodes* m_lastNode;
 
@@ -43,7 +43,8 @@ private:
 	int MStrength;
 	int Distance;
 
-
+	int Range;
+	int EnemyRange;
 
 	int test1;
 	int test2;
