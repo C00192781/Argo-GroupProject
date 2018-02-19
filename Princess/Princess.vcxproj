@@ -34,10 +34,13 @@
     <ClCompile Include="src\ConcreteSubject.cpp" />
     <ClCompile Include="src\ControlSystem.cpp" />
     <ClCompile Include="src\Decisions.cpp" />
+    <ClCompile Include="src\DungeonMap.cpp" />
+    <ClCompile Include="src\DungeonTileFactory.cpp" />
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\GrassTileFactory.cpp" />
     <ClCompile Include="src\HealthSystem.cpp" />
     <ClCompile Include="src\InputHandler.cpp" />
+    <ClCompile Include="src\InstanceManager.cpp" />
     <ClCompile Include="src\LTimer.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MovementSystem.cpp" />
@@ -79,6 +82,8 @@
     <ClInclude Include="include\ControlComponent.h" />
     <ClInclude Include="include\ControlSystem.h" />
     <ClInclude Include="include\DecisionTree.h" />
+    <ClInclude Include="include\DungeonMap.h" />
+    <ClInclude Include="include\DungeonTileFactory.h" />
     <ClInclude Include="include\Entity.h" />
     <ClInclude Include="include\EventListener.h" />
     <ClInclude Include="include\Factory.h" />
@@ -88,6 +93,7 @@
     <ClInclude Include="include\HeartManagerComponent.h" />
     <ClInclude Include="include\InputHandler.h" />
     <ClInclude Include="include\Instance.h" />
+    <ClInclude Include="include\InstanceManager.h" />
     <ClInclude Include="include\LTimer.h" />
     <ClInclude Include="include\MovementComponent.h" />
     <ClInclude Include="include\MovementSystem.h" />

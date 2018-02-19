@@ -31,8 +31,4 @@ private:
 	bool m_rollAnim;
 	int m_lastXVel;
 	int m_lastYVel;
-
-	std::vector<PositionComponent*> m_positionComponent;
-	std::vector<MovementComponent*> m_movementComponent;
-	std::vector<CollisionComponent*> m_collisionComponent;
 };

@@ -26,7 +26,9 @@
 #include "SystemManager.h"
 #include "LTimer.h"
 #include "WorldMap.h"
+#include "DungeonMap.h"
 #include "TownInstance.h"
+#include "InstanceManager.h"
 #include "AchievementHandler.h"
 #include "SoundComponent.h"
 #include "SoundSystem.h"
@@ -126,7 +128,7 @@ int main()
 	systemManager.projectileSystem = new ProjectileSystem();
 	systemManager.projectileSystem->Active(true);
 
-	systemManager.collisionSystem = new CollisionSystem();
+	systemManager.collisionSystem = new CollisionSystem(listener);
 	systemManager.collisionSystem->Active(true);
 
 	systemManager.aiSystem = new AiSystem();
@@ -137,15 +139,17 @@ int main()
 
 	systemManager.buttonSystem = new ButtonSystem(listener);
 	systemManager.buttonSystem->Active(true);
-
+	
 	systemManager.soundSystem = new SoundSystem(resourceManager);
 	systemManager.soundSystem->Active(true);
 
+	InstanceManager instanceManager(&systemManager, &state, resourceManager, listener);
+
 	Entity * player = new Entity("Player");
 	player->Active(true);
-	player->AddComponent(new SpriteComponent("Red", 3, 1, 0, 0, 16, 16, 0));
-	player->AddComponent(new PositionComponent(SDL_Point{ 0, 0 }));
-	player->AddComponent(new AttributesComponent(26, 26, 10, 10, 100, 100));
+	player->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
+	player->AddComponent(new PositionComponent(SDL_Point{ 500, 380 }));
+	player->AddComponent(new AttributesComponent(26, 26, 10, 10, 200, 200));
 	player->AddComponent(new MovementComponent());
 	player->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
@@ -162,16 +166,7 @@ int main()
 	systemManager.attackSystem->AddEntity(player);
 	systemManager.soundSystem->AddEntity(player);
 
-	//TownInstance t = TownInstance(&systemManager);
-	//t.Generate("jimmie");
-
-	//WorldMap* m = new WorldMap(&systemManager, &state);
-	//m->Generate(25, 25, 100);
-
 	AchievementHandler *achievements = new AchievementHandler(&systemManager);
-
-	BattleMap* b = new BattleMap(&systemManager, &state);
-	b->Generate("");
 
 	bool heartTest = true;
 
@@ -187,7 +182,7 @@ int main()
 		//Set text to be rendered
 		if (avgFPS > 1)
 		{
-			cout << "FPS (With Cap) " << avgFPS << endl;;
+			//cout << "FPS (With Cap) " << avgFPS << endl;;
 		}
 		//update ren
 		++countedFrames;
@@ -214,6 +209,7 @@ int main()
 			SDL_SetRenderDrawColor(gameRenderer, 0, 0, 0, 0);
 			SDL_RenderClear(gameRenderer);
 
+			instanceManager.Update(deltaTime);
 			systemManager.Update(deltaTime);
 
 			SDL_RenderPresent(gameRenderer);

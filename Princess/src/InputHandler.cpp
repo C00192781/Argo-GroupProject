@@ -44,85 +44,89 @@ void InputHandler::handleInput()
 			}
 
 		case SDL_KEYDOWN:
-
-			switch (m_event->key.keysym.sym)
+			if (!m_event->key.repeat)
 			{
-			case SDLK_w:
-				m_eventListener->W = true;
-				break;
-
-			case SDLK_a:
-				m_eventListener->A = true;
-				break;
-
-			case SDLK_s:
-				m_eventListener->S = true;
-				break;
-
-			case SDLK_d:
-				m_eventListener->D = true;
-				break;
-				if (!m_event->key.repeat)
+				switch (m_event->key.keysym.sym)
 				{
-			case SDLK_r:
-				m_eventListener->roll = true;
-				break;
-			case SDLK_v:
-				m_eventListener->roll = true;
-				break;
+				case SDLK_w:
+					m_eventListener->W = true;
+					break;
 
-			case SDLK_ESCAPE:
-				m_eventListener->Escape = true;
-				break;
+				case SDLK_a:
+					m_eventListener->A = true;
+					break;
 
-			case SDLK_SPACE:
-				m_eventListener->Space = true;
-				break;
+				case SDLK_s:
+					m_eventListener->S = true;
+					break;
+
+				case SDLK_d:
+					m_eventListener->D = true;
+					break;
+
+				case SDLK_r:
+					m_eventListener->roll = true;
+					break;
+
+				case SDLK_v:
+					m_eventListener->roll = true;
+					break;
+
+				case SDLK_ESCAPE:
+					m_eventListener->Escape = true;
+					break;
+
+				case SDLK_SPACE:
+					m_eventListener->Space = true;
+					break;
+
+				default:
+					break;
 				}
-
-			default:
 				break;
 			}
-			break;
 
 		case SDL_KEYUP:
-			switch (m_event->key.keysym.sym)
+			if (!m_event->key.repeat)
 			{
-			case SDLK_w:
-				m_eventListener->W = false;
-				break;
+				switch (m_event->key.keysym.sym)
+				{
+				case SDLK_w:
+					m_eventListener->W = false;
+					break;
 
-			case SDLK_a:
-				m_eventListener->A = false;
-				break;
+				case SDLK_a:
+					m_eventListener->A = false;
+					break;
 
-			case SDLK_s:
-				m_eventListener->S = false;
-				break;
+				case SDLK_s:
+					m_eventListener->S = false;
+					break;
 
-			case SDLK_d:
-				m_eventListener->D = false;
-				break;
+				case SDLK_d:
+					m_eventListener->D = false;
+					break;
 
-			case SDLK_r:
-				m_eventListener->roll = false;
-				break;
-			case SDLK_v:
-				m_eventListener->roll = false;
-				break;
+				case SDLK_r:
+					m_eventListener->roll = false;
+					break;
+				case SDLK_v:
+					m_eventListener->roll = false;
+					break;
 
-			case SDLK_ESCAPE:
-				m_eventListener->Escape = false;
-				break;
+				case SDLK_ESCAPE:
+					m_eventListener->Escape = false;
+					break;
 
-			case SDLK_SPACE:
-				m_eventListener->Space = false;
-				break;
+				case SDLK_SPACE:
+					m_eventListener->Space = false;
+					break;
 
-			default:
+				default:
+					break;
+				}
 				break;
 			}
-			break;
 		}
 	}
 }

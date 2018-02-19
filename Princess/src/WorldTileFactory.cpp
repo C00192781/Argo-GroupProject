@@ -128,6 +128,7 @@ Entity* WorldTileFactory::Dungeon(std::string textureID, int x, int y)
 	holder->AddComponent(new SpriteComponent(textureID, 0, 0, 3, 0, 16, 16, 2));
 	holder->AddComponent(new PositionComponent());
 	static_cast<PositionComponent*>(holder->GetComponents()->back())->setPosition(x,y);
+	holder->AddComponent(new CollisionComponent(x, y, 16, 16));
 	holder->Active(true);
 	return holder;
 }

@@ -4,6 +4,44 @@
 AiSystem::AiSystem()
 {
 	//m_thingy = 1;
+	//add root node   the very first 'Question' or decision to be made
+	//is monster health greater than player health?
+	m_decisionTree->CreateRootNode(1);
+
+	//add nodes depending on decisions
+	//2nd decision to be made
+	//is monster strength greater than player strength?
+
+
+	//depending on the weights of all three decisions, will return certain node result
+	//results!
+	//Run, Attack, 
+
+
+
+
+	//$$$
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode, 1, 2);
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode, 1, 3);
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1, 2, 4);
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1, 2, 5);
+
+
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch2, 3, 6); //fix addnodes to support larger treesizes soontm.
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch2, 3, 7);
+	//	m_decisionTree->printLeafNodes(m_decisionTree->m_RootNode); //this worky workies
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1->NewBranch1, 4, 8);
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1->NewBranch1, 4, 9);
+
+
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1->NewBranch2, 5, 10);
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1->NewBranch2, 5, 11);
+
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch2->NewBranch1, 6, 12);
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch2->NewBranch1, 6, 13);
+
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch2->NewBranch2, 7, 14);
+	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch2->NewBranch2, 7, 15);
 }
 
 
@@ -30,44 +68,7 @@ void AiSystem::UnloadComponent(int x)
 
 void AiSystem::Spawn()
 {
-	//add root node   the very first 'Question' or decision to be made
-	//is monster health greater than player health?
-	m_decisionTree->CreateRootNode(1);
 
-	//add nodes depending on decisions
-	//2nd decision to be made
-	//is monster strength greater than player strength?
-
-
-	//depending on the weights of all three decisions, will return certain node result
-	//results!
-	//Run, Attack, 
-
-	
-
-
-	//$$$
-	m_decisionTree->AddNode1(m_decisionTree->m_RootNode, 1, 2);
-	m_decisionTree->AddNode1(m_decisionTree->m_RootNode, 1, 3);
-	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1, 2, 4);
-	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1, 2, 5);
-
-
-	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch2, 3,6); //fix addnodes to support larger treesizes soontm.
-	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch2, 3, 7);
-//	m_decisionTree->printLeafNodes(m_decisionTree->m_RootNode); //this worky workies
-	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1->NewBranch1, 4,8);
-	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1->NewBranch1, 4, 9);
-
-
-	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1->NewBranch2, 5, 10);
-	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1->NewBranch2, 5, 11);
-
-	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch2->NewBranch1, 6, 12);
-	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch2->NewBranch1, 6, 13);
-
-	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch2->NewBranch2, 7, 14);
-	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch2->NewBranch2, 7, 15);
 
 
 

@@ -8,13 +8,13 @@
 class WorldMap : public Instance
 {
 public:
-	WorldMap(SystemManager * sm, StateManager * s);
+	WorldMap(SystemManager * sm, StateManager * s, EventListener* listener);
 	~WorldMap();
 
 	void Generate(int width, int height, int chaosFactor);
 	void Load();
 
-	void Update() {};
+	void Update();
 	void Render() {};
 
 private:
@@ -36,5 +36,8 @@ private:
 	//Snow Stuff
 	void ApplySnowDune(std::vector<std::vector<std::string>>* map, int x, int y, int width);
 	void ApplyGlacier(std::vector<std::vector<std::string>>* map, int x, int y, int width);
+
+	EventListener* m_listener;
+	SDL_Point m_randomEncounterLocation;
 };
 #endif
