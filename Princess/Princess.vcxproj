@@ -23,6 +23,7 @@
     <ClCompile Include="External Dependencies\ResourceManager\ResourceManager.cpp" />
     <ClCompile Include="External Dependencies\SimpleJSON\JSON.cpp" />
     <ClCompile Include="External Dependencies\SimpleJSON\JSONValue.cpp" />
+    <ClCompile Include="Pickup.cpp" />
     <ClCompile Include="src\AchievementHandler.cpp" />
     <ClCompile Include="src\AISystem.cpp" />
     <ClCompile Include="src\AttackSystem.cpp" />
@@ -123,6 +124,9 @@
     <ClInclude Include="include\WeaponType.h" />
     <ClInclude Include="include\WorldMap.h" />
     <ClInclude Include="include\WorldTileFactory.h" />
+    <ClInclude Include="Pickup.h" />
+    <ClInclude Include="PickupFactory.h" />
+    <ClInclude Include="CurrencyComponent.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

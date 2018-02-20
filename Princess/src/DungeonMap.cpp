@@ -111,7 +111,7 @@ void DungeonMap::Generate()
 				int randNum = rand() % 5;
 
 				Entity* enemy = nullptr;
-
+											//ADD SOME ITEM SPAWNS AROUND HERE
 				if (randNum == 0) {
 					enemy = enemyFactory.CharA("Demon", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
 				}

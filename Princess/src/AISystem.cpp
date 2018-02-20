@@ -9,7 +9,7 @@ AiSystem::AiSystem()
 
 	//add root node   the very first 'Question' or decision to be made
 	//is monster health greater than player health?
-	m_decisionTree->CreateRootNode(1);
+	//m_decisionTree->CreateRootNode(1);
 
 	//add nodes depending on decisions
 	//2nd decision to be made
