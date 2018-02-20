@@ -10,7 +10,7 @@ Entity* BasicEnemy::CharA(std::string ID, SDL_Point pos, int element)
 	BasicEnemy->AddComponent(new MovementComponent());
 	BasicEnemy->AddComponent(new SeekComponent(-50, -50));
 	BasicEnemy->AddComponent(new WeaponComponent(WeaponType::MELEE));
-	BasicEnemy->AddComponent(new AttributesComponent(5, 5, 10, 10, 100, 100));
+	BasicEnemy->AddComponent(new AttributesComponent(6, 6, 1, 10, 100, 100));
 //	BasicEnemy->AddComponent(new eHPComp());
 
 	int posKey = -1;
@@ -38,7 +38,7 @@ Entity* BasicEnemy::CharB(std::string ID, SDL_Point pos, int element)
 	BasicEnemy->AddComponent(new SeekComponent(-50, -50));
 
 	BasicEnemy->AddComponent(new WeaponComponent(WeaponType::RANGE));
-	BasicEnemy->AddComponent(new AttributesComponent(6, 6, 10, 10, 100, 100));
+	BasicEnemy->AddComponent(new AttributesComponent(5, 5, 1, 1, 100, 100));
 //	BasicEnemy->AddComponent(new eHPComp());
 
 	int posKey = -1;
@@ -66,7 +66,7 @@ Entity* BasicEnemy::CharC(std::string ID, SDL_Point pos, int element)
 	BasicEnemy->AddComponent(new MovementComponent());
 	BasicEnemy->AddComponent(new SeekComponent(-50, -50));
 	BasicEnemy->AddComponent(new WeaponComponent(WeaponType::STAFF));
-	BasicEnemy->AddComponent(new AttributesComponent(7, 7, 10, 10, 100, 100));
+	BasicEnemy->AddComponent(new AttributesComponent(4, 4, 1, 10, 100, 100));
 //	BasicEnemy->AddComponent(new eHPComp());
 
 	return BasicEnemy;
@@ -84,7 +84,7 @@ Entity* BasicEnemy::CharD(std::string ID, SDL_Point pos, int element)
 	BasicEnemy->AddComponent(new MovementComponent());
 	BasicEnemy->AddComponent(new SeekComponent(-50, -50));
 	BasicEnemy->AddComponent(new WeaponComponent(WeaponType::STAFF));
-	BasicEnemy->AddComponent(new AttributesComponent(26, 26, 10, 10, 100, 100));
+	BasicEnemy->AddComponent(new AttributesComponent(3, 3, 1, 10, 100, 100));
 	//	BasicEnemy->AddComponent(new eHPComp());
 
 	return BasicEnemy;

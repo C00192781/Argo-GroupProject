@@ -186,7 +186,7 @@ void CollisionSystem::filterCollisions(int entityIndex, int entityColIndex, int 
 
 			if (m_entities.at(entityIndex)->ID() == "Projectile")
 			{
-				if (m_collidableEntities.at(collidableIndex)->ID() == "Spellcaster Enemy")
+				if (m_collidableEntities.at(collidableIndex)->ID() == "Spellcaster Enemy" || m_collidableEntities.at(collidableIndex)->ID() == "Melee Enemy" || m_collidableEntities.at(collidableIndex)->ID() == "Ranged Enemy")
 				{
 					projectileCollision(entityIndex);
 					spellcasterCollision(collidableIndex);
