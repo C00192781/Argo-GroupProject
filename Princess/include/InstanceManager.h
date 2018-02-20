@@ -1,23 +1,30 @@
-#include "Instance.h"
-#include "StartInstance.h"
+
+#pragma once
+
+#include "WorldMap.h"
 #include "BattleMap.h"
+#include "DungeonMap.h"
+#include "TownInstance.h"
+#include "EventListener.h"
+#include "StartInstance.h"
+#include <vector>
 
 class InstanceManager
 {
 public:
-	InstanceManager(StateManager * stateManager, ResourceManager * resourceManager, InputHandler *input,EventListener * eventListener, SDL_Renderer * sdlr, SystemManager * systemManager);
-	~InstanceManager();
 
-	void Update();
+	InstanceManager(SystemManager * sm, StateManager * s, ResourceManager *rm, EventListener *listener);
 
+	WorldMap *worldMap;
+	BattleMap* battleMap;
+	DungeonMap* dungeonMap;
+	StartInstance* startInstance;
+	std::vector<TownInstance*> townInstance;
+
+	void Update(float deltaTime);
+
+	void Generate(string instanceID);
 private:
-		std::vector<Instance*> m_instances;
-		StateManager * m_stateManager;
-		ResourceManager * m_resourceManager;
-		InputHandler *m_input;
-		EventListener *m_eventListener;
-		SystemManager * m_systemManager;
-		SDL_Renderer * m_sdlr;
-		int activeInstance;
+	EventListener *m_listener;
+	StateManager *m_stateManager;
 };
-

@@ -33,6 +33,7 @@ private:
 	int clickTimer;
 	EventListener * m_eventListener;
 	StateManager * m_states;
+
 };
 
 

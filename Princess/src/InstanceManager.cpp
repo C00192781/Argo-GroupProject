@@ -1,38 +1,90 @@
 #include "InstanceManager.h"
 
-InstanceManager::InstanceManager(StateManager * stateManager, ResourceManager * resourceManager, InputHandler * input, EventListener * eventListener, SDL_Renderer * sdlr, SystemManager * systemManager)
+InstanceManager::InstanceManager(SystemManager * sm, StateManager * s, ResourceManager *rm, EventListener *listener)
 {
-	m_stateManager = stateManager;
-	m_resourceManager = resourceManager;
-	m_input = input;
-	m_eventListener = eventListener;
-	m_sdlr = sdlr;
-	m_systemManager = systemManager;
-	m_instances.push_back(new StartInstance(m_systemManager, m_sdlr, m_stateManager));
-	static_cast<StartInstance*>(m_instances.at(m_instances.size() - 1))->Begin();
-	m_systemManager->renderSystem->Camera(false);
-	activeInstance = 0;
+	m_listener = listener;
+	m_stateManager = s;
+
+	worldMap = new WorldMap(sm, s, listener);
+	battleMap = new BattleMap(sm, s, listener);
+	dungeonMap = new DungeonMap(sm, s, rm, listener);
+	startInstance = new StartInstance(sm, s);
+
+	Generate("Start");
 }
 
-InstanceManager::~InstanceManager()
+void InstanceManager::Update(float deltaTime)
 {
+	if (worldMap->Active())
+	{
+		worldMap->Update();
+	}
+	else if (dungeonMap->Active())
+	{
+		dungeonMap->Update(deltaTime);
+	}
+	else if(startInstance->Active())
+	{
+		startInstance->Update();
+	}
+	else
+	{
+		battleMap->Update(deltaTime);
+	}
 
-}
-
-void InstanceManager::Update()
-{
-	m_instances.at(activeInstance)->Update();
 	if (m_stateManager->StartGame)
 	{
-		if (m_instances.at(0)->ID() == "StartInstance")
-		{
-			static_cast<StartInstance*>(m_instances.at(m_instances.size() - 1))->~StartInstance();
-			m_instances.erase(m_instances.begin());
-		}
-		m_systemManager->renderSystem->Camera(true);
-		m_instances.push_back(new BattleMap(m_systemManager, m_stateManager));
-		activeInstance = (m_instances.size() - 1);
-		static_cast<BattleMap*>(m_instances.at(m_instances.size() - 1))->Generate("Grassland");
+		Generate("World");
+		startInstance->Active(false);
+		worldMap->Active(true);
 		m_stateManager->StartGame = false;
+	}
+	else if (m_listener->WorldToDungeon == true)
+	{
+		Generate("Dungeon");
+		worldMap->Active(false);
+		dungeonMap->Active(true);
+		m_listener->WorldToDungeon = false;
+	}
+	else if (m_listener->WorldToEncounter == true)
+	{
+		Generate("Battle");
+		worldMap->Active(false);
+		battleMap->Active(true);
+		m_listener->WorldToEncounter = false;
+	}
+	else if (m_listener->DungeonToWorld == true)
+	{
+		worldMap->Load();
+		worldMap->Active(true);
+		dungeonMap->Active(false);
+		m_listener->DungeonToWorld = false;
+	}
+	else if (m_listener->EncounterToWorld == true)
+	{
+		worldMap->Load();
+		worldMap->Active(true);
+		battleMap->Active(false);
+		m_listener->EncounterToWorld = false;
+	}
+}
+
+void InstanceManager::Generate(std::string instanceID)
+{
+	if (instanceID == "World")
+	{
+		worldMap->Generate(25, 25, 100);
+	}
+	else if (instanceID == "Dungeon")
+	{
+		dungeonMap->Generate();
+	}
+	else if (instanceID == "Battle")
+	{
+		battleMap->Generate("");
+	}
+	else if (instanceID == "Start")
+	{
+		startInstance->Generate();
 	}
 }

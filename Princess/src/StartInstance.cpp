@@ -1,8 +1,8 @@
 #include "StartInstance.h"
 
-StartInstance::StartInstance(SystemManager * sm, SDL_Renderer * sdlr, StateManager * s)
+StartInstance::StartInstance(SystemManager * sm, StateManager * s)
 {
-	m_id = "StartInstance";
+	m_id = "Start";
 	m_systemManager = sm;
 	m_stateManager = s;
 
@@ -14,8 +14,14 @@ StartInstance::~StartInstance()
 	m_systemManager->menuSystem->RemoveMenu("OptionsMenu");
 }
 
-void StartInstance::Begin()
+void StartInstance::Generate()
 {
+	m_active = true;
+
+	m_systemManager->menuSystem->Active(true);
+	m_systemManager->movementSystem->Active(false);
+	m_systemManager->renderSystem->Camera(false);
+
 	for (int i = 0; i < m_entities.size(); i++)
 	{
 		delete m_entities.at(i);
@@ -70,6 +76,7 @@ void StartInstance::Begin()
 			}
 		}
 	}
+
 }
 
 void StartInstance::Update()
@@ -201,6 +208,12 @@ void StartInstance::Update()
 		}
 		m_stateManager->increaseMusic = false;
 		m_stateManager->decreaseMusic = false;
+	}
+	if (m_stateManager->StartGame)
+	{
+		m_systemManager->renderSystem->Camera(true);
+		m_systemManager->movementSystem->Active(true);
+		m_systemManager->menuSystem->Active(false);
 	}
 }
 

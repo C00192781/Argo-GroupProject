@@ -6,6 +6,7 @@ Quadtree::~Quadtree()
 	{
 		delete nodes.at(i);
 	}
+<<<<<<< HEAD
 	nodes.clear();
 }
 
@@ -18,6 +19,31 @@ void Quadtree::clear()
 
 	objects.clear();
 	nodes.clear();
+}
+
+void Quadtree::split()
+=======
+	nodes.clear();
+}
+
+void Quadtree::clear()
+>>>>>>> master
+{
+	for (int i = 0; i < nodes.size(); i++)
+	{
+		delete nodes.at(i);
+	}
+
+	objects.clear();
+	nodes.clear();
+<<<<<<< HEAD
+
+	nodes.push_back(new Quadtree(level + 1, SDL_Rect{ x + subWidth, y, subWidth, subHeight }));
+	nodes.push_back(new Quadtree(level + 1, SDL_Rect{ x, y, subWidth, subHeight }));
+	nodes.push_back(new Quadtree(level + 1, SDL_Rect{ x, y + subHeight, subWidth, subHeight }));
+	nodes.push_back(new Quadtree(level + 1, SDL_Rect{ x + subWidth, y + subHeight, subWidth, subHeight }));
+=======
+>>>>>>> master
 }
 
 void Quadtree::split()
@@ -35,20 +61,6 @@ void Quadtree::split()
 	nodes.push_back(new Quadtree(level + 1, SDL_Rect{ x + subWidth, y + subHeight, subWidth, subHeight }));
 }
 
-
-void Quadtree::init()
-{
-	int subWidth = (int)(bounds.w / 2);
-	int subHeight = (int)(bounds.h / 2);
-	int x = bounds.x;
-	int y = bounds.y;
-
-	nodes.push_back(new Quadtree(0, SDL_Rect{ x + subWidth, y, subWidth, subHeight }));
-	nodes.push_back(new Quadtree(0, SDL_Rect{ x, y, subWidth, subHeight }));
-	nodes.push_back(new Quadtree(0, SDL_Rect{ x, y + subHeight, subWidth, subHeight }));
-	nodes.push_back(new Quadtree(0, SDL_Rect{ x + subWidth, y + subHeight, subWidth, subHeight }));
-}
-
 /*
 * Determine which node the object belongs to. -1 means
 * object cannot completely fit within a child node and is part
@@ -63,6 +75,43 @@ int Quadtree::getIndex(Entity* entity)
 		if (entity->GetComponents()->at(i)->Type() == "collision")
 		{
 			CollisionComponent* collisionComponent = static_cast<CollisionComponent*>(entity->GetComponents()->at(i));
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> master
+
+			double verticalMidpoint = bounds.x + (bounds.w / 2.0f);
+			double horizontalMidpoint = bounds.y + (bounds.h / 2.0f);
+
+			bool topQuadrant = (collisionComponent->getY() < horizontalMidpoint
+				&& collisionComponent->getY() + collisionComponent->getHeight() < horizontalMidpoint);
+
+			bool bottomQuadrant = (collisionComponent->getY() > horizontalMidpoint);
+
+			if (collisionComponent->getX() < verticalMidpoint &&
+				collisionComponent->getX() + collisionComponent->getWidth() < verticalMidpoint)
+			{
+				if (topQuadrant) {
+					index = 1;
+				}
+				else if (bottomQuadrant) {
+					index = 2;
+				}
+			}
+			else if (collisionComponent->getX() > verticalMidpoint)
+			{
+				if (topQuadrant) {
+					index = 0;
+				}
+				else if (bottomQuadrant) {
+					index = 3;
+				}
+			}
+<<<<<<< HEAD
+
+=======
+			return index;
+=======
 
 			double verticalMidpoint = bounds.x + (bounds.w / 2.0f);
 			double horizontalMidpoint = bounds.y + (bounds.h / 2.0f);
@@ -92,13 +141,25 @@ int Quadtree::getIndex(Entity* entity)
 				}
 			}
 
+>>>>>>> master
 			if (entity->ID() == "Player")
 			{
 				std::cout << level;
 			}
+<<<<<<< HEAD
 		}
 		return index;
 	}
+=======
+>>>>>>> master
+		}
+		return index;
+	}
+<<<<<<< HEAD
+	return index;
+=======
+>>>>>>> master
+>>>>>>> master
 }
 
 /*
@@ -107,20 +168,20 @@ int Quadtree::getIndex(Entity* entity)
 * objects to their corresponding nodes.
 */
 
-void Quadtree::insert(Entity* entities) 
+void Quadtree::insert(Entity* entity) 
 {
 	if (!nodes.empty())
 	{
-		int index = getIndex(entities);
+		int index = getIndex(entity);
 
 
 		if (index != -1) {
-			nodes.at(index)->insert(entities);
+			nodes.at(index)->insert(entity);
 			return;
 		}
 	}
 
-	objects.push_back(entities);
+	objects.push_back(entity);
 
 	if (objects.size() > MAX_OBJECTS && level < MAX_LEVELS) 
 	{
@@ -129,8 +190,11 @@ void Quadtree::insert(Entity* entities)
 			split();
 		}
 
+<<<<<<< HEAD
 		//int i = 0;
 
+=======
+>>>>>>> master
 		for (int i = 0; i < objects.size();)
 		{
 			int index = getIndex(objects.at(i));

@@ -2,11 +2,12 @@
 
 
 
-BattleMap::BattleMap(SystemManager * sm, StateManager * s)
+BattleMap::BattleMap(SystemManager * sm, StateManager * s, EventListener* listener)
 {
 	m_systemManager = sm;
 	m_stateManager = s;
-	m_id = "BattleMap";
+	m_listener = listener;
+	m_timeRemaining = 2;
 }
 
 BattleMap::~BattleMap()
@@ -19,11 +20,20 @@ void BattleMap::Generate(std::string type)
 	{
 		delete m_entities.at(i);
 	}
+
+	for (int i = 0; i < m_enemies.size(); i++)
+	{
+		delete m_enemies.at(i);
+	}
 	m_entities.clear();
+	m_enemies.clear();
 	m_entities.shrink_to_fit();
+	m_enemies.shrink_to_fit();
 	m_systemManager->controlSystem->SelectiveClear();
 	m_systemManager->renderSystem->SelectiveClear();
 	m_systemManager->movementSystem->SelectiveClear();
+	m_systemManager->collisionSystem->SelectiveClear();
+	m_systemManager->aiSystem->SelectiveClear();
 
 	TileFactory * factory;
 
@@ -36,6 +46,7 @@ void BattleMap::Generate(std::string type)
 		factory = new GrassTileFactory();
 	}
 	std::vector<Entity*>* projectileEntities = m_systemManager->attackSystem->getProjectiles();
+	projectileEntities->clear();
 
 	for (int i = 0; i < 17; i++)
 	{
@@ -61,6 +72,45 @@ void BattleMap::Generate(std::string type)
 			m_systemManager->renderSystem->AddEntity(m_entities.back());
 		}
 	}
+
+	int numOfEnemies = (rand() % 10) + 5;
+
+	BasicEnemy enemyFactory;
+
+	for (int i = 0; i < numOfEnemies; i++)
+	{
+		int randNum = rand() % 5;
+
+		Entity* enemy = nullptr;
+
+		if (randNum == 0) {
+			enemy = enemyFactory.CharA("Demon", SDL_Point{ rand() % 816, rand() % 624 }, 0);
+		}
+		else if (randNum == 1)
+		{
+			enemy = enemyFactory.CharB("Demon", SDL_Point{ rand() % 816, rand() % 624 }, 0);
+		}
+		else if (randNum == 2)
+		{
+			enemy = enemyFactory.CharC("Demon", SDL_Point{ rand() % 816, rand() % 624 }, 0);
+		}
+		else if (randNum == 3)
+		{
+			enemy = enemyFactory.CharD("Demon", SDL_Point{ rand() % 816, rand() % 624 }, 0);
+		}
+
+		// chance for spawner to not spawn anything
+		if (enemy != nullptr)
+		{
+			enemy->Active(true);
+
+			m_enemies.push_back(enemy);
+			m_systemManager->renderSystem->AddEntity(enemy);
+			m_systemManager->movementSystem->AddEntity(enemy);
+			m_systemManager->collisionSystem->AddEntity(enemy);
+			m_systemManager->aiSystem->AddEntity(enemy);
+		}
+	}
 	
 	for (int i = 0; i < 100; i++)
 	{
@@ -82,46 +132,71 @@ void BattleMap::Generate(std::string type)
 	}
 
 
-	std::cout << projectileEntities->size() << std::endl;
+	// sets player's position to the start of the dungeon
+	Entity* player = m_systemManager->collisionSystem->FindEntity("Player");
 
-	m_systemManager->aiSystem->Spawn();
 
-	auto aiEntities = m_systemManager->aiSystem->getEntities(); //get and add AI entities to be rendered
-
-	for (auto i = aiEntities.begin(), end = aiEntities.end(); i != end; i++)
+	if (player != nullptr)
 	{
-		m_systemManager->renderSystem->AddEntity((*i));
-		m_systemManager->movementSystem->AddEntity((*i)); //consider tag discrimination here
-		m_systemManager->collisionSystem->AddEntity((*i));
+		CollisionComponent* pos = static_cast<CollisionComponent*>(player->FindComponent("collision"));
+
+		if (pos != nullptr)
+		{
+			pos->setPosition(274, 208);
+		}
 	}
 
-	//HeartManagerComponent* hUI = new HeartManagerComponent(HeartTypes::HEALTH);
-	//player->AddComponent(hUI);
-	//
-	//HeartManagerComponent* aUI = new HeartManagerComponent(HeartTypes::ARMOUR);
-	//player->AddComponent(aUI);
-
-	//m_systemManager->healthSystem->AddEntity(player);
-	//
-	//m_systemManager->healthSystem->UpdateMaxHeartsUI(player, player);
-	//m_systemManager->healthSystem->UpdateMaxArmourUI(player, player);
-
-	//for (int c = 0; c < hUI->HeartsVector()->size(); c++)
-	//{
-	//	m_systemManager->renderSystem->AddEntity(hUI->HeartsVector()->at(c));
-	//}
-	//for (int i = 0; i < aUI->HeartsVector()->size(); i++)
-	//{
-	//	m_systemManager->renderSystem->AddEntity(aUI->HeartsVector()->at(i));
-	//}
+	m_timeRemaining = 2;
+	m_active = true;
 
 	delete factory;
 }
-void BattleMap::Update()
+void BattleMap::Update(float deltaTime)
 {
+	for (int i = 0; i < m_enemies.size();)
+	{
+		if (m_enemies.at(i)->Active() == false)
+		{
+			m_enemies.erase(m_enemies.begin() + i);
+		}
+		else
+		{
+			i++;
+		}
+	}
 
+	if (m_enemies.empty())
+	{
+		m_timeRemaining -= deltaTime;
+
+		if (m_timeRemaining <= 0)
+		{
+			m_listener->EncounterToWorld = true;
+		}
+	}
 }
 void BattleMap::Render()
 {
 
 }
+
+// *** this was at the bottom of generate ***
+//HeartManagerComponent* hUI = new HeartManagerComponent(HeartTypes::HEALTH);
+//player->AddComponent(hUI);
+//
+//HeartManagerComponent* aUI = new HeartManagerComponent(HeartTypes::ARMOUR);
+//player->AddComponent(aUI);
+
+//m_systemManager->healthSystem->AddEntity(player);
+//
+//m_systemManager->healthSystem->UpdateMaxHeartsUI(player, player);
+//m_systemManager->healthSystem->UpdateMaxArmourUI(player, player);
+
+//for (int c = 0; c < hUI->HeartsVector()->size(); c++)
+//{
+//	m_systemManager->renderSystem->AddEntity(hUI->HeartsVector()->at(c));
+//}
+//for (int i = 0; i < aUI->HeartsVector()->size(); i++)
+//{
+//	m_systemManager->renderSystem->AddEntity(aUI->HeartsVector()->at(i));
+//}

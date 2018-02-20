@@ -4,6 +4,7 @@
 #include "Entity.h"
 #include "SpriteComponent.h"
 #include "PositionComponent.h"
+#include "CollisionComponent.h"
 
 class WorldTileFactory
 {

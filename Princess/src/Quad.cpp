@@ -35,20 +35,6 @@ void Quadtree::split()
 	nodes.push_back(new Quadtree(level + 1, SDL_Rect{ x + subWidth, y + subHeight, subWidth, subHeight }));
 }
 
-
-void Quadtree::init()
-{
-	int subWidth = (int)(bounds.w / 2);
-	int subHeight = (int)(bounds.h / 2);
-	int x = bounds.x;
-	int y = bounds.y;
-
-	nodes.push_back(new Quadtree(0, SDL_Rect{ x + subWidth, y, subWidth, subHeight }));
-	nodes.push_back(new Quadtree(0, SDL_Rect{ x, y, subWidth, subHeight }));
-	nodes.push_back(new Quadtree(0, SDL_Rect{ x, y + subHeight, subWidth, subHeight }));
-	nodes.push_back(new Quadtree(0, SDL_Rect{ x + subWidth, y + subHeight, subWidth, subHeight }));
-}
-
 /*
 * Determine which node the object belongs to. -1 means
 * object cannot completely fit within a child node and is part
@@ -92,8 +78,8 @@ int Quadtree::getIndex(Entity* entity)
 				}
 			}
 		}
-		return index;
 	}
+	return index;
 }
 
 /*
@@ -124,8 +110,6 @@ void Quadtree::insert(Entity* entities)
 			split();
 		}
 
-		//int i = 0;
-
 		for (int i = 0; i < objects.size();)
 		{
 			int index = getIndex(objects.at(i));
@@ -149,8 +133,6 @@ void Quadtree::insert(Entity* entities)
 * Return all objects that could collide with the given object
 */
 std::vector<Entity*> Quadtree::retrieve(std::vector<Entity*> &returnObjects, Entity* entity) {
-
-
 	int index = getIndex(entity);
 	if (index != -1 && !nodes.empty())
 	{
@@ -159,11 +141,11 @@ std::vector<Entity*> Quadtree::retrieve(std::vector<Entity*> &returnObjects, Ent
 
 	for (auto i = objects.begin(), e = objects.end(); i != e; i++)
 	{
-		//	auto tempid = (*i)->ID();
-
-
-		returnObjects.push_back(*i);
-		//		returnObjects.push_back(objects);
+		// cuts down for loop checks
+		if (!((*i)->ID() == "Spellcaster Enemy" && entity->ID() == "Spellcaster Enemy") && !((*i)->ID() == "Projectile" && entity->ID() == "Projectile"))
+		{
+			returnObjects.push_back(*i);
+		}
 	}
 
 	return returnObjects;

@@ -34,6 +34,8 @@
     <ClCompile Include="src\ConcreteSubject.cpp" />
     <ClCompile Include="src\ControlSystem.cpp" />
     <ClCompile Include="src\Decisions.cpp" />
+    <ClCompile Include="src\DungeonMap.cpp" />
+    <ClCompile Include="src\DungeonTileFactory.cpp" />
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\GrassTileFactory.cpp" />
     <ClCompile Include="src\HealthSystem.cpp" />
@@ -82,6 +84,9 @@
     <ClInclude Include="include\ControlComponent.h" />
     <ClInclude Include="include\ControlSystem.h" />
     <ClInclude Include="include\DecisionTree.h" />
+    <ClInclude Include="include\eHPComp.h" />
+    <ClInclude Include="include\DungeonMap.h" />
+    <ClInclude Include="include\DungeonTileFactory.h" />
     <ClInclude Include="include\Entity.h" />
     <ClInclude Include="include\EventListener.h" />
     <ClInclude Include="include\Factory.h" />

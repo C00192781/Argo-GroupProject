@@ -4,12 +4,14 @@ Entity* BasicEnemy::CharA(std::string ID, SDL_Point pos, int element)
 {
 	Entity *BasicEnemy = new Entity("Melee Enemy");
 	BasicEnemy->AddComponent(new AiLogicComponent);
-	BasicEnemy->AddComponent(new SpriteComponent(ID, 0, 0, 0, 0, 16, 16, 0)); ////sprite id 
+	BasicEnemy->AddComponent(new SpriteComponent(ID, 2, 0, 0, 0, 16, 16, 0)); ////sprite id 
+	BasicEnemy->AddComponent(new CollisionComponent(pos.x, pos.y, 16, 16, 2));
 	BasicEnemy->AddComponent(new PositionComponent(pos));
-	BasicEnemy->AddComponent(new MovementComponent(100));
+	BasicEnemy->AddComponent(new MovementComponent());
 	BasicEnemy->AddComponent(new SeekComponent(-50, -50));
-	BasicEnemy->AddComponent(new AttackComponent(100, 1, 1));
-	BasicEnemy->AddComponent(new AttributesComponent());
+	BasicEnemy->AddComponent(new WeaponComponent(WeaponType::MELEE));
+	BasicEnemy->AddComponent(new AttributesComponent(6, 6, 1, 10, 100, 100));
+//	BasicEnemy->AddComponent(new eHPComp());
 
 	int posKey = -1;
 	for (int i = 0; i < BasicEnemy->GetComponents()->size(); i++)
@@ -21,6 +23,7 @@ Entity* BasicEnemy::CharA(std::string ID, SDL_Point pos, int element)
 	}
 	static_cast<PositionComponent*>(BasicEnemy->GetComponents()->at(posKey))->setPosition(pos.x, pos.y);
 
+
 	return BasicEnemy;
 }
 
@@ -28,12 +31,15 @@ Entity* BasicEnemy::CharB(std::string ID, SDL_Point pos, int element)
 {
 	Entity *BasicEnemy = new Entity("Ranged Enemy");
 	BasicEnemy->AddComponent(new AiLogicComponent);
-	BasicEnemy->AddComponent(new SpriteComponent(ID, 0, 0, 0, 0, 16, 16, 0)); ////sprite id 
+	BasicEnemy->AddComponent(new SpriteComponent(ID, 2, 0, 0, 0, 16, 16, 0)); ////sprite id 
+	BasicEnemy->AddComponent(new CollisionComponent(pos.x, pos.y, 16, 16, 2));
 	BasicEnemy->AddComponent(new PositionComponent(pos));
-	BasicEnemy->AddComponent(new MovementComponent(100));
+	BasicEnemy->AddComponent(new MovementComponent());
 	BasicEnemy->AddComponent(new SeekComponent(-50, -50));
-	BasicEnemy->AddComponent(new AttackComponent(100, 1, 1));
-	BasicEnemy->AddComponent(new AttributesComponent());
+
+	BasicEnemy->AddComponent(new WeaponComponent(WeaponType::RANGE));
+	BasicEnemy->AddComponent(new AttributesComponent(5, 5, 1, 1, 100, 100));
+//	BasicEnemy->AddComponent(new eHPComp());
 
 	int posKey = -1;
 	for (int i = 0; i < BasicEnemy->GetComponents()->size(); i++)
@@ -54,23 +60,14 @@ Entity* BasicEnemy::CharC(std::string ID, SDL_Point pos, int element)
 {
 	Entity *BasicEnemy = new Entity("Spellcaster Enemy");
 	BasicEnemy->AddComponent(new AiLogicComponent);
-	BasicEnemy->AddComponent(new SpriteComponent(ID, 0, 0, 0, 0, 16, 16, 0)); ////sprite id 
+	BasicEnemy->AddComponent(new SpriteComponent(ID, 2, 0, 0, 0, 16, 16, 0)); ////sprite id 
 	BasicEnemy->AddComponent(new CollisionComponent(pos.x, pos.y, 16, 16, 2));
 	BasicEnemy->AddComponent(new PositionComponent(pos));
 	BasicEnemy->AddComponent(new MovementComponent());
 	BasicEnemy->AddComponent(new SeekComponent(-50, -50));
-	BasicEnemy->AddComponent(new AttackComponent(100, 1, 1));
-	BasicEnemy->AddComponent(new AttributesComponent(26, 26, 10, 10, 100, 100));
-
-	int posKey = -1;
-	for (int i = 0; i < BasicEnemy->GetComponents()->size(); i++)
-	{
-		if (BasicEnemy->GetComponents()->at(i)->Type() == "PC")
-		{
-			posKey = i;
-		}
-	}
-	static_cast<PositionComponent*>(BasicEnemy->GetComponents()->at(posKey))->setPosition(pos.x, pos.y);
+	BasicEnemy->AddComponent(new WeaponComponent(WeaponType::STAFF));
+	BasicEnemy->AddComponent(new AttributesComponent(4, 4, 1, 10, 100, 100));
+//	BasicEnemy->AddComponent(new eHPComp());
 
 	return BasicEnemy;
 }
@@ -79,24 +76,16 @@ Entity* BasicEnemy::CharC(std::string ID, SDL_Point pos, int element)
 
 Entity* BasicEnemy::CharD(std::string ID, SDL_Point pos, int element)
 {
-	Entity *BasicEnemy = new Entity("Basic Enemy");
+	Entity *BasicEnemy = new Entity("Spellcaster Enemy");
 	BasicEnemy->AddComponent(new AiLogicComponent);
-	BasicEnemy->AddComponent(new SpriteComponent(ID, 0, 0, 0, 0, 16, 16, 0)); ////sprite id 
+	BasicEnemy->AddComponent(new SpriteComponent(ID, 2, 0, 0, 0, 16, 16, 0)); ////sprite id 
+	BasicEnemy->AddComponent(new CollisionComponent(pos.x, pos.y, 16, 16, 2));
 	BasicEnemy->AddComponent(new PositionComponent(pos));
-	BasicEnemy->AddComponent(new MovementComponent(100));
+	BasicEnemy->AddComponent(new MovementComponent());
 	BasicEnemy->AddComponent(new SeekComponent(-50, -50));
-	BasicEnemy->AddComponent(new AttackComponent(100, 1, 1));
-	BasicEnemy->AddComponent(new AttributesComponent());
-
-	int posKey = -1;
-	for (int i = 0; i < BasicEnemy->GetComponents()->size(); i++)
-	{
-		if (BasicEnemy->GetComponents()->at(i)->Type() == "PC")
-		{
-			posKey = i;
-		}
-	}
-	static_cast<PositionComponent*>(BasicEnemy->GetComponents()->at(posKey))->setPosition(pos.x, pos.y);
+	BasicEnemy->AddComponent(new WeaponComponent(WeaponType::STAFF));
+	BasicEnemy->AddComponent(new AttributesComponent(3, 3, 1, 10, 100, 100));
+	//	BasicEnemy->AddComponent(new eHPComp());
 
 	return BasicEnemy;
 }

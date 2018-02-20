@@ -27,8 +27,10 @@
 #include "InstanceManager.h"
 #include "LTimer.h"
 #include "WorldMap.h"
+#include "DungeonMap.h"
 #include "TownInstance.h"
 #include "MenuSystem.h"
+#include "InstanceManager.h"
 #include "AchievementHandler.h"
 #include "SoundComponent.h"
 #include "SoundSystem.h"
@@ -40,12 +42,6 @@ int main()
 	SDL_Window* gameWindow = SDL_CreateWindow("TEST", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 816, 624, SDL_WINDOW_SHOWN);
 	SDL_Renderer* gameRenderer = SDL_CreateRenderer(gameWindow, -1, SDL_RENDERER_PRESENTVSYNC);
 	SDL_Event *e = new SDL_Event();
-	unsigned int lastTime = 0;
-	float deltaTime = 0;
-	unsigned int currentTime = 0;
-	srand(time(NULL));
-
-	bool debug = false;
 
 	bool running = true;
 
@@ -58,7 +54,18 @@ int main()
 		Mix_VolumeMusic(MIX_MAX_VOLUME);
 	}
 
-	const int SCREEN_FPS = 500;
+
+	unsigned int lastTime = 0;
+	float deltaTime = 0;
+	unsigned int currentTime = 0;
+	srand(time(NULL));
+
+	bool debug = false;
+
+	srand(time(NULL));
+
+	const int SCREEN_FPS = 800;
+
 	const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
 
 	//Set text color as black
@@ -103,7 +110,7 @@ int main()
 	resourceManager->AddTexture("Achievement", "PlaceholderAchievement.png");
 	resourceManager->AddTexture("Achievement2", "PlaceholderAchievement2.png");
 	
-	resourceManager->AddMusic("Test", "test.wav");
+	resourceManager->AddMusic("Test", "kevin.mp3");
 	resourceManager->AddSound("Scream", "test.wav");
 	resourceManager->AddSound("Placeholder", "placeholder.wav");
 	
@@ -115,7 +122,7 @@ int main()
 
 	InputHandler *input = new InputHandler(listener, e);
 
-	StateManager state;
+	StateManager state = StateManager();
 
 	std::vector<Entity*>* projectiles = new std::vector<Entity*>;
 
@@ -142,7 +149,7 @@ int main()
 	systemManager.projectileSystem = new ProjectileSystem();
 	systemManager.projectileSystem->Active(true);
 
-	systemManager.collisionSystem = new CollisionSystem();
+	systemManager.collisionSystem = new CollisionSystem(listener);
 	systemManager.collisionSystem->Active(true);
 
 	systemManager.aiSystem = new AiSystem();
@@ -156,47 +163,75 @@ int main()
 
 	systemManager.buttonSystem = new ButtonSystem(listener);
 	systemManager.buttonSystem->Active(true);
-
+	
 	systemManager.soundSystem = new SoundSystem(resourceManager);
 	systemManager.soundSystem->Active(true);
 
-	InstanceManager instanceManager = InstanceManager(&state, resourceManager, input, listener,gameRenderer,&systemManager);
 
-	//BattleMap map1 = BattleMap(&systemManager, gameRenderer, &state);
-	//map1.Generate("Grassland");
-
-	//systemManager.menuSystem->SetUpMainMenu();
-	//systemManager.menuSystem->SetUpOptionsMenu();
-	//systemManager.menuSystem->ChangeMenu("OptionsMenu");
-	//for (int i = 0; i < systemManager.menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->size(); i++)
-	//{
-	//	systemManager.RenderSystem->AddEntity(systemManager.menuSystem->GetMenuComponent("OptionsMenu")->Buttons()->at(i));
-	//}
-
-	
-	systemManager.buttonSystem = new ButtonSystem(listener);
-	systemManager.buttonSystem->Active(true);
 
 	Entity * player = new Entity("Player");
 	player->Active(true);
-	player->AddComponent(new SpriteComponent("Red", 3, 1, 0, 0, 16, 16, 0));
-	player->AddComponent(new PositionComponent(SDL_Point{ 0, 0 }));
-	player->AddComponent(new AttributesComponent(26, 26, 10, 10, 100, 100));
+	player->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
+	player->AddComponent(new PositionComponent(SDL_Point{ 500, 380 }));
+	player->AddComponent(new AttributesComponent(3, 3, 1, 10, 200, 200));
 	player->AddComponent(new MovementComponent());
 	player->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
-	player->AddComponent(new SoundComponent("Scream", "play", true, 1, 5, 50));
+	player->AddComponent(new SeekComponent());
+	//player->AddComponent(new AttackComponent(100, 1, 1));
+	player->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
+	player->AddComponent(new SeekComponent()); //and this if AI is to control that player
+	
+	player->AddComponent(new SoundComponent("Scream", "play", false, 1, 30, 50));
 	//player->AddComponent(new SoundComponent("Placeholder", "play", true, 0, 0, 80));
 	player->AddComponent(new MusicComponent("Test", "play", true, 0, 100));
 	player->Transient(true);
+	//player->Control(true);
 
-	systemManager.controlSystem->AddEntity(player);
+	Entity * player2 = new Entity("Player");
+	player2->Active(true);
+
+	player2->AddComponent(new SpriteComponent("Red", 3, 1, 0, 0, 16, 16, 0));
+	player2->AddComponent(new PositionComponent(SDL_Point{ 100, 100 }));
+	player2->AddComponent(new AttributesComponent(5, 5, 1, 10, 100, 100));
+	player2->AddComponent(new MovementComponent());
+	player2->AddComponent(new WeaponComponent(WeaponType::RANGE));
+	player2->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
+	//player2->AddComponent(new AttackComponent(100, 1, 1));
+//	player2->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
+	//player2->AddComponent(new SeekComponent()); //and this if AI is to control that player
+	player2->Transient(true);
+	player2->Control(true); //enable only if the client controlled player
+
+
+	systemManager.movementSystem->AddEntity(player2);
+	systemManager.renderSystem->AddEntity(player2);
+	systemManager.projectileSystem->AddEntity(player2);
+	systemManager.collisionSystem->AddEntity(player2);
+	systemManager.attackSystem->AddEntity(player2);
+
+	
 	systemManager.movementSystem->AddEntity(player);
 	systemManager.renderSystem->AddEntity(player);
 	systemManager.projectileSystem->AddEntity(player);
 	systemManager.collisionSystem->AddEntity(player);
 	systemManager.attackSystem->AddEntity(player);
-	systemManager.soundSystem->AddEntity(player);
+
+
+	if (player->Control())
+	{
+		systemManager.controlSystem->AddEntity(player);
+	}
+	else if (player2->Control())
+	{
+		systemManager.controlSystem->AddEntity(player2);
+	}
+
+
+	std::vector<Entity*> playerEntities;
+	playerEntities.push_back(player);
+	playerEntities.push_back(player2);
+
 
 
 	//TownInstance t = TownInstance(&systemManager);
@@ -205,10 +240,11 @@ int main()
 	//WorldMap* m = new WorldMap(&systemManager, &state);
 	//m->Generate(25, 25, 100);
 
+	systemManager.soundSystem->AddEntity(player); //local client player only?
+
 	AchievementHandler *achievements = new AchievementHandler(&systemManager);
 
-	//BattleMap* b = new BattleMap(&systemManager, &state);
-	//b->Generate("");
+	InstanceManager instanceManager(&systemManager, &state, resourceManager, listener);
 
 	while (state.ExitGame == false)
 	{
@@ -249,8 +285,9 @@ int main()
 			SDL_SetRenderDrawColor(gameRenderer, 0, 0, 0, 0);
 			SDL_RenderClear(gameRenderer);
 
-			systemManager.Update(deltaTime);
-			instanceManager.Update();
+			systemManager.Update(deltaTime, playerEntities);
+			instanceManager.Update(deltaTime);
+		//	systemManager.Update(deltaTime);
 
 			SDL_RenderPresent(gameRenderer);
 		}

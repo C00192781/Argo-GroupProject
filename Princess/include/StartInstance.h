@@ -3,9 +3,9 @@
 class StartInstance : public Instance
 {
 public:
-	StartInstance(SystemManager * sm, SDL_Renderer * sdlr, StateManager * s);
+	StartInstance(SystemManager * sm, StateManager * s);
 	~StartInstance();
-	void Begin();
+	void Generate();
 	void Update();
 private:
 
