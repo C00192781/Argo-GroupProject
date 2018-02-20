@@ -23,6 +23,7 @@
     <ClCompile Include="External Dependencies\ResourceManager\ResourceManager.cpp" />
     <ClCompile Include="External Dependencies\SimpleJSON\JSON.cpp" />
     <ClCompile Include="External Dependencies\SimpleJSON\JSONValue.cpp" />
+    <ClCompile Include="Packet.cpp" />
     <ClCompile Include="src\AchievementHandler.cpp" />
     <ClCompile Include="src\AISystem.cpp" />
     <ClCompile Include="src\AttackSystem.cpp" />
@@ -59,6 +60,7 @@
     <ClCompile Include="src\WorldTileFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Client.h" />
     <ClInclude Include="External Dependencies\ResourceManager\JSONReader.h" />
     <ClInclude Include="External Dependencies\ResourceManager\ResourceManager.h" />
     <ClInclude Include="External Dependencies\SimpleJSON\JSON.h" />
@@ -123,6 +125,7 @@
     <ClInclude Include="include\WeaponType.h" />
     <ClInclude Include="include\WorldMap.h" />
     <ClInclude Include="include\WorldTileFactory.h" />
+    <ClInclude Include="Packet.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -192,7 +195,7 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)src;$(SolutionDir)External Dependencies\SDL2\lib\x64;$(SolutionDir)External Dependencies\ResourceManager;$(SolutionDir)External Dependencies\SimpleJSON</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;SDL2_net.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

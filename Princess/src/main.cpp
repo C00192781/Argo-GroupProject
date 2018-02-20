@@ -1,37 +1,13 @@
 #define SDL_MAIN_HANDLED
 
-#include <iostream>
-#include <time.h>
-#include "Quad.h"
-#include "ResourceManager.h"
-#include "Entity.h"
-#include "EventListener.h"
-#include "BattleMap.h"
-#include "StateManager.h"
-#include "PositionComponent.h"
-#include "SpriteComponent.h"
-#include "ProjectileSystem.h"
-#include "ProjectileComponent.h"
-#include "CollisionComponent.h"
-#include "CollisionSystem.h"
-#include "AttributesComponent.h"
-#include "TextComponent.h"
-#include "TextRenderSystem.h"
-#include "ButtonComponent.h"
-#include "HealthSystem.h"
-#include "HeartComponent.h"
-#include "AISystem.h"
-#include "Princess.h"
-#include <chrono>
-#include "SystemManager.h"
-#include "LTimer.h"
-#include "WorldMap.h"
-#include "DungeonMap.h"
-#include "TownInstance.h"
 #include "InstanceManager.h"
+#include "SystemManager.h"
+#include "StateManager.h"
+#include "ResourceManager.h"
+#include "LTimer.h"
 #include "AchievementHandler.h"
-#include "SoundComponent.h"
-#include "SoundSystem.h"
+#include <chrono>
+#include <time.h>
 
 int main()
 {
@@ -107,42 +83,6 @@ int main()
 
 	SystemManager systemManager(resourceManager, gameRenderer, listener, projectiles);
 
-	systemManager.controlSystem = new ControlSystem(listener);
-	systemManager.controlSystem->Active(true);
-
-	systemManager.movementSystem = new MovementSystem(816, 624);
-	systemManager.movementSystem->Active(true);
-
-	systemManager.renderSystem = new RenderSystem(resourceManager, gameRenderer);
-	systemManager.renderSystem->Active(true);
-	systemManager.renderSystem->SetScale(3);
-	systemManager.renderSystem->Camera(true);
-	systemManager.renderSystem->Camera(816, 624);
-
-	systemManager.textRenderSystem = new TextRenderSystem(resourceManager, gameRenderer);
-	systemManager.textRenderSystem->Active(true);
-
-	systemManager.attackSystem = new AttackSystem(projectiles);
-	systemManager.attackSystem->Active(true);
-
-	systemManager.projectileSystem = new ProjectileSystem();
-	systemManager.projectileSystem->Active(true);
-
-	systemManager.collisionSystem = new CollisionSystem(listener);
-	systemManager.collisionSystem->Active(true);
-
-	systemManager.aiSystem = new AiSystem();
-	systemManager.aiSystem->Active(true);
-
-	systemManager.healthSystem = new HealthSystem();
-	systemManager.healthSystem->Active(true);
-
-	systemManager.buttonSystem = new ButtonSystem(listener);
-	systemManager.buttonSystem->Active(true);
-	
-	systemManager.soundSystem = new SoundSystem(resourceManager);
-	systemManager.soundSystem->Active(true);
-
 	InstanceManager instanceManager(&systemManager, &state, resourceManager, listener);
 
 	Entity * player = new Entity("Player");
@@ -161,7 +101,6 @@ int main()
 	systemManager.controlSystem->AddEntity(player);
 	systemManager.movementSystem->AddEntity(player);
 	systemManager.renderSystem->AddEntity(player);
-	systemManager.projectileSystem->AddEntity(player);
 	systemManager.collisionSystem->AddEntity(player);
 	systemManager.attackSystem->AddEntity(player);
 	systemManager.soundSystem->AddEntity(player);

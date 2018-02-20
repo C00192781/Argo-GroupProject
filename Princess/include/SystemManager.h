@@ -1,30 +1,44 @@
 #ifndef _SYSTEMMANAGER_H
 #define _SYSTEMMANAGER_H
 
-#include "ResourceManager.h"
-#include "renderSystem.h"
-#include "ControlSystem.h"
+#include <iostream>
+
 #include "MovementSystem.h"
-#include "AttackSystem.h"
-#include "ProjectileSystem.h"
-#include "CollisionSystem.h"
-#include "AISystem.h"
-#include "CollisionSystem.h"
-#include "HealthSystem.h"
+#include "RenderSystem.h"
+#include "ControlSystem.h"
 #include "ButtonSystem.h"
-#include "TextRenderSystem.h"
-#include "PositionComponent.h"
-#include "SpriteComponent.h"
-#include "ProjectileComponent.h"
-#include "ProjectileSystem.h"
+#include "AttackSystem.h"
 #include "CollisionSystem.h"
-#include "AttributesComponent.h"
-#include "HeartManagerComponent.h"
 #include "AISystem.h"
-#include "CollisionSystem.h"
-#include "HealthSystem.h"
-#include "SoundComponent.h"
 #include "SoundSystem.h"
+#include "HealthSystem.h"
+#include "TextRenderSystem.h"
+
+//#include "Quad.h"
+//#include "Entity.h"
+//#include "EventListener.h"
+//#include "BattleMap.h"
+//#include "PositionComponent.h"
+//#include "SpriteComponent.h"
+//#include "ProjectileSystem.h"
+//#include "ProjectileComponent.h"
+//#include "CollisionComponent.h"
+
+//#include "AttributesComponent.h"
+//#include "TextComponent.h"
+
+//#include "ButtonComponent.h"
+
+//#include "HeartComponent.h"
+
+//#include "Princess.h"
+
+//#include "LTimer.h"
+//#include "WorldMap.h"
+//#include "DungeonMap.h"
+//#include "TownInstance.h"
+//#include "AchievementHandler.h"
+
 
 class SystemManager
 {
@@ -37,7 +51,6 @@ public:
 	ControlSystem *  controlSystem;
 	AttackSystem* attackSystem;
 	CollisionSystem *collisionSystem;
-	ProjectileSystem * projectileSystem;
 	HealthSystem * healthSystem;
 	AiSystem * aiSystem;
 	ButtonSystem * buttonSystem;
@@ -53,7 +66,6 @@ private:
 	//ControlSystem *  ControlSystem;
 
 	void Update();
-
 };
 #endif
 
