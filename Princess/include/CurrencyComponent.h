@@ -8,7 +8,7 @@ public:
 	CurrencyComponent()
 	{
 		m_type = "currency";
-		m_value = 1;
+		m_value = 0;
 	};
 
 	CurrencyComponent(int value)
@@ -19,7 +19,7 @@ public:
 
 	~CurrencyComponent() {};
 
-
+	int value() { return m_value; }
 	void value(int x) { m_value = x; }
 private:
 	int m_value = 0;

@@ -182,6 +182,10 @@ void CollisionSystem::filterCollisions(int entityIndex, int entityColIndex, int 
 						m_currentDungeon = m_collidableEntities.at(collidableIndex);
 					}
 				}
+				else if (m_collidableEntities.at(collidableIndex)->ID() == "Chocolate")
+				{
+					pickupCollision(collidableIndex); //I THINK
+				}
 			}
 
 			if (m_entities.at(entityIndex)->ID() == "Projectile")
@@ -233,5 +237,30 @@ void CollisionSystem::spellcasterCollision(int index)
 		}
 	}
 		/*auto tar = m_entities.at(j)->FindComponent("PC");
+	tarX = static_cast<PositionComponent*>(tar)->getX();*/
+}
+
+
+
+void CollisionSystem::pickupCollision(int index)
+{
+	std::cout << "OH YEESSSS" << std::endl;
+
+
+	auto valueComp = m_collidableEntities.at(index)->FindComponent("currency");
+
+	if (valueComp != nullptr)
+	{
+
+
+		//auto temp = m_collidableEntities.at(index)->FindComponent("eHP");
+	//	auto temp = static_cast<CurrencyComponent*>(valueComp)->value(static_cast<CurrencyComponent*>(valueComp)->value() + (static_cast<CurrencyComponent*>(valueComp)->value()));
+
+
+		m_collidableEntities.at(index)->Active(false);
+
+
+	}
+	/*auto tar = m_entities.at(j)->FindComponent("PC");
 	tarX = static_cast<PositionComponent*>(tar)->getX();*/
 }

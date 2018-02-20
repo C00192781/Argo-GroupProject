@@ -3,7 +3,7 @@
 #include "Instance.h"
 #include "DungeonTileFactory.h"
 #include "BasicEnemy.h"
-
+#include "Pickup.h"
 class DungeonMap : public Instance
 {
 public:
@@ -20,5 +20,6 @@ private:
 	EventListener *m_listener;
 	SDL_Point m_startPoint;
 	std::vector<Entity*> m_enemies; // points to the enemies in collision system
+	std::vector<Entity*> m_pickups; // points to the pickups in collision system
 	float m_timeRemaining;
 };
