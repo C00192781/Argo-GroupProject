@@ -25,7 +25,7 @@ void TextRenderSystem::Update()
 	{
 		surface = TTF_RenderText_Blended_Wrapped(m_resources->GetFont(m_textComponents.at(i)->FontID()), m_textComponents.at(i)->Text().c_str(), m_textComponents.at(i)->Color(), m_textComponents.at(i)->Width());
 		texture = SDL_CreateTextureFromSurface(m_renderer, surface);
-		rect = SDL_Rect{ (int)m_positionComponents.at(i)->getX()+8, (int)m_positionComponents.at(i)->getY(),  surface->w, surface->h};
+		rect = SDL_Rect{ (int)m_positionComponents.at(i)->getX() + 8, (int)m_positionComponents.at(i)->getY(),  surface->w, surface->h};
 
 		SDL_RenderCopy(m_renderer, texture, NULL, &rect);
 

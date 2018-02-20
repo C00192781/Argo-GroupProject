@@ -39,7 +39,7 @@ public:
 	AiSystem * aiSystem;
 	ButtonSystem * buttonSystem;
 	TextRenderSystem * textRenderSystem;
-	HealthSystem * h;
+
 
 	void Update(float deltaTime);
 

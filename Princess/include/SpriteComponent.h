@@ -46,12 +46,6 @@ public:
 	void Height(int height) { m_height = height; };
 	int Height() { return m_height; };
 
-	void SheetX(int x) { m_sheetX = x; };
-	int SheetX() { return m_sheetX; };
-
-	void SheetY(int x) { m_sheetY = x; };
-	int SheetY() { return m_sheetY; };
-
 	void Layer(int x) { m_layer = x; };
 	int Layer() { return m_layer; }
 

@@ -26,6 +26,9 @@
     <ClCompile Include="External Dependencies\SimpleJSON\JSONValue.cpp">
       <Filter>ExternalResourceManager</Filter>
     </ClCompile>
+    <ClCompile Include="src\AchievementHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\AISystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -44,7 +47,16 @@
     <ClCompile Include="src\CollisionSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\ConcreteObserver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ConcreteSubject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\ControlSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Decisions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Entity.cpp">
@@ -80,6 +92,9 @@
     <ClCompile Include="src\RenderSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Subject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\System.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -90,6 +105,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\TownInstance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TreeNodes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\WorldMap.cpp">
@@ -114,6 +132,9 @@
     </ClInclude>
     <ClInclude Include="External Dependencies\SimpleJSON\JSONValue.h">
       <Filter>ExternalResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AchievementHandler.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\AiLogicComponent.h">
       <Filter>Header Files</Filter>
@@ -154,10 +175,19 @@
     <ClInclude Include="include\Component.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\ConcreteObserver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ConcreteSubject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="include\ControlComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\ControlSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DecisionTree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Entity.h">
@@ -175,12 +205,6 @@
     <ClInclude Include="include\HealthSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\HeartComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\HeartManagerComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\InputHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -194,6 +218,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\MovementSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Observer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\PositionComponent.h">
@@ -226,6 +253,9 @@
     <ClInclude Include="include\stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Subject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="include\System.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -244,6 +274,9 @@
     <ClInclude Include="include\TownInstance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\TreeNodes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="include\WeaponComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -256,7 +289,10 @@
     <ClInclude Include="include\WorldTileFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\ValueComponent.h">
+    <ClInclude Include="include\nlohmann\json.hpp">
+      <Filter>ExternalResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GoldComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\ShopInstance.h">

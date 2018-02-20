@@ -3,18 +3,12 @@
 CollisionSystem::CollisionSystem()
 {
 	m_quadtree = new Quadtree(0, SDL_Rect{ 0, 0, 812, 624 });
-	m_entities.push_back(new Entity("Null"));
-	delete m_entities.back();
-	m_entities.clear();
 }
 
 CollisionSystem::CollisionSystem(SDL_Rect bounds)
 {
 	m_bounds = bounds;
 	m_quadtree = new Quadtree(0, m_bounds);
-	m_entities.push_back(new Entity("Null"));
-	delete m_entities.back();
-	m_entities.clear();
 }
 
 CollisionSystem::~CollisionSystem()
@@ -56,7 +50,6 @@ void CollisionSystem::UnloadComponent(int x)
 void CollisionSystem::Update()
 {
 	m_quadtree->clear();
-	m_quadtree->init();
 
 	for (int i = 0; i < m_entities.size(); i++)
 	{
@@ -116,25 +109,25 @@ void CollisionSystem::Update()
 
 void CollisionSystem::filterCollisions(int entityIndex, int entityColIndex, int collidableIndex, int collidableColIndex)
 {
-	SDL_Rect rectEntity = { static_cast<CollisionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(entityColIndex))->getX(),
-		static_cast<CollisionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(entityColIndex))->getY(),
-		static_cast<CollisionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(entityColIndex))->getWidth(),
-		static_cast<CollisionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(entityColIndex))->getHeight() };
+	CollisionComponent* entityCol;
+	CollisionComponent* collidableCol;
 
-	SDL_Rect rectCollidable = { static_cast<CollisionComponent*>(m_collidableEntities.at(collidableIndex)->GetComponents()->at(collidableColIndex))->getX(),
-		static_cast<CollisionComponent*>(m_collidableEntities.at(collidableIndex)->GetComponents()->at(collidableColIndex))->getY(),
-		static_cast<CollisionComponent*>(m_collidableEntities.at(collidableIndex)->GetComponents()->at(collidableColIndex))->getWidth(),
-		static_cast<CollisionComponent*>(m_collidableEntities.at(collidableIndex)->GetComponents()->at(collidableColIndex))->getHeight() };
+	entityCol = static_cast<CollisionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(entityColIndex));
+	collidableCol = static_cast<CollisionComponent*>(m_collidableEntities.at(collidableIndex)->GetComponents()->at(collidableColIndex));
+
+	SDL_Rect rectEntity = { entityCol->getX(), entityCol->getY(), entityCol->getWidth(), entityCol->getHeight() };
+
+	SDL_Rect rectCollidable = { collidableCol->getX(), collidableCol->getY(), collidableCol->getWidth(), collidableCol->getHeight() };
 
 	SDL_Rect holder{ 0, 0, 0, 0 };
 
 	if (SDL_IntersectRect(&rectEntity, &rectCollidable, &holder))
 	{
-		if (m_entities.at(entityIndex)->ID() == "Spellcaster Enemy")
+		if (m_entities.at(entityIndex)->ID() == "Projectile")
 		{
-			if (m_collidableEntities.at(collidableIndex)->ID() == "Projectile")
+			if (m_collidableEntities.at(collidableIndex)->ID() == "Spellcaster Enemy")
 			{
-				projectileCollision(collidableIndex);
+				projectileCollision(entityIndex);
 				spellcasterCollision(entityIndex);
 			}
 		}
@@ -150,19 +143,16 @@ void CollisionSystem::projectileCollision(int index)
 	// find projectile component in collidable
 	// set ttl to 0
 
-
-
-	//for (int i = 0; i < m_collidableEntities.at(index)->GetComponents()->size(); i++)
-	//{
-	//	if (m_collidableEntities.at(index)->GetComponents()->at(i)->Type() == "PJ")
-	//	{
-	//		static_cast<ProjectileComponent*>(m_collidableEntities.at(index)->GetComponents()->at(i))->setTimeToLive(0);
-	//		std::cout << "DE WEI" << std::endl;
-	//	}
-	//}
+	for (int i = 0; i < m_entities.at(index)->GetComponents()->size(); i++)
+	{
+		if (m_entities.at(index)->GetComponents()->at(i)->Type() == "PJ")
+		{
+			static_cast<ProjectileComponent*>(m_entities.at(index)->GetComponents()->at(i))->setTimeToLive(0);
+		}
+	}
 }
 
 void CollisionSystem::spellcasterCollision(int index)
 {
-	//std::cout << "OH NO" << std::endl;
+	std::cout << "OH NO" << std::endl;
 }
