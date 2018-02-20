@@ -23,7 +23,6 @@
     <ClCompile Include="External Dependencies\ResourceManager\ResourceManager.cpp" />
     <ClCompile Include="External Dependencies\SimpleJSON\JSON.cpp" />
     <ClCompile Include="External Dependencies\SimpleJSON\JSONValue.cpp" />
-    <ClCompile Include="Pickup.cpp" />
     <ClCompile Include="src\AchievementHandler.cpp" />
     <ClCompile Include="src\AISystem.cpp" />
     <ClCompile Include="src\AttackSystem.cpp" />
@@ -45,6 +44,7 @@
     <ClCompile Include="src\LTimer.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MovementSystem.cpp" />
+    <ClCompile Include="src\Pickup.cpp" />
     <ClCompile Include="src\Princess.cpp" />
     <ClCompile Include="src\ProjectileSystem.cpp" />
     <ClCompile Include="src\Quad.cpp" />
@@ -82,6 +82,7 @@
     <ClInclude Include="include\ConcreteSubject.h" />
     <ClInclude Include="include\ControlComponent.h" />
     <ClInclude Include="include\ControlSystem.h" />
+    <ClInclude Include="include\CurrencyComponent.h" />
     <ClInclude Include="include\DecisionTree.h" />
     <ClInclude Include="include\DungeonMap.h" />
     <ClInclude Include="include\DungeonTileFactory.h" />
@@ -100,6 +101,8 @@
     <ClInclude Include="include\MovementSystem.h" />
     <ClInclude Include="include\MusicComponent.h" />
     <ClInclude Include="include\Observer.h" />
+    <ClInclude Include="include\Pickup.h" />
+    <ClInclude Include="include\PickupFactory.h" />
     <ClInclude Include="include\PositionComponent.h" />
     <ClInclude Include="include\Princess.h" />
     <ClInclude Include="include\ProjectileComponent.h" />
@@ -124,9 +127,6 @@
     <ClInclude Include="include\WeaponType.h" />
     <ClInclude Include="include\WorldMap.h" />
     <ClInclude Include="include\WorldTileFactory.h" />
-    <ClInclude Include="Pickup.h" />
-    <ClInclude Include="PickupFactory.h" />
-    <ClInclude Include="CurrencyComponent.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

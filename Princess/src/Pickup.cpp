@@ -92,7 +92,7 @@ Entity* Pickup::PickupD(std::string ID, SDL_Point pos, int value)
 	return Pickup;
 
 
-
+}
 
 //Entity* PickupEntity(std::string ID, SDL_Point pos, int personality)
 //{

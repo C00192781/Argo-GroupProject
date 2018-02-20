@@ -128,7 +128,7 @@
     <ClCompile Include="src\InstanceManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Pickup.cpp">
+    <ClCompile Include="src\Pickup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -325,13 +325,13 @@
     <ClInclude Include="include\InstanceManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PickupFactory.h">
+    <ClInclude Include="include\CurrencyComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Pickup.h">
+    <ClInclude Include="include\Pickup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CurrencyComponent.h">
+    <ClInclude Include="include\PickupFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
