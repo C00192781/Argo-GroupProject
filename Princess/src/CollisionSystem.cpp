@@ -127,7 +127,7 @@ void CollisionSystem::filterCollisions(int entityIndex, int entityColIndex, int 
 	CollisionComponent* entityCol = static_cast<CollisionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(entityColIndex));
 	CollisionComponent* collidableCol = static_cast<CollisionComponent*>(m_collidableEntities.at(collidableIndex)->GetComponents()->at(collidableColIndex));
 
-	if ((m_entities.at(entityIndex)->ID() == "Player" || m_entities.at(entityIndex)->ID() == "Spellcaster Enemy") && m_collidableEntities.at(collidableIndex)->ID() == "Wall")
+	if ((m_entities.at(entityIndex)->ID() == "Player" || m_entities.at(entityIndex)->ID() == "Spellcaster Enemy" || m_entities.at(entityIndex)->ID() == "Melee Enemy" || m_entities.at(entityIndex)->ID() == "Ranged Enemy") && m_collidableEntities.at(collidableIndex)->ID() == "Wall")
 	{
 		SDL_Rect rectEntityX = { entityCol->getX(), entityCol->getPreviousY(), entityCol->getWidth(), entityCol->getHeight() };
 		SDL_Rect rectEntityY = { entityCol->getPreviousX(), entityCol->getY(), entityCol->getWidth(), entityCol->getHeight() };

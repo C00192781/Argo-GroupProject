@@ -315,7 +315,7 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 			{
 				if (m_entities.at(j)->Active())
 				{
-					if (m_entities.at(j)->ID() == "Spellcaster Enemy")
+					if (m_entities.at(j)->ID() == "Spellcaster Enemy" || m_entities.at(j)->ID() == "Melee Enemy" || m_entities.at(j)->ID() == "Ranged Enemy")
 					{
 
 						auto tar = m_entities.at(j)->FindComponent("PC");
@@ -421,7 +421,7 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 			if (m_entities.at(i)->Active())
 			{
 
-				if (m_entities.at(i)->ID() == "Spellcaster Enemy")
+				if (m_entities.at(i)->ID() == "Spellcaster Enemy" || m_entities.at(i)->ID() == "Melee Enemy" || m_entities.at(i)->ID() == "Ranged Enemy")
 				{
 
 					float tarX = 0;
