@@ -9,7 +9,7 @@
 #include "AttributesComponent.h"
 #include "SeekComponent.h"
 #include "CollisionComponent.h"
-#include "eHPComp.h"
+
 class Princess : public Character
 {
 public:

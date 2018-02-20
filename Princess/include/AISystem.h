@@ -11,7 +11,7 @@
 #include "AttributesComponent.h"
 #include "BasicEnemy.h"
 #include "DecisionTree.h"
-#include "eHPComp.h"
+
 #include "WeaponComponent.h"
 class AiSystem : public System
 {
@@ -48,7 +48,7 @@ private:
 	std::vector<PositionComponent*> m_positionComponent;
 	
 	std::vector<Entity*> m_playerEntities;
-	std::vector<eHPComp*> m_eHPComp;
+	std::vector<AttributesComponent*> m_attribComp;
 	std::vector<Entity*> m_compIDVec;
 
 	int m_health;

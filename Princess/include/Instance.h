@@ -17,6 +17,8 @@ public:
 	virtual void Update() = 0;
 
 	std::string ID() { return m_id; };
+	bool Active() { return m_active; }
+	void Active(bool active) { m_active = active; }
 
 protected:
 	std::string m_id;
@@ -26,5 +28,7 @@ protected:
 	SystemManager * m_systemManager;
 
 	StateManager * m_stateManager;
+
+	bool m_active;
 };
 #endif

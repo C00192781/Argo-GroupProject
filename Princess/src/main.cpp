@@ -26,14 +26,28 @@
 #include "SystemManager.h"
 #include "LTimer.h"
 #include "WorldMap.h"
+#include "DungeonMap.h"
 #include "TownInstance.h"
+#include "InstanceManager.h"
 #include "AchievementHandler.h"
+#include "SoundComponent.h"
+#include "SoundSystem.h"
 
 int main()
 {
 	SDL_Window* gameWindow = SDL_CreateWindow("TEST", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 816, 624, SDL_WINDOW_SHOWN);
 	SDL_Renderer* gameRenderer = SDL_CreateRenderer(gameWindow, -1, SDL_RENDERER_PRESENTVSYNC);
 	SDL_Event *e = new SDL_Event();
+
+	if (Mix_OpenAudio(22050, AUDIO_S16, 2, 1024) == -1) //Check return type
+	{
+		printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+	}
+	else
+	{
+		Mix_VolumeMusic(MIX_MAX_VOLUME);
+	}
+
 	unsigned int lastTime = 0;
 	float deltaTime = 0;
 	unsigned int currentTime = 0;
@@ -74,8 +88,14 @@ int main()
 	resourceManager->AddTexture("Button", "Button.png");
 	resourceManager->AddTexture("Achievement", "PlaceholderAchievement.png");
 	resourceManager->AddTexture("Achievement2", "PlaceholderAchievement2.png");
-
+	
+	resourceManager->AddMusic("Test", "kevin.mp3");
+	resourceManager->AddSound("Scream", "test.wav");
+	resourceManager->AddSound("Placeholder", "placeholder.wav");
+	
 	resourceManager->AddFont("ComicSans", "ComicSans.ttf", 32);
+
+	Mix_AllocateChannels(6);
 
 	EventListener *listener = new EventListener();
 
@@ -108,7 +128,7 @@ int main()
 	systemManager.projectileSystem = new ProjectileSystem();
 	systemManager.projectileSystem->Active(true);
 
-	systemManager.collisionSystem = new CollisionSystem();
+	systemManager.collisionSystem = new CollisionSystem(listener);
 	systemManager.collisionSystem->Active(true);
 
 	systemManager.aiSystem = new AiSystem();
@@ -119,12 +139,17 @@ int main()
 
 	systemManager.buttonSystem = new ButtonSystem(listener);
 	systemManager.buttonSystem->Active(true);
+	
+	systemManager.soundSystem = new SoundSystem(resourceManager);
+	systemManager.soundSystem->Active(true);
+
+	InstanceManager instanceManager(&systemManager, &state, resourceManager, listener);
 
 	Entity * player = new Entity("Player");
 	player->Active(true);
-	player->AddComponent(new SpriteComponent("Red", 3, 1, 0, 0, 16, 16, 0));
-	player->AddComponent(new PositionComponent(SDL_Point{ 0, 0 }));
-	player->AddComponent(new AttributesComponent(26, 26, 10, 10, 100, 100));
+	player->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
+	player->AddComponent(new PositionComponent(SDL_Point{ 500, 380 }));
+	player->AddComponent(new AttributesComponent(26, 26, 10, 10, 200, 200));
 	player->AddComponent(new MovementComponent());
 	player->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
@@ -133,6 +158,9 @@ int main()
 	player->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
 	player->AddComponent(new SeekComponent()); //and this if AI is to control that player
 	
+	player->AddComponent(new SoundComponent("Scream", "play", false, 1, 30, 50));
+	//player->AddComponent(new SoundComponent("Placeholder", "play", true, 0, 0, 80));
+	player->AddComponent(new MusicComponent("Test", "play", true, 0, 100));
 	player->Transient(true);
 	//player->Control(true);
 
@@ -187,10 +215,9 @@ int main()
 	//WorldMap* m = new WorldMap(&systemManager, &state);
 	//m->Generate(25, 25, 100);
 
-	AchievementHandler *achievements = new AchievementHandler(&systemManager);
+	systemManager.soundSystem->AddEntity(player); //local client player only?
 
-	BattleMap* b = new BattleMap(&systemManager, &state);
-	b->Generate("");
+	AchievementHandler *achievements = new AchievementHandler(&systemManager);
 
 	bool heartTest = true;
 
@@ -206,7 +233,7 @@ int main()
 		//Set text to be rendered
 		if (avgFPS > 1)
 		{
-			cout << "FPS (With Cap) " << avgFPS << endl;;
+			//cout << "FPS (With Cap) " << avgFPS << endl;;
 		}
 		//update ren
 		++countedFrames;
@@ -234,6 +261,8 @@ int main()
 			SDL_RenderClear(gameRenderer);
 
 			systemManager.Update(deltaTime, playerEntities);
+			instanceManager.Update(deltaTime);
+		//	systemManager.Update(deltaTime);
 
 			SDL_RenderPresent(gameRenderer);
 		}

@@ -9,140 +9,93 @@ void MovementSystem::Update(float deltaTime)
 	{
 		if (m_entities.at(i)->Active())
 		{
-			int moveIndex = (m_entities.at(i)->FindComponentIndex("movement"));
-			int posIndex = (m_entities.at(i)->FindComponentIndex("PC"));
-			int collIndex = (m_entities.at(i)->FindComponentIndex("collision"));
-			float* xPos = m_positionComponent.at(i)->getXRef();
-			float* yPos = m_positionComponent.at(i)->getYRef();
+			PositionComponent* positionComponent = static_cast<PositionComponent*>(m_entities.at(i)->FindComponent("PC"));
+			CollisionComponent* collisionComponent = static_cast<CollisionComponent*>(m_entities.at(i)->FindComponent("collision"));
+			MovementComponent* movementComponent = static_cast<MovementComponent*>(m_entities.at(i)->FindComponent("movement"));
 
-			*xPos += m_movementComponent.at(i)->getXVelocity() * deltaTime;
-			*yPos += m_movementComponent.at(i)->getYVelocity() * deltaTime;
+			positionComponent->setX(collisionComponent->getX());
+			positionComponent->setY(collisionComponent->getY());
+			collisionComponent->setPreviousPosition(positionComponent->getX(), positionComponent->getY());
 
-			m_collisionComponent.at(i)->setPosition(*xPos, *yPos);
-
-			if (static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(moveIndex))->getRolling())
-			{
-			//	std::cout << "ROLLOLOLOL" << std::endl;
-			}
-			
-
-			if (countedFrames[0] > 30 && m_entities.at(i)->ID() == "Player" && m_entities.at(i)->Control()) //if all 30 roll frames have passed.
+			if (countedFrames[0] > 30 && m_entities.at(i)->ID() == "Player") //if all 30 roll frames have passed.
 			{
 				//cooldown on rolling
 				countedFrames[0] = 0;
 				cooldownFrames[0] = 120; //
 
-				auto temp = m_entities.at(i)->FindComponent("SC"); 
-
-				static_cast<SpriteComponent*>(temp)->Direction(0); //undo temporary roll animation
-
-																   //	std::cout << "cd " << std::endl;
-			//	int moveIndex = (m_entities.at(i)->FindComponentIndex("movement"));
-				static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(moveIndex))->setLockedOrientation(false);
-
+				SpriteComponent* temp = static_cast<SpriteComponent*>(m_entities.at(i)->FindComponent("SC"));
+				temp->Direction(0); //undo temporary roll animation
+				movementComponent->setLockedOrientation(false);
 			}
 
-
-
-			if (moveIndex != -1 && m_entities.at(i)->ID() == "Player" && posIndex != -1)
+			if (movementComponent != nullptr && positionComponent != nullptr && collisionComponent != nullptr)
 			{
-			//	std::cout << "roll: " << static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(moveIndex))->getRolling() << std::endl;
-
-		
-
-				float* xPos = static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(posIndex))->getXRef();
-				float* yPos = static_cast<PositionComponent*>(m_entities.at(i)->GetComponents()->at(posIndex))->getYRef();
-
-				if (static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(moveIndex))->getRolling() && cooldownFrames[0] < 1 && m_entities.at(i)->Control()) //if roll isnt on cooldown and we wanna roll
+				if (m_entities.at(i)->ID() == "Player")
 				{
-
-					//assign roll invincibility here at some point.
-					countedFrames[0]++;
-				//		std::cout << "timer: " << countedFrames << std::endl;
-
-					if (!static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(moveIndex))->getLockedOrientation())
+					if (movementComponent->getRolling() && cooldownFrames[0] < 1)
 					{
-						*xPos += (static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(moveIndex))->getXVelocity() * 4) * deltaTime; //rolls are fast.
-						*yPos += (static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(moveIndex))->getYVelocity() * 4) * deltaTime;
+						countedFrames[0]++;
 
-						m_lastXVel = (static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(moveIndex))->getXVelocity() * 4) * deltaTime; //lock roll to last given velocity
-						m_lastYVel = (static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(moveIndex))->getYVelocity() * 4) * deltaTime;
-
-						if (m_lastXVel == 0 && m_lastYVel == 0) //default a roll orientation if no velo
+						if (!movementComponent->getLockedOrientation())
 						{
-							m_lastXVel = 7; //future note: careful of clipping thru walls in this kinda scenario
-							m_lastYVel = 7;
+							collisionComponent->setPosition(collisionComponent->getX() + ((movementComponent->getXVelocity() * 4)* deltaTime),
+								collisionComponent->getY() + ((movementComponent->getYVelocity() * 4)* deltaTime));
+
+							m_lastXVel = (movementComponent->getXVelocity() * 4)* deltaTime;
+							m_lastYVel = (movementComponent->getYVelocity() * 4)* deltaTime;
+
+							if (m_lastXVel == 0 && m_lastYVel == 0) //default a roll orientation if no velo
+							{
+								m_lastXVel = 7; //future note: careful of clipping thru walls in this kinda scenario
+								m_lastYVel = 7;
+							}
+						}
+						else
+						{
+							collisionComponent->setPosition(collisionComponent->getX() + m_lastXVel, collisionComponent->getY() + m_lastYVel);
 						}
 
+						movementComponent->setLockedOrientation(true);
+
+						if (countedFrames[0] > 30) //after 30f, roll ends. 
+						{
+							//end invincibility here.
+							movementComponent->setRolling(false);
+						}
+
+						else if (countedFrames[0] < 30 && countedFrames[0] > 0)
+						{
+							auto temp = m_entities.at(i)->FindComponent("SC");
+							static_cast<SpriteComponent*>(temp)->Direction(1); //temporary roll animation //play anim												   											   
+						}
 					}
 					else
 					{
-						*xPos += m_lastXVel; //locked roll rolls in given dir
-						*yPos += m_lastYVel;
+						collisionComponent->setPosition(collisionComponent->getX() + (movementComponent->getXVelocity() * deltaTime),
+							collisionComponent->getY() + (movementComponent->getYVelocity() * deltaTime));
+
+						if (cooldownFrames[0] > 0)
+						{
+							cooldownFrames[0]--; //30frame cooldown on spamming roll.
+						}
+
+						if (cooldownFrames[0] > 5)
+						{
+							movementComponent->setRolling(false);
+						}
 					}
 
-					static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(moveIndex))->setLockedOrientation(true);
-
-					if (countedFrames[0] > 30) //after 30f, roll ends. 
+					if (movementComponent->getLockedOrientation() == false)
 					{
-						//end invincibility here.
-						static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(moveIndex))->setRolling(false);
+						movementComponent->setOrientation((atan2((float)m_mouseY - (m_windowHeight / 2), (float)m_mouseX - (m_windowWidth / 2))) * (180 / 3.142) + 90);
 					}
-					
-					else if (countedFrames[0] < 30 && countedFrames[0] > 0)
-					{
-
-						auto temp = m_entities.at(i)->FindComponent("SC");
-
-						static_cast<SpriteComponent*>(temp)->Direction(1); //temporary roll animation
-																		   //play anim
-
-																		   
-					}
-		
 				}
-
 				else
 				{
-					*xPos += (static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(moveIndex))->getXVelocity()) * deltaTime;
-					*yPos += (static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(moveIndex))->getYVelocity()) * deltaTime;
-					if (cooldownFrames[0] > 0)
-					{
-						cooldownFrames[0]--; //30frame cooldown on spamming roll.
-					}
-
-					if (cooldownFrames[0] > 5)
-					{
-						static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(moveIndex))->setRolling(false);
-					}
-
-					//			std::cout << "on cd" << cooldownFrames << std::endl;
-				}
-
-				if (m_entities.at(i)->ID() == "Player" && m_entities.at(i)->Control())
-				{
-					if (static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(moveIndex))->getLockedOrientation() == false)
-					{
-						static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(moveIndex))->setOrientation((atan2((float)m_mouseY - *yPos, (float)m_mouseX - *xPos)) * (180 / 3.142) + 90);
-					}
-
-				}
-
-				static_cast<CollisionComponent*>(m_entities.at(i)->GetComponents()->at(collIndex))->setPosition(*xPos, *yPos);
-
-			}
-
-			if (m_entities.at(i)->ID() == "Player" && m_entities.at(i)->Control())
-			{
-				if (m_movementComponent.at(i)->getLockedOrientation() == false)
-				{
-					auto posThing = static_cast<PositionComponent*>(m_entities.at(i)->FindComponent("PC"));
-					m_movementComponent.at(i)->setOrientation((atan2((float)m_mouseY - (m_windowHeight / 2), (float)m_mouseX - (m_windowWidth / 2))) * (180 / 3.142) + 90);
+					collisionComponent->setPosition(collisionComponent->getX() + movementComponent->getXVelocity() * deltaTime,
+						collisionComponent->getY() + movementComponent->getYVelocity() * deltaTime);
 				}
 			}
-
-
-
 		}//end active
 	}
 }
@@ -172,19 +125,17 @@ void MovementSystem::LoadComponent()
 			break;
 		}
 	}
-	m_positionComponent.push_back(static_cast<PositionComponent*>(m_entities.back()->GetComponents()->at(pcKey)));
-	m_movementComponent.push_back(static_cast<MovementComponent*>(m_entities.back()->GetComponents()->at(movementKey)));
-	m_collisionComponent.push_back(static_cast<CollisionComponent*>(m_entities.back()->GetComponents()->at(collisionKey)));
-
-	
+	//m_positionComponent.push_back(static_cast<PositionComponent*>(m_entities.back()->GetComponents()->at(pcKey)));
+	//m_movementComponent.push_back(static_cast<MovementComponent*>(m_entities.back()->GetComponents()->at(movementKey)));
+	//m_collisionComponent.push_back(static_cast<CollisionComponent*>(m_entities.back()->GetComponents()->at(collisionKey)));
 }
 
 void MovementSystem::UnloadComponent(int x)
 {
-	m_positionComponent.erase(m_positionComponent.begin() + x);
-	m_movementComponent.erase(m_movementComponent.begin() + x);
-	m_collisionComponent.erase(m_collisionComponent.begin() + x);
-	m_positionComponent.shrink_to_fit();
-	m_movementComponent.shrink_to_fit();
-	m_collisionComponent.shrink_to_fit();
+	//m_positionComponent.erase(m_positionComponent.begin() + x);
+	//m_movementComponent.erase(m_movementComponent.begin() + x);
+	//m_collisionComponent.erase(m_collisionComponent.begin() + x);
+	//m_positionComponent.shrink_to_fit();
+	//m_movementComponent.shrink_to_fit();
+	//m_collisionComponent.shrink_to_fit();
 }

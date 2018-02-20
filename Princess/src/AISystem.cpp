@@ -7,6 +7,19 @@ AiSystem::AiSystem()
 	//add root node
 	m_decisionTree->CreateRootNode(1);
 
+	//add root node   the very first 'Question' or decision to be made
+	//is monster health greater than player health?
+	m_decisionTree->CreateRootNode(1);
+
+	//add nodes depending on decisions
+	//2nd decision to be made
+	//is monster strength greater than player strength?
+
+
+	//depending on the weights of all three decisions, will return certain node result
+	//results!
+	//Run, Attack, 
+
 	//$$$
 	m_decisionTree->AddNode1(m_decisionTree->m_RootNode, 1, 2);
 	m_decisionTree->AddNode1(m_decisionTree->m_RootNode, 1, 3);
@@ -19,7 +32,6 @@ AiSystem::AiSystem()
 	//	m_decisionTree->printLeafNodes(m_decisionTree->m_RootNode); //this worky workies
 	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1->NewBranch1, 4, 8);
 	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1->NewBranch1, 4, 9);
-
 
 	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1->NewBranch2, 5, 10); //move to init prolly
 	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch1->NewBranch2, 5, 11);
@@ -53,34 +65,35 @@ void AiSystem::UnloadComponent(int x)
 
 }
 
+
+
 void AiSystem::Spawn()
 {
 
 
 
-
-	SDL_Point p{ 300,0 };
-	
-
-	m_compIDVec.clear();
-/*
-	characterFactory = new Princess();
-	m_entities.push_back(characterFactory->CharA("Red", p, 0));
-	m_entities.back()->Active(true);
-
-*/
-	characterFactory = new BasicEnemy();
-
-	
-	for (int i = 0; i < 6; i++)
-	{
-	//	m_entities.push_back(characterFactory->CharC("Demon", SDL_Point{ p.x + 20, p.y + 20 }, 0));
-
-		m_entities.push_back(characterFactory->CharC("Demon", SDL_Point{ rand() % 812, rand() % 624 }, 0));
-
-		m_entities.back()->Active(true);
-	}
-
+//	SDL_Point p{ 300,0 };
+//	
+//
+//	m_compIDVec.clear();
+///*
+//	characterFactory = new Princess();
+//	m_entities.push_back(characterFactory->CharA("Red", p, 0));
+//	m_entities.back()->Active(true);
+//
+//*/
+//	characterFactory = new BasicEnemy();
+//
+//	
+//	for (int i = 0; i < 6; i++)
+//	{
+//	//	m_entities.push_back(characterFactory->CharC("Demon", SDL_Point{ p.x + 20, p.y + 20 }, 0));
+//
+//		m_entities.push_back(characterFactory->CharC("Demon", SDL_Point{ rand() % 812, rand() % 624 }, 0));
+//
+//		m_entities.back()->Active(true);
+//	}
+//
 
 }
 
@@ -398,9 +411,9 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 	{
 		if (m_entities.at(i)->ID() != "Player")
 		{
-			auto hpComp = m_entities.at(i)->FindComponent("eHP");
+			auto hpComp = m_entities.at(i)->FindComponent("attribute");
 
-			if (static_cast<eHPComp*>(hpComp)->getHP() < 1)
+			if (static_cast<AttributesComponent*>(hpComp)->Health() < 1)
 			{
 				m_entities.at(i)->Active(false);
 			}
@@ -447,7 +460,7 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 					//auto enemyRange = static_cast<WeaponComponent*>(m_playerEntities.at(i)->FindComponent("weapon"))->getRange();
 					auto selfRange = static_cast<WeaponComponent*>(m_entities.at(i)->FindComponent("weapon"))->getRange();
 
-					m_decisionTree->calculatePathNodes(m_decisionTree->m_RootNode, dist, 2, static_cast<eHPComp*>(hpComp)->getHP(), selfRange, 300); //make target HP and self HP gettable later,  hardcoded values for test purpose only.
+					m_decisionTree->calculatePathNodes(m_decisionTree->m_RootNode, dist, 2, static_cast<AttributesComponent*>(hpComp)->Health(), selfRange, 300); //make target HP and self HP gettable later,  hardcoded values for test purpose only.
 
 					int decision = m_decisionTree->getDecision();
 					//	cout << "decision: " << decision << endl;

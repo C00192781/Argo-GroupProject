@@ -16,15 +16,15 @@ public:
 	}
 	~Quadtree();
 	
-	void init();
 	void clear();
 	void split();
 	void insert(Entity* entities);
 	int getIndex(Entity* entity);
 	std::vector<Entity*> retrieve(std::vector<Entity*> &returnObjects, Entity* entity);
+	void updateBounds(SDL_Rect b) { bounds = b; }
 
 private:
-	int MAX_OBJECTS = 10;
+	int MAX_OBJECTS = 8;
 	int MAX_LEVELS = 8;
 
 	int level;

@@ -5,6 +5,7 @@
 #include "MovementComponent.h"
 #include "ProjectileComponent.h"
 #include "PositionComponent.h"
+#include "CollisionComponent.h"
 
 class AttackSystem : public System
 {

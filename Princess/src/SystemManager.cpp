@@ -11,6 +11,7 @@ void SystemManager::Update(float deltaTime, std::vector<Entity*> players)
 
 	if (movementSystem->Active()) { movementSystem->Update(deltaTime); }
 
+
 	if (attackSystem->Active()) { attackSystem->Update(deltaTime); }
 
 	if (aiSystem->Active()) { aiSystem->Update(deltaTime, players); }
@@ -22,4 +23,6 @@ void SystemManager::Update(float deltaTime, std::vector<Entity*> players)
 	if (renderSystem->Active()) { renderSystem->Update(); }
 
 	if (textRenderSystem->Active()) { textRenderSystem->Update(); }
+
+	if (soundSystem->Active()) { soundSystem->Update(); }
 }
