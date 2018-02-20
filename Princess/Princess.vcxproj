@@ -23,7 +23,7 @@
     <ClCompile Include="External Dependencies\ResourceManager\ResourceManager.cpp" />
     <ClCompile Include="External Dependencies\SimpleJSON\JSON.cpp" />
     <ClCompile Include="External Dependencies\SimpleJSON\JSONValue.cpp" />
-    <ClCompile Include="Packet.cpp" />
+    <ClCompile Include="include\Quad.cpp" />
     <ClCompile Include="src\AchievementHandler.cpp" />
     <ClCompile Include="src\AISystem.cpp" />
     <ClCompile Include="src\AttackSystem.cpp" />
@@ -45,10 +45,12 @@
     <ClCompile Include="src\LTimer.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MovementSystem.cpp" />
+    <ClCompile Include="src\Packet.cpp" />
     <ClCompile Include="src\Princess.cpp" />
     <ClCompile Include="src\ProjectileSystem.cpp" />
     <ClCompile Include="src\Quad.cpp" />
     <ClCompile Include="src\RenderSystem.cpp" />
+    <ClCompile Include="src\Server.cpp" />
     <ClCompile Include="src\SoundSystem.cpp" />
     <ClCompile Include="src\Subject.cpp" />
     <ClCompile Include="src\System.cpp" />
@@ -60,7 +62,6 @@
     <ClCompile Include="src\WorldTileFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Client.h" />
     <ClInclude Include="External Dependencies\ResourceManager\JSONReader.h" />
     <ClInclude Include="External Dependencies\ResourceManager\ResourceManager.h" />
     <ClInclude Include="External Dependencies\SimpleJSON\JSON.h" />
@@ -76,6 +77,8 @@
     <ClInclude Include="include\ButtonComponent.h" />
     <ClInclude Include="include\ButtonSystem.h" />
     <ClInclude Include="include\Character.h" />
+    <ClInclude Include="include\Client.h" />
+    <ClInclude Include="include\ClientInfo.h" />
     <ClInclude Include="include\CollisionComponent.h" />
     <ClInclude Include="include\CollisionSystem.h" />
     <ClInclude Include="include\Component.h" />
@@ -101,6 +104,8 @@
     <ClInclude Include="include\MovementSystem.h" />
     <ClInclude Include="include\MusicComponent.h" />
     <ClInclude Include="include\Observer.h" />
+    <ClInclude Include="include\Packet.h" />
+    <ClInclude Include="include\PacketType.h" />
     <ClInclude Include="include\PositionComponent.h" />
     <ClInclude Include="include\Princess.h" />
     <ClInclude Include="include\ProjectileComponent.h" />
@@ -108,6 +113,7 @@
     <ClInclude Include="include\Quad.h" />
     <ClInclude Include="include\RenderSystem.h" />
     <ClInclude Include="include\SeekComponent.h" />
+    <ClInclude Include="include\Server.h" />
     <ClInclude Include="include\SoundComponent.h" />
     <ClInclude Include="include\SoundSystem.h" />
     <ClInclude Include="include\SpriteComponent.h" />
@@ -125,7 +131,6 @@
     <ClInclude Include="include\WeaponType.h" />
     <ClInclude Include="include\WorldMap.h" />
     <ClInclude Include="include\WorldTileFactory.h" />
-    <ClInclude Include="Packet.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

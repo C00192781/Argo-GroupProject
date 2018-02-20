@@ -6,6 +6,7 @@
 #include "ResourceManager.h"
 #include "LTimer.h"
 #include "AchievementHandler.h"
+#include "Server.h"
 #include <chrono>
 #include <time.h>
 
@@ -85,6 +86,9 @@ int main()
 
 	InstanceManager instanceManager(&systemManager, &state, resourceManager, listener);
 
+	Server server;
+	server.start();
+
 	Entity * player = new Entity("Player");
 	player->Active(true);
 	player->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
@@ -150,6 +154,7 @@ int main()
 
 			instanceManager.Update(deltaTime);
 			systemManager.Update(deltaTime);
+			server.update();
 
 			SDL_RenderPresent(gameRenderer);
 		}

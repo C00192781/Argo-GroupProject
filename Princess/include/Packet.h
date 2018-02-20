@@ -1,6 +1,8 @@
 #pragma once
+
 #include <SDL.h>
 #include <vector>
+#include "PacketType.h"
 
 class Packet
 {
@@ -25,7 +27,6 @@ public:
 	// operators to append different types of data to m_data
 	Packet& operator << (Uint8 data);
 	Packet& operator << (Uint16 data);
-	Packet& operator << (Uint32 data);
 	Packet& operator << (Uint32 data);
 	Packet& operator << (std::string data);
 	Packet& operator << (int data);

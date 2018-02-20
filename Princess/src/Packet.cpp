@@ -138,12 +138,6 @@ Packet& Packet::operator << (Uint32 data)
 	return *this;
 }
 
-Packet& Packet::operator << (Uint32 data)
-{
-	append(&data, sizeof(data));
-	return *this;
-}
-
 Packet& Packet::operator << (int data)
 {
 	append(&data, sizeof(data));
