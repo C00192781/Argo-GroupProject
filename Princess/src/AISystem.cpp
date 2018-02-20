@@ -251,12 +251,16 @@ void AiSystem::attack(int entityIndex, int attackKey, int mcKey, string tag)
 	{
 		static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setXVelocity(0);
 		static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setYVelocity(0);
+		static_cast<WeaponComponent*>(m_entities.at(entityIndex)->GetComponents()->at(attackKey))->setAttacking(true);
 	}
 	else
 	{
 		static_cast<MovementComponent*>(m_playerEntities.at(entityIndex)->GetComponents()->at(mcKey))->setXVelocity(0);
 		static_cast<MovementComponent*>(m_playerEntities.at(entityIndex)->GetComponents()->at(mcKey))->setYVelocity(0);
+		static_cast<WeaponComponent*>(m_playerEntities.at(entityIndex)->GetComponents()->at(attackKey))->setAttacking(true);
 	}
+
+	
 }
 
 void AiSystem::normalise(float &x, float &y)
@@ -346,13 +350,16 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 			} //end ent for
 
 	
-				auto selfRange = static_cast<WeaponComponent*>(m_playerEntities.at(i)->FindComponent("weapon"))->getRange();
-				int enemyRange = 200;
+				auto selfRange = static_cast<WeaponComponent*>(m_playerEntities.at(i)->FindComponent("weapon"))->getRange() * 10;;
+				int enemyRange = 200; //defaulting
 
-		/*		if (!m_entities.empty())
+				if (!m_entities.empty() && m_entities.size() >= tarIndex)
 				{
-					enemyRange = static_cast<WeaponComponent*>(m_entities.at(tarIndex)->FindComponent("weapon"))->getRange();
-				}*/
+					if (m_entities.at(tarIndex)->FindComponent("weapon") != nullptr)
+					{
+						enemyRange = static_cast<WeaponComponent*>(m_entities.at(tarIndex)->FindComponent("weapon"))->getRange() * 10;
+					}
+				}
 				m_decisionTree->calculatePathNodes(m_decisionTree->m_RootNode, dist, 1, 8, selfRange, enemyRange); //make target HP and self HP gettable later,  hardcoded values for test purpose only.
 			//	cout << "dist: " << dist << endl;
 				int decision = m_decisionTree->getDecision();
@@ -405,7 +412,7 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 	} //end for player
 
 	
-
+	//BEGIN ENEMIES $$$
 
 	for (int i = 0; i < m_entities.size(); i++)
 	{
@@ -467,14 +474,16 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 					}
 
 				//	cout << dist << endl;
+					int enemyRange = 100;
 					//auto enemyRange = static_cast<WeaponComponent*>(m_playerEntities.at(i)->FindComponent("weapon"))->getRange();
-					auto selfRange = static_cast<WeaponComponent*>(m_entities.at(i)->FindComponent("weapon"))->getRange();
+					auto selfRange = static_cast<WeaponComponent*>(m_entities.at(i)->FindComponent("weapon"))->getRange() * 10;
 
 					//cout << "playerHp: " << static_cast<AttributesComponent*>(hpComp)->Health() << endl;
 
-					if (tarAttribComp != nullptr)
+					if (tarAttribComp != nullptr && players.at(tarIndex)->FindComponent("weapon") != nullptr)
 					{
-						m_decisionTree->calculatePathNodes(m_decisionTree->m_RootNode, dist, static_cast<AttributesComponent*>(tarAttribComp)->Health(), static_cast<AttributesComponent*>(hpComp)->Health(), selfRange, 300); //make target HP and self HP gettable later,  hardcoded values for test purpose only.
+						enemyRange = static_cast<WeaponComponent*>(players.at(tarIndex)->FindComponent("weapon"))->getRange() * 10;;
+						m_decisionTree->calculatePathNodes(m_decisionTree->m_RootNode, dist, static_cast<AttributesComponent*>(tarAttribComp)->Health(), static_cast<AttributesComponent*>(hpComp)->Health(), selfRange, enemyRange); //make target HP and self HP gettable later,  hardcoded values for test purpose only.
 					}
 					else
 					{

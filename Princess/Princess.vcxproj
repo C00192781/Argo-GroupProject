@@ -82,7 +82,6 @@
     <ClInclude Include="include\ControlComponent.h" />
     <ClInclude Include="include\ControlSystem.h" />
     <ClInclude Include="include\DecisionTree.h" />
-    <ClInclude Include="include\eHPComp.h" />
     <ClInclude Include="include\DungeonMap.h" />
     <ClInclude Include="include\DungeonTileFactory.h" />
     <ClInclude Include="include\Entity.h" />
