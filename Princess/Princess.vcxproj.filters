@@ -304,6 +304,8 @@
     <ClInclude Include="include\TreeNodes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\eHPComp.h">
+    </ClInclude>
     <ClInclude Include="include\SoundComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>

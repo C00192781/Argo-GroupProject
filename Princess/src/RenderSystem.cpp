@@ -40,7 +40,7 @@ void RenderSystem::Update()
 	{
 		for (int i = m_entities.size() - 1; i > 0; i--)
 		{
-			if (m_entities.at(i)->ID() == "Player")
+			if (m_entities.at(i)->ID() == "Player" && m_entities.at(i)->Control())
 			{
 				offsetX = m_positionComponent.at(i)->getX();
 				offsetY = m_positionComponent.at(i)->getY();
@@ -146,6 +146,7 @@ void RenderSystem::Update()
 		}
 	}
 }
+
 
 void RenderSystem::LoadComponent()
 {

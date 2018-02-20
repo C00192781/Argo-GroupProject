@@ -9,8 +9,8 @@
 #include "Quad.h"
 #include "AttributesComponent.h"
 #include "ProjectileComponent.h"
-#include "EventListener.h"
 
+#include "EventListener.h"
 class CollisionSystem : public System
 {
 public:

@@ -15,13 +15,13 @@ void MovementSystem::Update(float deltaTime)
 
 			positionComponent->setX(collisionComponent->getX());
 			positionComponent->setY(collisionComponent->getY());
-			collisionComponent->setPreviousPosition(positionComponent->getX(), positionComponent->getY());	
+			collisionComponent->setPreviousPosition(positionComponent->getX(), positionComponent->getY());
 
-			if (countedFrames > 30 && m_entities.at(i)->ID() == "Player") //if all 30 roll frames have passed.
+			if (countedFrames[0] > 30 && m_entities.at(i)->ID() == "Player") //if all 30 roll frames have passed.
 			{
 				//cooldown on rolling
-				countedFrames = 0;
-				cooldownFrames = 120; //
+				countedFrames[0] = 0;
+				cooldownFrames[0] = 120; //
 
 				SpriteComponent* temp = static_cast<SpriteComponent*>(m_entities.at(i)->FindComponent("SC"));
 				temp->Direction(0); //undo temporary roll animation
@@ -32,14 +32,14 @@ void MovementSystem::Update(float deltaTime)
 			{
 				if (m_entities.at(i)->ID() == "Player")
 				{
-					if (movementComponent->getRolling() && cooldownFrames < 1)
+					if (movementComponent->getRolling() && cooldownFrames[0] < 1)
 					{
-						countedFrames++;
+						countedFrames[0]++;
 
 						if (!movementComponent->getLockedOrientation())
 						{
 							collisionComponent->setPosition(collisionComponent->getX() + ((movementComponent->getXVelocity() * 4)* deltaTime),
-															collisionComponent->getY() + ((movementComponent->getYVelocity() * 4)* deltaTime));
+								collisionComponent->getY() + ((movementComponent->getYVelocity() * 4)* deltaTime));
 
 							m_lastXVel = (movementComponent->getXVelocity() * 4)* deltaTime;
 							m_lastYVel = (movementComponent->getYVelocity() * 4)* deltaTime;
@@ -57,13 +57,13 @@ void MovementSystem::Update(float deltaTime)
 
 						movementComponent->setLockedOrientation(true);
 
-						if (countedFrames > 30) //after 30f, roll ends. 
+						if (countedFrames[0] > 30) //after 30f, roll ends. 
 						{
 							//end invincibility here.
 							movementComponent->setRolling(false);
 						}
 
-						else if (countedFrames < 30 && countedFrames > 0)
+						else if (countedFrames[0] < 30 && countedFrames[0] > 0)
 						{
 							auto temp = m_entities.at(i)->FindComponent("SC");
 							static_cast<SpriteComponent*>(temp)->Direction(1); //temporary roll animation //play anim												   											   
@@ -74,12 +74,12 @@ void MovementSystem::Update(float deltaTime)
 						collisionComponent->setPosition(collisionComponent->getX() + (movementComponent->getXVelocity() * deltaTime),
 							collisionComponent->getY() + (movementComponent->getYVelocity() * deltaTime));
 
-						if (cooldownFrames > 0)
+						if (cooldownFrames[0] > 0)
 						{
-							cooldownFrames--; //30frame cooldown on spamming roll.
+							cooldownFrames[0]--; //30frame cooldown on spamming roll.
 						}
 
-						if (cooldownFrames > 5)
+						if (cooldownFrames[0] > 5)
 						{
 							movementComponent->setRolling(false);
 						}
@@ -93,7 +93,7 @@ void MovementSystem::Update(float deltaTime)
 				else
 				{
 					collisionComponent->setPosition(collisionComponent->getX() + movementComponent->getXVelocity() * deltaTime,
-													collisionComponent->getY() + movementComponent->getYVelocity() * deltaTime);	
+						collisionComponent->getY() + movementComponent->getYVelocity() * deltaTime);
 				}
 			}
 		}//end active

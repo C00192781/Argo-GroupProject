@@ -172,6 +172,8 @@ void CollisionSystem::filterCollisions(int entityIndex, int entityColIndex, int 
 		{
 			if (m_entities.at(entityIndex)->ID() == "Player")
 			{
+				projectileCollision(entityIndex);
+			//	spellcasterCollision(collidableIndex); //swapped for spell id, WHO CARES IF A PLAYER WALKS INTO AN AI IF THEYRE NOT SHOOTING EACH OTHER
 				if (m_collidableEntities.at(collidableIndex)->ID() == "Dungeon")
 				{
 					if (m_listener->Space)
@@ -213,5 +215,23 @@ void CollisionSystem::projectileCollision(int index)
 
 void CollisionSystem::spellcasterCollision(int index)
 {
-	m_collidableEntities.at(index)->Active(false);
+	std::cout << "OH NO" << std::endl;
+
+
+	auto hpComp = m_collidableEntities.at(index)->FindComponent("attribute");
+
+	if (hpComp != nullptr)
+	{
+
+
+		//auto temp = m_collidableEntities.at(index)->FindComponent("eHP");
+		static_cast<AttributesComponent*>(hpComp)->Health((static_cast<AttributesComponent*>(hpComp)->Health() - 1));
+
+		if (static_cast<AttributesComponent*>(hpComp)->Health() < 1)
+		{
+			m_collidableEntities.at(index)->Active(false);
+		}
+	}
+		/*auto tar = m_entities.at(j)->FindComponent("PC");
+	tarX = static_cast<PositionComponent*>(tar)->getX();*/
 }
