@@ -22,9 +22,7 @@ void MovementSystem::Update(float deltaTime)
 				//cooldown on rolling
 				countedFrames[0] = 0;
 				cooldownFrames[0] = 120; //
-
-				SpriteComponent* temp = static_cast<SpriteComponent*>(m_entities.at(i)->FindComponent("SC"));
-				temp->Direction(0); //undo temporary roll animation
+				m_rollEnd = true;
 				movementComponent->setLockedOrientation(false);
 			}
 
@@ -32,11 +30,15 @@ void MovementSystem::Update(float deltaTime)
 			{
 				if (m_entities.at(i)->ID() == "Player")
 				{
+					SpriteComponent* temp = static_cast<SpriteComponent*>(m_entities.at(i)->FindComponent("SC"));
+					temp->Direction(0); //undo temporary roll animation
+
 					if (movementComponent->getRolling() && cooldownFrames[0] < 1)
 					{
 						countedFrames[0]++;
 
-						if (!movementComponent->getLockedOrientation())
+
+						if (m_rollEnd)
 						{
 							collisionComponent->setPosition(collisionComponent->getX() + ((movementComponent->getXVelocity() * 4)* deltaTime),
 								collisionComponent->getY() + ((movementComponent->getYVelocity() * 4)* deltaTime));
@@ -49,6 +51,7 @@ void MovementSystem::Update(float deltaTime)
 								m_lastXVel = 7; //future note: careful of clipping thru walls in this kinda scenario
 								m_lastYVel = 7;
 							}
+							m_rollEnd = false;
 						}
 						else
 						{
@@ -90,7 +93,7 @@ void MovementSystem::Update(float deltaTime)
 						movementComponent->setOrientation((atan2((float)m_mouseY - (m_windowHeight / 2), (float)m_mouseX - (m_windowWidth / 2))) * (180 / 3.142) + 90);
 					}
 				}
-				else
+				if (movementComponent->getLockedOrientation() == false)
 				{
 					collisionComponent->setPosition(collisionComponent->getX() + movementComponent->getXVelocity() * deltaTime,
 						collisionComponent->getY() + movementComponent->getYVelocity() * deltaTime);

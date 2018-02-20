@@ -42,8 +42,8 @@ public:
 		m_armour = 5;
 		m_maxArmour = 6;
 
-		m_health = 26;
-		m_maxHealth = 26;
+		m_health = 5;
+		m_maxHealth = 5;
 
 		m_movementSpeed = 10;
 		m_maxMovementSpeed = 10;

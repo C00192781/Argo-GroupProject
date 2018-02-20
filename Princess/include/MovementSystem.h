@@ -9,7 +9,7 @@
 class MovementSystem : public System
 {
 public:
-	MovementSystem() {}
+	MovementSystem() { m_rollEnd = true; }
 	MovementSystem(int windowWidth, int windowHeight)
 	{
 		m_windowWidth = windowWidth;
@@ -30,6 +30,7 @@ private:
 	std::vector<bool>  m_rollAnim;
 	int m_lastXVel;
 	int m_lastYVel;
+	bool m_rollEnd = true;
 
 	std::vector<Entity*> m_playerEnts;
 

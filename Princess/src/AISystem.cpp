@@ -315,7 +315,7 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 			{
 				if (m_entities.at(j)->Active())
 				{
-					if (m_entities.at(j)->ID() == "Spellcaster Enemy")
+					if (m_entities.at(j)->ID() == "Spellcaster Enemy" || m_entities.at(j)->ID() == "Melee Enemy" || m_entities.at(j)->ID() == "Ranged Enemy")
 					{
 
 						auto tar = m_entities.at(j)->FindComponent("PC");
@@ -413,6 +413,10 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 		{
 			auto hpComp = m_entities.at(i)->FindComponent("attribute");
 
+			Component* tarAttribComp = nullptr;
+
+			int tarIndex = 0; //-1?
+
 			if (static_cast<AttributesComponent*>(hpComp)->Health() < 1)
 			{
 				m_entities.at(i)->Active(false);
@@ -421,7 +425,7 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 			if (m_entities.at(i)->Active())
 			{
 
-				if (m_entities.at(i)->ID() == "Spellcaster Enemy")
+				if (m_entities.at(i)->ID() == "Spellcaster Enemy" || m_entities.at(i)->ID() == "Melee Enemy" || m_entities.at(i)->ID() == "Ranged Enemy")
 				{
 
 					float tarX = 0;
@@ -439,11 +443,15 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 							float x = tempX - static_cast<PositionComponent*>(m_entities.at(i)->FindComponent("PC"))->getX();
 							float y = tempY - static_cast<PositionComponent*>(m_entities.at(i)->FindComponent("PC"))->getY();
 
+							
+
 							if (dist == 0)
 							{
 								dist = magnitude(x, y);
 								tarX = tempX;
 								tarY = tempY;
+								tarIndex = j;
+								tarAttribComp = players.at(j)->FindComponent("attribute");
 							}
 
 							else if (dist > magnitude(x, y))
@@ -451,6 +459,8 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 								dist = magnitude(x, y);
 								tarY = tempY;
 								tarX = tempX;
+								tarIndex = j;
+								tarAttribComp = players.at(j)->FindComponent("attribute");
 							}
 							
 						}
@@ -460,8 +470,17 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 					//auto enemyRange = static_cast<WeaponComponent*>(m_playerEntities.at(i)->FindComponent("weapon"))->getRange();
 					auto selfRange = static_cast<WeaponComponent*>(m_entities.at(i)->FindComponent("weapon"))->getRange();
 
-					m_decisionTree->calculatePathNodes(m_decisionTree->m_RootNode, dist, 2, static_cast<AttributesComponent*>(hpComp)->Health(), selfRange, 300); //make target HP and self HP gettable later,  hardcoded values for test purpose only.
+					//cout << "playerHp: " << static_cast<AttributesComponent*>(hpComp)->Health() << endl;
 
+					if (tarAttribComp != nullptr)
+					{
+						m_decisionTree->calculatePathNodes(m_decisionTree->m_RootNode, dist, static_cast<AttributesComponent*>(tarAttribComp)->Health(), static_cast<AttributesComponent*>(hpComp)->Health(), selfRange, 300); //make target HP and self HP gettable later,  hardcoded values for test purpose only.
+					}
+					else
+					{
+						m_decisionTree->calculatePathNodes(m_decisionTree->m_RootNode, dist, 2, static_cast<AttributesComponent*>(hpComp)->Health(), selfRange, 300); //make target HP and self HP gettable later,  hardcoded values for test purpose only.
+
+					}
 					int decision = m_decisionTree->getDecision();
 					//	cout << "decision: " << decision << endl;
 					   // = 10;

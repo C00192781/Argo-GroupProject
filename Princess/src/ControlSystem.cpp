@@ -56,17 +56,19 @@ void ControlSystem::Update()
 
 		if (movementComponent != nullptr && weaponComponent != nullptr)
 		{
-			if (m_eventListener->LeftClick)
+			if (!movementComponent->getRolling())
 			{
-				if (weaponComponent->getAllowAttack() == true)
+				if (m_eventListener->LeftClick)
 				{
-					weaponComponent->setAttacking(true);
-					movementComponent->setLockedOrientation(true);
-					weaponComponent->setAllowAttack(false);
+					if (weaponComponent->getAllowAttack() == true)
+					{
+						weaponComponent->setAttacking(true);
+						movementComponent->setLockedOrientation(true);
+						weaponComponent->setAllowAttack(false);
+					}
 				}
 			}
 		}
 
 	}
 }
-
