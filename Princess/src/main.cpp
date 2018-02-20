@@ -204,6 +204,12 @@ int main()
 	player2->Control(true); //enable only if the client controlled player
 
 
+	systemManager.movementSystem->AddEntity(player);
+	systemManager.renderSystem->AddEntity(player);
+	systemManager.projectileSystem->AddEntity(player);
+	systemManager.collisionSystem->AddEntity(player);
+	systemManager.attackSystem->AddEntity(player);
+
 	systemManager.movementSystem->AddEntity(player2);
 	systemManager.renderSystem->AddEntity(player2);
 	systemManager.projectileSystem->AddEntity(player2);
@@ -211,11 +217,7 @@ int main()
 	systemManager.attackSystem->AddEntity(player2);
 
 	
-	systemManager.movementSystem->AddEntity(player);
-	systemManager.renderSystem->AddEntity(player);
-	systemManager.projectileSystem->AddEntity(player);
-	systemManager.collisionSystem->AddEntity(player);
-	systemManager.attackSystem->AddEntity(player);
+
 
 
 	if (player->Control())

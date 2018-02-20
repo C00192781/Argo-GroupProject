@@ -19,8 +19,11 @@ void StartInstance::Generate()
 	m_active = true;
 
 	m_systemManager->menuSystem->Active(true);
-	m_systemManager->movementSystem->Active(false);
+	m_systemManager->controlSystem->Active(false);
 	m_systemManager->renderSystem->Camera(false);
+
+	m_systemManager->controlSystem->FindEntity("Player")->Active(false);
+	m_systemManager->renderSystem->FindEntity("Player")->Active(false);
 
 	for (int i = 0; i < m_entities.size(); i++)
 	{
@@ -211,9 +214,12 @@ void StartInstance::Update()
 	}
 	if (m_stateManager->StartGame)
 	{
+		m_systemManager->controlSystem->FindEntity("Player")->Active(true);
+		m_systemManager->renderSystem->FindEntity("Player")->Active(true);
 		m_systemManager->renderSystem->Camera(true);
-		m_systemManager->movementSystem->Active(true);
+		m_systemManager->controlSystem->Active(true);
 		m_systemManager->menuSystem->Active(false);
+
 	}
 }
 
