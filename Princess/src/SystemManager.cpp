@@ -28,5 +28,7 @@ void SystemManager::Update(float deltaTime, std::vector<Entity*> players)
 	if (soundSystem->Active()) { soundSystem->Update(); }
 
 	if (renderSystem->Active()) { renderSystem->Update(); }
+
+	if (mementoSystem->Active()) { mementoSystem->Update(); }
 }
 

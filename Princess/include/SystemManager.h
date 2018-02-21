@@ -26,6 +26,7 @@
 #include "MenuSystem.h"
 #include "SoundComponent.h"
 #include "SoundSystem.h"
+#include "MementoCaretaker.h"
 
 class SystemManager
 {
@@ -45,6 +46,7 @@ public:
 	ButtonSystem * buttonSystem;
 	TextRenderSystem * textRenderSystem;
 	SoundSystem * soundSystem;
+	MementoCaretaker * mementoSystem;
 
 	void Update(float deltaTime, std::vector<Entity*> players);
 

@@ -24,6 +24,7 @@ void WorldMap::Generate(int width, int height, int chaosFactor)
 	m_systemManager->controlSystem->SelectiveClear();
 	m_systemManager->renderSystem->SelectiveClear();
 	m_systemManager->movementSystem->SelectiveClear();
+	m_systemManager->healthSystem->SelectiveClear();
 
 	WorldTileFactory factory;
 
@@ -583,6 +584,7 @@ void WorldMap::Load()
 	m_systemManager->collisionSystem->SelectiveClear();
 	m_systemManager->attackSystem->SelectiveClear();
 	m_systemManager->aiSystem->SelectiveClear();
+	m_systemManager->textRenderSystem->SelectiveClear();
 
 	for (int i = 0; i < m_entities.size(); i++)
 	{
@@ -637,7 +639,7 @@ void WorldMap::Load()
 void WorldMap::Update()
 {
 	// sets player's position to the start of the dungeon
-	Entity* player = m_systemManager->movementSystem->FindEntity("Player");
+	Entity* player = m_systemManager->controlSystem->FindEntity("Player");
 
 	if (player != nullptr)
 	{

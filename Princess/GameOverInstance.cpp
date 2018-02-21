@@ -15,22 +15,30 @@ GameOverInstance::~GameOverInstance()
 void GameOverInstance::Update(float deltaTime)
 {
 	timer += deltaTime;
-	if (deltaTime > 3)
+	if (timer > 3)
 	{
 		//Do Next
+		m_systemManager->renderSystem->Camera(true);
+		m_systemManager->controlSystem->Active(true);
+		m_systemManager->controlSystem->FindEntity("Player")->Active(true);
+		m_systemManager->renderSystem->FindEntity("Player")->Active(true);
+		//m_systemManager->collisionSystem->Active(true);
+		m_stateManager->LoadGame = true;
 		timer = 0;
 	}
 }
 
 void GameOverInstance::Generate()
 {
-	m_systemManager->menuSystem->Active(true);
+
+
 	m_systemManager->controlSystem->Active(false);
-	m_systemManager->renderSystem->Camera(false);
+	//m_systemManager->renderSystem->Camera(false);
+	//m_systemManager->collisionSystem->Active(false);
+	m_systemManager->textRenderSystem->Active(true);
 
 	m_systemManager->controlSystem->FindEntity("Player")->Active(false);
 	m_systemManager->renderSystem->FindEntity("Player")->Active(false);
-
 	for (int i = 0; i < m_entities.size(); i++)
 	{
 		delete m_entities.at(i);
@@ -38,6 +46,11 @@ void GameOverInstance::Generate()
 
 	m_entities.clear();
 	m_entities.shrink_to_fit();
+	m_systemManager->controlSystem->SelectiveClear();
+	m_systemManager->renderSystem->SelectiveClear();
+	m_systemManager->movementSystem->SelectiveClear();
+	m_systemManager->collisionSystem->SelectiveClear();
+	m_systemManager->aiSystem->SelectiveClear();
 	m_systemManager->textRenderSystem->SelectiveClear();
 
 	Entity * gameOverText = new Entity("GameOverText");

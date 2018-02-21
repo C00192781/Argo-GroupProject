@@ -29,6 +29,7 @@ void MementoCaretaker::Update()
 		{
 			SaveStateAttributesMemento(m_entities.at(i)->ID());
 		}
+		m_states->SaveGame = false;
 	}
 	if (m_states->LoadGame)
 	{
@@ -36,6 +37,7 @@ void MementoCaretaker::Update()
 		{
 			RestoreStateAttributesMemento(m_entities.at(i)->ID());
 		}
+		m_states->LoadGame = false;
 	}
 }
 

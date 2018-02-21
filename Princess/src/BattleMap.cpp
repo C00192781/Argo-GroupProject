@@ -133,8 +133,34 @@ void BattleMap::Generate(std::string type)
 
 
 	// sets player's position to the start of the dungeon
-	Entity* player = m_systemManager->collisionSystem->FindEntity("Player");
+	Entity* player = m_systemManager->controlSystem->FindEntity("Player");
 
+	if (player->Control() == true)
+	{
+		for (int k = 0; k < player->GetComponents()->size(); k++)
+		{
+			if (player->GetComponents()->at(k)->Type() == "HMC")
+			{
+				if (static_cast<HeartManagerComponent*>(player->GetComponents()->at(k))->HeartType() == HeartTypes::HEALTH)
+				{
+					m_systemManager->healthSystem->UpdateMaxHeartsUI(player, player);
+					for (int c = 0; c < static_cast<HeartManagerComponent*>(player->GetComponents()->at(k))->HeartsVector()->size(); c++)
+					{
+						m_systemManager->renderSystem->AddEntity(static_cast<HeartManagerComponent*>(player->GetComponents()->at(k))->HeartsVector()->at(c));
+					}
+				}
+				else if (static_cast<HeartManagerComponent*>(player->GetComponents()->at(k))->HeartType() == HeartTypes::ARMOUR)
+				{
+					m_systemManager->healthSystem->UpdateMaxArmourUI(player, player);
+					for (int c = 0; c < static_cast<HeartManagerComponent*>(player->GetComponents()->at(k))->HeartsVector()->size(); c++)
+					{
+						m_systemManager->renderSystem->AddEntity(static_cast<HeartManagerComponent*>(player->GetComponents()->at(k))->HeartsVector()->at(c));
+					}
+				}
+			}
+		}
+
+	}
 
 	if (player != nullptr)
 	{

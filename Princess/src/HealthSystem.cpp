@@ -201,7 +201,6 @@ void HealthSystem::UpdateHeartsUIStatus(Entity * HeartManager, Entity* player)
 							{
 								hc->State(HeartState::HALF);
 								sc->SheetX(1);
-								//sc->Frame(1);
 							}
 						}
 						else if (hc->Index() >= numFullHearts)
@@ -210,7 +209,6 @@ void HealthSystem::UpdateHeartsUIStatus(Entity * HeartManager, Entity* player)
 							{
 								hc->State(HeartState::EMPTY);
 								sc->SheetX(2);
-								//sc->Frame(2);
 							}
 						}
 						else
@@ -219,7 +217,6 @@ void HealthSystem::UpdateHeartsUIStatus(Entity * HeartManager, Entity* player)
 							{
 								hc->State(HeartState::FULL);
 								sc->SheetX(0);
-								//sc->Frame(0);
 							}
 						}
 					}
@@ -286,12 +283,12 @@ void HealthSystem::UpdateMaxArmourUI(Entity * HeartManager, Entity* player)
 					static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->setX(60 * i);
 					static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->setY(140);
 				}
-				armour->AddComponent(new SpriteComponent("ArmourSheet", 2, 3, 0, 0, 16, 16, 0));
-				static_cast<SpriteComponent*>((armour)->GetComponents()->at(1))->IsAnimating(false);
+				armour->AddComponent(new SpriteComponent("ArmourSheet", 2, 0, 0, 0, 16, 16, 0));
+				static_cast<SpriteComponent*>((armour)->GetComponents()->at(1))->Relative(true);
 				armour->AddComponent(new HeartComponent(heartVector));
 				heartVector->push_back(armour);
 				static_cast<HeartComponent*>((armour)->GetComponents()->at(2))->Index(heartVector->size() - 1);
-				armour->Transient(true);
+				armour->Transient(false);
 				m_entities.push_back(armour);
 			}
 			UpdateArmourUIStatus(HeartManager, player);
@@ -442,12 +439,12 @@ void HealthSystem::UpdateMaxHeartsUI(Entity * HeartManager, Entity* player)
 					static_cast<PositionComponent*>((heart)->GetComponents()->at(0))->setX(60 * i);
 					static_cast<PositionComponent*>((heart)->GetComponents()->at(0))->setY(20);
 				}
-				heart->AddComponent(new SpriteComponent("HeartsSheet", 2, 3, 0, 0, 16, 16, 0));
-				static_cast<SpriteComponent*>((heart)->GetComponents()->at(1))->IsAnimating(false);
+				heart->AddComponent(new SpriteComponent("HeartsSheet", 2, 0, 0, 0, 16, 16, 0));
+				static_cast<SpriteComponent*>((heart)->GetComponents()->at(1))->Relative(true);
 				heart->AddComponent(new HeartComponent(heartVector));
 				heartVector->push_back(heart);
 				static_cast<HeartComponent*>((heart)->GetComponents()->at(2))->Index(heartVector->size() - 1);
-				heart->Transient(true);
+				heart->Transient(false);
 				m_entities.push_back(heart);
 			}
 			UpdateHeartsUIStatus(HeartManager, player);

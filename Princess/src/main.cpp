@@ -169,13 +169,16 @@ int main()
 	systemManager.soundSystem = new SoundSystem(resourceManager);
 	systemManager.soundSystem->Active(true);
 
+	systemManager.mementoSystem = new MementoCaretaker(&state);
+	systemManager.mementoSystem->Active(true);
+
 
 
 	Entity * player = new Entity("Player");
 	player->Active(true);
 	player->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
 	player->AddComponent(new PositionComponent(SDL_Point{ 500, 380 }));
-	player->AddComponent(new AttributesComponent(3, 3, 1, 10, 200, 200));
+	player->AddComponent(new AttributesComponent(3, 4, 1, 10, 200, 200));
 	player->AddComponent(new MovementComponent());
 	player->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
@@ -195,10 +198,42 @@ int main()
 
 	player2->AddComponent(new SpriteComponent("Red", 3, 1, 0, 0, 16, 16, 0));
 	player2->AddComponent(new PositionComponent(SDL_Point{ 100, 100 }));
-	player2->AddComponent(new AttributesComponent(5, 5, 1, 10, 100, 100));
+	player2->AddComponent(new AttributesComponent(5, 6, 1, 10, 100, 100));
 	player2->AddComponent(new MovementComponent());
 	player2->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player2->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
+
+	HeartManagerComponent* hUI = new HeartManagerComponent(HeartTypes::HEALTH);
+	player2->AddComponent(hUI);
+
+	HeartManagerComponent* aUI = new HeartManagerComponent(HeartTypes::ARMOUR);
+	player2->AddComponent(aUI);
+
+	systemManager.healthSystem->AddEntity(player2);
+
+	/*
+	HeartManagerComponent* hUI = new HeartManagerComponent(HeartTypes::HEALTH);
+	player->AddComponent(hUI);
+
+	HeartManagerComponent* aUI = new HeartManagerComponent(HeartTypes::ARMOUR);
+	player->AddComponent(aUI);
+
+	systemManager.healthSystem->AddEntity(player2);
+
+	systemManager.healthSystem->UpdateMaxHeartsUI(player2, player2);
+	systemManager.healthSystem->UpdateMaxArmourUI(player2, player2);
+
+	for (int c = 0; c < hUI->HeartsVector()->size(); c++)
+	{
+		systemManager.renderSystem->AddEntity(hUI->HeartsVector()->at(c));
+	}
+	for (int i = 0; i < aUI->HeartsVector()->size(); i++)
+	{
+		systemManager.renderSystem->AddEntity(aUI->HeartsVector()->at(i));
+	}
+
+	*/
+
 	//player2->AddComponent(new AttackComponent(100, 1, 1));
 //	player2->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
 	//player2->AddComponent(new SeekComponent()); //and this if AI is to control that player
@@ -211,13 +246,14 @@ int main()
 	systemManager.projectileSystem->AddEntity(player);
 	systemManager.collisionSystem->AddEntity(player);
 	systemManager.attackSystem->AddEntity(player);
+	systemManager.mementoSystem->AddEntity(player);
 
 	systemManager.movementSystem->AddEntity(player2);
 	systemManager.renderSystem->AddEntity(player2);
 	systemManager.projectileSystem->AddEntity(player2);
 	systemManager.collisionSystem->AddEntity(player2);
 	systemManager.attackSystem->AddEntity(player2);
-
+	systemManager.mementoSystem->AddEntity(player2);
 	
 
 

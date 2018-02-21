@@ -11,11 +11,8 @@ InstanceManager::InstanceManager(SystemManager * sm, StateManager * s, ResourceM
 	startInstance = new StartInstance(sm, s);
 	gameOverInstance = new GameOverInstance(sm, s);
 
-	Generate("GameOver");
-	gameOverInstance->Active(true);
-
-	//Generate("Start");
-	//startInstance->Active(true);
+	Generate("Start");
+	startInstance->Active(true);
 }
 
 void InstanceManager::Update(float deltaTime)
@@ -34,7 +31,7 @@ void InstanceManager::Update(float deltaTime)
 	}
 	else if (gameOverInstance->Active())
 	{
-		startInstance->Update();
+		gameOverInstance->Update(deltaTime);
 	}
 	else
 	{
@@ -68,6 +65,7 @@ void InstanceManager::Update(float deltaTime)
 		worldMap->Active(true);
 		dungeonMap->Active(false);
 		m_listener->DungeonToWorld = false;
+		//m_stateManager->GameOver = true;
 	}
 	else if (m_listener->EncounterToWorld == true)
 	{
@@ -79,9 +77,15 @@ void InstanceManager::Update(float deltaTime)
 	else if(m_stateManager->GameOver)
 	{
 		Generate("GameOver");
-		dungeonMap->Active(false);
-		battleMap->Active(false);
+		worldMap->Active(false);
+		gameOverInstance->Active(true);
 		m_stateManager->GameOver = false;
+	}
+	else if (m_stateManager->LoadGame)
+	{
+		worldMap->Load(); 
+		worldMap->Active(true);
+		gameOverInstance->Active(false);
 	}
 }
 
