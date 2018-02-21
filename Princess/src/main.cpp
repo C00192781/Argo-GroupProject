@@ -156,7 +156,7 @@ int main()
 	//player->AddComponent(new AttackComponent(100, 1, 1));
 //	player->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
 //	player->AddComponent(new SeekComponent()); //and this if AI is to control that player
-	
+	player->AddComponent(new CurrencyComponent());
 	player->AddComponent(new SoundComponent("Scream", "play", false, 1, 30, 50));
 	//player->AddComponent(new SoundComponent("Placeholder", "play", true, 0, 0, 80));
 	player->AddComponent(new MusicComponent("Test", "play", true, 0, 100));
@@ -176,6 +176,7 @@ int main()
 	player2->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
 	player2->AddComponent(new SeekComponent()); //and this if AI is to control that player
 	player2->Transient(true);
+	player2->AddComponent(new CurrencyComponent());
 //	player2->Control(true); //enable only if the client controlled player
 
 

@@ -21,6 +21,7 @@ public:
 
 	int value() { return m_value; }
 	void value(int x) { m_value = x; }
+	void incrementValue(int x) { m_value += x; }
 private:
 	int m_value = 0;
 };

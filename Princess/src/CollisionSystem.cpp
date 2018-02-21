@@ -184,7 +184,7 @@ void CollisionSystem::filterCollisions(int entityIndex, int entityColIndex, int 
 				}
 				else if (m_collidableEntities.at(collidableIndex)->ID() == "Chocolate")
 				{
-					pickupCollision(collidableIndex); //I THINK
+					pickupCollision(collidableIndex, entityIndex); //I THINK
 				}
 			}
 
@@ -242,23 +242,32 @@ void CollisionSystem::spellcasterCollision(int index)
 
 
 
-void CollisionSystem::pickupCollision(int index)
+void CollisionSystem::pickupCollision(int index, int entityIndex)
 {
 	std::cout << "OH YEESSSS" << std::endl;
 
 
 	auto valueComp = m_collidableEntities.at(index)->FindComponent("currency");
 
+	int cash = static_cast<CurrencyComponent*>(valueComp)->value();
+
+	
+
 	if (valueComp != nullptr)
 	{
-
-
 		//auto temp = m_collidableEntities.at(index)->FindComponent("eHP");
 	//	auto temp = static_cast<CurrencyComponent*>(valueComp)->value(static_cast<CurrencyComponent*>(valueComp)->value() + (static_cast<CurrencyComponent*>(valueComp)->value()));
 
+		auto playerBank = m_entities.at(entityIndex)->FindComponent("currency");
+
+		if (playerBank != valueComp)
+		{
+			static_cast<CurrencyComponent*>(playerBank)->incrementValue(cash);
+		}
 
 		m_collidableEntities.at(index)->Active(false);
 
+		cout << static_cast<CurrencyComponent*>(playerBank)->value() << endl;
 
 	}
 	/*auto tar = m_entities.at(j)->FindComponent("PC");
