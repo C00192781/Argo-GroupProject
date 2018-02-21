@@ -81,6 +81,7 @@ public:
 	
 	void Save()
 	{
+		delete momento;
 		momento = new AttributesMomento(m_health, m_maxHealth, m_armour, m_maxArmour, m_movementSpeed, m_maxMovementSpeed);
 	}
 
@@ -104,7 +105,9 @@ private:
 	int m_movementSpeed;
 	int m_maxMovementSpeed;
 
+	//holds previous state of the object
 	AttributesMomento * momento;
+
 
 	std::list<Modifer> * m_modifers;
 };

@@ -137,6 +137,9 @@
     <ClCompile Include="src\InstanceManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\MementoCaretaker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External Dependencies\ResourceManager\JSONReader.h">
@@ -346,6 +349,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\InstanceManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AttributesMomento.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MementoCaretaker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
