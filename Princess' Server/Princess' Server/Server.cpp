@@ -23,9 +23,11 @@ void Server::update()
 
 		if (elapsedTime > 1000)
 		{
-			if (elapsedTime > 10000 || (*client).second.m_connectionRetry > 5)
+			//if (elapsedTime > 10000 || (*client).second.m_connectionRetry > 5)
+			if (elapsedTime > 100000000 || (*client).second.m_connectionRetry > 500000)
 			{
 				client = m_clients.erase(client);
+				std::cout << "yelo waloog doing a bad" << std::endl;
 				continue;
 			}
 
@@ -34,6 +36,7 @@ void Server::update()
 			{
 				Packet packet;
 				packet << (Uint8)PacketType::CONNECTIONALIVE << m_uptime;
+				std::cout << "ID: " << client->first << std::endl;
 				send(client->first, packet);
 				if (client->second.m_connectionRetry == 0)
 				{
@@ -94,7 +97,7 @@ void Server::sendToAll(Packet packet)
 void Server::listen()
 {
 	int i = 0;
-	if (SDLNet_UDP_Recv(m_socket, m_packet))
+	if (SDLNet_UDP_Recv(m_socket, m_packet) > 0)
 	{
 		Packet packet;
 		packet.append(m_packet->data, m_packet->len);
@@ -115,7 +118,7 @@ void Server::listen()
 					(*client).second.m_lastConnectionTime = m_uptime;
 					(*client).second.m_connectionWaiting = false;
 					(*client).second.m_connectionRetry = 0;
-					std::cout << "gren maro retrun " << i << std::endl;
+					//std::cout << "gren maro retrun " << i << std::endl;
 					break;
 				}
 			}
@@ -138,10 +141,10 @@ int Server::addClient(Uint32 & ip, Uint16 & port)
 	}
 
 	int id = m_nextClientID;
-	//ClientInfo info(ip, port, m_uptime);
-	//m_clients.emplace(id, info);
+	ClientInfo info(ip, port, m_uptime);
+	m_clients.emplace(id, info);
 	//m_clients.insert(std::pair<int, ClientInfo>(m_nextClientID, ClientInfo(ip, port, m_uptime)));
-	m_clients.emplace(id, ClientInfo(ip, port, m_uptime));
+	//m_clients.emplace(id, ClientInfo(ip, port, m_uptime));
 	m_nextClientID++;
 
 	return id;
