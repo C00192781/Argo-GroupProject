@@ -252,12 +252,14 @@ void AiSystem::attack(int entityIndex, int attackKey, int mcKey, string tag)
 		static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setXVelocity(0);
 		static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setYVelocity(0);
 		static_cast<WeaponComponent*>(m_entities.at(entityIndex)->GetComponents()->at(attackKey))->setAttacking(true);
+		static_cast<WeaponComponent*>(m_entities.at(entityIndex)->GetComponents()->at(attackKey))->setAllowAttack(false);
 	}
 	else
 	{
 		static_cast<MovementComponent*>(m_playerEntities.at(entityIndex)->GetComponents()->at(mcKey))->setXVelocity(0);
 		static_cast<MovementComponent*>(m_playerEntities.at(entityIndex)->GetComponents()->at(mcKey))->setYVelocity(0);
 		static_cast<WeaponComponent*>(m_playerEntities.at(entityIndex)->GetComponents()->at(attackKey))->setAttacking(true);
+		static_cast<WeaponComponent*>(m_entities.at(entityIndex)->GetComponents()->at(attackKey))->setAllowAttack(false);
 	}
 
 	

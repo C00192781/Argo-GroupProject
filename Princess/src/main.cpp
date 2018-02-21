@@ -10,7 +10,6 @@
 #include "StateManager.h"
 #include "PositionComponent.h"
 #include "SpriteComponent.h"
-#include "ProjectileSystem.h"
 #include "ProjectileComponent.h"
 #include "CollisionComponent.h"
 #include "CollisionSystem.h"
@@ -125,8 +124,6 @@ int main()
 	systemManager.attackSystem = new AttackSystem(projectiles);
 	systemManager.attackSystem->Active(true);
 
-	systemManager.projectileSystem = new ProjectileSystem();
-	systemManager.projectileSystem->Active(true);
 
 	systemManager.collisionSystem = new CollisionSystem(listener);
 	systemManager.collisionSystem->Active(true);
@@ -182,14 +179,12 @@ int main()
 
 	systemManager.movementSystem->AddEntity(player2);
 	systemManager.renderSystem->AddEntity(player2);
-	systemManager.projectileSystem->AddEntity(player2);
 	systemManager.collisionSystem->AddEntity(player2);
 	systemManager.attackSystem->AddEntity(player2);
 
 	
 	systemManager.movementSystem->AddEntity(player);
 	systemManager.renderSystem->AddEntity(player);
-	systemManager.projectileSystem->AddEntity(player);
 	systemManager.collisionSystem->AddEntity(player);
 	systemManager.attackSystem->AddEntity(player);
 
@@ -233,7 +228,7 @@ int main()
 		//Set text to be rendered
 		if (avgFPS > 1)
 		{
-		//	cout << "FPS (With Cap) " << avgFPS << endl;;
+			cout << "FPS (With Cap) " << avgFPS << endl;;
 		}
 		//update ren
 		++countedFrames;

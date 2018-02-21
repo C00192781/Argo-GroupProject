@@ -138,12 +138,15 @@ void DungeonMap::Generate()
 				if (enemy != nullptr)
 				{
 					enemy->Active(true);
+				
 
 					m_enemies.push_back(enemy);
 					m_systemManager->renderSystem->AddEntity(enemy);
 					m_systemManager->movementSystem->AddEntity(enemy);
 					m_systemManager->collisionSystem->AddEntity(enemy);
 					m_systemManager->aiSystem->AddEntity(enemy);
+
+					m_systemManager->attackSystem->AddEntity(enemy);
 				}
 				if (pickup != nullptr)
 				{

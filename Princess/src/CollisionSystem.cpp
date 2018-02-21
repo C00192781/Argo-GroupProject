@@ -260,6 +260,17 @@ void CollisionSystem::pickupCollision(int index, int entityIndex)
 
 		auto playerBank = m_entities.at(entityIndex)->FindComponent("currency");
 
+		std::vector<Entity*> projAct;
+
+		for (int i = 0; i < m_entities.size(); i++)
+		{
+			if (m_entities.at(i)->ID() == "Projectile" && m_entities.at(i)->Active())
+			projAct.push_back(m_entities.at(i));
+		}
+
+
+		
+
 		if (playerBank != valueComp)
 		{
 			static_cast<CurrencyComponent*>(playerBank)->incrementValue(cash);

@@ -46,7 +46,6 @@
     <ClCompile Include="src\MovementSystem.cpp" />
     <ClCompile Include="src\Pickup.cpp" />
     <ClCompile Include="src\Princess.cpp" />
-    <ClCompile Include="src\ProjectileSystem.cpp" />
     <ClCompile Include="src\Quad.cpp" />
     <ClCompile Include="src\RenderSystem.cpp" />
     <ClCompile Include="src\SoundSystem.cpp" />
@@ -106,7 +105,6 @@
     <ClInclude Include="include\PositionComponent.h" />
     <ClInclude Include="include\Princess.h" />
     <ClInclude Include="include\ProjectileComponent.h" />
-    <ClInclude Include="include\ProjectileSystem.h" />
     <ClInclude Include="include\Quad.h" />
     <ClInclude Include="include\RenderSystem.h" />
     <ClInclude Include="include\SeekComponent.h" />
