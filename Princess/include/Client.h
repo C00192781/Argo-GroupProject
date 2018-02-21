@@ -32,7 +32,8 @@ private:
 	IPaddress m_serverIP;
 	Uint16 m_serverPort = 5228;
 
-	std::string m_hostIP = "149.153.106.156";
+	//std::string m_hostIP = "149.153.106.156";
+	std::string m_hostIP = "37.228.242.89";
 
 	int m_timeout;
 

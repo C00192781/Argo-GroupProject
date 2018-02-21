@@ -27,14 +27,8 @@
     <ClInclude Include="..\..\Princess%27 Server\Princess%27 Server\Server.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Princess%27 Server\Princess%27 Server\Client.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Princess%27 Server\Princess%27 Server\Client.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Princess%27 Server\Princess%27 Server\EntryPoint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

@@ -19,14 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Princess%27 Server\Princess%27 Server\Client.h" />
     <ClInclude Include="..\..\Princess%27 Server\Princess%27 Server\ClientInfo.h" />
     <ClInclude Include="..\..\Princess%27 Server\Princess%27 Server\Packet.h" />
     <ClInclude Include="..\..\Princess%27 Server\Princess%27 Server\PacketType.h" />
     <ClInclude Include="..\..\Princess%27 Server\Princess%27 Server\Server.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Princess%27 Server\Princess%27 Server\Client.cpp" />
     <ClCompile Include="..\..\Princess%27 Server\Princess%27 Server\EntryPoint.cpp" />
     <ClCompile Include="..\..\Princess%27 Server\Princess%27 Server\Packet.cpp" />
     <ClCompile Include="..\..\Princess%27 Server\Princess%27 Server\Server.cpp" />

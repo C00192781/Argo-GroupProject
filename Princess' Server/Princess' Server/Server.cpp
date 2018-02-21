@@ -23,27 +23,27 @@ void Server::update()
 
 		if (elapsedTime > 1000)
 		{
-			//if (elapsedTime > 10000 || (*client).second.m_connectionRetry > 5)
-			if (elapsedTime > 100000000 || (*client).second.m_connectionRetry > 500000)
+			//if (elapsedTime > 10000 || (*client).second.m_connectionRetry > 5) // put this back in when yelo loogee stops doing a bad
+			if (elapsedTime > 100000000 || (*client).second.m_connectionRetry > 500000) // large values for debugging
 			{
 				client = m_clients.erase(client);
 				std::cout << "yelo waloog doing a bad" << std::endl;
 				continue;
 			}
 
-			//if (client->second.m_connectionWaiting == false || (elapsedTime >= 1000 * (client->second.m_connectionRetry + 1)))
-			if (client->second.m_connectionWaiting == false || (elapsedTime >= 1000 * (client->second.m_connectionRetry + 1)))
+			if ((*client).second.m_connectionWaiting == false || (elapsedTime >= 1000 * ((*client).second.m_connectionRetry + 1)))
 			{
 				Packet packet;
 				packet << (Uint8)PacketType::CONNECTIONALIVE << m_uptime;
-				std::cout << "ID: " << client->first << std::endl;
-				send(client->first, packet);
-				if (client->second.m_connectionRetry == 0)
+				std::cout << "ID: " << (*client).first << std::endl;
+				send((*client).first, packet);
+				if ((*client).second.m_connectionRetry == 0)
 				{
-					client->second.m_currentConnectionTime = m_uptime;
+					(*client).second.m_currentConnectionTime = m_uptime;
 				}
-				client->second.m_connectionWaiting = true;
-				client->second.m_connectionRetry++;
+
+				(*client).second.m_connectionWaiting = true;
+				(*client).second.m_connectionRetry++;
 				m_totalDataSent += packet.getDataSize();
 				
 			}
@@ -65,10 +65,11 @@ bool Server::send(const int &id, Packet packet)
 		if (packetSize > 0)
 		{
 			m_packet->len = packetSize;
-			m_packet->address.host = client->second.m_clientIP;
-			m_packet->address.host = client->second.m_clientIP;
+			m_packet->address.host = (*client).second.m_clientIP;
+			m_packet->address.port = (*client).second.m_clientPort;
 			memcpy(m_packet->data, packet.getData(), m_packet->len);
 			SDLNet_UDP_Send(m_socket, -1, m_packet);
+			m_totalDataSent += packetSize;
 			return true;
 		}
 	}
