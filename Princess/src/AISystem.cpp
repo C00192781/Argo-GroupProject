@@ -284,7 +284,7 @@ float AiSystem::magnitude(float x, float y)
 
 void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 {
-
+//	cout << deltaTime << endl;
 	if (m_entities.empty())
 	{
 		int q = 5;
@@ -374,8 +374,6 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 					int tw = m_playerEntities.at(i)->FindComponentIndex("weapon");
 					int tx = m_playerEntities.at(i)->FindComponentIndex("movement");
 
-				
-
 					attack(i, tw, tx, m_playerEntities.at(i)->ID());
 					//attack
 				}
@@ -463,31 +461,34 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 					{
 						if (players.at(j)->ID() == "Player") //some sort of target discerning goes here later
 						{
-							auto tar = players.at(j)->FindComponent("PC");
-							int tempX = static_cast<PositionComponent*>(tar)->getX();
-							int tempY = static_cast<PositionComponent*>(tar)->getY();
-
-							float x = tempX - static_cast<PositionComponent*>(m_entities.at(i)->FindComponent("PC"))->getX();
-							float y = tempY - static_cast<PositionComponent*>(m_entities.at(i)->FindComponent("PC"))->getY();
-
-							
-
-							if (dist == 0)
+							if (players.at(j)->Active())
 							{
-								dist = magnitude(x, y);
-								tarX = tempX;
-								tarY = tempY;
-								tarIndex = j;
-								tarAttribComp = players.at(j)->FindComponent("attribute");
-							}
+								auto tar = players.at(j)->FindComponent("PC");
+								int tempX = static_cast<PositionComponent*>(tar)->getX();
+								int tempY = static_cast<PositionComponent*>(tar)->getY();
 
-							else if (dist > magnitude(x, y))
-							{
-								dist = magnitude(x, y);
-								tarY = tempY;
-								tarX = tempX;
-								tarIndex = j;
-								tarAttribComp = players.at(j)->FindComponent("attribute");
+								float x = tempX - static_cast<PositionComponent*>(m_entities.at(i)->FindComponent("PC"))->getX();
+								float y = tempY - static_cast<PositionComponent*>(m_entities.at(i)->FindComponent("PC"))->getY();
+
+
+
+								if (dist == 0)
+								{
+									dist = magnitude(x, y);
+									tarX = tempX;
+									tarY = tempY;
+									tarIndex = j;
+									tarAttribComp = players.at(j)->FindComponent("attribute");
+								}
+
+								else if (dist > magnitude(x, y))
+								{
+									dist = magnitude(x, y);
+									tarY = tempY;
+									tarX = tempX;
+									tarIndex = j;
+									tarAttribComp = players.at(j)->FindComponent("attribute");
+								}
 							}
 							
 						}

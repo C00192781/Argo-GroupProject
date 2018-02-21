@@ -257,21 +257,31 @@ void CollisionSystem::spellcasterCollision(int index)
 
 void CollisionSystem::playerCollision(int index)
 {
-	std::cout << "player SLAPPED" << std::endl;
+
 
 
 	auto hpComp = m_collidableEntities.at(index)->FindComponent("attribute");
 
+	auto moveComp = m_collidableEntities.at(index)->FindComponent("movement");
+
+
+
 	if (hpComp != nullptr)
 	{
-
-
-		//auto temp = m_collidableEntities.at(index)->FindComponent("eHP");
-		static_cast<AttributesComponent*>(hpComp)->Health((static_cast<AttributesComponent*>(hpComp)->Health() - 1));
-
-		if (static_cast<AttributesComponent*>(hpComp)->Health() < 1)
+		if (static_cast<MovementComponent*>(moveComp)->getRolling() == false)
 		{
-			m_collidableEntities.at(index)->Active(false);
+			//auto temp = m_collidableEntities.at(index)->FindComponent("eHP");
+			static_cast<AttributesComponent*>(hpComp)->Health((static_cast<AttributesComponent*>(hpComp)->Health() - 1));
+
+			if (static_cast<AttributesComponent*>(hpComp)->Health() < 1)
+			{
+				m_collidableEntities.at(index)->Active(false);
+			}
+			std::cout << "player SLAPPED" << std::endl;
+		}
+		else
+		{
+			std::cout << "player DODGED FSDBFSJKDFSD" << std::endl;
 		}
 	}
 	/*auto tar = m_entities.at(j)->FindComponent("PC");
