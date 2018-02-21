@@ -67,6 +67,13 @@ void InstanceManager::Update(float deltaTime)
 		battleMap->Active(false);
 		m_listener->EncounterToWorld = false;
 	}
+	else if(m_listener->GameOver)
+	{
+
+		dungeonMap->Active(false);
+		battleMap->Active(false);
+		m_listener->GameOver;
+	}
 }
 
 void InstanceManager::Generate(std::string instanceID)

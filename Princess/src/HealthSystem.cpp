@@ -97,8 +97,11 @@ void HealthSystem::Update(float deltaTime)
 					//Updates Health and Armour UI
 					if (m_entities.at(i)->ID() == "Player")
 					{
-						UpdateHeartsUIStatus(m_entities.at(i), m_entities.at(i));
-						UpdateArmourUIStatus(m_entities.at(i), m_entities.at(i));
+						if (m_entities.at(i)->Control() == true)
+						{
+							UpdateHeartsUIStatus(m_entities.at(i), m_entities.at(i));
+							UpdateArmourUIStatus(m_entities.at(i), m_entities.at(i));
+						}
 					}
 
 				}

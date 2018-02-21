@@ -19,5 +19,6 @@ public:
 	bool DungeonToWorld = false;
 	bool EncounterToWorld = false;
 	bool roll = false;
+	bool GameOver = false;
 };
 #endif
