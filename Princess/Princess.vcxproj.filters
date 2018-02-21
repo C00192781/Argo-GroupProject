@@ -128,13 +128,10 @@
     <ClCompile Include="src\InstanceManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="include\Quad.cpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Packet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Server.cpp">
+    <ClCompile Include="src\Client.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -341,9 +338,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\PacketType.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Server.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

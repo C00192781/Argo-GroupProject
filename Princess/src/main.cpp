@@ -6,9 +6,9 @@
 #include "ResourceManager.h"
 #include "LTimer.h"
 #include "AchievementHandler.h"
-#include "Server.h"
 #include <chrono>
 #include <time.h>
+#include "Client.h"
 
 int main()
 {
@@ -86,8 +86,15 @@ int main()
 
 	InstanceManager instanceManager(&systemManager, &state, resourceManager, listener);
 
-	Server server;
-	server.start();
+	Client client;
+	if (client.connectToServer())
+	{
+		std::cout << "AYY" << std::endl;
+	}
+	else
+	{
+		std::cout << "WTF" << std::endl;
+	}
 
 	Entity * player = new Entity("Player");
 	player->Active(true);
@@ -154,7 +161,6 @@ int main()
 
 			instanceManager.Update(deltaTime);
 			systemManager.Update(deltaTime);
-			server.update();
 
 			SDL_RenderPresent(gameRenderer);
 		}

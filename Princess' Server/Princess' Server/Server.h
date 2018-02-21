@@ -53,5 +53,5 @@ private:
 	std::map<int, ClientInfo> m_clients;
 	Uint32 m_uptime;
 
-	const int m_serverPort = 5400;
+	const unsigned short m_serverPort = 5228;
 };

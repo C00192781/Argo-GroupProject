@@ -19,7 +19,6 @@ void Server::update()
 	// times out clients that have lost connection to the server
 	for (std::map<int, ClientInfo>::iterator client = m_clients.begin(); client != m_clients.end(); client++)
 	{
-		std::cout << "LU76FGADFDA" << std::endl;
 		Uint32 elapsedTime = m_uptime - (*client).second.m_lastConnectionTime;
 
 		if (elapsedTime > 1000)
@@ -80,7 +79,7 @@ void Server::sendToAll(Packet packet)
 		{
 			m_packet->len = packetSize;
 			m_packet->address.host = client->second.m_clientIP;
-			m_packet->address.host = client->second.m_clientIP;
+			m_packet->address.port = client->second.m_clientPort;
 			memcpy(m_packet->data, packet.getData(), m_packet->len);
 			SDLNet_UDP_Send(m_socket, -1, m_packet);
 			m_totalDataSent += m_packetSize;
@@ -116,7 +115,7 @@ void Server::listen()
 		}
 		else
 		{
-			// packet handler
+			handlePacket(m_packet->address.host, m_packet->address.port, packetType, packet);
 		}
 	}
 }
@@ -150,7 +149,6 @@ bool Server::removeClient(int id)
 		packet << (Uint8)PacketType::DISCONNECT;
 		send(id, packet);
 		std::cout << (*client).second.m_clientIP << ":" << (*client).second.m_clientPort << " has disconnected." << std::endl;
-		// leaveRoom(id);
 		m_clients.erase(client);
 		return true;
 	}
@@ -172,10 +170,10 @@ int Server::getID(const Uint32 & ip, const Uint16 & port)
 
 void Server::disconnectAllClients()
 {
-	//Packet packet;
-	//packet << (Uint8)PacketType::DISCONNECT;
-	//send(packet);
-	//m_clients.clear();
+	Packet packet;
+	packet << (Uint8)PacketType::DISCONNECT;
+	sendToAll(packet);
+	m_clients.clear();
 }
 
 bool Server::start()
@@ -192,7 +190,7 @@ bool Server::start()
 
 bool Server::stop()
 {
-	//disconnectAllClients();
+	disconnectAllClients();
 	m_running = false;
 	SDLNet_UDP_Close(m_socket);
 	m_socket = NULL;
