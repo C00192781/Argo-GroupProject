@@ -6,6 +6,7 @@
 #include "CollisionComponent.h"
 #include <vector>
 #include "SpriteComponent.h"
+
 class MovementSystem : public System
 {
 public:
@@ -28,6 +29,7 @@ private:
 	int m_windowWidth;
 	int m_windowHeight;
 	std::vector<bool>  m_rollAnim;
+
 	int m_lastXVel;
 	int m_lastYVel;
 	bool m_rollEnd = true;

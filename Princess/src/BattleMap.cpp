@@ -134,8 +134,10 @@ void BattleMap::Generate(std::string type)
 		m_systemManager->attackSystem->AddEntity((*i));
 	}
 
+
 	// sets player's position to the start of the dungeon
 	Entity* player = m_systemManager->collisionSystem->FindEntity("Player");
+
 
 	if (player != nullptr)
 	{

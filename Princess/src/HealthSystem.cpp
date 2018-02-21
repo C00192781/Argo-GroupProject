@@ -197,7 +197,8 @@ void HealthSystem::UpdateHeartsUIStatus(Entity * HeartManager, Entity* player)
 							if (hc->State() != HeartState::HALF)
 							{
 								hc->State(HeartState::HALF);
-								sc->Frame(1);
+								sc->SheetX(1);
+								//sc->Frame(1);
 							}
 						}
 						else if (hc->Index() >= numFullHearts)
@@ -205,7 +206,8 @@ void HealthSystem::UpdateHeartsUIStatus(Entity * HeartManager, Entity* player)
 							if (hc->State() != HeartState::EMPTY)
 							{
 								hc->State(HeartState::EMPTY);
-								sc->Frame(2);
+								sc->SheetX(2);
+								//sc->Frame(2);
 							}
 						}
 						else
@@ -213,7 +215,8 @@ void HealthSystem::UpdateHeartsUIStatus(Entity * HeartManager, Entity* player)
 							if (hc->State() != HeartState::FULL)
 							{
 								hc->State(HeartState::FULL);
-								sc->Frame(0);
+								sc->SheetX(0);
+								//sc->Frame(0);
 							}
 						}
 					}
@@ -355,7 +358,8 @@ void HealthSystem::UpdateArmourUIStatus(Entity * HeartManager, Entity* player)
 							if (hc->State() != HeartState::HALF)
 							{
 								hc->State(HeartState::HALF);
-								sc->Frame(1);
+								sc->SheetX(1);
+								//sc->Frame(1);
 							}
 						}
 						else if (hc->Index() >= numFullHearts)
@@ -363,7 +367,8 @@ void HealthSystem::UpdateArmourUIStatus(Entity * HeartManager, Entity* player)
 							if (hc->State() != HeartState::EMPTY)
 							{
 								hc->State(HeartState::EMPTY);
-								sc->Frame(2);
+								sc->SheetX(2);
+								//sc->Frame(2);
 							}
 						}
 						else
@@ -371,7 +376,8 @@ void HealthSystem::UpdateArmourUIStatus(Entity * HeartManager, Entity* player)
 							if (hc->State() != HeartState::FULL)
 							{
 								hc->State(HeartState::FULL);
-								sc->Frame(0);
+								sc->SheetX(0);
+								//sc->Frame(0);
 							}
 						}
 					}

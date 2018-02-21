@@ -52,6 +52,12 @@ public:
 	void Sheet(std::string x) { m_sheetID = x; };
 	std::string Sheet() { return m_sheetID; };
 
+	void SheetX(int x) { m_sheetX = x; };
+	int SheetX() { return m_sheetX; };
+
+	void SheetY(int y) { m_sheetY = y; };
+	int SheetY() { return m_sheetY; };
+
 	void IsAnimating(bool Animating) { m_IsAnimating = Animating; };
 	bool IsAnimating() { return m_IsAnimating; };
 

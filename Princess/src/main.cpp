@@ -23,20 +23,26 @@
 #include "Princess.h"
 #include <chrono>
 #include "SystemManager.h"
+#include "InstanceManager.h"
 #include "LTimer.h"
 #include "WorldMap.h"
 #include "DungeonMap.h"
 #include "TownInstance.h"
+#include "MenuSystem.h"
 #include "InstanceManager.h"
 #include "AchievementHandler.h"
 #include "SoundComponent.h"
 #include "SoundSystem.h"
+
+int GAME_SCALE = 3;
 
 int main()
 {
 	SDL_Window* gameWindow = SDL_CreateWindow("TEST", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 816, 624, SDL_WINDOW_SHOWN);
 	SDL_Renderer* gameRenderer = SDL_CreateRenderer(gameWindow, -1, SDL_RENDERER_PRESENTVSYNC);
 	SDL_Event *e = new SDL_Event();
+
+	bool running = true;
 
 	if (Mix_OpenAudio(22050, AUDIO_S16, 2, 1024) == -1) //Check return type
 	{
@@ -46,6 +52,7 @@ int main()
 	{
 		Mix_VolumeMusic(MIX_MAX_VOLUME);
 	}
+
 
 	unsigned int lastTime = 0;
 	float deltaTime = 0;
@@ -57,6 +64,7 @@ int main()
 	srand(time(NULL));
 
 	const int SCREEN_FPS = 800;
+
 	const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
 
 	//Set text color as black
@@ -85,6 +93,19 @@ int main()
 	resourceManager->AddTexture("ArmourSheet", "armourSpriteSheet.png");
 	resourceManager->AddTexture("WorldTurf", "World_Turfs.png");
 	resourceManager->AddTexture("Button", "Button.png");
+
+	resourceManager->AddFont("ComicSans", "ComicSans.ttf", 32);
+
+	resourceManager->AddTexture("StartGameButton", "StartGameButton.png");
+	resourceManager->AddTexture("OptionsButton", "OptionsButton.png");
+	resourceManager->AddTexture("ExitGameButton", "ExitGameButton.png");
+
+	resourceManager->AddTexture("LeftArrowButton", "LeftArrow.png");
+	resourceManager->AddTexture("RightArrowButton", "RightArrow.png");
+	resourceManager->AddTexture("MainMenuButton", "ReturnMainMenu.png");
+	resourceManager->AddTexture("SoundText", "sound.png");
+	resourceManager->AddTexture("MusicText", "music.png");
+
 	resourceManager->AddTexture("Achievement", "PlaceholderAchievement.png");
 	resourceManager->AddTexture("Achievement2", "PlaceholderAchievement2.png");
 	
@@ -100,7 +121,7 @@ int main()
 
 	InputHandler *input = new InputHandler(listener, e);
 
-	StateManager state;
+	StateManager state = StateManager();
 
 	std::vector<Entity*>* projectiles = new std::vector<Entity*>;
 
@@ -114,7 +135,7 @@ int main()
 
 	systemManager.renderSystem = new RenderSystem(resourceManager, gameRenderer);
 	systemManager.renderSystem->Active(true);
-	systemManager.renderSystem->SetScale(3);
+	systemManager.renderSystem->SetScale(GAME_SCALE);
 	systemManager.renderSystem->Camera(true);
 	systemManager.renderSystem->Camera(816, 624);
 
@@ -134,13 +155,16 @@ int main()
 	systemManager.healthSystem = new HealthSystem();
 	systemManager.healthSystem->Active(true);
 
+	systemManager.menuSystem = new MenuSystem(listener, &state);
+	systemManager.menuSystem->Active(true);
+
 	systemManager.buttonSystem = new ButtonSystem(listener);
 	systemManager.buttonSystem->Active(true);
 	
 	systemManager.soundSystem = new SoundSystem(resourceManager);
 	systemManager.soundSystem->Active(true);
 
-	InstanceManager instanceManager(&systemManager, &state, resourceManager, listener);
+
 
 	Entity * player = new Entity("Player");
 	player->Active(true);
@@ -174,6 +198,7 @@ int main()
 							//player2->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
 							//player2->AddComponent(new SeekComponent()); //and this if AI is to control that player
 
+
 	systemManager.movementSystem->AddEntity(player2);
 	systemManager.renderSystem->AddEntity(player2);
 	systemManager.collisionSystem->AddEntity(player2);
@@ -184,6 +209,7 @@ int main()
 	systemManager.renderSystem->AddEntity(player);
 	systemManager.collisionSystem->AddEntity(player);
 	systemManager.attackSystem->AddEntity(player);
+
 
 
 	if (player->Control())
@@ -201,6 +227,7 @@ int main()
 	playerEntities.push_back(player2);
 
 
+
 	//TownInstance t = TownInstance(&systemManager);
 	//t.Generate("jimmie");
 
@@ -211,9 +238,9 @@ int main()
 
 	AchievementHandler *achievements = new AchievementHandler(&systemManager);
 
-	bool heartTest = true;
+	InstanceManager instanceManager(&systemManager, &state, resourceManager, listener);
 
-	while (true)
+	while (state.ExitGame == false)
 	{
 		//Calculate and correct fps
 		int avgFPS = countedFrames / (fpsTimer.getTicks() / 1000.f);

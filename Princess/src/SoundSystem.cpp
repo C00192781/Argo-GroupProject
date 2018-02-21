@@ -47,8 +47,7 @@ void SoundSystem::Update()
 	{
 		if ((*it)->getVolumeSetter() == true)
 		{
-
-			Mix_Volume((*it)->getChannel(), MIX_MAX_VOLUME / 100 * (*it)->getVolume());
+			Mix_Volume((*it)->getChannel(), MIX_MAX_VOLUME / 100 * (*it)->getVolume()*(m_soundVolume/100.0f));
 			(*it)->setVolumeSetter(false);
 		}
 
@@ -87,7 +86,7 @@ void SoundSystem::Update()
 	{
 		if ((*it)->getVolumeSetter() == true)
 		{
-			Mix_VolumeMusic(MIX_MAX_VOLUME / 100 * (*it)->getVolume());
+			Mix_VolumeMusic(MIX_MAX_VOLUME / 100 * (*it)->getVolume()*(m_musicVolume/100.0f));
 			(*it)->setVolumeSetter(false);
 		}
 
@@ -120,5 +119,37 @@ void SoundSystem::Update()
 		}
 	}
 }
+
+int SoundSystem::GetSoundVolume()
+{
+	return m_soundVolume;
+}
+
+void SoundSystem::SetSoundVolume(int volume)
+{
+	m_soundVolume = volume;
+	for (std::vector<SoundComponent*>::iterator it = sounds.begin(); it != sounds.end(); ++it)
+	{
+		std::cout << "Volume : " + std::to_string(m_soundVolume) << std::endl;
+		(*it)->setVolumeSetter(true);
+	}
+}
+
+int SoundSystem::GetMusicVolume()
+{
+	return m_musicVolume;
+}
+
+void SoundSystem::SetMusicVolume(int volume)
+{
+	m_musicVolume = volume;
+	for (std::vector<MusicComponent*>::iterator it = music.begin(); it != music.end(); ++it)
+	{
+		std::cout << "Volume : " + std::to_string(m_musicVolume) << std::endl;
+		(*it)->setVolumeSetter(true);
+	}
+}
+
+
 
 

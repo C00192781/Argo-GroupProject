@@ -63,13 +63,13 @@ void AiSystem::LoadComponent()
 void AiSystem::UnloadComponent(int x)
 {
 
+
 }
 
 
 
 void AiSystem::Spawn()
 {
-
 
 
 //	SDL_Point p{ 300,0 };
@@ -117,19 +117,18 @@ std::vector<Entity*> AiSystem::getEntities()
 }
 
 
+
 void AiSystem::seek(int entityIndex, int pcKey, int mcKey, int seekKey, int attributeKey, float tarX, float tarY, int behaviour, string tag)
 {
 
 	if (tag != "Player")
 	{
-
 		float x = tarX - static_cast<PositionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(pcKey))->getX();
 		float y = tarY - static_cast<PositionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(pcKey))->getY();
 
 		float dist = magnitude(x, y);
 
 		static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->setDistanceToDestination(dist);
-
 		if (dist > static_cast<AttributesComponent*>(m_entities.at(entityIndex)->GetComponents()->at(attributeKey))->MovementSpeed() / 60.0f)
 		{
 			normalise(x, y);
@@ -177,7 +176,6 @@ void AiSystem::seek(int entityIndex, int pcKey, int mcKey, int seekKey, int attr
 			}
 		}
 	}
-
 }
 
 
@@ -377,7 +375,6 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 					attack(i, tw, tx, m_playerEntities.at(i)->ID());
 					//attack
 				}
-
 				else if (decision == 10 || decision == 11) //if hp adv and out of range
 				{
 					int tw = m_playerEntities.at(i)->FindComponentIndex("PC"); //note:move index finding to spawn, 
@@ -449,7 +446,6 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 
 			if (m_entities.at(i)->Active())
 			{
-
 				if (m_entities.at(i)->ID() == "Spellcaster Enemy" || m_entities.at(i)->ID() == "Melee Enemy" || m_entities.at(i)->ID() == "Ranged Enemy")
 				{
 

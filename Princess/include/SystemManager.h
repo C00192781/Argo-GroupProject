@@ -21,6 +21,7 @@
 #include "AISystem.h"
 #include "CollisionSystem.h"
 #include "HealthSystem.h"
+#include "MenuSystem.h"
 #include "SoundComponent.h"
 #include "SoundSystem.h"
 
@@ -36,6 +37,7 @@ public:
 	AttackSystem* attackSystem;
 	CollisionSystem *collisionSystem;
 	HealthSystem * healthSystem;
+	MenuSystem * menuSystem;
 	AiSystem * aiSystem;
 	ButtonSystem * buttonSystem;
 	TextRenderSystem * textRenderSystem;

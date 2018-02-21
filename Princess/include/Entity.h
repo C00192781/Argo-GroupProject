@@ -22,7 +22,6 @@ public:
 	int FindComponentIndex(std::string ID);
 	bool Control() { return m_control; };
 	void Control(bool x) { m_control = x; };
-
 private:
 	std::vector<Component*> m_components;
 	std::string m_id;
