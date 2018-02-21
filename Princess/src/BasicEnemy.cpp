@@ -10,8 +10,9 @@ Entity* BasicEnemy::CharA(std::string ID, SDL_Point pos, int element)
 	BasicEnemy->AddComponent(new MovementComponent());
 	BasicEnemy->AddComponent(new SeekComponent(-50, -50));
 	BasicEnemy->AddComponent(new WeaponComponent(WeaponType::MELEE));
-	BasicEnemy->AddComponent(new AttributesComponent(6, 6, 1, 10, 100, 100));
+	BasicEnemy->AddComponent(new AttributesComponent(10, 10, 1, 10, 100, 100));
 //	BasicEnemy->AddComponent(new eHPComp());
+	BasicEnemy->AddComponent(new CurrencyComponent());
 
 	int posKey = -1;
 	for (int i = 0; i < BasicEnemy->GetComponents()->size(); i++)
@@ -36,9 +37,9 @@ Entity* BasicEnemy::CharB(std::string ID, SDL_Point pos, int element)
 	BasicEnemy->AddComponent(new PositionComponent(pos));
 	BasicEnemy->AddComponent(new MovementComponent());
 	BasicEnemy->AddComponent(new SeekComponent(-50, -50));
-
+	BasicEnemy->AddComponent(new CurrencyComponent());
 	BasicEnemy->AddComponent(new WeaponComponent(WeaponType::RANGE));
-	BasicEnemy->AddComponent(new AttributesComponent(5, 5, 1, 1, 100, 100));
+	BasicEnemy->AddComponent(new AttributesComponent(9, 9, 1, 1, 100, 100));
 //	BasicEnemy->AddComponent(new eHPComp());
 
 	int posKey = -1;
@@ -66,7 +67,8 @@ Entity* BasicEnemy::CharC(std::string ID, SDL_Point pos, int element)
 	BasicEnemy->AddComponent(new MovementComponent());
 	BasicEnemy->AddComponent(new SeekComponent(-50, -50));
 	BasicEnemy->AddComponent(new WeaponComponent(WeaponType::STAFF));
-	BasicEnemy->AddComponent(new AttributesComponent(4, 4, 1, 10, 100, 100));
+	BasicEnemy->AddComponent(new AttributesComponent(8, 8, 1, 10, 100, 100));
+	BasicEnemy->AddComponent(new CurrencyComponent());
 //	BasicEnemy->AddComponent(new eHPComp());
 
 	return BasicEnemy;
@@ -84,7 +86,8 @@ Entity* BasicEnemy::CharD(std::string ID, SDL_Point pos, int element)
 	BasicEnemy->AddComponent(new MovementComponent());
 	BasicEnemy->AddComponent(new SeekComponent(-50, -50));
 	BasicEnemy->AddComponent(new WeaponComponent(WeaponType::STAFF));
-	BasicEnemy->AddComponent(new AttributesComponent(3, 3, 1, 10, 100, 100));
+	BasicEnemy->AddComponent(new AttributesComponent(7, 7, 1, 10, 100, 100));
+	BasicEnemy->AddComponent(new CurrencyComponent());
 	//	BasicEnemy->AddComponent(new eHPComp());
 
 	return BasicEnemy;

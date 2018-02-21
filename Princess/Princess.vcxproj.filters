@@ -71,12 +71,6 @@
     <ClCompile Include="src\Princess.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ProjectileSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Quad.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\RenderSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -135,6 +129,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\InstanceManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pickup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Quad.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -241,9 +241,6 @@
     <ClInclude Include="include\ProjectileComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\ProjectileSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Quad.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -328,8 +325,6 @@
     <ClInclude Include="include\TreeNodes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\eHPComp.h">
-    </ClInclude>
     <ClInclude Include="include\SoundComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -346,6 +341,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\InstanceManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CurrencyComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Pickup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PickupFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

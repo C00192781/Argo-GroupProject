@@ -38,6 +38,20 @@ void AttackSystem::UnloadComponent(int x)
 
 void AttackSystem::Update(float deltaTime)
 {
+	//for (std::vector<Entity*>::iterator it = m_entities.begin(); it != m_entities.end();)
+	//{
+	//	
+	//	if ((*it)->ID() == "Projectile")
+	//	{
+	//		it = m_entities.erase(it);
+	//	}
+	//	else
+	//	{
+	//		++it;
+	//	}
+	//} //get those projectiles outta my entities, they have their own damn vector
+
+
 	for (int i = 0; i < m_entities.size(); i++)
 	{
 		if (m_entities.at(i)->Active())
@@ -72,6 +86,8 @@ void AttackSystem::Update(float deltaTime)
 
 										m_projectiles->at(j)->Active(true);
 										newProjectileComponent->setShooterType(m_entities.at(i)->ID());
+
+										auto testyboi = newProjectileComponent->getShooterType();
 										newProjectileComponent->setTimeToLive(weaponComponent->getRange() * deltaTime);
 										projectilePositionComponent->setPosition(positionComponent->getX(), positionComponent->getY());
 
@@ -139,6 +155,13 @@ void AttackSystem::Update(float deltaTime)
 									newProjectileComponent->setShooterType(m_entities.at(i)->ID());
 									newProjectileComponent->setTimeToLive(weaponComponent->getRange() * deltaTime);
 									projectilePositionComponent->setPosition(positionComponent->getX(), positionComponent->getY());
+
+									auto testyboi = newProjectileComponent->getShooterType();
+									if (testyboi != "Player")
+									{
+										int q = 5;
+										q -= 5;
+									}
 
 									projectileMovementComponent->setXVelocity((sin(movementComponent->getOrientation()* (3.142 / 180)) * newProjectileComponent->getBaseSpeed()));
 									projectileMovementComponent->setYVelocity((-cos(movementComponent->getOrientation() * (3.142 / 180)) * newProjectileComponent->getBaseSpeed()));

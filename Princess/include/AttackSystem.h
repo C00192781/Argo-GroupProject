@@ -24,3 +24,5 @@ private:
 
 	void setStaffOffset(WeaponComponent* weapon);
 };
+
+

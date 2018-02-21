@@ -9,7 +9,7 @@ AiSystem::AiSystem()
 
 	//add root node   the very first 'Question' or decision to be made
 	//is monster health greater than player health?
-	m_decisionTree->CreateRootNode(1);
+	//m_decisionTree->CreateRootNode(1);
 
 	//add nodes depending on decisions
 	//2nd decision to be made
@@ -249,12 +249,18 @@ void AiSystem::attack(int entityIndex, int attackKey, int mcKey, string tag)
 	{
 		static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setXVelocity(0);
 		static_cast<MovementComponent*>(m_entities.at(entityIndex)->GetComponents()->at(mcKey))->setYVelocity(0);
+		static_cast<WeaponComponent*>(m_entities.at(entityIndex)->GetComponents()->at(attackKey))->setAttacking(true);
+		static_cast<WeaponComponent*>(m_entities.at(entityIndex)->GetComponents()->at(attackKey))->setAllowAttack(false);
 	}
 	else
 	{
 		static_cast<MovementComponent*>(m_playerEntities.at(entityIndex)->GetComponents()->at(mcKey))->setXVelocity(0);
 		static_cast<MovementComponent*>(m_playerEntities.at(entityIndex)->GetComponents()->at(mcKey))->setYVelocity(0);
+		static_cast<WeaponComponent*>(m_playerEntities.at(entityIndex)->GetComponents()->at(attackKey))->setAttacking(true);
+		static_cast<WeaponComponent*>(m_entities.at(entityIndex)->GetComponents()->at(attackKey))->setAllowAttack(false);
 	}
+
+	
 }
 
 void AiSystem::normalise(float &x, float &y)
@@ -276,6 +282,7 @@ float AiSystem::magnitude(float x, float y)
 
 void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 {
+//	cout << deltaTime << endl;
 	if (m_entities.empty())
 	{
 		int q = 5;
@@ -344,13 +351,16 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 			} //end ent for
 
 	
-				auto selfRange = static_cast<WeaponComponent*>(m_playerEntities.at(i)->FindComponent("weapon"))->getRange();
-				int enemyRange = 200;
+				auto selfRange = static_cast<WeaponComponent*>(m_playerEntities.at(i)->FindComponent("weapon"))->getRange() * 10;;
+				int enemyRange = 200; //defaulting
 
-		/*		if (!m_entities.empty())
+				if (!m_entities.empty() && m_entities.size() >= tarIndex)
 				{
-					enemyRange = static_cast<WeaponComponent*>(m_entities.at(tarIndex)->FindComponent("weapon"))->getRange();
-				}*/
+					if (m_entities.at(tarIndex)->FindComponent("weapon") != nullptr)
+					{
+						enemyRange = static_cast<WeaponComponent*>(m_entities.at(tarIndex)->FindComponent("weapon"))->getRange() * 10;
+					}
+				}
 				m_decisionTree->calculatePathNodes(m_decisionTree->m_RootNode, dist, 1, 8, selfRange, enemyRange); //make target HP and self HP gettable later,  hardcoded values for test purpose only.
 			//	cout << "dist: " << dist << endl;
 				int decision = m_decisionTree->getDecision();
@@ -361,6 +371,7 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 				{
 					int tw = m_playerEntities.at(i)->FindComponentIndex("weapon");
 					int tx = m_playerEntities.at(i)->FindComponentIndex("movement");
+
 					attack(i, tw, tx, m_playerEntities.at(i)->ID());
 					//attack
 				}
@@ -370,8 +381,12 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 					int tx = m_playerEntities.at(i)->FindComponentIndex("movement");
 					int ty = m_playerEntities.at(i)->FindComponentIndex("seek");
 					int tz = m_playerEntities.at(i)->FindComponentIndex("attribute");
+					int tq = m_playerEntities.at(i)->FindComponentIndex("weapon");
 
 					seek(i, tw, tx, ty, tz, tarX, tarY, 0, m_playerEntities.at(i)->ID()); //refactor x and y to take in princess position or whatever player or whatever
+
+					static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(tq))->setAttacking(false);
+					static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(tq))->setAllowAttack(true);
 																					//seek
 				}
 
@@ -381,6 +396,10 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 
 					static_cast<MovementComponent*>(move)->setXVelocity(0);
 					static_cast<MovementComponent*>(move)->setYVelocity(0);
+					int tq = m_playerEntities.at(i)->FindComponentIndex("weapon");
+
+					static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(tq))->setAttacking(false);
+					static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(tq))->setAllowAttack(true);
 
 					//	static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(tx)->setYVelocity(0));
 					//do nothing
@@ -391,10 +410,12 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 					int tx = m_playerEntities.at(i)->FindComponentIndex("movement");
 					int ty = m_playerEntities.at(i)->FindComponentIndex("seek");
 					int tz = m_playerEntities.at(i)->FindComponentIndex("attribute");
+					int tq = m_playerEntities.at(i)->FindComponentIndex("weapon");
 
 
 					seek(i, tw, tx, ty, tz, tarX, tarY, 1, m_playerEntities.at(i)->ID()); //refactor x and y to take in princess position or whatever player or whatever
-																					//flee
+					static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(tq))->setAttacking(false);
+					static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(tq))->setAllowAttack(true);													//flee
 
 				}
 			} //end vector.empty
@@ -402,12 +423,16 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 	} //end for player
 
 	
-
+	//BEGIN ENEMIES $$$
 
 	for (int i = 0; i < m_entities.size(); i++)
 	{
 		if (m_entities.at(i)->ID() != "Player")
 		{
+			MovementComponent* movementComponent = static_cast<MovementComponent*>(m_entities.at(i)->FindComponent("movement"));
+			
+
+
 			auto hpComp = m_entities.at(i)->FindComponent("attribute");
 
 			Component* tarAttribComp = nullptr;
@@ -432,45 +457,50 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 					{
 						if (players.at(j)->ID() == "Player") //some sort of target discerning goes here later
 						{
-							auto tar = players.at(j)->FindComponent("PC");
-							int tempX = static_cast<PositionComponent*>(tar)->getX();
-							int tempY = static_cast<PositionComponent*>(tar)->getY();
-
-							float x = tempX - static_cast<PositionComponent*>(m_entities.at(i)->FindComponent("PC"))->getX();
-							float y = tempY - static_cast<PositionComponent*>(m_entities.at(i)->FindComponent("PC"))->getY();
-
-							
-
-							if (dist == 0)
+							if (players.at(j)->Active())
 							{
-								dist = magnitude(x, y);
-								tarX = tempX;
-								tarY = tempY;
-								tarIndex = j;
-								tarAttribComp = players.at(j)->FindComponent("attribute");
-							}
+								auto tar = players.at(j)->FindComponent("PC");
+								int tempX = static_cast<PositionComponent*>(tar)->getX();
+								int tempY = static_cast<PositionComponent*>(tar)->getY();
 
-							else if (dist > magnitude(x, y))
-							{
-								dist = magnitude(x, y);
-								tarY = tempY;
-								tarX = tempX;
-								tarIndex = j;
-								tarAttribComp = players.at(j)->FindComponent("attribute");
+								float x = tempX - static_cast<PositionComponent*>(m_entities.at(i)->FindComponent("PC"))->getX();
+								float y = tempY - static_cast<PositionComponent*>(m_entities.at(i)->FindComponent("PC"))->getY();
+
+
+
+								if (dist == 0)
+								{
+									dist = magnitude(x, y);
+									tarX = tempX;
+									tarY = tempY;
+									tarIndex = j;
+									tarAttribComp = players.at(j)->FindComponent("attribute");
+								}
+
+								else if (dist > magnitude(x, y))
+								{
+									dist = magnitude(x, y);
+									tarY = tempY;
+									tarX = tempX;
+									tarIndex = j;
+									tarAttribComp = players.at(j)->FindComponent("attribute");
+								}
 							}
 							
 						}
 					}
 
 				//	cout << dist << endl;
+					int enemyRange = 100;
 					//auto enemyRange = static_cast<WeaponComponent*>(m_playerEntities.at(i)->FindComponent("weapon"))->getRange();
-					auto selfRange = static_cast<WeaponComponent*>(m_entities.at(i)->FindComponent("weapon"))->getRange();
+					auto selfRange = static_cast<WeaponComponent*>(m_entities.at(i)->FindComponent("weapon"))->getRange() * 10;
 
 					//cout << "playerHp: " << static_cast<AttributesComponent*>(hpComp)->Health() << endl;
 
-					if (tarAttribComp != nullptr)
+					if (tarAttribComp != nullptr && players.at(tarIndex)->FindComponent("weapon") != nullptr)
 					{
-						m_decisionTree->calculatePathNodes(m_decisionTree->m_RootNode, dist, static_cast<AttributesComponent*>(tarAttribComp)->Health(), static_cast<AttributesComponent*>(hpComp)->Health(), selfRange, 300); //make target HP and self HP gettable later,  hardcoded values for test purpose only.
+						enemyRange = static_cast<WeaponComponent*>(players.at(tarIndex)->FindComponent("weapon"))->getRange() * 10;;
+						m_decisionTree->calculatePathNodes(m_decisionTree->m_RootNode, dist, static_cast<AttributesComponent*>(tarAttribComp)->Health(), static_cast<AttributesComponent*>(hpComp)->Health(), selfRange, enemyRange); //make target HP and self HP gettable later,  hardcoded values for test purpose only.
 					}
 					else
 					{
@@ -485,6 +515,15 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 					{
 						int tw = m_entities.at(i)->FindComponentIndex("weapon");
 						int tx = m_entities.at(i)->FindComponentIndex("movement");
+
+						auto tp = m_entities.at(i)->FindComponent("PC");
+
+						int selfX = static_cast<PositionComponent*>(tp)->getX();
+
+						int selfY = static_cast<PositionComponent*>(tp)->getY();
+						//816, 624,
+						movementComponent->setOrientation(atan2f(tarY - selfY , tarX - selfX)     * (180 / 3.14f) + 90);
+
 						attack(i, tw, tx, m_entities.at(i)->ID());
 						//attack
 					}

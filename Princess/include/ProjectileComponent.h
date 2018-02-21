@@ -20,6 +20,7 @@ public:
 		m_baseSpeed = speed;
 		m_timeToLive = 0;
 	}
+
 	//ProjectileComponent()
 	//{
 	//	m_type = "PJ";
@@ -57,6 +58,7 @@ public:
 	float getTimeToLive() { return m_timeToLive; }
 	float getBaseSpeed() { return m_baseSpeed; }
 	std::string getType() { return m_shooterType; }
+	std::string getShooterType() { return m_shooterType; }
 
 	//bool getAliveStatus() { return m_alive; }
 

@@ -10,7 +10,6 @@
 #include "StateManager.h"
 #include "PositionComponent.h"
 #include "SpriteComponent.h"
-#include "ProjectileSystem.h"
 #include "ProjectileComponent.h"
 #include "CollisionComponent.h"
 #include "CollisionSystem.h"
@@ -146,8 +145,6 @@ int main()
 	systemManager.attackSystem = new AttackSystem(projectiles);
 	systemManager.attackSystem->Active(true);
 
-	systemManager.projectileSystem = new ProjectileSystem();
-	systemManager.projectileSystem->Active(true);
 
 	systemManager.collisionSystem = new CollisionSystem(listener);
 	systemManager.collisionSystem->Active(true);
@@ -173,20 +170,18 @@ int main()
 	player->Active(true);
 	player->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
 	player->AddComponent(new PositionComponent(SDL_Point{ 500, 380 }));
-	player->AddComponent(new AttributesComponent(3, 3, 1, 10, 200, 200));
+	player->AddComponent(new AttributesComponent(3, 3, 1, 10, 100, 100));
 	player->AddComponent(new MovementComponent());
 	player->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
-	player->AddComponent(new SeekComponent());
-	//player->AddComponent(new AttackComponent(100, 1, 1));
 	player->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
 	player->AddComponent(new SeekComponent()); //and this if AI is to control that player
-	
+	player->AddComponent(new CurrencyComponent());
 	player->AddComponent(new SoundComponent("Scream", "play", false, 1, 30, 50));
-	//player->AddComponent(new SoundComponent("Placeholder", "play", true, 0, 0, 80));
 	player->AddComponent(new MusicComponent("Test", "play", true, 0, 100));
 	player->Transient(true);
-	//player->Control(true);
+		//player->AddComponent(new SoundComponent("Placeholder", "play", true, 0, 0, 80));
+		//player->Control(true);
 
 	Entity * player2 = new Entity("Player");
 	player2->Active(true);
@@ -197,26 +192,23 @@ int main()
 	player2->AddComponent(new MovementComponent());
 	player2->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player2->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
-	//player2->AddComponent(new AttackComponent(100, 1, 1));
-//	player2->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
-	//player2->AddComponent(new SeekComponent()); //and this if AI is to control that player
 	player2->Transient(true);
+	player2->AddComponent(new CurrencyComponent());
 	player2->Control(true); //enable only if the client controlled player
+							//player2->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
+							//player2->AddComponent(new SeekComponent()); //and this if AI is to control that player
 
-
-	systemManager.movementSystem->AddEntity(player);
-	systemManager.renderSystem->AddEntity(player);
-	systemManager.projectileSystem->AddEntity(player);
-	systemManager.collisionSystem->AddEntity(player);
-	systemManager.attackSystem->AddEntity(player);
 
 	systemManager.movementSystem->AddEntity(player2);
 	systemManager.renderSystem->AddEntity(player2);
-	systemManager.projectileSystem->AddEntity(player2);
 	systemManager.collisionSystem->AddEntity(player2);
 	systemManager.attackSystem->AddEntity(player2);
 
 	
+	systemManager.movementSystem->AddEntity(player);
+	systemManager.renderSystem->AddEntity(player);
+	systemManager.collisionSystem->AddEntity(player);
+	systemManager.attackSystem->AddEntity(player);
 
 
 
@@ -260,7 +252,7 @@ int main()
 		//Set text to be rendered
 		if (avgFPS > 1)
 		{
-			//cout << "FPS (With Cap) " << avgFPS << endl;;
+		//	cout << "FPS (With Cap) " << avgFPS << endl;;
 		}
 		//update ren
 		++countedFrames;

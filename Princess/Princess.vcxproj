@@ -45,8 +45,8 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MenuSystem.cpp" />
     <ClCompile Include="src\MovementSystem.cpp" />
+    <ClCompile Include="src\Pickup.cpp" />
     <ClCompile Include="src\Princess.cpp" />
-    <ClCompile Include="src\ProjectileSystem.cpp" />
     <ClCompile Include="src\Quad.cpp" />
     <ClCompile Include="src\RenderSystem.cpp" />
     <ClCompile Include="src\StartInstance.cpp" />
@@ -83,8 +83,8 @@
     <ClInclude Include="include\ConcreteSubject.h" />
     <ClInclude Include="include\ControlComponent.h" />
     <ClInclude Include="include\ControlSystem.h" />
+    <ClInclude Include="include\CurrencyComponent.h" />
     <ClInclude Include="include\DecisionTree.h" />
-    <ClInclude Include="include\eHPComp.h" />
     <ClInclude Include="include\DungeonMap.h" />
     <ClInclude Include="include\DungeonTileFactory.h" />
     <ClInclude Include="include\Entity.h" />
@@ -104,10 +104,11 @@
     <ClInclude Include="include\MovementSystem.h" />
     <ClInclude Include="include\MusicComponent.h" />
     <ClInclude Include="include\Observer.h" />
+    <ClInclude Include="include\Pickup.h" />
+    <ClInclude Include="include\PickupFactory.h" />
     <ClInclude Include="include\PositionComponent.h" />
     <ClInclude Include="include\Princess.h" />
     <ClInclude Include="include\ProjectileComponent.h" />
-    <ClInclude Include="include\ProjectileSystem.h" />
     <ClInclude Include="include\Quad.h" />
     <ClInclude Include="include\RenderSystem.h" />
     <ClInclude Include="include\SeekComponent.h" />
