@@ -91,6 +91,8 @@ void AttackSystem::Update(float deltaTime)
 										newProjectileComponent->setTimeToLive(weaponComponent->getRange() * deltaTime);
 										projectilePositionComponent->setPosition(positionComponent->getX(), positionComponent->getY());
 
+										weaponComponent->setLife(newProjectileComponent->getTimeToLive()); //MADNESS?
+
 										if (count == 0)
 										{
 											projectileMovementComponent->setXVelocity((sin((movementComponent->getOrientation() - 20) * (3.142 / 180)) * newProjectileComponent->getBaseSpeed()));
@@ -156,13 +158,28 @@ void AttackSystem::Update(float deltaTime)
 									newProjectileComponent->setTimeToLive(weaponComponent->getRange() * deltaTime);
 									projectilePositionComponent->setPosition(positionComponent->getX(), positionComponent->getY());
 
-									auto testyboi = newProjectileComponent->getShooterType();
+
+
+
+									if (i > 1)
+									{
+										int q = 5;
+									}
+
+									weaponComponent->setLife(newProjectileComponent->getTimeToLive()); //MADNESS?
+
+								/*float tempyBOY = newProjectileComponent->getTimeToLive();*/
+					
+
+									float tempboi = weaponComponent->getLife();
+
+							/*		auto testyboi = newProjectileComponent->getShooterType();
 									if (testyboi != "Player")
 									{
 										int q = 5;
 										q -= 5;
 									}
-
+*/
 									projectileMovementComponent->setXVelocity((sin(movementComponent->getOrientation()* (3.142 / 180)) * newProjectileComponent->getBaseSpeed()));
 									projectileMovementComponent->setYVelocity((-cos(movementComponent->getOrientation() * (3.142 / 180)) * newProjectileComponent->getBaseSpeed()));
 
@@ -213,6 +230,7 @@ void AttackSystem::Update(float deltaTime)
 									projectileMovementComponent->setXVelocity((sin((movementComponent->getOrientation() + weaponComponent->getStaffOffset())* (3.142 / 180)) * newProjectileComponent->getBaseSpeed()));
 									projectileMovementComponent->setYVelocity((-cos((movementComponent->getOrientation() + weaponComponent->getStaffOffset()) * (3.142 / 180)) * newProjectileComponent->getBaseSpeed()));
 
+									weaponComponent->setLife(newProjectileComponent->getTimeToLive()); //MADNESS?
 									weaponComponent->setAttacking(false);
 									movementComponent->setLockedOrientation(false);
 

@@ -142,22 +142,22 @@ int main()
 
 	InstanceManager instanceManager(&systemManager, &state, resourceManager, listener);
 
-	//Entity * player = new Entity("Player");
-	//player->Active(true);
-	//player->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
-	//player->AddComponent(new PositionComponent(SDL_Point{ 500, 380 }));
-	//player->AddComponent(new AttributesComponent(3, 3, 1, 10, 100, 100));
-	//player->AddComponent(new MovementComponent());
-	//player->AddComponent(new WeaponComponent(WeaponType::RANGE));
-	//player->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
-	//player->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
-	//player->AddComponent(new SeekComponent()); //and this if AI is to control that player
-	//player->AddComponent(new CurrencyComponent());
-	//player->AddComponent(new SoundComponent("Scream", "play", false, 1, 30, 50));
-	//player->AddComponent(new MusicComponent("Test", "play", true, 0, 100));
-	//player->Transient(true);
-	//	//player->AddComponent(new SoundComponent("Placeholder", "play", true, 0, 0, 80));
-	//	//player->Control(true);
+	Entity * player = new Entity("Player");
+	player->Active(true);
+	player->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
+	player->AddComponent(new PositionComponent(SDL_Point{ 500, 380 }));
+	player->AddComponent(new AttributesComponent(3, 3, 1, 10, 100, 100));
+	player->AddComponent(new MovementComponent());
+	player->AddComponent(new WeaponComponent(WeaponType::RANGE));
+	player->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
+	player->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
+	player->AddComponent(new SeekComponent()); //and this if AI is to control that player
+	player->AddComponent(new CurrencyComponent());
+	player->AddComponent(new SoundComponent("Scream", "play", false, 1, 30, 50));
+	player->AddComponent(new MusicComponent("Test", "play", true, 0, 100));
+	player->Transient(true);
+		//player->AddComponent(new SoundComponent("Placeholder", "play", true, 0, 0, 80));
+		//player->Control(true);
 
 	Entity * player2 = new Entity("Player");
 	player2->Active(true);
@@ -179,7 +179,7 @@ int main()
 	systemManager.collisionSystem->AddEntity(player2);
 	systemManager.attackSystem->AddEntity(player2);
 
-/*	
+	
 	systemManager.movementSystem->AddEntity(player);
 	systemManager.renderSystem->AddEntity(player);
 	systemManager.collisionSystem->AddEntity(player);
@@ -190,14 +190,14 @@ int main()
 	{
 		systemManager.controlSystem->AddEntity(player);
 	}
-	else */if (player2->Control())
+	else if (player2->Control())
 	{
 		systemManager.controlSystem->AddEntity(player2);
 	}
 
 
 	std::vector<Entity*> playerEntities;
-	//playerEntities.push_back(player);
+	playerEntities.push_back(player);
 	playerEntities.push_back(player2);
 
 
@@ -207,7 +207,7 @@ int main()
 	//WorldMap* m = new WorldMap(&systemManager, &state);
 	//m->Generate(25, 25, 100);
 
-	//systemManager.soundSystem->AddEntity(player); //local client player only?
+	systemManager.soundSystem->AddEntity(player); //local client player only?
 
 	AchievementHandler *achievements = new AchievementHandler(&systemManager);
 

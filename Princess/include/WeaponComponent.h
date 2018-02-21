@@ -59,7 +59,15 @@ public:
 	void setTimeForAttack(float time) { m_timeForAttack = time; };
 	void setStaffOffset(float offset) { m_staffOffset = offset; };
 	void setPreviousStaffOffset(float offset) { m_previousStaffOffset = offset; };
-
+	void setLife(float life) 
+	{ 
+		m_life = life; 
+	}
+	float getLife()
+	{ 
+		int q = 5;
+		return m_life;
+	};
 	int getRange() { return m_range; };
 	int getDamage() { return m_damage; };
 	float getAttackSpeed() { return m_attackSpeed; };
@@ -75,12 +83,17 @@ public:
 	float getPreviousStaffOffset() { return m_previousStaffOffset; };
 	float getOffsetVariance() { return m_offsetVariance; };
 
+
+
 private:
 	WeaponType m_weaponType;
 
 	int m_range;
 	int m_damage;
 	float m_attackSpeed;
+	float m_life;
+
+	
 
 	bool m_allowAttack;
 	float m_maxTimeToAllowAttack;

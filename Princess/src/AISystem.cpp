@@ -461,7 +461,7 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 
 					for (int j = 0; j < players.size(); j++)
 					{
-						if (players.at(j)->ID() == "Player") //some sort of target discerning goes here later
+						if (players.at(j)->ID() == "Player" && players.at(j)->Active()) //some sort of target discerning goes here later
 						{
 							auto tar = players.at(j)->FindComponent("PC");
 							int tempX = static_cast<PositionComponent*>(tar)->getX();
@@ -496,13 +496,14 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 				//	cout << dist << endl;
 					int enemyRange = 100;
 					//auto enemyRange = static_cast<WeaponComponent*>(m_playerEntities.at(i)->FindComponent("weapon"))->getRange();
-					auto selfRange = static_cast<WeaponComponent*>(m_entities.at(i)->FindComponent("weapon"))->getRange() * 10;
+
+					auto selfRange = static_cast<WeaponComponent*>(m_entities.at(i)->FindComponent("weapon"))->getLife();
 
 					//cout << "playerHp: " << static_cast<AttributesComponent*>(hpComp)->Health() << endl;
 
 					if (tarAttribComp != nullptr && players.at(tarIndex)->FindComponent("weapon") != nullptr)
 					{
-						enemyRange = static_cast<WeaponComponent*>(players.at(tarIndex)->FindComponent("weapon"))->getRange() * 10;;
+						enemyRange = static_cast<WeaponComponent*>(players.at(tarIndex)->FindComponent("weapon"))->getLife();
 						m_decisionTree->calculatePathNodes(m_decisionTree->m_RootNode, dist, static_cast<AttributesComponent*>(tarAttribComp)->Health(), static_cast<AttributesComponent*>(hpComp)->Health(), selfRange, enemyRange); //make target HP and self HP gettable later,  hardcoded values for test purpose only.
 					}
 					else
