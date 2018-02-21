@@ -17,7 +17,7 @@ void Server::update()
 	m_uptime = SDL_GetTicks();
 
 	// times out clients that have lost connection to the server
-	for (std::map<int, ClientInfo>::iterator client = m_clients.begin(); client != m_clients.end(); client++)
+	for (std::map<int, ClientInfo>::iterator client = m_clients.begin(); client != m_clients.end();)
 	{
 		Uint32 elapsedTime = m_uptime - (*client).second.m_lastConnectionTime;
 
@@ -25,23 +25,27 @@ void Server::update()
 		{
 			if (elapsedTime > 10000 || (*client).second.m_connectionRetry > 5)
 			{
-				m_clients.erase(client);
+				client = m_clients.erase(client);
+				continue;
 			}
+
 			//if (client->second.m_connectionWaiting == false || (elapsedTime >= 1000 * (client->second.m_connectionRetry + 1)))
 			if (client->second.m_connectionWaiting == false || (elapsedTime >= 1000 * (client->second.m_connectionRetry + 1)))
 			{
-				Packet pData;
-				pData << (Uint8)PacketType::CONNECTIONALIVE << m_uptime;
-				send(client->first, pData);
+				Packet packet;
+				packet << (Uint8)PacketType::CONNECTIONALIVE << m_uptime;
+				send(client->first, packet);
 				if (client->second.m_connectionRetry == 0)
 				{
 					client->second.m_currentConnectionTime = m_uptime;
 				}
 				client->second.m_connectionWaiting = true;
 				client->second.m_connectionRetry++;
-				m_totalDataSent += pData.getDataSize();
+				m_totalDataSent += packet.getDataSize();
+				
 			}
 		}
+		++client;
 	}
 
 	listen();
@@ -71,7 +75,7 @@ bool Server::send(const int &id, Packet packet)
 
 void Server::sendToAll(Packet packet)
 {
-	for (std::map<int, ClientInfo>::iterator client = m_clients.begin(); client != m_clients.end(); client++)
+	for (std::map<int, ClientInfo>::iterator client = m_clients.begin(); client != m_clients.end(); ++client)
 	{
 		int packetSize = packet.getDataSize();
 
@@ -89,6 +93,7 @@ void Server::sendToAll(Packet packet)
 
 void Server::listen()
 {
+	int i = 0;
 	if (SDLNet_UDP_Recv(m_socket, m_packet))
 	{
 		Packet packet;
@@ -101,14 +106,16 @@ void Server::listen()
 		// check if connectiong is alive
 		if (packetType == (Uint8)PacketType::CONNECTIONALIVE)
 		{
-			for (std::map<int, ClientInfo>::iterator client = m_clients.begin(); client != m_clients.end(); client++)
+			for (std::map<int, ClientInfo>::iterator client = m_clients.begin(); client != m_clients.end(); ++client)
 			{
+				i++;
 				if ((*client).second.m_clientIP == m_packet->address.host && (*client).second.m_clientPort == m_packet->address.port)
 				{
 					(*client).second.m_ping = m_uptime - (*client).second.m_currentConnectionTime;
 					(*client).second.m_lastConnectionTime = m_uptime;
 					(*client).second.m_connectionWaiting = false;
 					(*client).second.m_connectionRetry = 0;
+					std::cout << "gren maro retrun " << i << std::endl;
 					break;
 				}
 			}
@@ -122,9 +129,9 @@ void Server::listen()
 
 int Server::addClient(Uint32 & ip, Uint16 & port)
 {
-	for (std::map<int, ClientInfo>::iterator iter = m_clients.begin(); iter != m_clients.end(); iter++)
+	for (std::map<int, ClientInfo>::iterator client = m_clients.begin(); client != m_clients.end(); ++client)
 	{
-		if ((*iter).second.m_clientIP == ip && (*iter).second.m_clientPort == port)
+		if ((*client).second.m_clientIP == ip && (*client).second.m_clientPort == port)
 		{
 			return -1; // stops same client from being added again
 		}
@@ -135,6 +142,7 @@ int Server::addClient(Uint32 & ip, Uint16 & port)
 	//m_clients.emplace(id, info);
 	//m_clients.insert(std::pair<int, ClientInfo>(m_nextClientID, ClientInfo(ip, port, m_uptime)));
 	m_clients.emplace(id, ClientInfo(ip, port, m_uptime));
+	m_nextClientID++;
 
 	return id;
 }
@@ -158,7 +166,7 @@ bool Server::removeClient(int id)
 
 int Server::getID(const Uint32 & ip, const Uint16 & port)
 {
-	for (std::map<int, ClientInfo>::iterator iter = m_clients.begin(); iter != m_clients.end(); iter++)
+	for (std::map<int, ClientInfo>::iterator iter = m_clients.begin(); iter != m_clients.end(); ++iter)
 	{
 		if ((*iter).second.m_clientIP == ip && (*iter).second.m_clientPort == port)
 		{

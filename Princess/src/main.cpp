@@ -161,6 +161,7 @@ int main()
 
 			instanceManager.Update(deltaTime);
 			systemManager.Update(deltaTime);
+			client.listen();
 
 			SDL_RenderPresent(gameRenderer);
 		}
