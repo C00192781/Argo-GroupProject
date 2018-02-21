@@ -192,12 +192,25 @@ void CollisionSystem::filterCollisions(int entityIndex, int entityColIndex, int 
 			{
 				if (m_collidableEntities.at(collidableIndex)->ID() == "Spellcaster Enemy" || m_collidableEntities.at(collidableIndex)->ID() == "Melee Enemy" || m_collidableEntities.at(collidableIndex)->ID() == "Ranged Enemy")
 				{
-					projectileCollision(entityIndex);
-					spellcasterCollision(collidableIndex);
+					ProjectileComponent* projectileComponent = static_cast<ProjectileComponent*>(m_entities.at(entityIndex)->FindComponent("PJ"));
+					if (projectileComponent->getShooterType() == "Player")
+					{
+						projectileCollision(entityIndex);
+						spellcasterCollision(collidableIndex);
+					}
 				}
 				else if (m_collidableEntities.at(collidableIndex)->ID() == "Wall")
 				{
 					projectileCollision(entityIndex);
+				}
+				else if (m_collidableEntities.at(collidableIndex)->ID() == "Player")
+				{
+					ProjectileComponent* projectileComponent = static_cast<ProjectileComponent*>(m_entities.at(entityIndex)->FindComponent("PJ"));
+					if (projectileComponent->getShooterType() != "Player")
+					{
+						projectileCollision(entityIndex);
+						playerCollision(collidableIndex);
+					}
 				}
 			}
 		}
@@ -239,6 +252,32 @@ void CollisionSystem::spellcasterCollision(int index)
 		/*auto tar = m_entities.at(j)->FindComponent("PC");
 	tarX = static_cast<PositionComponent*>(tar)->getX();*/
 }
+
+
+
+void CollisionSystem::playerCollision(int index)
+{
+	std::cout << "player SLAPPED" << std::endl;
+
+
+	auto hpComp = m_collidableEntities.at(index)->FindComponent("attribute");
+
+	if (hpComp != nullptr)
+	{
+
+
+		//auto temp = m_collidableEntities.at(index)->FindComponent("eHP");
+		static_cast<AttributesComponent*>(hpComp)->Health((static_cast<AttributesComponent*>(hpComp)->Health() - 1));
+
+		if (static_cast<AttributesComponent*>(hpComp)->Health() < 1)
+		{
+			m_collidableEntities.at(index)->Active(false);
+		}
+	}
+	/*auto tar = m_entities.at(j)->FindComponent("PC");
+	tarX = static_cast<PositionComponent*>(tar)->getX();*/
+}
+
 
 
 

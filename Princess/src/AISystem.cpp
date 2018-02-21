@@ -284,6 +284,7 @@ float AiSystem::magnitude(float x, float y)
 
 void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 {
+
 	if (m_entities.empty())
 	{
 		int q = 5;
@@ -372,6 +373,9 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 				{
 					int tw = m_playerEntities.at(i)->FindComponentIndex("weapon");
 					int tx = m_playerEntities.at(i)->FindComponentIndex("movement");
+
+				
+
 					attack(i, tw, tx, m_playerEntities.at(i)->ID());
 					//attack
 				}
@@ -382,8 +386,12 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 					int tx = m_playerEntities.at(i)->FindComponentIndex("movement");
 					int ty = m_playerEntities.at(i)->FindComponentIndex("seek");
 					int tz = m_playerEntities.at(i)->FindComponentIndex("attribute");
+					int tq = m_playerEntities.at(i)->FindComponentIndex("weapon");
 
 					seek(i, tw, tx, ty, tz, tarX, tarY, 0, m_playerEntities.at(i)->ID()); //refactor x and y to take in princess position or whatever player or whatever
+
+					static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(tq))->setAttacking(false);
+					static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(tq))->setAllowAttack(true);
 																					//seek
 				}
 
@@ -393,6 +401,10 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 
 					static_cast<MovementComponent*>(move)->setXVelocity(0);
 					static_cast<MovementComponent*>(move)->setYVelocity(0);
+					int tq = m_playerEntities.at(i)->FindComponentIndex("weapon");
+
+					static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(tq))->setAttacking(false);
+					static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(tq))->setAllowAttack(true);
 
 					//	static_cast<MovementComponent*>(m_entities.at(i)->GetComponents()->at(tx)->setYVelocity(0));
 					//do nothing
@@ -403,10 +415,12 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 					int tx = m_playerEntities.at(i)->FindComponentIndex("movement");
 					int ty = m_playerEntities.at(i)->FindComponentIndex("seek");
 					int tz = m_playerEntities.at(i)->FindComponentIndex("attribute");
+					int tq = m_playerEntities.at(i)->FindComponentIndex("weapon");
 
 
 					seek(i, tw, tx, ty, tz, tarX, tarY, 1, m_playerEntities.at(i)->ID()); //refactor x and y to take in princess position or whatever player or whatever
-																					//flee
+					static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(tq))->setAttacking(false);
+					static_cast<WeaponComponent*>(m_entities.at(i)->GetComponents()->at(tq))->setAllowAttack(true);													//flee
 
 				}
 			} //end vector.empty
@@ -420,6 +434,10 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 	{
 		if (m_entities.at(i)->ID() != "Player")
 		{
+			MovementComponent* movementComponent = static_cast<MovementComponent*>(m_entities.at(i)->FindComponent("movement"));
+			
+
+
 			auto hpComp = m_entities.at(i)->FindComponent("attribute");
 
 			Component* tarAttribComp = nullptr;
@@ -500,6 +518,15 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 					{
 						int tw = m_entities.at(i)->FindComponentIndex("weapon");
 						int tx = m_entities.at(i)->FindComponentIndex("movement");
+
+						auto tp = m_entities.at(i)->FindComponent("PC");
+
+						int selfX = static_cast<PositionComponent*>(tp)->getX();
+
+						int selfY = static_cast<PositionComponent*>(tp)->getY();
+						//816, 624,
+						movementComponent->setOrientation(atan2f(tarY - selfY , tarX - selfX)     * (180 / 3.14f) + 90);
+
 						attack(i, tw, tx, m_entities.at(i)->ID());
 						//attack
 					}

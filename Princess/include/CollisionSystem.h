@@ -38,5 +38,6 @@ private:
 	void filterCollisions(int entityIndex, int entityColIndex, int collidableIndex, int collidableColIndex);
 	void projectileCollision(int index);
 	void spellcasterCollision(int index);
+	void playerCollision(int index);
 	void pickupCollision(int index, int entityIndex);
 };

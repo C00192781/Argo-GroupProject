@@ -73,7 +73,7 @@ void BattleMap::Generate(std::string type)
 		}
 	}
 
-	int numOfEnemies = (rand() % 10) + 5;
+	int numOfEnemies = 2;//(rand() % 10) + 5;
 
 	BasicEnemy enemyFactory;
 
@@ -109,6 +109,9 @@ void BattleMap::Generate(std::string type)
 			m_systemManager->movementSystem->AddEntity(enemy);
 			m_systemManager->collisionSystem->AddEntity(enemy);
 			m_systemManager->aiSystem->AddEntity(enemy);
+
+
+			m_systemManager->attackSystem->AddEntity(enemy);
 		}
 	}
 	
