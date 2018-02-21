@@ -7,6 +7,7 @@
 #include "TownInstance.h"
 #include "EventListener.h"
 #include "StartInstance.h"
+#include "GameOverInstance.h"
 #include <vector>
 
 class InstanceManager
@@ -19,6 +20,7 @@ public:
 	BattleMap* battleMap;
 	DungeonMap* dungeonMap;
 	StartInstance* startInstance;
+	GameOverInstance* gameOverInstance;
 	std::vector<TownInstance*> townInstance;
 
 	void Update(float deltaTime);

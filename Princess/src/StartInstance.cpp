@@ -16,7 +16,6 @@ StartInstance::~StartInstance()
 
 void StartInstance::Generate()
 {
-	m_active = true;
 
 	m_systemManager->menuSystem->Active(true);
 	m_systemManager->controlSystem->Active(false);

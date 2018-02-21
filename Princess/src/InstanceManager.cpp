@@ -9,8 +9,13 @@ InstanceManager::InstanceManager(SystemManager * sm, StateManager * s, ResourceM
 	battleMap = new BattleMap(sm, s, listener);
 	dungeonMap = new DungeonMap(sm, s, rm, listener);
 	startInstance = new StartInstance(sm, s);
+	gameOverInstance = new GameOverInstance(sm, s);
 
-	Generate("Start");
+	Generate("GameOver");
+	gameOverInstance->Active(true);
+
+	//Generate("Start");
+	//startInstance->Active(true);
 }
 
 void InstanceManager::Update(float deltaTime)
@@ -24,6 +29,10 @@ void InstanceManager::Update(float deltaTime)
 		dungeonMap->Update(deltaTime);
 	}
 	else if(startInstance->Active())
+	{
+		startInstance->Update();
+	}
+	else if (gameOverInstance->Active())
 	{
 		startInstance->Update();
 	}
@@ -67,12 +76,12 @@ void InstanceManager::Update(float deltaTime)
 		battleMap->Active(false);
 		m_listener->EncounterToWorld = false;
 	}
-	else if(m_listener->GameOver)
+	else if(m_stateManager->GameOver)
 	{
-
+		Generate("GameOver");
 		dungeonMap->Active(false);
 		battleMap->Active(false);
-		m_listener->GameOver;
+		m_stateManager->GameOver = false;
 	}
 }
 
@@ -93,5 +102,9 @@ void InstanceManager::Generate(std::string instanceID)
 	else if (instanceID == "Start")
 	{
 		startInstance->Generate();
+	}
+	else if (instanceID == "GameOver")
+	{
+		gameOverInstance->Generate();
 	}
 }

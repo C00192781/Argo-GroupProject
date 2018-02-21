@@ -15,5 +15,6 @@ public:
 	bool increaseMusic = false;
 	bool SaveGame = false;
 	bool LoadGame = false;
+	bool GameOver = false;
 };
 #endif

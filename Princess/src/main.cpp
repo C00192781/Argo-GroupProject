@@ -109,6 +109,8 @@ int main()
 
 	resourceManager->AddTexture("Achievement", "PlaceholderAchievement.png");
 	resourceManager->AddTexture("Achievement2", "PlaceholderAchievement2.png");
+
+	resourceManager->AddTexture("Fade", "Fade.png");
 	
 	resourceManager->AddMusic("Test", "kevin.mp3");
 	resourceManager->AddSound("Scream", "test.wav");
