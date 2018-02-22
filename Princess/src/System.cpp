@@ -19,6 +19,14 @@ Entity* System::FindEntity(std::string id)
 	return nullptr;
 }
 
+Entity* System::FindEntity(std::string id, int index)
+{
+	if (index <= m_entities.size())
+	return m_entities.at(index);
+	else
+	return nullptr;
+}
+
 void System::RemoveEntity(std::string id)
 {
 	for (int i = 0; i < m_entities.size(); i++)

@@ -13,6 +13,7 @@ public:
 
 	void AddEntity(Entity * e);
 	Entity* FindEntity(std::string id);
+	Entity* FindEntity(std::string id, int index);
 	void RemoveEntity(std::string id);
 	void SelectiveClear();
 	void FullClear();

@@ -109,6 +109,8 @@ void DungeonMap::Generate()
 			else if (m_resourceManager->GetMapElement(mapName, i, j) == "E") //make a == "X" for pickups or w/e
 			{
 			
+				if (m_enemies.size() < 6) //debug
+				{
 					m_entities.push_back(factory.Floor("DungeonTiles", j, i, m_systemManager->renderSystem->GetScale()));
 					m_systemManager->renderSystem->AddEntity(m_entities.back());
 
@@ -132,7 +134,7 @@ void DungeonMap::Generate()
 					{
 						enemy = enemyFactory.CharD("Demon", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
 
-						pickup = pickupFactory.PickupA("Red", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 5);
+						pickup = pickupFactory.PickupA("Pickup", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 5);
 					}
 
 					// chance for spawner to not spawn anything
@@ -157,6 +159,7 @@ void DungeonMap::Generate()
 						m_systemManager->renderSystem->AddEntity(pickup);
 						m_systemManager->collisionSystem->AddEntity(pickup);
 					}
+				}
 				
 			}
 		}

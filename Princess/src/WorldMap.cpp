@@ -597,7 +597,7 @@ void WorldMap::Load()
 	// sets player's position to the the previous location on the world map after random encounter
 	if (m_listener->EncounterToWorld == true)
 	{
-		Entity* player = m_systemManager->collisionSystem->FindEntity("Player");
+		Entity* player = m_systemManager->collisionSystem->FindEntity("Player"); //discern between players
 
 		if (player != nullptr)
 		{
@@ -637,7 +637,7 @@ void WorldMap::Load()
 void WorldMap::Update()
 {
 	// sets player's position to the start of the dungeon
-	Entity* player = m_systemManager->movementSystem->FindEntity("Player");
+	Entity* player = m_systemManager->movementSystem->FindEntity("Player", 3); //discern between players
 
 	if (player != nullptr)
 	{
@@ -647,7 +647,7 @@ void WorldMap::Update()
 		{
 			if (movement->getMoving() == true)
 			{
-				if ((rand() % 10000) >= 9950)
+				if ((rand() % 10000) >= 9990)
 				{
 					PositionComponent* pos = static_cast<PositionComponent*>(player->FindComponent("PC"));
 
