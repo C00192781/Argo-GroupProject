@@ -168,7 +168,7 @@ int main()
 	player->Active(true);
 	player->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
 	player->AddComponent(new PositionComponent(SDL_Point{ 500, 380 }));
-	player->AddComponent(new AttributesComponent(3, 3, 1, 10, 100, 100));
+	player->AddComponent(new AttributesComponent(15, 3, 1, 10, 100, 100));
 	player->AddComponent(new MovementComponent());
 	player->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
@@ -186,7 +186,7 @@ int main()
 
 	player2->AddComponent(new SpriteComponent("Red", 3, 1, 0, 0, 16, 16, 0));
 	player2->AddComponent(new PositionComponent(SDL_Point{ 100, 100 }));
-	player2->AddComponent(new AttributesComponent(5, 5, 1, 10, 100, 100));
+	player2->AddComponent(new AttributesComponent(15, 5, 1, 10, 100, 100));
 	player2->AddComponent(new MovementComponent());
 	player2->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player2->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
@@ -226,8 +226,8 @@ int main()
 
 
 
-	TownInstance t = TownInstance(&systemManager);
-	t.Generate("jimmie");
+	/*TownInstance t = TownInstance(&systemManager);
+	t.Generate("jimmie");*/
 
 	//WorldMap* m = new WorldMap(&systemManager, &state);
 	//m->Generate(25, 25, 100);

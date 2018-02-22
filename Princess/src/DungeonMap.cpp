@@ -108,8 +108,7 @@ void DungeonMap::Generate()
 			}
 			else if (m_resourceManager->GetMapElement(mapName, i, j) == "E") //make a == "X" for pickups or w/e
 			{
-				if (m_enemies.size() < 2)
-				{
+			
 					m_entities.push_back(factory.Floor("DungeonTiles", j, i, m_systemManager->renderSystem->GetScale()));
 					m_systemManager->renderSystem->AddEntity(m_entities.back());
 
@@ -158,7 +157,7 @@ void DungeonMap::Generate()
 						m_systemManager->renderSystem->AddEntity(pickup);
 						m_systemManager->collisionSystem->AddEntity(pickup);
 					}
-				}
+				
 			}
 		}
 	}
