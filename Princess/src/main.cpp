@@ -100,17 +100,6 @@ int main()
 
 	std::vector<Entity*>* projectiles = new std::vector<Entity*>;
 
-	Client client;
-	if (client.connectToServer())
-	{
-		client.init();
-		srand(client.getServerSeed());
-	}
-	else
-	{
-		srand(time(NULL));
-	}
-
 	SystemManager systemManager(resourceManager, gameRenderer, listener, projectiles, &state);
 
 	InstanceManager instanceManager(&systemManager, &state, resourceManager, listener);
@@ -152,6 +141,7 @@ int main()
 	systemManager.renderSystem->AddEntity(player2);
 	systemManager.collisionSystem->AddEntity(player2);
 	systemManager.attackSystem->AddEntity(player2);
+	systemManager.networkSystem->AddEntity(player2);
 
 	
 	systemManager.movementSystem->AddEntity(player);
@@ -199,8 +189,6 @@ int main()
 	//temp = rand();
 	//std::cout << temp << std::endl;
 
-	systemManager.movementSystem->addClient(&client);
-
 	while (state.ExitGame == false)
 	{
 		//Calculate and correct fps
@@ -246,8 +234,6 @@ int main()
 			//Packet pData;
 			//pData << (Uint8)PacketType::UPDATE;
 			//client.send(pData);
-
-			client.listen();
 
 			SDL_RenderPresent(gameRenderer);
 		}

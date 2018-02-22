@@ -2,6 +2,8 @@
 
 SystemManager::SystemManager(ResourceManager *resourceManager, SDL_Renderer* gameRenderer, EventListener *listener, std::vector<Entity*>* projectiles, StateManager* state)
 {
+	networkSystem = new NetworkSystem();
+
 	controlSystem = new ControlSystem(listener);
 	controlSystem->Active(true);
 
@@ -56,6 +58,8 @@ void SystemManager::Update(float deltaTime, std::vector<Entity*> players)
 	if (healthSystem->Active()) { healthSystem->Update(deltaTime); }
 
 	if (menuSystem->Active()) { menuSystem->Update(); }
+
+	if (networkSystem->Active()) { networkSystem->Update(deltaTime); }
 
 	if (soundSystem->Active()) { soundSystem->Update(); }
 

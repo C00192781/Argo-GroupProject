@@ -46,6 +46,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MenuSystem.cpp" />
     <ClCompile Include="src\MovementSystem.cpp" />
+    <ClCompile Include="src\NetworkSystem.cpp" />
     <ClCompile Include="src\Packet.cpp" />
     <ClCompile Include="src\Pickup.cpp" />
     <ClCompile Include="src\Princess.cpp" />
@@ -107,6 +108,7 @@
     <ClInclude Include="include\MovementComponent.h" />
     <ClInclude Include="include\MovementSystem.h" />
     <ClInclude Include="include\MusicComponent.h" />
+    <ClInclude Include="include\NetworkSystem.h" />
     <ClInclude Include="include\Observer.h" />
     <ClInclude Include="include\Packet.h" />
     <ClInclude Include="include\PacketType.h" />

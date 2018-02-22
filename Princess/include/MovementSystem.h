@@ -22,8 +22,6 @@ public:
 	void Update() {}
 	void Update(float deltaTime);
 
-	void addClient(Client *client) { m_client = client; }
-
 private:
 	void LoadComponent();
 	void UnloadComponent(int x);

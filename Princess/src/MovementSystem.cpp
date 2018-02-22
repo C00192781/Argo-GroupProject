@@ -99,19 +99,7 @@ void MovementSystem::Update(float deltaTime)
 				if (movementComponent->getLockedOrientation() == false)
 				{
 					collisionComponent->setPosition(collisionComponent->getX() + movementComponent->getXVelocity() * deltaTime,
-					collisionComponent->getY() + movementComponent->getYVelocity() * deltaTime);
-				}
-
-				if (m_entities.at(i)->ID() == "Player")
-				{
-					if (m_client != nullptr)
-					{
-						Packet packet;
-
-						packet << (Uint8)PacketType::UPDATEPLAYERS << m_client->getID() << positionComponent->getX() << positionComponent->getY();
-
-						m_client->send(packet);
-					}
+						collisionComponent->getY() + movementComponent->getYVelocity() * deltaTime);
 				}
 			}
 		}//end active
