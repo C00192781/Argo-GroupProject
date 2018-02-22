@@ -29,15 +29,27 @@ void InstanceManager::Update(float deltaTime)
 	{
 		startInstance->Update();
 	}
-	else if (gameOverInstance->Active())
-	{
-		gameOverInstance->Update(deltaTime);
-	}
 	else if (battleMap->Active())
 	{
 		battleMap->Update(deltaTime);
 	}
+	if (gameOverInstance->Active())
+	{
+		gameOverInstance->Update(deltaTime);
+	}
 
+	if (m_stateManager->ReturnToWorld)
+	{
+		if (battleMap->Active())
+		{
+			m_listener->EncounterToWorld = true;
+		}
+		else if (dungeonMap->Active())
+		{
+			m_listener->DungeonToWorld = true;
+		}
+		gameOverInstance->Active(false);
+	}
 	if (m_stateManager->StartGame)
 	{
 		Generate("World");
@@ -78,33 +90,11 @@ void InstanceManager::Update(float deltaTime)
 	else if(m_stateManager->GameOver)
 	{
 		Generate("GameOver");
-		if (battleMap->Active())
-		{
-			battleMap->Active(false);
-		}
-		else if (dungeonMap->Active())
-		{
-			dungeonMap->Active(false);
-		}
 		gameOverInstance->Active(true);
 		m_stateManager->GameOver = false;
 	}
-	else if (m_stateManager->ReturnToWorld)
+	if (m_stateManager->ReturnToWorld)
 	{
-		if (battleMap->Active())
-		{
-
-			battleMap->Active(false);
-		}
-		else if (dungeonMap->Active())
-		{
-			worldMap->Load();
-			worldMap->Active(true);
-			dungeonMap->Active(false);
-		}
-		gameOverInstance->Active(false);
-		worldMap->Load();
-		worldMap->Active(true);
 		m_stateManager->ReturnToWorld = false;
 	}
 }

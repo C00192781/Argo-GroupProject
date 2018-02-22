@@ -33,5 +33,7 @@ public:
 	void CheckIfAllDead();
 	void LoadComponent();
 	void UnloadComponent(int x);
+	void DeactivateHearts();
+	void ActivateHearts();
 };
 #endif

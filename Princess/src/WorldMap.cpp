@@ -14,6 +14,7 @@ WorldMap::~WorldMap()
 void WorldMap::Generate(int width, int height, int chaosFactor)
 {
 	m_active = true;
+	m_systemManager->healthSystem->Active(false);
 
 	for (int i = 0; i < m_entities.size(); i++)
 	{
@@ -577,6 +578,7 @@ void WorldMap::ApplyRock(std::vector<std::vector<std::string>>* map, int x, int 
 void WorldMap::Load()
 {
 	m_active = true;
+	m_systemManager->healthSystem->Active(false);
 
 	m_systemManager->controlSystem->SelectiveClear();
 	m_systemManager->renderSystem->SelectiveClear();
@@ -610,6 +612,7 @@ void WorldMap::Load()
 				pos->setPosition(m_randomEncounterLocation.x, m_randomEncounterLocation.y);
 			}
 		}
+		m_systemManager->healthSystem->DeactivateHearts();
 	}
 
 	// sets player's position to the start of the dungeon
@@ -633,27 +636,12 @@ void WorldMap::Load()
 
 			m_systemManager->collisionSystem->getCurrentDungeon()->Active(false);
 		}
+		m_systemManager->healthSystem->DeactivateHearts();
 	}
-	if (m_stateManager->ReturnToWorld == true)
+	if (m_listener->DungeonToWorld == true && m_stateManager->ReturnToWorld == true)
 	{
-		Entity* player = m_systemManager->collisionSystem->FindEntity("Player");
-
-		if (player != nullptr)
-		{
-			CollisionComponent* pos = static_cast<CollisionComponent*>(player->FindComponent("collision"));
-
-			if (pos != nullptr)
-			{
-				CollisionComponent* dungeonPos = static_cast<CollisionComponent*>(m_systemManager->collisionSystem->getCurrentDungeon()->FindComponent("collision"));
-
-				if (dungeonPos != nullptr)
-				{
-					pos->setPosition(dungeonPos->getX(), dungeonPos->getY());
-				}
-			}
-
-			//m_systemManager->collisionSystem->getCurrentDungeon()->Active(false);
-		}
+		m_systemManager->collisionSystem->getCurrentDungeon()->Active(true);
+		m_systemManager->healthSystem->DeactivateHearts();
 	}
 }
 

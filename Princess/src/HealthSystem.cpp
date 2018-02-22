@@ -34,6 +34,24 @@ void HealthSystem::UnloadComponent(int x)
 	//m_spriteComponent.shrink_to_fit();
 }
 
+void HealthSystem::DeactivateHearts()
+{
+	for (int i = 0; i < m_player1Hearts.size(); i++)
+	{
+		m_player1Hearts.at(i)->Active(false);
+	}
+	
+}
+
+void HealthSystem::ActivateHearts()
+{
+	for (int i = 0; i < m_player1Hearts.size(); i++)
+	{
+		m_player1Hearts.at(i)->Active(true);
+	}
+
+}
+
 void HealthSystem::AddEntity(Entity * e, std::string tag)
 {
 	if (tag == "PH1")
@@ -65,6 +83,14 @@ void HealthSystem::Update(float deltaTime)
 	//if (m_entities.size() > 1) { PlayerTwoUpdate(); }
 	//if (m_entities.size() > 2) { PlayerThreeUpdate(); }
 	//if (m_entities.size() > 3) { PlayerFourUpdate(); }
+
+	for (int i = 0; i < m_entities.size(); i++)
+	{
+		if (m_entities.at(i)->Control() == true)
+		{
+			PlayerOneUpdate();
+		}
+	}
 	
 	CheckIfAllDead();
 }
@@ -92,15 +118,15 @@ void HealthSystem::PlayerOneUpdate()
 				{
 					if (i < healthHolder)
 					{
-						static_cast<SpriteComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->Direction(0);
+						static_cast<SpriteComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->SheetX(0);
 					}
 					else if ((float)i + 0.5 == (float)m_attributeComponents.at(0)->Health() / 2)
 					{
-						static_cast<SpriteComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->Direction(1);
+						static_cast<SpriteComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->SheetX(1);
 					}
 					else
 					{
-						static_cast<SpriteComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->Direction(2);
+						static_cast<SpriteComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->SheetX(2);
 					}
 					spriteGot = true;
 				}
@@ -108,12 +134,12 @@ void HealthSystem::PlayerOneUpdate()
 				{
 					if (i < 6)
 					{
-						static_cast<PositionComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->setX((i * 4) * 3);
+						static_cast<PositionComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->setX((i * 4) * 13);
 						static_cast<PositionComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->setY(0);
 					}
 					else
 					{
-						static_cast<PositionComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->setX(((i - 6) * 4) * 3);
+						static_cast<PositionComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->setX(((i - 6) * 4) * 13);
 						static_cast<PositionComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->setY(4 * 3);
 					}
 					positionGot = true;
@@ -142,22 +168,22 @@ void HealthSystem::PlayerOneUpdate()
 				{
 					if (i < 12 + armorHolder)
 					{
-						static_cast<SpriteComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->Direction(0);
+						static_cast<SpriteComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->SheetX(0);
 					}
 					else if ((float)i + 0.5 == 12 + (float)m_attributeComponents.at(0)->Armour() / 2)
 					{
-						static_cast<SpriteComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->Direction(1);
+						static_cast<SpriteComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->SheetX(1);
 					}
 					else
 					{
-						static_cast<SpriteComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->Direction(2);
+						static_cast<SpriteComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->SheetX(2);
 					}
 					spriteGot = true;
 				}
 				else if (m_player1Hearts.at(i)->GetComponents()->at(j)->Type() == "PC")
 				{
-					static_cast<PositionComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->setX(((i - 12) * 4) * 3);
-					static_cast<PositionComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->setY(8 * 3);
+					static_cast<PositionComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->setX(((i - 12) * 4) * 13);
+					static_cast<PositionComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->setY(20 * 3);
 					positionGot = true;
 				}
 			}
@@ -485,7 +511,6 @@ void HealthSystem::CheckIfAllDead()
 		}
 		if (allDead == true)
 		{
-			//m_stateManager->LoadGame = true;
 			m_stateManager->GameOver = true;
 			for (int i = 0; i < m_entities.size(); i++)
 			{

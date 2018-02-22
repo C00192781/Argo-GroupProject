@@ -42,7 +42,7 @@ void DungeonMap::Generate()
 	m_systemManager->movementSystem->SelectiveClear();
 	m_systemManager->collisionSystem->SelectiveClear();
 	m_systemManager->aiSystem->SelectiveClear();
-
+	m_systemManager->healthSystem->SelectiveClear();
 
 	m_systemManager->healthSystem->Active(true);
 
@@ -138,6 +138,8 @@ void DungeonMap::Generate()
 						pos->setPosition(m_startPoint.x, m_startPoint.y);
 					}
 				}
+
+
 			}
 			else if (m_resourceManager->GetMapElement(mapName, i, j) == "E") //make a == "X" for pickups or w/e
 			{
@@ -219,6 +221,8 @@ void DungeonMap::Generate()
 
 	std::cout << projectileEntities->size() << std::endl;
 
+	m_systemManager->healthSystem->ActivateHearts();
+
 	m_systemManager->collisionSystem->updateBounds(SDL_Rect{0, 0, 16 * 24 * (int)m_systemManager->renderSystem->GetScale(), 16 * 24 * (int)m_systemManager->renderSystem->GetScale() });
 }
 
@@ -254,6 +258,7 @@ void DungeonMap::Update(float deltaTime)
 
 		if (m_timeRemaining <= 0)
 		{
+			m_systemManager->healthSystem->Active(false);
 			m_listener->DungeonToWorld = true;
 		}
 	}

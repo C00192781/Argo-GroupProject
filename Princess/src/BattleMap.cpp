@@ -34,6 +34,10 @@ void BattleMap::Generate(std::string type)
 	m_systemManager->movementSystem->SelectiveClear();
 	m_systemManager->collisionSystem->SelectiveClear();
 	m_systemManager->aiSystem->SelectiveClear();
+	m_systemManager->healthSystem->SelectiveClear();
+
+	m_systemManager->healthSystem->Active(true);
+	m_systemManager->healthSystem->ActivateHearts();
 
 	TileFactory * factory;
 
@@ -147,6 +151,7 @@ void BattleMap::Generate(std::string type)
 			pos->setPosition(274, 208);
 		}
 	}
+	
 
 	m_timeRemaining = 2;
 	m_active = true;
@@ -170,9 +175,9 @@ void BattleMap::Update(float deltaTime)
 	if (m_enemies.empty())
 	{
 		m_timeRemaining -= deltaTime;
-
 		if (m_timeRemaining <= 0)
 		{
+			m_systemManager->healthSystem->Active(false);
 			m_listener->EncounterToWorld = true;
 		}
 	}

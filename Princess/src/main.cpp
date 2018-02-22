@@ -152,7 +152,7 @@ int main()
 	systemManager.aiSystem->Active(true);
 
 	systemManager.healthSystem = new HealthSystem(&state);
-	systemManager.healthSystem->Active(true);
+	systemManager.healthSystem->Active(false);
 
 	systemManager.menuSystem = new MenuSystem(listener, &state);
 	systemManager.menuSystem->Active(false);
@@ -190,7 +190,7 @@ int main()
 
 	player2->AddComponent(new SpriteComponent("Red", 3, 1, 0, 0, 16, 16, 0));
 	player2->AddComponent(new PositionComponent(SDL_Point{ 100, 100 }));
-	player2->AddComponent(new AttributesComponent(4, 4, 4, 4, 100, 100));
+	player2->AddComponent(new AttributesComponent(4, 4, 6, 6, 100, 100));
 	player2->AddComponent(new MovementComponent());
 	player2->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player2->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
@@ -226,6 +226,25 @@ int main()
 		systemManager.controlSystem->AddEntity(player2);
 	}
 
+	for (int i = 0; i < 18; i++)
+	{
+		Entity * heart = new Entity("Heart");
+		heart->AddComponent(new PositionComponent());
+		if (i < 12)
+		{
+			heart->AddComponent(new SpriteComponent("HeartsSheet", 2, 0, 0, 0, 16, 16, 0));
+		}
+		else
+		{
+			heart->AddComponent(new SpriteComponent("ArmourSheet", 2, 0, 0, 0, 16, 16, 0));
+
+		}
+		static_cast<SpriteComponent*>((heart)->GetComponents()->at(1))->Relative(true);
+		heart->Transient(true);
+		systemManager.healthSystem->AddEntity(heart, "PH1");
+		systemManager.renderSystem->AddEntity(heart);
+	}
+	systemManager.healthSystem->DeactivateHearts();
 
 	std::vector<Entity*> playerEntities;
 	playerEntities.push_back(player);
