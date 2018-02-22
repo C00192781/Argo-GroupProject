@@ -91,10 +91,6 @@ int main()
 	{
 		std::cout << "AYY" << std::endl;
 	}
-	else
-	{
-		std::cout << "WTF" << std::endl;
-	}
 
 	Entity * player = new Entity("Player");
 	player->Active(true);

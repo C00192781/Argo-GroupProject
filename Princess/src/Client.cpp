@@ -51,7 +51,6 @@ bool Client::connectToServer()
 						//packetHandler(packetType, pData, this);
 					}
 					m_connected = true;
-					std::cout << "LOL" << std::endl;
 					return true;
 				}
 			}
@@ -77,8 +76,6 @@ void Client::listen()
 {
 	if (SDLNet_UDP_Recv(m_socket, m_packet) > 0)
 	{
-		std::cout << "CONNECTION IS ALIVE" << std::endl;
-
 		Packet packet;
 		packet.append(m_packet->data, m_packet->len);
 

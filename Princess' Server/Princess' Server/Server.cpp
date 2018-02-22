@@ -23,11 +23,9 @@ void Server::update()
 
 		if (elapsedTime > 1000)
 		{
-			//if (elapsedTime > 10000 || (*client).second.m_connectionRetry > 5) // put this back in when yelo loogee stops doing a bad
-			if (elapsedTime > 100000000 || (*client).second.m_connectionRetry > 500000) // large values for debugging
+			if (elapsedTime > 10000 || (*client).second.m_connectionRetry > 5) // put this back in when yelo loogee stops doing a bad
 			{
 				client = m_clients.erase(client);
-				std::cout << "yelo waloog doing a bad" << std::endl;
 				continue;
 			}
 
@@ -119,7 +117,6 @@ void Server::listen()
 					(*client).second.m_lastConnectionTime = m_uptime;
 					(*client).second.m_connectionWaiting = false;
 					(*client).second.m_connectionRetry = 0;
-					//std::cout << "gren maro retrun " << i << std::endl;
 					break;
 				}
 			}
@@ -142,10 +139,7 @@ int Server::addClient(Uint32 & ip, Uint16 & port)
 	}
 
 	int id = m_nextClientID;
-	ClientInfo info(ip, port, m_uptime);
-	m_clients.emplace(id, info);
-	//m_clients.insert(std::pair<int, ClientInfo>(m_nextClientID, ClientInfo(ip, port, m_uptime)));
-	//m_clients.emplace(id, ClientInfo(ip, port, m_uptime));
+	m_clients.emplace(id, ClientInfo(ip, port, m_uptime));
 	m_nextClientID++;
 
 	return id;
