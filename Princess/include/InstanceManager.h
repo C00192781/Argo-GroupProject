@@ -27,4 +27,5 @@ public:
 private:
 	EventListener *m_listener;
 	StateManager *m_stateManager;
+
 };

@@ -182,6 +182,14 @@ void CollisionSystem::filterCollisions(int entityIndex, int entityColIndex, int 
 						m_currentDungeon = m_collidableEntities.at(collidableIndex);
 					}
 				}
+				if (m_collidableEntities.at(collidableIndex)->ID() == "Town")
+				{
+					if (m_listener->Space)
+					{
+						m_listener->WorldToTown = true;
+						m_currentTown = m_collidableEntities.at(collidableIndex);
+					}
+				}
 				else if (m_collidableEntities.at(collidableIndex)->ID() == "Chocolate")
 				{
 					pickupCollision(collidableIndex, entityIndex); //I THINK
