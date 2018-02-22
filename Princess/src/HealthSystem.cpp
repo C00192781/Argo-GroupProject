@@ -485,7 +485,6 @@ void HealthSystem::CheckIfAllDead()
 		}
 		if (allDead == true)
 		{
-			//m_stateManager->LoadGame = true;
 			m_stateManager->GameOver = true;
 			for (int i = 0; i < m_entities.size(); i++)
 			{

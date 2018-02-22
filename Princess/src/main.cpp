@@ -152,7 +152,7 @@ int main()
 	systemManager.aiSystem->Active(true);
 
 	systemManager.healthSystem = new HealthSystem(&state);
-	systemManager.healthSystem->Active(true);
+	systemManager.healthSystem->Active(false);
 
 	systemManager.menuSystem = new MenuSystem(listener, &state);
 	systemManager.menuSystem->Active(false);
@@ -214,7 +214,6 @@ int main()
 	systemManager.collisionSystem->AddEntity(player);
 	systemManager.attackSystem->AddEntity(player);
 	systemManager.mementoSystem->AddEntity(player);
-	//systemManager.healthSystem->AddEntity(player,"PH2");
 
 
 	if (player->Control())

@@ -552,10 +552,6 @@ void MenuSystem::RemoveMenu(std::string ID)
 		
 	}
 	std::cout << "Finished";
-	//for (std::vector<Entity*>::iterator it = m_entities.begin(); it != m_entities.end() ; ++it)
-	//{
-
-	//}
 
 
 }
