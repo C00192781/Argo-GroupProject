@@ -34,6 +34,8 @@ void DungeonMap::Generate()
 	}
 	m_entities.clear();
 	m_enemies.clear();
+	m_pickups.clear();
+	m_pickups.shrink_to_fit();
 	m_entities.shrink_to_fit();
 	m_enemies.shrink_to_fit();
 	m_systemManager->controlSystem->SelectiveClear();
@@ -68,6 +70,7 @@ void DungeonMap::Generate()
 
 	DungeonTileFactory factory;
 	BasicEnemy enemyFactory;
+	Pickup pickupFactory;
 
 	for (int i = 0; i < 24; i++)
 	{
@@ -103,41 +106,58 @@ void DungeonMap::Generate()
 					}
 				}
 			}
-			else if (m_resourceManager->GetMapElement(mapName, i, j) == "E")
+			else if (m_resourceManager->GetMapElement(mapName, i, j) == "E") //make a == "X" for pickups or w/e
 			{
-				m_entities.push_back(factory.Floor("DungeonTiles", j, i, m_systemManager->renderSystem->GetScale()));
-				m_systemManager->renderSystem->AddEntity(m_entities.back());
-
-				int randNum = rand() % 5;
-
-				Entity* enemy = nullptr;
-
-				if (randNum == 0) {
-					enemy = enemyFactory.CharA("Demon", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
-				}
-				else if (randNum == 1)
+				if (m_enemies.size() < 2)
 				{
-					enemy = enemyFactory.CharB("Demon", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
-				}
-				else if (randNum == 2)
-				{
-					enemy = enemyFactory.CharC("Demon", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
-				}
-				else if(randNum == 3)
-				{
-					enemy = enemyFactory.CharD("Demon", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
-				}
+					m_entities.push_back(factory.Floor("DungeonTiles", j, i, m_systemManager->renderSystem->GetScale()));
+					m_systemManager->renderSystem->AddEntity(m_entities.back());
 
-				// chance for spawner to not spawn anything
-				if (enemy != nullptr)
-				{
-					enemy->Active(true);
+					int randNum = rand() % 5;
 
-					m_enemies.push_back(enemy);
-					m_systemManager->renderSystem->AddEntity(enemy);
-					m_systemManager->movementSystem->AddEntity(enemy);
-					m_systemManager->collisionSystem->AddEntity(enemy);
-					m_systemManager->aiSystem->AddEntity(enemy);
+					Entity* enemy = nullptr;
+					Entity* pickup = nullptr;
+					//ADD SOME ITEM SPAWNS AROUND HERE
+					if (randNum == 0) {
+						enemy = enemyFactory.CharA("Demon", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
+					}
+					else if (randNum == 1)
+					{
+						enemy = enemyFactory.CharB("Demon", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
+					}
+					else if (randNum == 2)
+					{
+						enemy = enemyFactory.CharC("Demon", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
+					}
+					else if (randNum == 3)
+					{
+						enemy = enemyFactory.CharD("Demon", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
+
+						pickup = pickupFactory.PickupA("Red", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 5);
+					}
+
+					// chance for spawner to not spawn anything
+					if (enemy != nullptr)
+					{
+						enemy->Active(true);
+
+
+						m_enemies.push_back(enemy);
+						m_systemManager->renderSystem->AddEntity(enemy);
+						m_systemManager->movementSystem->AddEntity(enemy);
+						m_systemManager->collisionSystem->AddEntity(enemy);
+						m_systemManager->aiSystem->AddEntity(enemy);
+
+						m_systemManager->attackSystem->AddEntity(enemy);
+					}
+					if (pickup != nullptr)
+					{
+						pickup->Active(true);
+
+						m_pickups.push_back(pickup);
+						m_systemManager->renderSystem->AddEntity(pickup);
+						m_systemManager->collisionSystem->AddEntity(pickup);
+					}
 				}
 			}
 		}
@@ -176,6 +196,18 @@ void DungeonMap::Update(float deltaTime)
 		if (m_enemies.at(i)->Active() == false)
 		{
 			m_enemies.erase(m_enemies.begin() + i);
+		}
+		else
+		{
+			i++;
+		}
+	}
+
+	for (int i = 0; i < m_pickups.size();)
+	{
+		if (m_pickups.at(i)->Active() == false)
+		{
+			m_pickups.erase(m_pickups.begin() + i);
 		}
 		else
 		{

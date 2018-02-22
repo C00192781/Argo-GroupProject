@@ -3,10 +3,12 @@
 InstanceManager::InstanceManager(SystemManager * sm, StateManager * s, ResourceManager *rm, EventListener *listener)
 {
 	m_listener = listener;
+	m_stateManager = s;
 
 	worldMap = new WorldMap(sm, s, listener);
 	battleMap = new BattleMap(sm, s, listener);
 	dungeonMap = new DungeonMap(sm, s, rm, listener);
+	//startInstance = new StartInstance(sm, s);
 
 	Generate("World");
 }
@@ -21,11 +23,22 @@ void InstanceManager::Update(float deltaTime)
 	{
 		dungeonMap->Update(deltaTime);
 	}
+	//else if(startInstance->Active())
+	//{
+	//	startInstance->Update();
+	//}
 	else
 	{
 		battleMap->Update(deltaTime);
 	}
 
+	//if (m_stateManager->StartGame)
+	//{
+	//	Generate("World");
+	//	startInstance->Active(false);
+	//	worldMap->Active(true);
+	//	m_stateManager->StartGame = false;
+	//}
 	if (m_listener->WorldToDungeon == true)
 	{
 		Generate("Dungeon");
@@ -70,4 +83,8 @@ void InstanceManager::Generate(std::string instanceID)
 	{
 		battleMap->Generate("");
 	}
+	//else if (instanceID == "Start")
+	//{
+	//	startInstance->Generate();
+	//}
 }

@@ -9,8 +9,9 @@
 #include "Quad.h"
 #include "AttributesComponent.h"
 #include "ProjectileComponent.h"
-#include "EventListener.h"
+#include "CurrencyComponent.h"
 
+#include "EventListener.h"
 class CollisionSystem : public System
 {
 public:
@@ -37,4 +38,6 @@ private:
 	void filterCollisions(int entityIndex, int entityColIndex, int collidableIndex, int collidableColIndex);
 	void projectileCollision(int index);
 	void spellcasterCollision(int index);
+	void playerCollision(int index);
+	void pickupCollision(int index, int entityIndex);
 };

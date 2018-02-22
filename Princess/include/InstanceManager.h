@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include "WorldMap.h"
@@ -5,16 +6,19 @@
 #include "DungeonMap.h"
 #include "TownInstance.h"
 #include "EventListener.h"
+#include "StartInstance.h"
 #include <vector>
 
 class InstanceManager
 {
 public:
+
 	InstanceManager(SystemManager * sm, StateManager * s, ResourceManager *rm, EventListener *listener);
 
 	WorldMap *worldMap;
 	BattleMap* battleMap;
 	DungeonMap* dungeonMap;
+	StartInstance* startInstance;
 	std::vector<TownInstance*> townInstance;
 
 	void Update(float deltaTime);
@@ -22,4 +26,5 @@ public:
 	void Generate(string instanceID);
 private:
 	EventListener *m_listener;
+	StateManager *m_stateManager;
 };

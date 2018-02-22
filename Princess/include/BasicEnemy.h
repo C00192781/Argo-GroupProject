@@ -10,6 +10,8 @@
 #include "AttackComponent.h"
 #include "AttributesComponent.h"
 #include "CollisionComponent.h"
+#include "CurrencyComponent.h"
+#include "WeaponComponent.h"
 
 class BasicEnemy : public Character
 {

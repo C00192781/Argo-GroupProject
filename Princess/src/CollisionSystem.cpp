@@ -127,7 +127,7 @@ void CollisionSystem::filterCollisions(int entityIndex, int entityColIndex, int 
 	CollisionComponent* entityCol = static_cast<CollisionComponent*>(m_entities.at(entityIndex)->GetComponents()->at(entityColIndex));
 	CollisionComponent* collidableCol = static_cast<CollisionComponent*>(m_collidableEntities.at(collidableIndex)->GetComponents()->at(collidableColIndex));
 
-	if ((m_entities.at(entityIndex)->ID() == "Player" || m_entities.at(entityIndex)->ID() == "Spellcaster Enemy") && m_collidableEntities.at(collidableIndex)->ID() == "Wall")
+	if ((m_entities.at(entityIndex)->ID() == "Player" || m_entities.at(entityIndex)->ID() == "Spellcaster Enemy" || m_entities.at(entityIndex)->ID() == "Melee Enemy" || m_entities.at(entityIndex)->ID() == "Ranged Enemy") && m_collidableEntities.at(collidableIndex)->ID() == "Wall")
 	{
 		SDL_Rect rectEntityX = { entityCol->getX(), entityCol->getPreviousY(), entityCol->getWidth(), entityCol->getHeight() };
 		SDL_Rect rectEntityY = { entityCol->getPreviousX(), entityCol->getY(), entityCol->getWidth(), entityCol->getHeight() };
@@ -172,6 +172,8 @@ void CollisionSystem::filterCollisions(int entityIndex, int entityColIndex, int 
 		{
 			if (m_entities.at(entityIndex)->ID() == "Player")
 			{
+				projectileCollision(entityIndex);
+			//	spellcasterCollision(collidableIndex); //swapped for spell id, WHO CARES IF A PLAYER WALKS INTO AN AI IF THEYRE NOT SHOOTING EACH OTHER
 				if (m_collidableEntities.at(collidableIndex)->ID() == "Dungeon")
 				{
 					if (m_listener->Space)
@@ -180,18 +182,35 @@ void CollisionSystem::filterCollisions(int entityIndex, int entityColIndex, int 
 						m_currentDungeon = m_collidableEntities.at(collidableIndex);
 					}
 				}
+				else if (m_collidableEntities.at(collidableIndex)->ID() == "Chocolate")
+				{
+					pickupCollision(collidableIndex, entityIndex); //I THINK
+				}
 			}
 
 			if (m_entities.at(entityIndex)->ID() == "Projectile")
 			{
-				if (m_collidableEntities.at(collidableIndex)->ID() == "Spellcaster Enemy")
+				if (m_collidableEntities.at(collidableIndex)->ID() == "Spellcaster Enemy" || m_collidableEntities.at(collidableIndex)->ID() == "Melee Enemy" || m_collidableEntities.at(collidableIndex)->ID() == "Ranged Enemy")
 				{
-					projectileCollision(entityIndex);
-					spellcasterCollision(collidableIndex);
+					ProjectileComponent* projectileComponent = static_cast<ProjectileComponent*>(m_entities.at(entityIndex)->FindComponent("PJ"));
+					if (projectileComponent->getShooterType() == "Player")
+					{
+						projectileCollision(entityIndex);
+						spellcasterCollision(collidableIndex);
+					}
 				}
 				else if (m_collidableEntities.at(collidableIndex)->ID() == "Wall")
 				{
 					projectileCollision(entityIndex);
+				}
+				else if (m_collidableEntities.at(collidableIndex)->ID() == "Player")
+				{
+					ProjectileComponent* projectileComponent = static_cast<ProjectileComponent*>(m_entities.at(entityIndex)->FindComponent("PJ"));
+					if (projectileComponent->getShooterType() != "Player")
+					{
+						projectileCollision(entityIndex);
+						playerCollision(collidableIndex);
+					}
 				}
 			}
 		}
@@ -213,5 +232,104 @@ void CollisionSystem::projectileCollision(int index)
 
 void CollisionSystem::spellcasterCollision(int index)
 {
-	m_collidableEntities.at(index)->Active(false);
+	std::cout << "OH NO" << std::endl;
+
+
+	auto hpComp = m_collidableEntities.at(index)->FindComponent("attribute");
+
+	if (hpComp != nullptr)
+	{
+
+
+		//auto temp = m_collidableEntities.at(index)->FindComponent("eHP");
+		static_cast<AttributesComponent*>(hpComp)->Health((static_cast<AttributesComponent*>(hpComp)->Health() - 1));
+
+		if (static_cast<AttributesComponent*>(hpComp)->Health() < 1)
+		{
+			m_collidableEntities.at(index)->Active(false);
+		}
+	}
+		/*auto tar = m_entities.at(j)->FindComponent("PC");
+	tarX = static_cast<PositionComponent*>(tar)->getX();*/
+}
+
+
+
+void CollisionSystem::playerCollision(int index)
+{
+
+
+
+	auto hpComp = m_collidableEntities.at(index)->FindComponent("attribute");
+
+	auto moveComp = m_collidableEntities.at(index)->FindComponent("movement");
+
+
+
+	if (hpComp != nullptr)
+	{
+		if (static_cast<MovementComponent*>(moveComp)->getRolling() == false)
+		{
+			//auto temp = m_collidableEntities.at(index)->FindComponent("eHP");
+			static_cast<AttributesComponent*>(hpComp)->Health((static_cast<AttributesComponent*>(hpComp)->Health() - 1));
+
+			if (static_cast<AttributesComponent*>(hpComp)->Health() < 1)
+			{
+				m_collidableEntities.at(index)->Active(false);
+			}
+			std::cout << "player SLAPPED" << std::endl;
+		}
+		else
+		{
+			std::cout << "player DODGED FSDBFSJKDFSD" << std::endl;
+		}
+	}
+	/*auto tar = m_entities.at(j)->FindComponent("PC");
+	tarX = static_cast<PositionComponent*>(tar)->getX();*/
+}
+
+
+
+
+void CollisionSystem::pickupCollision(int index, int entityIndex)
+{
+	std::cout << "OH YEESSSS" << std::endl;
+
+
+	auto valueComp = m_collidableEntities.at(index)->FindComponent("currency");
+
+	int cash = static_cast<CurrencyComponent*>(valueComp)->value();
+
+	
+
+	if (valueComp != nullptr)
+	{
+		//auto temp = m_collidableEntities.at(index)->FindComponent("eHP");
+	//	auto temp = static_cast<CurrencyComponent*>(valueComp)->value(static_cast<CurrencyComponent*>(valueComp)->value() + (static_cast<CurrencyComponent*>(valueComp)->value()));
+
+		auto playerBank = m_entities.at(entityIndex)->FindComponent("currency");
+
+		std::vector<Entity*> projAct;
+
+		for (int i = 0; i < m_entities.size(); i++)
+		{
+			if (m_entities.at(i)->ID() == "Projectile" && m_entities.at(i)->Active())
+			projAct.push_back(m_entities.at(i));
+		}
+
+
+		
+
+		if (playerBank != valueComp)
+		{
+			static_cast<CurrencyComponent*>(playerBank)->incrementValue(cash);
+		}
+
+		m_collidableEntities.at(index)->Active(false);
+
+		cout << static_cast<CurrencyComponent*>(playerBank)->value() << endl;
+
+	}
+	/*auto tar = m_entities.at(j)->FindComponent("PC");
+	tarX = static_cast<PositionComponent*>(tar)->getX();*/
 }

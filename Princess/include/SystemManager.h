@@ -13,6 +13,8 @@
 #include "SoundSystem.h"
 #include "HealthSystem.h"
 #include "TextRenderSystem.h"
+#include "MenuSystem.h"
+//<<<<<<< HEAD
 
 //#include "Quad.h"
 //#include "Entity.h"
@@ -39,12 +41,26 @@
 //#include "TownInstance.h"
 //#include "AchievementHandler.h"
 
+//=======
+//#include "PositionComponent.h"
+//#include "SpriteComponent.h"
+//#include "ProjectileComponent.h"
+//#include "CollisionSystem.h"
+//#include "AttributesComponent.h"
+//#include "HeartManagerComponent.h"
+//#include "AISystem.h"
+//#include "CollisionSystem.h"
+//#include "HealthSystem.h"
+//#include "MenuSystem.h"
+//#include "SoundComponent.h"
+//#include "SoundSystem.h"
+//>>>>>>> master
 
 class SystemManager
 {
 public:
 	SystemManager() {}
-	SystemManager(ResourceManager *resourceManager, SDL_Renderer* gameRenderer, EventListener *listener, std::vector<Entity*>* projectiles);
+	SystemManager(ResourceManager *resourceManager, SDL_Renderer* gameRenderer, EventListener *listener, std::vector<Entity*>* projectiles, StateManager* state);
 
 	RenderSystem *   renderSystem;
 	MovementSystem * movementSystem;
@@ -52,12 +68,16 @@ public:
 	AttackSystem* attackSystem;
 	CollisionSystem *collisionSystem;
 	HealthSystem * healthSystem;
+	MenuSystem * menuSystem;
 	AiSystem * aiSystem;
 	ButtonSystem * buttonSystem;
 	TextRenderSystem * textRenderSystem;
 	SoundSystem * soundSystem;
 
-	void Update(float deltaTime);
+	void Update(float deltaTime, std::vector<Entity*> players);
+
+
+	//void Update(float deltaTime);
 
 private:
 	bool flag = false;
@@ -65,7 +85,7 @@ private:
 	//MovementSystem * MovementSystem;
 	//ControlSystem *  ControlSystem;
 
-	void Update();
+	void Update() {};
 };
 #endif
 

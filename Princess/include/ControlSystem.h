@@ -42,7 +42,6 @@ private:
 	bool shoot;
 	SDL_Point playerPos;
 	int x, y;
-
 	float totalPlayerMovement;
 };
 	

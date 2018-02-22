@@ -21,8 +21,6 @@ void ControlSystem::Update()
 				//do roll stuff;
 				movementComponent->setRolling(true);
 			}
-
-
 			if (m_eventListener->W)
 			{
 				holder.y = -atrributeComponent->MovementSpeed();
@@ -47,7 +45,6 @@ void ControlSystem::Update()
 				movementComponent->setMoving(true);
 				totalPlayerMovement += 1;
 			}
-
 			if (!m_eventListener->roll) //course changable if not rolling
 			{
 				movementComponent->setVelocity(holder.x, holder.y);
@@ -56,17 +53,19 @@ void ControlSystem::Update()
 
 		if (movementComponent != nullptr && weaponComponent != nullptr)
 		{
-			if (m_eventListener->LeftClick)
+			if (!movementComponent->getRolling())
 			{
-				if (weaponComponent->getAllowAttack() == true)
+				if (m_eventListener->LeftClick)
 				{
-					weaponComponent->setAttacking(true);
-					movementComponent->setLockedOrientation(true);
-					weaponComponent->setAllowAttack(false);
+					if (weaponComponent->getAllowAttack() == true)
+					{
+						weaponComponent->setAttacking(true);
+						movementComponent->setLockedOrientation(true);
+						weaponComponent->setAllowAttack(false);
+					}
 				}
 			}
 		}
 
 	}
 }
-

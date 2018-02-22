@@ -46,8 +46,6 @@ int Entity::FindComponentIndex(std::string ID)
 	return -1;
 }
 
-
-
 void Entity::RemoveComponent(Component* c)
 {
 	for (int i = 0; i < m_components.size(); i++)

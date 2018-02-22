@@ -9,22 +9,21 @@ void MovementSystem::Update(float deltaTime)
 	{
 		if (m_entities.at(i)->Active())
 		{
+
 			PositionComponent* positionComponent = static_cast<PositionComponent*>(m_entities.at(i)->FindComponent("PC"));
 			CollisionComponent* collisionComponent = static_cast<CollisionComponent*>(m_entities.at(i)->FindComponent("collision"));
 			MovementComponent* movementComponent = static_cast<MovementComponent*>(m_entities.at(i)->FindComponent("movement"));
 
 			positionComponent->setX(collisionComponent->getX());
 			positionComponent->setY(collisionComponent->getY());
-			collisionComponent->setPreviousPosition(positionComponent->getX(), positionComponent->getY());	
+			collisionComponent->setPreviousPosition(positionComponent->getX(), positionComponent->getY());
 
-			if (countedFrames > 30 && m_entities.at(i)->ID() == "Player") //if all 30 roll frames have passed.
+			if (countedFrames[0] > 15 && m_entities.at(i)->ID() == "Player") //if all 15 roll frames have passed.
 			{
 				//cooldown on rolling
-				countedFrames = 0;
-				cooldownFrames = 120; //
-
-				SpriteComponent* temp = static_cast<SpriteComponent*>(m_entities.at(i)->FindComponent("SC"));
-				temp->Direction(0); //undo temporary roll animation
+				countedFrames[0] = 0;
+				cooldownFrames[0] = 120; //
+				m_rollEnd = true;
 				movementComponent->setLockedOrientation(false);
 			}
 
@@ -32,14 +31,18 @@ void MovementSystem::Update(float deltaTime)
 			{
 				if (m_entities.at(i)->ID() == "Player")
 				{
-					if (movementComponent->getRolling() && cooldownFrames < 1)
-					{
-						countedFrames++;
+					SpriteComponent* temp = static_cast<SpriteComponent*>(m_entities.at(i)->FindComponent("SC"));
+					temp->Direction(0); //undo temporary roll animation
 
-						if (!movementComponent->getLockedOrientation())
+					if (movementComponent->getRolling() && cooldownFrames[0] < 1)
+					{
+						countedFrames[0]++;
+
+
+						if (m_rollEnd)
 						{
 							collisionComponent->setPosition(collisionComponent->getX() + ((movementComponent->getXVelocity() * 4)* deltaTime),
-															collisionComponent->getY() + ((movementComponent->getYVelocity() * 4)* deltaTime));
+								collisionComponent->getY() + ((movementComponent->getYVelocity() * 4)* deltaTime));
 
 							m_lastXVel = (movementComponent->getXVelocity() * 4)* deltaTime;
 							m_lastYVel = (movementComponent->getYVelocity() * 4)* deltaTime;
@@ -49,6 +52,7 @@ void MovementSystem::Update(float deltaTime)
 								m_lastXVel = 7; //future note: careful of clipping thru walls in this kinda scenario
 								m_lastYVel = 7;
 							}
+							m_rollEnd = false;
 						}
 						else
 						{
@@ -57,13 +61,13 @@ void MovementSystem::Update(float deltaTime)
 
 						movementComponent->setLockedOrientation(true);
 
-						if (countedFrames > 30) //after 30f, roll ends. 
+						if (countedFrames[0] > 15) //after 15f, roll ends. 
 						{
 							//end invincibility here.
 							movementComponent->setRolling(false);
 						}
 
-						else if (countedFrames < 30 && countedFrames > 0)
+						else if (countedFrames[0] < 15 && countedFrames[0] > 0)
 						{
 							auto temp = m_entities.at(i)->FindComponent("SC");
 							static_cast<SpriteComponent*>(temp)->Direction(1); //temporary roll animation //play anim												   											   
@@ -74,12 +78,12 @@ void MovementSystem::Update(float deltaTime)
 						collisionComponent->setPosition(collisionComponent->getX() + (movementComponent->getXVelocity() * deltaTime),
 							collisionComponent->getY() + (movementComponent->getYVelocity() * deltaTime));
 
-						if (cooldownFrames > 0)
+						if (cooldownFrames[0] > 0)
 						{
-							cooldownFrames--; //30frame cooldown on spamming roll.
+							cooldownFrames[0]--; //15frame cooldown on spamming roll.
 						}
 
-						if (cooldownFrames > 5)
+						if (cooldownFrames[0] > 5)
 						{
 							movementComponent->setRolling(false);
 						}
@@ -89,14 +93,17 @@ void MovementSystem::Update(float deltaTime)
 					{
 						movementComponent->setOrientation((atan2((float)m_mouseY - (m_windowHeight / 2), (float)m_mouseX - (m_windowWidth / 2))) * (180 / 3.142) + 90);
 					}
+
 				}
-				else
+
+				if (movementComponent->getLockedOrientation() == false)
 				{
 					collisionComponent->setPosition(collisionComponent->getX() + movementComponent->getXVelocity() * deltaTime,
-													collisionComponent->getY() + movementComponent->getYVelocity() * deltaTime);	
+					collisionComponent->getY() + movementComponent->getYVelocity() * deltaTime);
 				}
 			}
 		}//end active
+
 	}
 }
 
@@ -105,6 +112,7 @@ void MovementSystem::LoadComponent()
 	int pcKey = -1;
 	int movementKey = -1;
 	int collisionKey = -1;
+
 
 	for (int j = 0; j < m_entities.back()->GetComponents()->size(); j++)
 	{
