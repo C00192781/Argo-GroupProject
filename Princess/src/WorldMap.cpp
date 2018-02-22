@@ -15,6 +15,13 @@ void WorldMap::Generate(int width, int height, int chaosFactor)
 {
 	m_active = true;
 
+	Entity* player2 = m_systemManager->collisionSystem->FindEntity("Player", 2); //discern between players
+	Entity* player3 = m_systemManager->collisionSystem->FindEntity("Player", 1); //discern between players
+	Entity* player4 = m_systemManager->collisionSystem->FindEntity("Player", 0); //discern between players
+	player2->Active(false);
+	player3->Active(false);
+	player4->Active(false);
+
 	for (int i = 0; i < m_entities.size(); i++)
 	{
 		delete m_entities.at(i);
@@ -597,7 +604,13 @@ void WorldMap::Load()
 	// sets player's position to the the previous location on the world map after random encounter
 	if (m_listener->EncounterToWorld == true)
 	{
-		Entity* player = m_systemManager->collisionSystem->FindEntity("Player"); //discern between players
+		Entity* player = m_systemManager->collisionSystem->FindEntity("Player", 3); //discern between players
+		Entity* player2 = m_systemManager->collisionSystem->FindEntity("Player", 2); //discern between players
+		Entity* player3 = m_systemManager->collisionSystem->FindEntity("Player", 1); //discern between players
+		Entity* player4 = m_systemManager->collisionSystem->FindEntity("Player", 0); //discern between players
+		player2->Active(false);
+		player3->Active(false);
+		player4->Active(false);
 
 		if (player != nullptr)
 		{
