@@ -4,13 +4,14 @@
 #include "ButtonComponent.h"
 #include "PositionComponent.h"
 #include "SpriteComponent.h"
-
+using namespace std;
 #include <random>
 #include <chrono>
 #include<fstream>
 #include<string>
 #include <iostream>     // std::cout
 #include <numeric>      // std::iota
+#include <cassert>
 
 class ButtonSystem :
 	public System

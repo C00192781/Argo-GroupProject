@@ -40,47 +40,41 @@ void ButtonSystem::Update()
 
 		if (m_buttonComponents.at(2)->Activated())
 		{
-			
-			//ofstream myfile;
-			//myfile.open("Resources/Config/Rumours.txt");
-			//myfile << "Have you heard of the High Elves?.\n";
-			//myfile << "Sensational.\n";
-			//myfile << "Have you heard of the High Elves?.\n";
-			//myfile << "Sensational.\n";
-			//myfile << "Have you heard of the High Elves?.\n";
-			//myfile << "Sensational.\n";
 
-			//int number_of_lines = 5;
 
-			//// a vector to hold all the indices: 0 to number_of_lines
-			//std::vector<int> line_indices(number_of_lines);
-			//std::iota(begin(line_indices), end(line_indices), 0); // init line_indices
+			int number_of_lines = 1;
 
-			//													  // C++11 random library (should be preferred over rand()/srand())
-			//std::random_device r;
-			//std::seed_seq seed{ r(), r(), r(), r(), r(), r(), r(), r() };
-			//std::mt19937 eng(seed);
+			// a vector to hold all the indices: 0 to number_of_lines
+			std::vector<int> line_indices(number_of_lines);
+			std::iota(begin(line_indices), end(line_indices), 0); // init line_indices
 
-			//// shuffle the line_indices:
-			//std::shuffle(begin(line_indices), end(line_indices), eng);
+																  // C++11 random library (should be preferred over rand()/srand())
+			std::random_device r;
+			std::seed_seq seed{ r(), r(), r(), r(), r(), r(), r(), r() };
+			std::mt19937 eng(seed);
 
-			//int number_of_lines_to_select = 1;
-			//assert(number_of_lines_to_select <= number_of_lines);
+			// shuffle the line_indices:
+			std::shuffle(begin(line_indices), end(line_indices), eng);
 
-			//std::string line;
-			//std::ifstream file("Resources/Config/Rumours.txt");
+			int number_of_lines_to_select = 1;
+			assert(number_of_lines_to_select <= number_of_lines);
 
-			//int line_number = 0;
-			//while (std::getline(file, line))
-			//{
-			//	for (int i = 0; i < number_of_lines_to_select; ++i)
-			//	{
-			//		if (line_number == line_indices[i]) {
-			//			std::cout << line << '\n';
-			//		}
-			//	}
-			//	++line_number;
-			//}
+			std::string line;
+			std::ifstream file("Rumours.txt");
+
+			int line_number = 0;
+			while (std::getline(file, line))
+			{
+				for (int i = 0; i < number_of_lines_to_select; ++i)
+				{
+					if (line_number == line_indices[i]) {
+						std::cout << line << '\n';
+
+					}
+				}
+				++line_number;
+			}
+
 
 		}
 
