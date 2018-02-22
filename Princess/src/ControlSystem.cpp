@@ -24,6 +24,7 @@ void ControlSystem::Update()
 			if (m_eventListener->W)
 			{
 				holder.y = -atrributeComponent->MovementSpeed();
+
 				movementComponent->setMoving(true);
 				totalPlayerMovement += 1;
 			}
@@ -47,6 +48,8 @@ void ControlSystem::Update()
 			}
 			if (!m_eventListener->roll) //course changable if not rolling
 			{
+			//	cout << movementComponent->getXVelocity() << endl;
+
 				movementComponent->setVelocity(holder.x, holder.y);
 			}
 		}

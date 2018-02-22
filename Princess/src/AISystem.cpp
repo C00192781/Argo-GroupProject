@@ -594,13 +594,14 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 				//	cout << dist << endl;
 					int enemyRange = 100;
 					//auto enemyRange = static_cast<WeaponComponent*>(m_playerEntities.at(i)->FindComponent("weapon"))->getRange();
-					auto selfRange = static_cast<WeaponComponent*>(m_entities.at(i)->FindComponent("weapon"))->getRange() * 10;
+					auto selfRange = 100;
 
 					//cout << "playerHp: " << static_cast<AttributesComponent*>(hpComp)->Health() << endl;
 
 					if (tarAttribComp != nullptr && players.at(tarIndex)->FindComponent("weapon") != nullptr && hpComp != nullptr)
-					{
-						enemyRange = static_cast<WeaponComponent*>(players.at(tarIndex)->FindComponent("weapon"))->getRange() * 10;;
+					{ 
+					//	enemyRange = static_cast<WeaponComponent*>(players.at(tarIndex)->FindComponent("weapon"))->getRange() * 10;
+					//	selfRange = static_cast<WeaponComponent*>(m_entities.at(i)->FindComponent("weapon"))->getRange() * 10;
 						m_decisionTree->calculatePathNodes(m_decisionTree->m_RootNode, dist, static_cast<AttributesComponent*>(tarAttribComp)->Health() / 4.0f, static_cast<AttributesComponent*>(hpComp)->Health(), selfRange, enemyRange); //make target HP and self HP gettable later,  hardcoded values for test purpose only.
 					}
 					else

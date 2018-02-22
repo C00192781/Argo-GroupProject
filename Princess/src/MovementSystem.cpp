@@ -22,7 +22,7 @@ void MovementSystem::Update(float deltaTime)
 			{
 				//cooldown on rolling
 				countedFrames[0] = 0;
-				cooldownFrames[0] = 120; //
+				cooldownFrames[0] = 60; //
 				m_rollEnd = true;
 				movementComponent->setLockedOrientation(false);
 			}

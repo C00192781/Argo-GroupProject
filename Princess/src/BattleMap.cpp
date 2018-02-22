@@ -73,7 +73,7 @@ void BattleMap::Generate(std::string type)
 		}
 	}
 
-	int numOfEnemies = 2;//(rand() % 10) + 5;
+	int numOfEnemies = 5;//(rand() % 10) + 5;
 
 	BasicEnemy enemyFactory;
 
