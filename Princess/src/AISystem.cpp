@@ -426,9 +426,9 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 
 				//cout << "selfHPplayer: " <<static_cast<AttributesComponent*>(hpComp)->Health() << endl;
 
-				if (tarAttribComp != nullptr && players.at(tarIndex)->FindComponent("weapon") != nullptr && hpComp != nullptr)
+				if (tarAttribComp != nullptr && m_entities.at(tarIndex)->FindComponent("weapon") != nullptr && hpComp != nullptr)
 				{
-					enemyRange = static_cast<WeaponComponent*>(players.at(tarIndex)->FindComponent("weapon"))->getRange() * 10;;
+					enemyRange = static_cast<WeaponComponent*>(m_entities.at(tarIndex)->FindComponent("weapon"))->getRange() * 10;;
 					m_decisionTree->calculatePathNodes(m_decisionTree->m_RootNode, dist, static_cast<AttributesComponent*>(tarAttribComp)->Health(), static_cast<AttributesComponent*>(hpComp)->Health(), selfRange, enemyRange); //make target HP and self HP gettable later,  hardcoded values for test purpose only.
 				}
 				else
@@ -454,7 +454,7 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 			//	m_decisionTree->calculatePathNodes(m_decisionTree->m_RootNode, dist, 1, 8, selfRange, enemyRange); //make target HP and self HP gettable later,  hardcoded values for test purpose only.
 			//	cout << "dist: " << dist << endl;
 				int decision = m_decisionTree->getDecision();
-						cout << "decision: " << decision << endl;
+					//	cout << "decision: " << decision << endl;
 					// = 10;
 
 				if (decision == 8 || decision == 9) //if hp adv and in range
@@ -511,7 +511,7 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 					int tz = m_playerEntities.at(i)->FindComponentIndex("attribute");
 					int tq = m_playerEntities.at(i)->FindComponentIndex("weapon");
 
-					cout << "RUN AWAY" << endl;
+				//	cout << "RUN AWAY" << endl;
 					seek(i, tw, tx, ty, tz, tarX, tarY, 1, m_playerEntities.at(i)->ID()); //RUN AWAY
 					static_cast<WeaponComponent*>(m_playerEntities.at(i)->GetComponents()->at(tq))->setAttacking(false);
 					static_cast<WeaponComponent*>(m_playerEntities.at(i)->GetComponents()->at(tq))->setAllowAttack(true);													//flee
