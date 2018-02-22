@@ -6,25 +6,6 @@
 #include "AttributesMomento.h"
 #include <iostream>
 
-enum class ModiferTypes
-{
-	BLEED,
-	CHILL,
-	STUN,
-	BURNING,
-	HEALING,
-	DAMAGE
-};
-
-struct Modifer
-{
-	ModiferTypes m_type;
-	int m_amount;
-	float m_duration;
-
-	Modifer(ModiferTypes type = ModiferTypes::DAMAGE, int amount = 0, float duration = 0) :m_type(type), m_amount(amount), m_duration(duration) {};
-};
-
 class AttributesComponent : public Component
 {
 public:
@@ -32,32 +13,26 @@ public:
 	{
 		m_type = "attribute";
 
-		//std::cout << m_type << std::endl;
-
 		m_armour = 5;
 		m_maxArmour = 6;
 
-		m_health = 5;
-		m_maxHealth = 5;
+		m_health = 26;
+		m_maxHealth = 26;
 
 		m_movementSpeed = 10;
 		m_maxMovementSpeed = 10;
-
-		m_modifers = new std::list<Modifer>();
 	};
 
 
 	AttributesComponent(int health, int maxHealth, int armour, int maxArmour, int movement, int maxMovement) :m_health(health), m_maxHealth(maxHealth), m_armour(armour), m_maxArmour(maxArmour), m_movementSpeed(movement), m_maxMovementSpeed(maxMovement) 
 	{ 
 		m_type = "attribute";
-		m_modifers = new std::list<Modifer>();
 		momento = new AttributesMomento(health, maxHealth, armour, maxArmour, movement, maxMovement);
 	};
 
-	~AttributesComponent() 
+	~AttributesComponent()
 	{
-		m_modifers->clear();
-		delete m_modifers;
+
 	};
 
 	int Armour() { return m_armour; };
@@ -69,16 +44,15 @@ public:
 	int MovementSpeed() { return m_movementSpeed; };
 	void MovementSpeed(int movementSpeed) { m_movementSpeed = movementSpeed; };
 
-	int MaxArmour() { return m_maxArmour; };
+	int MaxArmour() { return m_maxArmour + m_additiveArmour; };
 	void MaxArmour(int armour) { m_maxArmour = armour; };
 
-	int MaxHealth() { return m_maxHealth; };
+	int MaxHealth() { return m_maxHealth + m_additiveHealth; };
 	void MaxHealth(int health) { m_maxHealth = health; };
 
-	int MaxMovementSpeed() { return m_maxMovementSpeed; };
+	int MaxMovementSpeed() { return m_maxMovementSpeed + m_additiveMovementSpeed; };
 	void MaxMovementSpeed(int movementSpeed) { m_maxMovementSpeed = movementSpeed; };
 
-	std::list<Modifer> * Modifers() { return m_modifers; };
 	
 	void Save()
 	{
@@ -96,12 +70,20 @@ public:
 		m_maxMovementSpeed = momento->MaxMovementSpeed();
 	}
 
+	void AdditiveArmour(int x) { m_additiveArmour = x; };
+	void AdditiveHealth(int x) { m_additiveHealth = x; };
+	void AdditiveMovement(int x) { m_additiveMovementSpeed = x; };
+
+
+
 private:
 	int m_armour;
 	int m_maxArmour;
+	int m_additiveArmour;
 
 	int m_health;
 	int m_maxHealth;
+	int m_additiveHealth;
 
 	int m_movementSpeed;
 	int m_maxMovementSpeed;
@@ -109,7 +91,7 @@ private:
 	//holds previous state of the object
 	AttributesMomento * momento;
 
+	int m_additiveMovementSpeed;
 
-	std::list<Modifer> * m_modifers;
 };
 #endif

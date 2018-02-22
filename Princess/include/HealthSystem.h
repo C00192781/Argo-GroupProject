@@ -5,23 +5,29 @@
 #include "AttributesComponent.h"
 #include "SpriteComponent.h"
 #include "PositionComponent.h"
-#include "HeartComponent.h"
-#include "HeartManagerComponent.h"
 
 class HealthSystem : public System
 {
 private:
-	void DamageEntity(int& damageCaused, int& armour, int& health);
+	std::vector<Entity*>m_player1Hearts;
+	std::vector<Entity*>m_player2Hearts;
+	std::vector<Entity*>m_player3Hearts;
+	std::vector<Entity*>m_player4Hearts;
+
+	std::vector<AttributesComponent*> m_attributeComponents;
+
+	//void DamageEntity(int& damageCaused, int& armour, int& health);
 	float timer;
 public:
 	HealthSystem();
 	~HealthSystem();
+	void AddEntity(Entity * e, std::string tag);
 	void Update() {};
 	void Update(float deltaTime);
-	void UpdateMaxHeartsUI(Entity * HeartManager, Entity* player);
-	void UpdateHeartsUIStatus(Entity * HeartManager, Entity* player);
-	void UpdateMaxArmourUI(Entity * HeartManager, Entity* player);
-	void UpdateArmourUIStatus(Entity * HeartManager, Entity* player);
+	void PlayerOneUpdate();
+	void PlayerTwoUpdate();
+	void PlayerThreeUpdate();
+	void PlayerFourUpdate();
 	void LoadComponent();
 	void UnloadComponent(int x);
 };

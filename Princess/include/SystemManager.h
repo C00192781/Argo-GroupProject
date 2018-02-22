@@ -6,7 +6,6 @@
 #include "ControlSystem.h"
 #include "MovementSystem.h"
 #include "AttackSystem.h"
-#include "ProjectileSystem.h"
 #include "CollisionSystem.h"
 #include "AISystem.h"
 #include "CollisionSystem.h"
@@ -16,10 +15,8 @@
 #include "PositionComponent.h"
 #include "SpriteComponent.h"
 #include "ProjectileComponent.h"
-#include "ProjectileSystem.h"
 #include "CollisionSystem.h"
 #include "AttributesComponent.h"
-#include "HeartManagerComponent.h"
 #include "AISystem.h"
 #include "CollisionSystem.h"
 #include "HealthSystem.h"
@@ -39,7 +36,6 @@ public:
 	ControlSystem *  controlSystem;
 	AttackSystem* attackSystem;
 	CollisionSystem *collisionSystem;
-	ProjectileSystem * projectileSystem;
 	HealthSystem * healthSystem;
 	MenuSystem * menuSystem;
 	AiSystem * aiSystem;
@@ -50,17 +46,8 @@ public:
 
 	void Update(float deltaTime, std::vector<Entity*> players);
 
-
-	void Update(float deltaTime);
-
 private:
 	bool flag = false;
-	//RenderSystem *   RenderSystem;
-	//MovementSystem * MovementSystem;
-	//ControlSystem *  ControlSystem;
-
-	void Update();
-
 };
 #endif
 

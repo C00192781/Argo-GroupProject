@@ -23,11 +23,11 @@ void SystemManager::Update(float deltaTime, std::vector<Entity*> players)
 
 	if (healthSystem->Active()) { healthSystem->Update(deltaTime); }
 
-	if (menuSystem->Active()) { menuSystem->Update(); }
-
 	if (soundSystem->Active()) { soundSystem->Update(); }
 
 	if (renderSystem->Active()) { renderSystem->Update(); }
+
+	if (menuSystem->Active()) { menuSystem->Update(); }
 
 	if (mementoSystem->Active()) { mementoSystem->Update(); }
 }
