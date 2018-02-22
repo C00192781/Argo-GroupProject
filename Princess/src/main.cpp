@@ -169,11 +169,11 @@ int main()
 	player->Active(true);
 
 	player->AddComponent(new SpriteComponent("Red", 3, 1, 0, 0, 16, 16, 0));
-	player->AddComponent(new PositionComponent(SDL_Point{ 100, 100 }));
+	player->AddComponent(new PositionComponent(SDL_Point{ 100, 380 }));
 	player->AddComponent(new AttributesComponent(15, 5, 1, 10, 100, 100));
 	player->AddComponent(new MovementComponent());
 	player->AddComponent(new WeaponComponent(WeaponType::RANGE));
-	player->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
+	player->AddComponent(new CollisionComponent(100, 380, 16, 16, 2));
 	player->Transient(true);
 	player->AddComponent(new CurrencyComponent());
 	player->Control(true); //enable only if the client controlled player
@@ -186,11 +186,11 @@ int main()
 	Entity * player2 = new Entity("Player");
 	player2->Active(true);
 	player2->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
-	player2->AddComponent(new PositionComponent(SDL_Point{ 300, 380 }));
+	player2->AddComponent(new PositionComponent(SDL_Point{ 250, 380 }));
 	player2->AddComponent(new AttributesComponent(15, 3, 1, 10, 100, 100));
 	player2->AddComponent(new MovementComponent());
 	player2->AddComponent(new WeaponComponent(WeaponType::RANGE));
-	player2->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
+	player2->AddComponent(new CollisionComponent(250, 380, 16, 16, 2));
 	player2->AddComponent(new AiLogicComponent()); //add this if AI is to control that player2
 	player2->AddComponent(new SeekComponent()); //and this if AI is to control that player2
 	player2->AddComponent(new CurrencyComponent());
@@ -205,7 +205,7 @@ int main()
 	player3->AddComponent(new AttributesComponent(15, 3, 1, 10, 100, 100));
 	player3->AddComponent(new MovementComponent());
 	player3->AddComponent(new WeaponComponent(WeaponType::RANGE));
-	player3->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
+	player3->AddComponent(new CollisionComponent(300, 380, 16, 16, 2));
 	player3->AddComponent(new AiLogicComponent()); //add this if AI is to control that player3
 	player3->AddComponent(new SeekComponent()); //and this if AI is to control that player3
 	player3->AddComponent(new CurrencyComponent());
@@ -221,7 +221,7 @@ int main()
 	player4->AddComponent(new AttributesComponent(15, 3, 1, 10, 100, 100));
 	player4->AddComponent(new MovementComponent());
 	player4->AddComponent(new WeaponComponent(WeaponType::RANGE));
-	player4->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
+	player4->AddComponent(new CollisionComponent(200, 380, 16, 16, 2));
 	player4->AddComponent(new AiLogicComponent()); //add this if AI is to control that player4
 	player4->AddComponent(new SeekComponent()); //and this if AI is to control that player4
 	player4->AddComponent(new CurrencyComponent());
@@ -263,7 +263,7 @@ int main()
 	}
 	else if (player3->Control())
 	{
-		systemManager.controlSystem->AddEntity(player2);
+		systemManager.controlSystem->AddEntity(player3);
 	}
 	else if (player4->Control())
 	{
