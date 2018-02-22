@@ -61,7 +61,7 @@ void SystemManager::Update(float deltaTime, std::vector<Entity*> players)
 
 	if (networkSystem->Active()) { networkSystem->Update(deltaTime); }
 
-	if (soundSystem->Active()) { soundSystem->Update(); }
+	//if (soundSystem->Active()) { soundSystem->Update(); }
 
 	if (renderSystem->Active()) { renderSystem->Update(); }
 

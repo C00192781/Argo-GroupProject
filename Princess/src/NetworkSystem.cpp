@@ -21,7 +21,7 @@ NetworkSystem::NetworkSystem()
 		m_active = false;
 	}
 
-	m_maxTimeTilNextPacket = 0.02;
+	m_maxTimeTilNextPacket = 0.002;
 	m_timeTilNextPacket = 0;
 }
 
@@ -37,7 +37,7 @@ void NetworkSystem::Update(float deltaTime)
 			ControlComponent* controlComponent = static_cast<ControlComponent*>(m_entities.at(i)->FindComponent("control"));
 			NetworkIDComponent* networkIDComponent = static_cast<NetworkIDComponent*>(m_entities.at(i)->FindComponent("network"));
 
-			if (m_entities.at(i)->ID() == "Player" && getID() == networkIDComponent->getID())
+			if (m_entities.at(i)->ID() == "Player" && networkIDComponent->getID() == m_id)
 			{
 				Packet packet;
 
@@ -87,7 +87,7 @@ void NetworkSystem::listen()
 		}
 		else if (packetType == (Uint8)PacketType::UPDATEPLAYERS)
 		{
-			NetworkIDComponent* networkIDComponent = nullptr;//= static_cast<NetworkIDComponent*>(m_entities.at(i)->FindComponent("network"));
+			//NetworkIDComponent* networkIDComponent = nullptr;//= static_cast<NetworkIDComponent*>(m_entities.at(i)->FindComponent("network"));
 			int id = 0;
 			float x = 0;
 			float y = 0;
@@ -96,18 +96,21 @@ void NetworkSystem::listen()
 			packet >> x;
 			packet >> y;
 
+			std::cout << id << std::endl;
+
 			for (int i = 0; i < m_entities.size(); i++)
 			{
 				if (m_entities.at(i)->ID() == "Player")
 				{
 					NetworkIDComponent* networkIDComponent = static_cast<NetworkIDComponent*>(m_entities.at(i)->FindComponent("network"));
 
-					if (networkIDComponent->getID() != id)
+					if (networkIDComponent->getID() == id)
 					{
-						CollisionComponent* controlComponent = static_cast<CollisionComponent*>(m_entities.at(i)->FindComponent("collision"));
+						CollisionComponent* collisionComponent = static_cast<CollisionComponent*>(m_entities.at(i)->FindComponent("collision"));
 
-						controlComponent->setX(x);
-						controlComponent->setY(y);
+						collisionComponent->setX(x);
+						collisionComponent->setY(y);
+						break;
 					}
 				}
 			}

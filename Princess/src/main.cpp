@@ -134,9 +134,26 @@ int main()
 	player2->AddComponent(new NetworkIDComponent(1));
 	player2->Transient(true);
 	player2->AddComponent(new CurrencyComponent());
-	player2->Control(true); //enable only if the client controlled player
-							//player2->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
-							//player2->AddComponent(new SeekComponent()); //and this if AI is to control that player
+
+	if (systemManager.networkSystem->getConnected() == true)
+	{
+		if (systemManager.networkSystem->getID() == 0)
+		{
+			player->Control(true);
+			std::cout << systemManager.networkSystem->getID() << std::endl;
+		}
+		else
+		{
+			player2->Control(true); //enable only if the client controlled player
+									//player2->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
+									//player2->AddComponent(new SeekComponent()); //and this if AI is to control that player
+			std::cout << systemManager.networkSystem->getID() << std::endl;
+		}
+	}
+	else
+	{
+		player->Control(true);
+	}
 
 
 	systemManager.movementSystem->AddEntity(player2);
@@ -150,6 +167,7 @@ int main()
 	systemManager.renderSystem->AddEntity(player);
 	systemManager.collisionSystem->AddEntity(player);
 	systemManager.attackSystem->AddEntity(player);
+	systemManager.networkSystem->AddEntity(player);
 
 
 
