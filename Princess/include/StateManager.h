@@ -16,6 +16,6 @@ public:
 	bool SaveGame = false;
 	bool LoadGame = false;
 	bool GameOver = false;
-	bool test = false;
+	bool ReturnToWorld = false;
 };
 #endif

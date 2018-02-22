@@ -33,7 +33,7 @@ void InstanceManager::Update(float deltaTime)
 	{
 		gameOverInstance->Update(deltaTime);
 	}
-	else
+	else if (battleMap->Active())
 	{
 		battleMap->Update(deltaTime);
 	}
@@ -78,7 +78,14 @@ void InstanceManager::Update(float deltaTime)
 	else if(m_stateManager->GameOver)
 	{
 		Generate("GameOver");
-		worldMap->Active(false);
+		if (battleMap->Active())
+		{
+			battleMap->Active(false);
+		}
+		else if (dungeonMap->Active())
+		{
+			dungeonMap->Active(false);
+		}
 		gameOverInstance->Active(true);
 		m_stateManager->GameOver = false;
 	}
@@ -86,8 +93,7 @@ void InstanceManager::Update(float deltaTime)
 	{
 		if (battleMap->Active())
 		{
-			worldMap->Load();
-			worldMap->Active(true);
+
 			battleMap->Active(false);
 		}
 		else if (dungeonMap->Active())
@@ -96,6 +102,9 @@ void InstanceManager::Update(float deltaTime)
 			worldMap->Active(true);
 			dungeonMap->Active(false);
 		}
+		gameOverInstance->Active(false);
+		worldMap->Load();
+		worldMap->Active(true);
 		m_stateManager->ReturnToWorld = false;
 	}
 }

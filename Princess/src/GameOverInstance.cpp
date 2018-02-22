@@ -19,12 +19,17 @@ void GameOverInstance::Update(float deltaTime)
 	{
 		//Do Next
 		m_systemManager->renderSystem->Camera(true);
+		m_systemManager->healthSystem->Active(true);
 		m_systemManager->controlSystem->Active(true);
 		m_systemManager->controlSystem->FindEntity("Player")->Active(true);
 		m_systemManager->renderSystem->FindEntity("Player")->Active(true);
-		//m_systemManager->collisionSystem->Active(true);
 		m_stateManager->LoadGame = true;
+		m_stateManager->ReturnToWorld = true;
 		timer = 0;
+		for (int i = 0; i < m_entities.size(); i++)
+		{
+			m_entities.at(i)->Active(false);
+		}
 	}
 }
 
@@ -35,6 +40,7 @@ void GameOverInstance::Generate()
 	m_systemManager->controlSystem->Active(false);
 	//m_systemManager->renderSystem->Camera(false);
 	//m_systemManager->collisionSystem->Active(false);
+	m_systemManager->healthSystem->Active(false);
 	m_systemManager->textRenderSystem->Active(true);
 
 	m_systemManager->controlSystem->FindEntity("Player")->Active(false);
