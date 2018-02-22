@@ -5,6 +5,9 @@
 #include "ClientInfo.h"
 #include "Client.h"
 #include "Packet.h"
+#include <iostream>
+#include <time.h>
+#include <random>
 
 class Server
 {
@@ -16,6 +19,7 @@ public:
 
 	bool send(const int &id, Packet packet);
 	void sendToAll(Packet packet);
+	void sendToOtherClients(Packet packet, int id);
 	void listen();
 
 	//void broadcastToRoomOnly(Packet& packetData, const Uint8 & roomID, const int& ignoreClientID = -1);
@@ -54,4 +58,6 @@ private:
 	Uint32 m_uptime;
 
 	const unsigned short m_serverPort = 5228;
+
+	int m_seed;
 };

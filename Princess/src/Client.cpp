@@ -45,11 +45,6 @@ bool Client::connectToServer()
 					Uint8 packetType;
 					packet >> packetType;
 
-					if (packetType == (Uint8)PacketType::CONNECT)
-					{
-						std::cout << "packetHandler" << std::endl;
-						//packetHandler(packetType, pData, this);
-					}
 					m_connected = true;
 					return true;
 				}
@@ -94,9 +89,19 @@ void Client::listen()
 				packet >> serverTime;
 				m_serverTimeOffset = (serverTime - SDL_GetTicks());
 			}
-			else
+			else if (packetType == (Uint8)PacketType::UPDATEPLAYERS)
 			{
-				//packetHandler(packetType, packet, this);
+				int id = 0;
+				float x = 0;
+				float y = 0;
+
+				packet >> id;
+				packet >> x;
+				packet >> y;
+
+				std::cout << "ID: " << id;
+				std::cout << " X: " << x;
+				std::cout << " Y: " << y << std::endl;
 			}
 		//}
 	}
@@ -125,6 +130,16 @@ void Client::setHost(bool host)
 bool Client::getHost()
 {
 	return m_isHost;
+}
+
+int Client::getServerSeed()
+{
+	return m_serverSeed;
+}
+
+int Client::getID()
+{
+	return m_id;
 }
 
 //int Client::getServerTime()

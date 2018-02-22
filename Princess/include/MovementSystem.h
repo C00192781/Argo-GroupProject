@@ -6,6 +6,7 @@
 #include "CollisionComponent.h"
 #include <vector>
 #include "SpriteComponent.h"
+#include "Client.h"
 
 class MovementSystem : public System
 {
@@ -15,10 +16,14 @@ public:
 	{
 		m_windowWidth = windowWidth;
 		m_windowHeight = windowHeight;
+		m_client = nullptr;
 	}
 
 	void Update() {}
 	void Update(float deltaTime);
+
+	void addClient(Client *client) { m_client = client; }
+
 private:
 	void LoadComponent();
 	void UnloadComponent(int x);
@@ -42,4 +47,6 @@ private:
 	std::vector<PositionComponent*> m_positionComponent;
 	std::vector<MovementComponent*> m_movementComponent;
 	std::vector<CollisionComponent*> m_collisionComponent;
+
+	Client* m_client;
 };

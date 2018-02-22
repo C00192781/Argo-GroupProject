@@ -53,8 +53,6 @@ void SystemManager::Update(float deltaTime, std::vector<Entity*> players)
 
 	if (buttonSystem->Active()) { buttonSystem->Update(); }
 
-	if (textRenderSystem->Active()) { textRenderSystem->Update(); }
-
 	if (healthSystem->Active()) { healthSystem->Update(deltaTime); }
 
 	if (menuSystem->Active()) { menuSystem->Update(); }
@@ -62,5 +60,7 @@ void SystemManager::Update(float deltaTime, std::vector<Entity*> players)
 	if (soundSystem->Active()) { soundSystem->Update(); }
 
 	if (renderSystem->Active()) { renderSystem->Update(); }
+
+	if (textRenderSystem->Active()) { textRenderSystem->Update(); }
 }
 

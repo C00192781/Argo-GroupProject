@@ -8,7 +8,6 @@
 #include "AchievementHandler.h"
 #include <chrono>
 #include <time.h>
-#include "Client.h"
 
 int GAME_SCALE = 3;
 
@@ -101,15 +100,19 @@ int main()
 
 	std::vector<Entity*>* projectiles = new std::vector<Entity*>;
 
-	SystemManager systemManager(resourceManager, gameRenderer, listener, projectiles, &state);
-
-	InstanceManager instanceManager(&systemManager, &state, resourceManager, listener);
-
 	Client client;
 	if (client.connectToServer())
 	{
-		std::cout << "AYY" << std::endl;
+		srand(client.getServerSeed());
 	}
+	else
+	{
+		srand(time(NULL));
+	}
+
+	SystemManager systemManager(resourceManager, gameRenderer, listener, projectiles, &state);
+
+	InstanceManager instanceManager(&systemManager, &state, resourceManager, listener);
 
 	Entity * player = new Entity("Player");
 	player->Active(true);
@@ -184,6 +187,18 @@ int main()
 	AchievementHandler *achievements = new AchievementHandler(&systemManager);
 
 	//InstanceManager instanceManager(&systemManager, &state, resourceManager, listener);
+	//int temp = rand();
+	//std::cout << temp << std::endl;
+	//temp = rand();
+	//std::cout << temp << std::endl;
+	//temp = rand();
+	//std::cout << temp << std::endl;
+	//temp = rand();
+	//std::cout << temp << std::endl;
+	//temp = rand();
+	//std::cout << temp << std::endl;
+
+	systemManager.movementSystem->addClient(&client);
 
 	while (state.ExitGame == false)
 	{
@@ -226,6 +241,11 @@ int main()
 
 			instanceManager.Update(deltaTime);
 			systemManager.Update(deltaTime, playerEntities);
+
+			//Packet pData;
+			//pData << (Uint8)PacketType::UPDATE;
+			//client.send(pData);
+
 			client.listen();
 
 			SDL_RenderPresent(gameRenderer);

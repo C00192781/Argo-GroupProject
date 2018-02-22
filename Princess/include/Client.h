@@ -19,6 +19,8 @@ public:
 	bool getHost();
 	// int getServetTime();
 	// void setServerTime(Uint32 serverTime)
+	int getServerSeed();
+	int getID();
 
 private:
 	bool m_connected;
@@ -37,6 +39,9 @@ private:
 	int m_timeout;
 
 	bool m_isHost;
+
+	int m_serverSeed;
+	int m_id;
 
 	//bool m_connected;
 	//Uint32 m_serverTimeout;

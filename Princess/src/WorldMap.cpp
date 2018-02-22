@@ -647,17 +647,17 @@ void WorldMap::Update()
 		{
 			if (movement->getMoving() == true)
 			{
-				if ((rand() % 10000) >= 9950)
-				{
-					PositionComponent* pos = static_cast<PositionComponent*>(player->FindComponent("PC"));
-
-					if (pos != nullptr)
-					{
-						m_randomEncounterLocation = { (int)pos->getX(), (int)pos->getY() };
-					}
-
-					m_listener->WorldToEncounter = true;
-				}
+				//if ((rand() % 10000) >= 9950)
+				//{
+				//	PositionComponent* pos = static_cast<PositionComponent*>(player->FindComponent("PC"));
+				//
+				//	if (pos != nullptr)
+				//	{
+				//		m_randomEncounterLocation = { (int)pos->getX(), (int)pos->getY() };
+				//	}
+				//
+				//	m_listener->WorldToEncounter = true;
+				//}
 			}
 		}
 	}

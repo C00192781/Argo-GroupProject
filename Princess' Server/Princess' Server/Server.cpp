@@ -1,5 +1,4 @@
 #include "Server.h"
-#include <iostream>
 
 Server::Server()
 {
@@ -10,6 +9,9 @@ Server::Server()
 	m_packetSize = std::numeric_limits<Uint8>::max();
 	//m_rooms(MAX_ROOMS);
 	//m_gameStarted(MAX_ROOMS, false);
+	
+	srand(time(NULL));
+	m_seed = rand();
 }
 
 void Server::update()
@@ -33,17 +35,15 @@ void Server::update()
 			{
 				Packet packet;
 				packet << (Uint8)PacketType::CONNECTIONALIVE << m_uptime;
-				std::cout << "ID: " << (*client).first << std::endl;
 				send((*client).first, packet);
 				if ((*client).second.m_connectionRetry == 0)
 				{
 					(*client).second.m_currentConnectionTime = m_uptime;
 				}
-
 				(*client).second.m_connectionWaiting = true;
 				(*client).second.m_connectionRetry++;
 				m_totalDataSent += packet.getDataSize();
-				
+
 			}
 		}
 		++client;
@@ -89,6 +89,27 @@ void Server::sendToAll(Packet packet)
 			memcpy(m_packet->data, packet.getData(), m_packet->len);
 			SDLNet_UDP_Send(m_socket, -1, m_packet);
 			m_totalDataSent += m_packetSize;
+		}
+	}
+}
+
+void Server::sendToOtherClients(Packet packet, int id)
+{
+	for (std::map<int, ClientInfo>::iterator client = m_clients.begin(); client != m_clients.end(); ++client)
+	{
+		if ((*client).first != id)
+		{
+			int packetSize = packet.getDataSize();
+
+			if (packetSize > 0)
+			{
+				m_packet->len = packetSize;
+				m_packet->address.host = client->second.m_clientIP;
+				m_packet->address.port = client->second.m_clientPort;
+				memcpy(m_packet->data, packet.getData(), m_packet->len);
+				SDLNet_UDP_Send(m_socket, -1, m_packet);
+				m_totalDataSent += m_packetSize;
+			}
 		}
 	}
 }
@@ -225,9 +246,9 @@ void Server::handlePacket(Uint32 &ip, Uint16 &port, Uint8 &packetType, Packet &p
 		{
 			removeClient(id);
 		}
-		else if (packetType == (Uint8)PacketType::UPDATE)
+		else if (packetType == (Uint8)PacketType::UPDATEPLAYERS)
 		{
-			sendToAll(packet);
+			sendToOtherClients(packet, id);
 		}
 	}
 }
