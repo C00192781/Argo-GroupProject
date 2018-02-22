@@ -1,11 +1,12 @@
 #include "HealthSystem.h"
 
-HealthSystem::HealthSystem()
+HealthSystem::HealthSystem(StateManager * sm)
 {
 	timer = 0;
 	m_entities.push_back(new Entity("Null"));
 	delete m_entities.back();
 	m_entities.clear();
+	m_stateManager = sm;
 }
 
 HealthSystem::~HealthSystem()
@@ -60,10 +61,12 @@ void HealthSystem::AddEntity(Entity * e, std::string tag)
 
 void HealthSystem::Update(float deltaTime)
 {
-	if (m_entities.size() > 0) { PlayerOneUpdate(); }
-	if (m_entities.size() > 1) { PlayerTwoUpdate(); }
-	if (m_entities.size() > 2) { PlayerThreeUpdate(); }
-	if (m_entities.size() > 3) { PlayerFourUpdate(); }
+	//if (m_entities.size() > 0) { PlayerOneUpdate(); }
+	//if (m_entities.size() > 1) { PlayerTwoUpdate(); }
+	//if (m_entities.size() > 2) { PlayerThreeUpdate(); }
+	//if (m_entities.size() > 3) { PlayerFourUpdate(); }
+	
+	CheckIfAllDead();
 }
 
 void HealthSystem::PlayerOneUpdate()
@@ -464,4 +467,35 @@ void HealthSystem::PlayerFourUpdate()
 			m_player4Hearts.at(i)->Active(false);
 		}
 	}
+}
+
+void HealthSystem::CheckIfAllDead()
+{
+	bool allDead;
+	if (m_entities.size() > 0)
+	{
+		allDead = true;
+		for (int i = 0; i < m_entities.size(); i++)
+		{
+			if (m_entities.at(i)->Active() == true)
+			{
+				allDead = false;
+				break;
+			}
+		}
+		if (allDead == true)
+		{
+			m_stateManager->LoadGame = true;
+			m_stateManager->ReturnToWorld = true;
+			for (int i = 0; i < m_entities.size(); i++)
+			{
+				m_entities.at(i)->Active(true);
+			}
+		}
+	}
+	else
+	{
+		allDead = false;
+	}
+
 }

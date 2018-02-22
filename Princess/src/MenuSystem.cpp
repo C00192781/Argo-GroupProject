@@ -116,7 +116,7 @@ void MenuSystem::Update()
 							}
 						}
 					}
-					if (menuTimer > 2)
+					if (menuTimer > 10)
 					{
 						if (i == indexActiveMenu)
 						{

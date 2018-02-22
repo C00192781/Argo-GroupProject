@@ -88,6 +88,7 @@
     <ClInclude Include="include\ControlComponent.h" />
     <ClInclude Include="include\ControlSystem.h" />
     <ClInclude Include="include\CurrencyComponent.h" />
+    <ClInclude Include="include\CurrencyMomento.h" />
     <ClInclude Include="include\DecisionTree.h" />
     <ClInclude Include="include\DungeonMap.h" />
     <ClInclude Include="include\DungeonTileFactory.h" />

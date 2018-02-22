@@ -292,7 +292,7 @@ void CollisionSystem::playerCollision(int index)
 			{
 				m_collidableEntities.at(index)->Active(false);
 			}
-			std::cout << "player SLAPPED" << std::endl;
+			std::cout << "player SLAPPED" << static_cast<AttributesComponent*>(hpComp)->Armour() << static_cast<AttributesComponent*>(hpComp)->Health() << std::endl;
 		}
 		else
 		{

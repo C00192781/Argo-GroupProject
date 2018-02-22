@@ -254,8 +254,9 @@ void DungeonMap::Update(float deltaTime)
 
 		if (m_timeRemaining <= 0)
 		{
-
 			m_listener->DungeonToWorld = true;
 		}
 	}
+
+	
 }

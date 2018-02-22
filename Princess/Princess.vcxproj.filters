@@ -370,5 +370,8 @@
     <ClInclude Include="include\GameOverInstance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\CurrencyMomento.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

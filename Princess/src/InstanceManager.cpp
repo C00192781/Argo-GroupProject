@@ -51,6 +51,7 @@ void InstanceManager::Update(float deltaTime)
 		worldMap->Active(false);
 		dungeonMap->Active(true);
 		m_listener->WorldToDungeon = false;
+		m_stateManager->SaveGame = true;
 	}
 	else if (m_listener->WorldToEncounter == true)
 	{
@@ -58,6 +59,7 @@ void InstanceManager::Update(float deltaTime)
 		worldMap->Active(false);
 		battleMap->Active(true);
 		m_listener->WorldToEncounter = false;
+		m_stateManager->SaveGame = true;
 	}
 	else if (m_listener->DungeonToWorld == true)
 	{
@@ -65,7 +67,6 @@ void InstanceManager::Update(float deltaTime)
 		worldMap->Active(true);
 		dungeonMap->Active(false);
 		m_listener->DungeonToWorld = false;
-		//m_stateManager->GameOver = true;
 	}
 	else if (m_listener->EncounterToWorld == true)
 	{
@@ -81,11 +82,21 @@ void InstanceManager::Update(float deltaTime)
 		gameOverInstance->Active(true);
 		m_stateManager->GameOver = false;
 	}
-	else if (m_stateManager->LoadGame)
+	else if (m_stateManager->ReturnToWorld)
 	{
-		worldMap->Load(); 
-		worldMap->Active(true);
-		gameOverInstance->Active(false);
+		if (battleMap->Active())
+		{
+			worldMap->Load();
+			worldMap->Active(true);
+			battleMap->Active(false);
+		}
+		else if (dungeonMap->Active())
+		{
+			worldMap->Load();
+			worldMap->Active(true);
+			dungeonMap->Active(false);
+		}
+		m_stateManager->ReturnToWorld = false;
 	}
 }
 

@@ -151,7 +151,7 @@ int main()
 	systemManager.aiSystem = new AiSystem();
 	systemManager.aiSystem->Active(true);
 
-	systemManager.healthSystem = new HealthSystem();
+	systemManager.healthSystem = new HealthSystem(&state);
 	systemManager.healthSystem->Active(true);
 
 	systemManager.menuSystem = new MenuSystem(listener, &state);
@@ -172,7 +172,7 @@ int main()
 	player->Active(true);
 	player->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
 	player->AddComponent(new PositionComponent(SDL_Point{ 500, 380 }));
-	player->AddComponent(new AttributesComponent(10, 10, 4, 4, 100, 100));
+	player->AddComponent(new AttributesComponent(4, 4, 4, 4, 100, 100));
 	player->AddComponent(new MovementComponent());
 	player->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
@@ -190,7 +190,7 @@ int main()
 
 	player2->AddComponent(new SpriteComponent("Red", 3, 1, 0, 0, 16, 16, 0));
 	player2->AddComponent(new PositionComponent(SDL_Point{ 100, 100 }));
-	player2->AddComponent(new AttributesComponent(10, 10, 4, 4, 100, 100));
+	player2->AddComponent(new AttributesComponent(4, 4, 4, 4, 100, 100));
 	player2->AddComponent(new MovementComponent());
 	player2->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player2->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
@@ -207,13 +207,14 @@ int main()
 	systemManager.collisionSystem->AddEntity(player2);
 	systemManager.attackSystem->AddEntity(player2);
 	systemManager.mementoSystem->AddEntity(player2);
+	systemManager.healthSystem->AddEntity(player2, "PLAYER");
 	
 	systemManager.movementSystem->AddEntity(player);
 	systemManager.renderSystem->AddEntity(player);
 	systemManager.collisionSystem->AddEntity(player);
 	systemManager.attackSystem->AddEntity(player);
 	systemManager.mementoSystem->AddEntity(player);
-
+	//systemManager.healthSystem->AddEntity(player,"PH2");
 
 
 	if (player->Control())

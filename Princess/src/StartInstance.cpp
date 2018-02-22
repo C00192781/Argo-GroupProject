@@ -18,6 +18,7 @@ void StartInstance::Generate()
 {
 
 	m_systemManager->menuSystem->Active(true);
+	m_systemManager->healthSystem->Active(false);
 	m_systemManager->controlSystem->Active(false);
 	m_systemManager->renderSystem->Camera(false);
 
@@ -215,6 +216,7 @@ void StartInstance::Update()
 	{
 		m_systemManager->controlSystem->FindEntity("Player")->Active(true);
 		m_systemManager->renderSystem->FindEntity("Player")->Active(true);
+		m_systemManager->healthSystem->Active(true);
 		m_systemManager->renderSystem->Camera(true);
 		m_systemManager->controlSystem->Active(true);
 		m_systemManager->menuSystem->Active(false);

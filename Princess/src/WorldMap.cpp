@@ -634,6 +634,27 @@ void WorldMap::Load()
 			m_systemManager->collisionSystem->getCurrentDungeon()->Active(false);
 		}
 	}
+	if (m_stateManager->ReturnToWorld == true)
+	{
+		Entity* player = m_systemManager->collisionSystem->FindEntity("Player");
+
+		if (player != nullptr)
+		{
+			CollisionComponent* pos = static_cast<CollisionComponent*>(player->FindComponent("collision"));
+
+			if (pos != nullptr)
+			{
+				CollisionComponent* dungeonPos = static_cast<CollisionComponent*>(m_systemManager->collisionSystem->getCurrentDungeon()->FindComponent("collision"));
+
+				if (dungeonPos != nullptr)
+				{
+					pos->setPosition(dungeonPos->getX(), dungeonPos->getY());
+				}
+			}
+
+			//m_systemManager->collisionSystem->getCurrentDungeon()->Active(false);
+		}
+	}
 }
 
 void WorldMap::Update()
