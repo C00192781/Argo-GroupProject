@@ -10,7 +10,7 @@ InstanceManager::InstanceManager(SystemManager * sm, StateManager * s, ResourceM
 	dungeonMap = new DungeonMap(sm, s, rm, listener);
 	startInstance = new StartInstance(sm, s);
 
-	Generate("Start");
+	Generate("World");
 }
 
 void InstanceManager::Update(float deltaTime)

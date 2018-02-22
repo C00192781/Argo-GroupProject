@@ -29,7 +29,7 @@ void MovementSystem::Update(float deltaTime)
 
 			if (movementComponent != nullptr && positionComponent != nullptr && collisionComponent != nullptr)
 			{
-				if (m_entities.at(i)->ID() == "Player")
+				if (m_entities.at(i)->ID() == "Player" && m_entities.at(i)->Control())
 				{
 					SpriteComponent* temp = static_cast<SpriteComponent*>(m_entities.at(i)->FindComponent("SC"));
 					temp->Direction(0); //undo temporary roll animation
