@@ -8,6 +8,7 @@ Client::Client()
 	m_serverTimeout = 3000;
 	m_packetSize = std::numeric_limits<Uint8>::max();
 	m_isHost = false;
+	m_id = -1;
 }
 
 bool Client::connectToServer()
@@ -39,14 +40,9 @@ bool Client::connectToServer()
 			{
 				if (SDLNet_UDP_Recv(m_socket, m_packet))
 				{
-					Packet packet;
-					packet.append(m_packet->data, m_packet->len);
-
-					Uint8 packetType;
-					packet >> packetType;
-
 					m_connected = true;
-					return true;
+
+					return m_connected;
 				}
 			}
 
@@ -54,7 +50,7 @@ bool Client::connectToServer()
 			m_socket = NULL;
 		}
 	}
-	return false;
+	return m_connected;
 }
 
 void Client::disconnectFromServer()
@@ -64,6 +60,38 @@ void Client::disconnectFromServer()
 		m_connected = false;
 		SDLNet_UDP_Close(m_socket);
 		m_socket = NULL;
+	}
+}
+
+void Client::init()
+{
+	Packet packet;
+	packet << (Uint8)PacketType::INIT;
+
+	if (m_packet->len = packet.getDataSize() > 0)
+	{
+		memcpy(m_packet->data, packet.getData(), m_packet->len);
+		SDLNet_UDP_Send(m_socket, -1, m_packet);
+	}
+
+	while (m_id < 0)
+	{
+		if (SDLNet_UDP_Recv(m_socket, m_packet) > 0)
+		{
+			Packet packet;
+			packet.append(m_packet->data, m_packet->len);
+
+			Uint8 packetType;
+			packet >> packetType;
+
+			if (packetType == (Uint8)PacketType::INIT)
+			{
+				packet >> m_id;
+				packet >> m_serverSeed;
+				std::cout << "ID: " << m_id << std::endl;
+				std::cout << "Seed: " << m_serverSeed << std::endl;
+			}
+		}
 	}
 }
 
@@ -79,30 +107,31 @@ void Client::listen()
 
 		//if (packetType >= (Uint8)PacketType::CONNECT && packetType < (Uint8)PacketType::OutOfBounds)
 		//{
-			if (packetType == (Uint8)PacketType::CONNECTIONALIVE)
-			{
-				Packet newPacket;
-				newPacket << (Uint8)PacketType::CONNECTIONALIVE;
-				send(newPacket);
 
-				Uint32 serverTime;
-				packet >> serverTime;
-				m_serverTimeOffset = (serverTime - SDL_GetTicks());
-			}
-			else if (packetType == (Uint8)PacketType::UPDATEPLAYERS)
-			{
-				int id = 0;
-				float x = 0;
-				float y = 0;
+		if (packetType == (Uint8)PacketType::CONNECTIONALIVE)
+		{
+			Packet newPacket;
+			newPacket << (Uint8)PacketType::CONNECTIONALIVE;
+			send(newPacket);
 
-				packet >> id;
-				packet >> x;
-				packet >> y;
+			Uint32 serverTime;
+			packet >> serverTime;
+			m_serverTimeOffset = (serverTime - SDL_GetTicks());
+		}
+		else if (packetType == (Uint8)PacketType::UPDATEPLAYERS)
+		{
+			int id = 0;
+			float x = 0;
+			float y = 0;
 
-				std::cout << "ID: " << id;
-				std::cout << " X: " << x;
-				std::cout << " Y: " << y << std::endl;
-			}
+			packet >> id;
+			packet >> x;
+			packet >> y;
+
+			std::cout << "ID: " << id;
+			std::cout << " X: " << x;
+			std::cout << " Y: " << y << std::endl;
+		}
 		//}
 	}
 }

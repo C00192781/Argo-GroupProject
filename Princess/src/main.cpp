@@ -103,6 +103,7 @@ int main()
 	Client client;
 	if (client.connectToServer())
 	{
+		client.init();
 		srand(client.getServerSeed());
 	}
 	else

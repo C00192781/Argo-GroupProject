@@ -21,6 +21,7 @@ public:
 	// void setServerTime(Uint32 serverTime)
 	int getServerSeed();
 	int getID();
+	void init();
 
 private:
 	bool m_connected;

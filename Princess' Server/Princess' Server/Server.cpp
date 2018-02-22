@@ -250,5 +250,15 @@ void Server::handlePacket(Uint32 &ip, Uint16 &port, Uint8 &packetType, Packet &p
 		{
 			sendToOtherClients(packet, id);
 		}
+		else if (packetType == (Uint8)PacketType::INIT)
+		{
+			Packet newPacket;
+
+			newPacket << (Uint8)PacketType::INIT << id << m_seed;
+
+			send(id, newPacket);
+
+			std::cout << "init" << std::endl;
+		}
 	}
 }
