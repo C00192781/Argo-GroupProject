@@ -283,7 +283,7 @@ void AiSystem::attack(int entityIndex, int attackKey, int mcKey, string tag)
 	//	cout << "temp: " << temp << endl;
 		MovementComponent* movementComponent = static_cast<MovementComponent*>(m_playerEntities.at(entityIndex)->FindComponent("movement"));
 
-		if (temp > -1)
+		if (temp > -0.4f)
 		{
 			temp -= m_time;
 			weaponComponent->setAttacking(false);

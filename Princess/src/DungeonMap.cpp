@@ -94,7 +94,15 @@ void DungeonMap::Generate()
 				m_startPoint = { j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 };
 
 				// sets player's position to the start of the dungeon
-				Entity* player = m_systemManager->collisionSystem->FindEntity("Player");
+			//	Entity* player = m_systemManager->collisionSystem->FindEntity("Player");
+
+				Entity* player = m_systemManager->collisionSystem->FindEntity("Player", 3); //discern between players
+				Entity* player2 = m_systemManager->collisionSystem->FindEntity("Player", 2); //discern between players
+				Entity* player3 = m_systemManager->collisionSystem->FindEntity("Player", 1); //discern between players
+				Entity* player4 = m_systemManager->collisionSystem->FindEntity("Player", 0); //discern between players
+				player2->Active(true);
+				player3->Active(true);
+				player4->Active(true);
 				
 				if (player != nullptr)
 				{
@@ -105,6 +113,40 @@ void DungeonMap::Generate()
 						pos->setPosition(m_startPoint.x, m_startPoint.y);
 					}
 				}
+
+
+				if (player2 != nullptr)
+				{
+					CollisionComponent* pos = static_cast<CollisionComponent*>(player2->FindComponent("collision"));
+
+					if (pos != nullptr)
+					{
+						pos->setPosition(m_startPoint.x + 50, m_startPoint.y);
+					}
+				}
+
+				if (player3 != nullptr)
+				{
+					CollisionComponent* pos = static_cast<CollisionComponent*>(player3->FindComponent("collision"));
+
+					if (pos != nullptr)
+					{
+						pos->setPosition(m_startPoint.x, m_startPoint.y +50);
+					}
+				}
+
+
+				if (player4 != nullptr)
+				{
+					CollisionComponent* pos = static_cast<CollisionComponent*>(player3->FindComponent("collision"));
+
+					if (pos != nullptr)
+					{
+						pos->setPosition(m_startPoint.x + 50, m_startPoint.y + 50);
+					}
+				}
+
+				//more player pos here 
 			}
 			else if (m_resourceManager->GetMapElement(mapName, i, j) == "E") //make a == "X" for pickups or w/e
 			{
