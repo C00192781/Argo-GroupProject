@@ -108,6 +108,7 @@
     <ClInclude Include="include\MovementComponent.h" />
     <ClInclude Include="include\MovementSystem.h" />
     <ClInclude Include="include\MusicComponent.h" />
+    <ClInclude Include="include\NetworkIDComponent.h" />
     <ClInclude Include="include\NetworkSystem.h" />
     <ClInclude Include="include\Observer.h" />
     <ClInclude Include="include\Packet.h" />

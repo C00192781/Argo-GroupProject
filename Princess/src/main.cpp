@@ -117,6 +117,7 @@ int main()
 	player->AddComponent(new CurrencyComponent());
 	player->AddComponent(new SoundComponent("Scream", "play", false, 1, 30, 50));
 	player->AddComponent(new MusicComponent("Test", "play", true, 0, 100));
+	player->AddComponent(new NetworkIDComponent(0));
 	player->Transient(true);
 		//player->AddComponent(new SoundComponent("Placeholder", "play", true, 0, 0, 80));
 		//player->Control(true);
@@ -130,6 +131,7 @@ int main()
 	player2->AddComponent(new MovementComponent());
 	player2->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player2->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
+	player2->AddComponent(new NetworkIDComponent(1));
 	player2->Transient(true);
 	player2->AddComponent(new CurrencyComponent());
 	player2->Control(true); //enable only if the client controlled player

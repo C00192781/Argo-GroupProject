@@ -7,6 +7,8 @@
 #include <SDL_net.h>
 #include <string>
 #include "Packet.h"
+#include "NetworkIDComponent.h"
+#include "CollisionComponent.h"
 
 class NetworkSystem : public System
 {
