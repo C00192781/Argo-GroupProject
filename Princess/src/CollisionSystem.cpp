@@ -209,7 +209,7 @@ void CollisionSystem::filterCollisions(int entityIndex, int entityColIndex, int 
 					if (projectileComponent->getShooterType() != "Player")
 					{
 						projectileCollision(entityIndex);
-						playerCollision(collidableIndex);
+						//playerCollision(collidableIndex);
 					}
 				}
 			}

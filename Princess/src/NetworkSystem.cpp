@@ -14,6 +14,11 @@ NetworkSystem::NetworkSystem()
 		init();
 		srand(getServerSeed());
 		m_active = true;
+
+		if (m_id == 0)
+		{
+			m_isHost = true;
+		}
 	}
 	else
 	{
@@ -23,6 +28,40 @@ NetworkSystem::NetworkSystem()
 
 	m_maxTimeTilNextPacket = 0.002;
 	m_timeTilNextPacket = 0;
+}
+
+NetworkSystem::NetworkSystem(EventListener *listener)
+{
+	m_connected = false;
+	m_serverTimeOffset = 0;
+	m_serverTimeout = 3000;
+	m_packetSize = std::numeric_limits<Uint8>::max();
+	m_isHost = false;
+	m_id = -1;
+
+	if (connectToServer())
+	{
+		init();
+		srand(getServerSeed());
+		m_active = true;
+
+		if (m_id == 0)
+		{
+			m_isHost = true;
+		}
+	}
+	else
+	{
+		srand(time(NULL));
+		m_active = false;
+	}
+
+	m_maxTimeTilNextPacket = 0.002;
+	m_timeTilNextPacket = 0;
+
+	m_listener = listener;
+	m_listener->host = m_isHost;
+	m_listener->connected = m_connected;
 }
 
 void NetworkSystem::Update(float deltaTime)
@@ -41,9 +80,67 @@ void NetworkSystem::Update(float deltaTime)
 			{
 				Packet packet;
 
-				packet << (Uint8)PacketType::UPDATEPLAYERS << getID() << positionComponent->getX() << positionComponent->getY();
+				packet << (Uint8)PacketType::UPDATEPLAYERS << m_id << positionComponent->getX() << positionComponent->getY();
 
 				send(packet);
+			}
+
+			if (m_isHost == true)
+			{
+				if (m_listener->ToDungeon1 == true)
+				{
+					Packet packet;
+
+					packet << (Uint8)PacketType::UPDATEINSTANCE << "Dungeon 1";
+
+					send(packet);
+					m_listener->ToDungeon1 = false;
+				}
+				else if (m_listener->ToDungeon2 == true)
+				{
+					Packet packet;
+
+					packet << (Uint8)PacketType::UPDATEINSTANCE << "Dungeon 2";
+
+					send(packet);
+					m_listener->ToDungeon2 = false;
+				}
+				else if (m_listener->ToDungeon3 == true)
+				{
+					Packet packet;
+
+					packet << (Uint8)PacketType::UPDATEINSTANCE << "Dungeon 3";
+
+					send(packet);
+					m_listener->ToDungeon3 = false;
+				}
+				else if (m_listener->ToDungeon4 == true)
+				{
+					Packet packet;
+
+					packet << (Uint8)PacketType::UPDATEINSTANCE << "Dungeon 4";
+
+					send(packet);
+					m_listener->ToDungeon4 = false;
+				}
+				else if (m_listener->ToDungeon5 == true)
+				{
+					Packet packet;
+
+					packet << (Uint8)PacketType::UPDATEINSTANCE << "Dungeon 5";
+
+					send(packet);
+					m_listener->ToDungeon5 = false;
+				}
+				else if (m_listener->ToWorldMap == true)
+				{
+					Packet packet;
+
+					packet << (Uint8)PacketType::UPDATEINSTANCE << "World";
+
+					send(packet);
+					m_listener->ToWorldMap = false;
+				}
 			}
 		}
 
@@ -87,7 +184,6 @@ void NetworkSystem::listen()
 		}
 		else if (packetType == (Uint8)PacketType::UPDATEPLAYERS)
 		{
-			//NetworkIDComponent* networkIDComponent = nullptr;//= static_cast<NetworkIDComponent*>(m_entities.at(i)->FindComponent("network"));
 			int id = 0;
 			float x = 0;
 			float y = 0;
@@ -95,8 +191,6 @@ void NetworkSystem::listen()
 			packet >> id;
 			packet >> x;
 			packet >> y;
-
-			std::cout << id << std::endl;
 
 			for (int i = 0; i < m_entities.size(); i++)
 			{
@@ -113,6 +207,37 @@ void NetworkSystem::listen()
 						break;
 					}
 				}
+			}
+		}
+		else if (packetType == (Uint8)PacketType::UPDATEINSTANCE)
+		{
+			std::string string;
+			packet >> string;
+
+			if (string == "Dungeon 1")
+			{
+				m_listener->ToDungeon1 = true;
+			}
+			else if (string == "Dungeon 2")
+			{
+				m_listener->ToDungeon2 = true;
+			}
+			else if (string == "Dungeon 3")
+			{
+				m_listener->ToDungeon3 = true;
+			}
+			else if (string == "Dungeon 4")
+			{
+				m_listener->ToDungeon4 = true;
+			}
+			else if (string == "Dungeon 5")
+			{
+				m_listener->ToDungeon5 = true;
+			}
+			else if (string == "World")
+			{
+				std::cout << "WORLD" << std::endl;
+				m_listener->ToWorldMap = true;
 			}
 		}
 	}

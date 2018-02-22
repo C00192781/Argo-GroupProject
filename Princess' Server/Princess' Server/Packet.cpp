@@ -163,7 +163,7 @@ Packet& Packet::operator << (std::string data)
 
 	if (length > 0)
 	{
-		append(&data, sizeof(data));
+		append(data.c_str(), length * sizeof(std::string::value_type));
 	}
 	return *this;
 }

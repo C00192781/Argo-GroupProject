@@ -112,8 +112,6 @@ int main()
 	player->AddComponent(new MovementComponent());
 	player->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
-	player->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
-	player->AddComponent(new SeekComponent()); //and this if AI is to control that player
 	player->AddComponent(new CurrencyComponent());
 	player->AddComponent(new SoundComponent("Scream", "play", false, 1, 30, 50));
 	player->AddComponent(new MusicComponent("Test", "play", true, 0, 100));
@@ -140,19 +138,21 @@ int main()
 		if (systemManager.networkSystem->getID() == 0)
 		{
 			player->Control(true);
-			std::cout << systemManager.networkSystem->getID() << std::endl;
+			//player2->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
+			//player2->AddComponent(new SeekComponent()); //and this if AI is to control that player
 		}
 		else
 		{
 			player2->Control(true); //enable only if the client controlled player
-									//player2->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
-									//player2->AddComponent(new SeekComponent()); //and this if AI is to control that player
-			std::cout << systemManager.networkSystem->getID() << std::endl;
+			//player->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
+			//player->AddComponent(new SeekComponent()); //and this if AI is to control that player
 		}
 	}
 	else
 	{
 		player->Control(true);
+		//player2->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
+		//player2->AddComponent(new SeekComponent()); //and this if AI is to control that player
 	}
 
 
@@ -161,7 +161,6 @@ int main()
 	systemManager.collisionSystem->AddEntity(player2);
 	systemManager.attackSystem->AddEntity(player2);
 	systemManager.networkSystem->AddEntity(player2);
-
 	
 	systemManager.movementSystem->AddEntity(player);
 	systemManager.renderSystem->AddEntity(player);

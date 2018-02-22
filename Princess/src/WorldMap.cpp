@@ -632,6 +632,8 @@ void WorldMap::Load()
 			m_systemManager->collisionSystem->getCurrentDungeon()->Active(false);
 		}
 	}
+
+	m_listener->ToWorldMap = true;
 }
 
 void WorldMap::Update()

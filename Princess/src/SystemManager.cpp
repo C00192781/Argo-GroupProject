@@ -2,7 +2,7 @@
 
 SystemManager::SystemManager(ResourceManager *resourceManager, SDL_Renderer* gameRenderer, EventListener *listener, std::vector<Entity*>* projectiles, StateManager* state)
 {
-	networkSystem = new NetworkSystem();
+	networkSystem = new NetworkSystem(listener);
 
 	controlSystem = new ControlSystem(listener);
 	controlSystem->Active(true);

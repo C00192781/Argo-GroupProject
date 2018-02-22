@@ -15,6 +15,7 @@ public:
 	void Render() {};
 
 	void Generate();
+	void Generate(std::string mapName);
 private:
 	ResourceManager * m_resourceManager;
 	EventListener *m_listener;

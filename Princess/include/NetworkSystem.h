@@ -9,11 +9,13 @@
 #include "Packet.h"
 #include "NetworkIDComponent.h"
 #include "CollisionComponent.h"
+#include "EventListener.h"
 
 class NetworkSystem : public System
 {
 public:
 	NetworkSystem();
+	NetworkSystem(EventListener *listener);
 
 	void Update() {}
 	void Update(float deltaTime);
@@ -58,4 +60,6 @@ private:
 
 	float m_timeTilNextPacket;
 	float m_maxTimeTilNextPacket;
+
+	EventListener *m_listener;
 };

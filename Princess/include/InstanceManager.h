@@ -24,6 +24,8 @@ public:
 	void Update(float deltaTime);
 
 	void Generate(string instanceID);
+
+	void GenerateFromServer();
 private:
 	EventListener *m_listener;
 	StateManager *m_stateManager;

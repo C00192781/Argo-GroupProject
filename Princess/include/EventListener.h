@@ -18,6 +18,17 @@ public:
 	bool WorldToEncounter = false;
 	bool DungeonToWorld = false;
 	bool EncounterToWorld = false;
+	
+	bool ToDungeon1 = false;
+	bool ToDungeon2 = false;
+	bool ToDungeon3 = false;
+	bool ToDungeon4 = false;
+	bool ToDungeon5 = false;
+	bool ToWorldMap = false;
+
+	bool host = false;
+	bool connected = false;
+
 	bool roll = false;
 };
 #endif
