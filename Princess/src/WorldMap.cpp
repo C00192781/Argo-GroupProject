@@ -655,7 +655,6 @@ void WorldMap::Update()
 					{
 						m_randomEncounterLocation = { (int)pos->getX(), (int)pos->getY() };
 					}
-
 					m_listener->WorldToEncounter = true;
 				}
 			}

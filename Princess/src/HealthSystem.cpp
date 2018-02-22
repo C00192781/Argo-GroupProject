@@ -15,25 +15,14 @@ HealthSystem::~HealthSystem()
 
 void HealthSystem::LoadComponent()
 {
-	//int pcKey = -1;
-	//int scKey = -1;
-	//for (int j = 0; j < m_entities.back()->GetComponents()->size(); j++)
-	//{
-	//	if (m_entities.back()->GetComponents()->at(j)->Type() == "PC")
-	//	{
-	//		pcKey = j;
-	//	}
-	//	else if (m_entities.back()->GetComponents()->at(j)->Type() == "SC")
-	//	{
-	//		scKey = j;
-	//	}
-	//	if (scKey > 0 && pcKey > 0)
-	//	{
-	//		break;
-	//	}
-	//}
-	//m_positionComponent.push_back(static_cast<PositionComponent>(m_entities.back()->GetComponents()->at(pcKey)));
-	//m_spriteComponent.push_back(static_cast<SpriteComponent>(m_entities.back()->GetComponents()->at(scKey)));
+	for (int j = 0; j < m_entities.back()->GetComponents()->size(); j++)
+	{
+		if (m_entities.back()->GetComponents()->at(j)->Type() == "attribute")
+		{
+			m_attributeComponents.push_back(static_cast<AttributesComponent*>(m_entities.back()->GetComponents()->at(j)));
+			break;
+		}
+	}
 }
 
 void HealthSystem::UnloadComponent(int x)
@@ -44,410 +33,435 @@ void HealthSystem::UnloadComponent(int x)
 	//m_spriteComponent.shrink_to_fit();
 }
 
+void HealthSystem::AddEntity(Entity * e, std::string tag)
+{
+	if (tag == "PH1")
+	{
+		m_player1Hearts.push_back(e);
+	}
+	else if (tag == "PH2")
+	{
+		m_player2Hearts.push_back(e);
+	}
+	else if (tag == "PH3")
+	{
+		m_player3Hearts.push_back(e);
+	}
+	else if (tag == "PH4")
+	{
+		m_player4Hearts.push_back(e);
+	}
+	else
+	{
+		m_entities.push_back(e);
+		LoadComponent();
+	}
+}
+
 void HealthSystem::Update(float deltaTime)
 {
-
-	for (int i = 0; i < m_entities.size(); i++)
-	{
-		int attributeKey = -1;
-		for (int j = 0; j < m_entities.at(i)->GetComponents()->size(); j++)
-		{
-			if (m_entities.at(i)->GetComponents()->at(j)->Type() == "attribute")
-			{
-				attributeKey = j;
-			}
-		}
-		if (attributeKey >= 0)
-		{
-			std::list<Modifer> * modifiers = static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(attributeKey))->Modifers();
-			if (modifiers->size() != 0)
-			{
-				//Goes through all the modifiers the Attributes Component has
-				for (std::list<Modifer>::iterator it = modifiers->begin(); it != modifiers->end(); ++it)
-				{
-					if (timer > 1)
-					{
-						if ((*it).m_type == ModiferTypes::BURNING)
-						{
-							int damageCaused = (*it).m_amount;
-							int armour = static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(attributeKey))->Armour();
-							int health = static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(attributeKey))->Health();
-							DamageEntity(damageCaused, armour, health);
-							static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(attributeKey))->Armour(armour);
-							static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(attributeKey))->Health(health);
-						}
-
-						(*it).m_duration = (*it).m_duration - 1;
-						timer = 0;
-					}
-					else
-					{
-						timer += deltaTime;
-					}
-					//Applies Damage to the armour and health
-					if ((*it).m_type == ModiferTypes::DAMAGE)
-					{
-						int damageCaused = (*it).m_amount;
-						int armour = static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(attributeKey))->Armour();
-						int health = static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(attributeKey))->Health();
-						DamageEntity(damageCaused, armour, health);
-						static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(attributeKey))->Armour(armour);
-						static_cast<AttributesComponent*>(m_entities.at(i)->GetComponents()->at(attributeKey))->Health(health);
-					}
-					//Updates Health and Armour UI
-					if (m_entities.at(i)->ID() == "Player")
-					{
-						UpdateHeartsUIStatus(m_entities.at(i), m_entities.at(i));
-						UpdateArmourUIStatus(m_entities.at(i), m_entities.at(i));
-					}
-
-				}
-				//Remove Modifiers whose duration has ended
-				for (std::list<Modifer>::iterator it = modifiers->begin(); it != modifiers->end();)
-				{
-					if ((*it).m_duration <= 0)
-					{
-						it = modifiers->erase(it);
-					}
-					else
-					{
-						++it;
-					}
-
-				}
-			}
-		}
-	}
+	if (m_entities.size() > 0) { PlayerOneUpdate(); }
+	if (m_entities.size() > 1) { PlayerTwoUpdate(); }
+	if (m_entities.size() > 2) { PlayerThreeUpdate(); }
+	if (m_entities.size() > 3) { PlayerFourUpdate(); }
 }
 
-void HealthSystem::DamageEntity(int& damageCaused, int& armour, int& health)
+void HealthSystem::PlayerOneUpdate()
 {
-	armour = armour - damageCaused;
-	if (armour <= 0)
+	int healthHolder = m_attributeComponents.at(0)->Health() / 2;
+	int maxHealthHolder = m_attributeComponents.at(0)->MaxHealth() / 2;
+	int armorHolder = m_attributeComponents.at(0)->Armour() / 2;
+	int maxArmorHolder = m_attributeComponents.at(0)->MaxArmour() / 2;
+	for (int i = 0; i < 12; i++)
 	{
-		health = health + armour;
-		armour = 0;
-	}
-	if (health < 0)
-	{
-		//Dies
-	}
-}
-
-void HealthSystem::UpdateHeartsUIStatus(Entity * HeartManager, Entity* player)
-{
-	int attributeKey = -1;
-	for (int k = 0; k < player->GetComponents()->size(); k++)
-	{
-		if (player->GetComponents()->at(k)->Type() == "attribute")
+		bool spriteGot = false;
+		bool positionGot = false;
+		if (i < maxHealthHolder)
 		{
-			attributeKey = k;
-		}
-	}
-	int hmcKey = -1;
-	for (int j = 0; j < HeartManager->GetComponents()->size(); j++)
-	{
-		if (HeartManager->GetComponents()->at(j)->Type() == "HMC")
-		{
-			hmcKey = j;
-			if (static_cast<HeartManagerComponent*>(HeartManager->GetComponents()->at(hmcKey))->HeartType() == HeartTypes::HEALTH)
+			m_player1Hearts.at(i)->Active(true);
+			for (int j = 0; j < m_player1Hearts.at(i)->GetComponents()->size(); j++)
 			{
-				break;
-			}
-			else
-			{
-				hmcKey = -1;
-			}
-		}
-
-	}
-	if (attributeKey >= 0 && hmcKey >= 0)
-	{
-		if (static_cast<HeartManagerComponent*>(HeartManager->GetComponents()->at(hmcKey))->HeartType() == HeartTypes::HEALTH)
-		{
-			std::vector<Entity*>* heartVector = static_cast<HeartManagerComponent*>(HeartManager->GetComponents()->at(hmcKey))->HeartsVector();
-			for (int i = 0; i < heartVector->size(); i++)
-			{
-				int scKey = -1;
-				int hcKey = -1;
-				for (int j = 0; j < heartVector->at(i)->GetComponents()->size(); j++)
+				if (positionGot && spriteGot)
 				{
-					if (heartVector->at(i)->GetComponents()->at(j)->Type() == "SC")
-					{
-						scKey = j;
-					}
-					if (heartVector->at(i)->GetComponents()->at(j)->Type() == "HC")
-					{
-						hcKey = j;
-					}
+					break;
 				}
-				if (scKey >= 0 && hcKey >= 0)
+				else if (m_player1Hearts.at(i)->GetComponents()->at(j)->Type() == "SC")
 				{
-					SpriteComponent* sc = static_cast<SpriteComponent*>(heartVector->at(i)->GetComponents()->at(scKey));
-					HeartComponent* hc = static_cast<HeartComponent*>(heartVector->at(i)->GetComponents()->at(hcKey));
-
-					AttributesComponent* playerAc = static_cast<AttributesComponent*>(player->GetComponents()->at(attributeKey));
-					if (hc->Index() < hc->HeartList()->size())
+					if (i < healthHolder)
 					{
-						int numHearts = (playerAc->MaxHealth() / 2.0f);
-						float numFullHearts = (playerAc->Health() / 2.0f);
-
-						if (hc->Index() >= (numFullHearts - 0.5f) && hc->Index() < (numFullHearts) && hc->Index() != numFullHearts)
-						{
-							if (hc->State() != HeartState::HALF)
-							{
-								hc->State(HeartState::HALF);
-								sc->SheetX(1);
-								//sc->Frame(1);
-							}
-						}
-						else if (hc->Index() >= numFullHearts)
-						{
-							if (hc->State() != HeartState::EMPTY)
-							{
-								hc->State(HeartState::EMPTY);
-								sc->SheetX(2);
-								//sc->Frame(2);
-							}
-						}
-						else
-						{
-							if (hc->State() != HeartState::FULL)
-							{
-								hc->State(HeartState::FULL);
-								sc->SheetX(0);
-								//sc->Frame(0);
-							}
-						}
+						static_cast<SpriteComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->Direction(0);
+					}
+					else if ((float)i + 0.5 == (float)m_attributeComponents.at(0)->Health() / 2)
+					{
+						static_cast<SpriteComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->Direction(1);
 					}
 					else
 					{
-						std::cout << "ERROR INDEX LARGER THAN LIST SIZE" << std::endl;
+						static_cast<SpriteComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->Direction(2);
 					}
+					spriteGot = true;
+				}
+				else if (m_player1Hearts.at(i)->GetComponents()->at(j)->Type() == "PC")
+				{
+					if (i < 6)
+					{
+						static_cast<PositionComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->setX((i * 4) * 3);
+						static_cast<PositionComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->setY(0);
+					}
+					else
+					{
+						static_cast<PositionComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->setX(((i - 6) * 4) * 3);
+						static_cast<PositionComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->setY(4 * 3);
+					}
+					positionGot = true;
 				}
 			}
 		}
 		else
 		{
-			std::cout << "ERROR WRONG HEART TYPE" << std::endl;
+			m_player1Hearts.at(i)->Active(false);
 		}
 	}
-}
-
-void HealthSystem::UpdateMaxArmourUI(Entity * HeartManager, Entity* player)
-{
-	int attributeKey = -1;
-	for (int k = 0; k < player->GetComponents()->size(); k++)
+	for (int i = 12; i < 18; i++)
 	{
-		if (player->GetComponents()->at(k)->Type() == "attribute")
+		bool spriteGot = false;
+		bool positionGot = false;
+		if (i < 12 + maxArmorHolder)
 		{
-			attributeKey = k;
-		}
-	}
-	int hmcKey = -1;
-	for (int j = 0; j < HeartManager->GetComponents()->size(); j++)
-	{
-		if (HeartManager->GetComponents()->at(j)->Type() == "HMC")
-		{
-			hmcKey = j;
-			if (static_cast<HeartManagerComponent*>(HeartManager->GetComponents()->at(hmcKey))->HeartType() == HeartTypes::ARMOUR)
+			m_player1Hearts.at(i)->Active(true);
+			for (int j = 0; j < m_player1Hearts.at(i)->GetComponents()->size(); j++)
 			{
-				break;
-			}
-			else
-			{
-				hmcKey = -1;
-			}
-		}
-	}
-	if (hmcKey >= 0 && attributeKey >= 0)
-	{
-		if (static_cast<HeartManagerComponent*>(HeartManager->GetComponents()->at(hmcKey))->HeartType() == HeartTypes::ARMOUR)
-		{
-			std::vector<Entity*>* heartVector = static_cast<HeartManagerComponent*>(HeartManager->GetComponents()->at(hmcKey))->HeartsVector();
-			AttributesComponent* ac = static_cast<AttributesComponent*>(player->GetComponents()->at(attributeKey));
-			int numFullHearts = heartVector->size();
-
-			for (int i = numFullHearts; i < (ac->MaxArmour() / 2); i++)
-			{
-				Entity * armour = new Entity("ArmourDisplay");
-				armour->AddComponent(new PositionComponent());
-
-				if (i >= 10)
+				if (positionGot && spriteGot)
 				{
-					static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->setX(60 * (i - 10));
-					static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->setY(170 + 20);
+					break;
 				}
-				else
+				else if (m_player1Hearts.at(i)->GetComponents()->at(j)->Type() == "SC")
 				{
-					static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->setX(60 * i);
-					static_cast<PositionComponent*>((armour)->GetComponents()->at(0))->setY(140);
-				}
-				armour->AddComponent(new SpriteComponent("ArmourSheet", 2, 3, 0, 0, 16, 16, 0));
-				static_cast<SpriteComponent*>((armour)->GetComponents()->at(1))->IsAnimating(false);
-				armour->AddComponent(new HeartComponent(heartVector));
-				heartVector->push_back(armour);
-				static_cast<HeartComponent*>((armour)->GetComponents()->at(2))->Index(heartVector->size() - 1);
-				armour->Transient(true);
-				m_entities.push_back(armour);
-			}
-			UpdateArmourUIStatus(HeartManager, player);
-		}
-
-	}
-}
-
-void HealthSystem::UpdateArmourUIStatus(Entity * HeartManager, Entity* player)
-{
-	int attributeKey = -1;
-	for (int k = 0; k < player->GetComponents()->size(); k++)
-	{
-		if (player->GetComponents()->at(k)->Type() == "attribute")
-		{
-			attributeKey = k;
-		}
-	}
-	int hmcKey = -1;
-	for (int j = 0; j < HeartManager->GetComponents()->size(); j++)
-	{
-		if (HeartManager->GetComponents()->at(j)->Type() == "HMC")
-		{
-			hmcKey = j;
-			if (static_cast<HeartManagerComponent*>(HeartManager->GetComponents()->at(hmcKey))->HeartType() == HeartTypes::ARMOUR)
-			{
-				break;
-			}
-			else
-			{
-				hmcKey = -1;
-			}
-		}
-	}
-	if (hmcKey >= 0 && attributeKey >= 0)
-	{
-		if (static_cast<HeartManagerComponent*>(HeartManager->GetComponents()->at(hmcKey))->HeartType() == HeartTypes::ARMOUR)
-		{
-			std::vector<Entity*>* heartVector = static_cast<HeartManagerComponent*>(HeartManager->GetComponents()->at(hmcKey))->HeartsVector();
-			for (int i = 0; i < heartVector->size(); i++)
-			{
-				int scKey = -1;
-				int hcKey = -1;
-				for (int j = 0; j < heartVector->at(i)->GetComponents()->size(); j++)
-				{
-					if (heartVector->at(i)->GetComponents()->at(j)->Type() == "SC")
+					if (i < 12 + armorHolder)
 					{
-						scKey = j;
+						static_cast<SpriteComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->Direction(0);
 					}
-					if (heartVector->at(i)->GetComponents()->at(j)->Type() == "HC")
+					else if ((float)i + 0.5 == 12 + (float)m_attributeComponents.at(0)->Armour() / 2)
 					{
-						hcKey = j;
-					}
-				}
-				if (scKey >= 0 && hcKey >= 0)
-				{
-					SpriteComponent* sc = static_cast<SpriteComponent*>(heartVector->at(i)->GetComponents()->at(scKey));
-					HeartComponent* hc = static_cast<HeartComponent*>(heartVector->at(i)->GetComponents()->at(hcKey));
-
-					AttributesComponent* playerAc = static_cast<AttributesComponent*>(player->GetComponents()->at(attributeKey));
-					if (hc->Index() < hc->HeartList()->size())
-					{
-						int numHearts = (playerAc->MaxArmour() / 2.0f);
-						float numFullHearts = ((float)playerAc->Armour() / 2.0f);
-						if (hc->Index() >= (numFullHearts - 0.5f) && hc->Index() < (numFullHearts) && hc->Index() != numFullHearts)
-						{
-							if (hc->State() != HeartState::HALF)
-							{
-								hc->State(HeartState::HALF);
-								sc->SheetX(1);
-								//sc->Frame(1);
-							}
-						}
-						else if (hc->Index() >= numFullHearts)
-						{
-							if (hc->State() != HeartState::EMPTY)
-							{
-								hc->State(HeartState::EMPTY);
-								sc->SheetX(2);
-								//sc->Frame(2);
-							}
-						}
-						else
-						{
-							if (hc->State() != HeartState::FULL)
-							{
-								hc->State(HeartState::FULL);
-								sc->SheetX(0);
-								//sc->Frame(0);
-							}
-						}
+						static_cast<SpriteComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->Direction(1);
 					}
 					else
 					{
-						std::cout << "ERROR INDEX LARGER THAN LIST SIZE" << std::endl;
+						static_cast<SpriteComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->Direction(2);
 					}
+					spriteGot = true;
+				}
+				else if (m_player1Hearts.at(i)->GetComponents()->at(j)->Type() == "PC")
+				{
+					static_cast<PositionComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->setX(((i - 12) * 4) * 3);
+					static_cast<PositionComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->setY(8 * 3);
+					positionGot = true;
 				}
 			}
+		}
+		else
+		{
+			m_player1Hearts.at(i)->Active(false);
 		}
 	}
 }
 
-void HealthSystem::UpdateMaxHeartsUI(Entity * HeartManager, Entity* player)
+void HealthSystem::PlayerTwoUpdate()
 {
-	int attributeKey = -1;
-	for (int k = 0; k < player->GetComponents()->size(); k++)
+	int healthHolder = m_attributeComponents.at(1)->Health() / 2;
+	int maxHealthHolder = m_attributeComponents.at(1)->MaxHealth() / 2;
+	int armorHolder = m_attributeComponents.at(1)->Armour() / 2;
+	int maxArmorHolder = m_attributeComponents.at(1)->MaxArmour() / 2;
+	for (int i = 0; i < 12; i++)
 	{
-		if (player->GetComponents()->at(k)->Type() == "attribute")
+		bool spriteGot = false;
+		bool positionGot = false;
+		if (i < maxHealthHolder)
 		{
-			attributeKey = k;
+			m_player2Hearts.at(i)->Active(true);
+			for (int j = 0; j < m_player2Hearts.at(i)->GetComponents()->size(); j++)
+			{
+				if (positionGot && spriteGot)
+				{
+					break;
+				}
+				else if (m_player2Hearts.at(i)->GetComponents()->at(j)->Type() == "SC")
+				{
+					if (i < healthHolder)
+					{
+						static_cast<SpriteComponent*>(m_player2Hearts.at(i)->GetComponents()->at(j))->Direction(0);
+					}
+					else if ((float)i + 0.5 == (float)m_attributeComponents.at(1)->Health() / 2)
+					{
+						static_cast<SpriteComponent*>(m_player2Hearts.at(i)->GetComponents()->at(j))->Direction(1);
+					}
+					else
+					{
+						static_cast<SpriteComponent*>(m_player2Hearts.at(i)->GetComponents()->at(j))->Direction(2);
+					}
+					spriteGot = true;
+				}
+				else if (m_player2Hearts.at(i)->GetComponents()->at(j)->Type() == "PC")
+				{
+					if (i < 6)
+					{
+						static_cast<PositionComponent*>(m_player2Hearts.at(i)->GetComponents()->at(j))->setX(((i * 4) * 3) + ((24 * 3) * 2));
+						static_cast<PositionComponent*>(m_player2Hearts.at(i)->GetComponents()->at(j))->setY(0);
+					}
+					else
+					{
+						static_cast<PositionComponent*>(m_player2Hearts.at(i)->GetComponents()->at(j))->setX((((i - 6) * 4) * 3) + ((24 * 3) * 2));
+						static_cast<PositionComponent*>(m_player2Hearts.at(i)->GetComponents()->at(j))->setY(4 * 3);
+					}
+					positionGot = true;
+				}
+			}
+		}
+		else
+		{
+			m_player2Hearts.at(i)->Active(false);
 		}
 	}
-	int hmcKey = -1;
-	for (int j = 0; j < HeartManager->GetComponents()->size(); j++)
+	for (int i = 12; i < 18; i++)
 	{
-		if (HeartManager->GetComponents()->at(j)->Type() == "HMC")
+		bool spriteGot = false;
+		bool positionGot = false;
+		if (i < 12 + maxArmorHolder)
 		{
-			hmcKey = j;
-			if (static_cast<HeartManagerComponent*>(HeartManager->GetComponents()->at(hmcKey))->HeartType() == HeartTypes::HEALTH)
+			m_player2Hearts.at(i)->Active(true);
+			for (int j = 0; j < m_player2Hearts.at(i)->GetComponents()->size(); j++)
 			{
-				break;
-			}
-			else
-			{
-				hmcKey = -1;
+				if (positionGot && spriteGot)
+				{
+					break;
+				}
+				else if (m_player2Hearts.at(i)->GetComponents()->at(j)->Type() == "SC")
+				{
+					if (i < 12 + armorHolder)
+					{
+						static_cast<SpriteComponent*>(m_player2Hearts.at(i)->GetComponents()->at(j))->Direction(0);
+					}
+					else if ((float)i + 0.5 == 12 + (float)m_attributeComponents.at(1)->Armour() / 2)
+					{
+						static_cast<SpriteComponent*>(m_player2Hearts.at(i)->GetComponents()->at(j))->Direction(1);
+					}
+					else
+					{
+						static_cast<SpriteComponent*>(m_player2Hearts.at(i)->GetComponents()->at(j))->Direction(2);
+					}
+					spriteGot = true;
+				}
+				else if (m_player2Hearts.at(i)->GetComponents()->at(j)->Type() == "PC")
+				{
+					static_cast<PositionComponent*>(m_player2Hearts.at(i)->GetComponents()->at(j))->setX((((i - 12) * 4) * 3) + ((24 * 3) * 2));
+					static_cast<PositionComponent*>(m_player2Hearts.at(i)->GetComponents()->at(j))->setY(8 * 3);
+					positionGot = true;
+				}
 			}
 		}
-	}
-	if (hmcKey >= 0 && attributeKey >= 0)
-	{
-		if (static_cast<HeartManagerComponent*>(HeartManager->GetComponents()->at(hmcKey))->HeartType() == HeartTypes::HEALTH)
+		else
 		{
-			std::vector<Entity*>* heartVector = static_cast<HeartManagerComponent*>(HeartManager->GetComponents()->at(hmcKey))->HeartsVector();
-			AttributesComponent* ac = static_cast<AttributesComponent*>(player->GetComponents()->at(attributeKey));
-			int numFullHearts = heartVector->size();
-			for (int i = numFullHearts; i < (ac->MaxHealth() / 2); i++)
-			{
-				Entity * heart = new Entity("Hearts");
-				heart->AddComponent(new PositionComponent());
+			m_player2Hearts.at(i)->Active(false);
+		}
+	}
+}
 
-				if (i >= 10)
+void HealthSystem::PlayerThreeUpdate()
+{
+	int healthHolder = m_attributeComponents.at(2)->Health() / 2;
+	int maxHealthHolder = m_attributeComponents.at(2)->MaxHealth() / 2;
+	int armorHolder = m_attributeComponents.at(2)->Armour() / 2;
+	int maxArmorHolder = m_attributeComponents.at(2)->MaxArmour() / 2;
+	for (int i = 0; i < 12; i++)
+	{
+		bool spriteGot = false;
+		bool positionGot = false;
+		if (i < maxHealthHolder)
+		{
+			m_player3Hearts.at(i)->Active(true);
+			for (int j = 0; j < m_player3Hearts.at(i)->GetComponents()->size(); j++)
+			{
+				if (positionGot && spriteGot)
 				{
-					static_cast<PositionComponent*>((heart)->GetComponents()->at(0))->setX(60 * (i - 10));
-					static_cast<PositionComponent*>((heart)->GetComponents()->at(0))->setY(20 + 60);
+					break;
 				}
-				else
+				else if (m_player3Hearts.at(i)->GetComponents()->at(j)->Type() == "SC")
 				{
-					static_cast<PositionComponent*>((heart)->GetComponents()->at(0))->setX(60 * i);
-					static_cast<PositionComponent*>((heart)->GetComponents()->at(0))->setY(20);
+					if (i < healthHolder)
+					{
+						static_cast<SpriteComponent*>(m_player3Hearts.at(i)->GetComponents()->at(j))->Direction(0);
+					}
+					else if ((float)i + 0.5 == (float)m_attributeComponents.at(2)->Health() / 2)
+					{
+						static_cast<SpriteComponent*>(m_player3Hearts.at(i)->GetComponents()->at(j))->Direction(1);
+					}
+					else
+					{
+						static_cast<SpriteComponent*>(m_player3Hearts.at(i)->GetComponents()->at(j))->Direction(2);
+					}
+					spriteGot = true;
 				}
-				heart->AddComponent(new SpriteComponent("HeartsSheet", 2, 3, 0, 0, 16, 16, 0));
-				static_cast<SpriteComponent*>((heart)->GetComponents()->at(1))->IsAnimating(false);
-				heart->AddComponent(new HeartComponent(heartVector));
-				heartVector->push_back(heart);
-				static_cast<HeartComponent*>((heart)->GetComponents()->at(2))->Index(heartVector->size() - 1);
-				heart->Transient(true);
-				m_entities.push_back(heart);
+				else if (m_player3Hearts.at(i)->GetComponents()->at(j)->Type() == "PC")
+				{
+					if (i < 6)
+					{
+						static_cast<PositionComponent*>(m_player3Hearts.at(i)->GetComponents()->at(j))->setX(((i * 4) * 3) + ((24 * 3) * 4));
+						static_cast<PositionComponent*>(m_player3Hearts.at(i)->GetComponents()->at(j))->setY(0);
+					}
+					else
+					{
+						static_cast<PositionComponent*>(m_player3Hearts.at(i)->GetComponents()->at(j))->setX((((i - 6) * 4) * 3) + ((24 * 3) * 4));
+						static_cast<PositionComponent*>(m_player3Hearts.at(i)->GetComponents()->at(j))->setY(4 * 3);
+					}
+					positionGot = true;
+				}
 			}
-			UpdateHeartsUIStatus(HeartManager, player);
+		}
+		else
+		{
+			m_player3Hearts.at(i)->Active(false);
+		}
+	}
+	for (int i = 12; i < 18; i++)
+	{
+		bool spriteGot = false;
+		bool positionGot = false;
+		if (i < 12 + maxArmorHolder)
+		{
+			m_player3Hearts.at(i)->Active(true);
+			for (int j = 0; j < m_player3Hearts.at(i)->GetComponents()->size(); j++)
+			{
+				if (positionGot && spriteGot)
+				{
+					break;
+				}
+				else if (m_player3Hearts.at(i)->GetComponents()->at(j)->Type() == "SC")
+				{
+					if (i < 12 + armorHolder)
+					{
+						static_cast<SpriteComponent*>(m_player3Hearts.at(i)->GetComponents()->at(j))->Direction(0);
+					}
+					else if ((float)i + 0.5 == 12 + (float)m_attributeComponents.at(2)->Armour() / 2)
+					{
+						static_cast<SpriteComponent*>(m_player3Hearts.at(i)->GetComponents()->at(j))->Direction(1);
+					}
+					else
+					{
+						static_cast<SpriteComponent*>(m_player3Hearts.at(i)->GetComponents()->at(j))->Direction(2);
+					}
+					spriteGot = true;
+				}
+				else if (m_player3Hearts.at(i)->GetComponents()->at(j)->Type() == "PC")
+				{
+					static_cast<PositionComponent*>(m_player3Hearts.at(i)->GetComponents()->at(j))->setX((((i - 12) * 4) * 3) + ((24 * 3) * 4));
+					static_cast<PositionComponent*>(m_player3Hearts.at(i)->GetComponents()->at(j))->setY(8 * 3);
+					positionGot = true;
+				}
+			}
+		}
+		else
+		{
+			m_player3Hearts.at(i)->Active(false);
+		}
+	}
+}
+
+void HealthSystem::PlayerFourUpdate()
+{
+	int healthHolder = m_attributeComponents.at(3)->Health() / 2;
+	int maxHealthHolder = m_attributeComponents.at(3)->MaxHealth() / 2;
+	int armorHolder = m_attributeComponents.at(3)->Armour() / 2;
+	int maxArmorHolder = m_attributeComponents.at(3)->MaxArmour() / 2;
+	for (int i = 0; i < 12; i++)
+	{
+		bool spriteGot = false;
+		bool positionGot = false;
+		if (i < maxHealthHolder)
+		{
+			m_player4Hearts.at(i)->Active(true);
+			for (int j = 0; j < m_player4Hearts.at(i)->GetComponents()->size(); j++)
+			{
+				if (positionGot && spriteGot)
+				{
+					break;
+				}
+				else if (m_player4Hearts.at(i)->GetComponents()->at(j)->Type() == "SC")
+				{
+					if (i < healthHolder)
+					{
+						static_cast<SpriteComponent*>(m_player4Hearts.at(i)->GetComponents()->at(j))->Direction(0);
+					}
+					else if ((float)i + 0.5 == (float)m_attributeComponents.at(3)->Health() / 2)
+					{
+						static_cast<SpriteComponent*>(m_player4Hearts.at(i)->GetComponents()->at(j))->Direction(1);
+					}
+					else
+					{
+						static_cast<SpriteComponent*>(m_player4Hearts.at(i)->GetComponents()->at(j))->Direction(2);
+					}
+					spriteGot = true;
+				}
+				else if (m_player4Hearts.at(i)->GetComponents()->at(j)->Type() == "PC")
+				{
+					if (i < 6)
+					{
+						static_cast<PositionComponent*>(m_player4Hearts.at(i)->GetComponents()->at(j))->setX(((i * 4) * 3) + ((24 * 3) * 6));
+						static_cast<PositionComponent*>(m_player4Hearts.at(i)->GetComponents()->at(j))->setY(0);
+					}
+					else
+					{
+						static_cast<PositionComponent*>(m_player4Hearts.at(i)->GetComponents()->at(j))->setX((((i - 6) * 4) * 3) + ((24 * 3) * 6));
+						static_cast<PositionComponent*>(m_player4Hearts.at(i)->GetComponents()->at(j))->setY(4 * 3);
+					}
+					positionGot = true;
+				}
+			}
+		}
+		else
+		{
+			m_player4Hearts.at(i)->Active(false);
+		}
+	}
+	for (int i = 12; i < 18; i++)
+	{
+		bool spriteGot = false;
+		bool positionGot = false;
+		if (i < 12 + maxArmorHolder)
+		{
+			m_player4Hearts.at(i)->Active(true);
+			for (int j = 0; j < m_player4Hearts.at(i)->GetComponents()->size(); j++)
+			{
+				if (positionGot && spriteGot)
+				{
+					break;
+				}
+				else if (m_player4Hearts.at(i)->GetComponents()->at(j)->Type() == "SC")
+				{
+					if (i < 12 + armorHolder)
+					{
+						static_cast<SpriteComponent*>(m_player4Hearts.at(i)->GetComponents()->at(j))->Direction(0);
+					}
+					else if ((float)i + 0.5 == 12 + (float)m_attributeComponents.at(3)->Armour() / 2)
+					{
+						static_cast<SpriteComponent*>(m_player4Hearts.at(i)->GetComponents()->at(j))->Direction(1);
+					}
+					else
+					{
+						static_cast<SpriteComponent*>(m_player4Hearts.at(i)->GetComponents()->at(j))->Direction(2);
+					}
+					spriteGot = true;
+				}
+				else if (m_player4Hearts.at(i)->GetComponents()->at(j)->Type() == "PC")
+				{
+					static_cast<PositionComponent*>(m_player4Hearts.at(i)->GetComponents()->at(j))->setX((((i - 12) * 4) * 3) + ((24 * 3) * 6));
+					static_cast<PositionComponent*>(m_player4Hearts.at(i)->GetComponents()->at(j))->setY(8 * 3);
+					positionGot = true;
+				}
+			}
+		}
+		else
+		{
+			m_player4Hearts.at(i)->Active(false);
 		}
 	}
 }

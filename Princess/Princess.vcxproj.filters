@@ -137,6 +137,9 @@
     <ClCompile Include="src\Quad.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\ShopInstance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External Dependencies\ResourceManager\JSONReader.h">
@@ -150,6 +153,15 @@
     </ClInclude>
     <ClInclude Include="External Dependencies\SimpleJSON\JSONValue.h">
       <Filter>ExternalResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ButtonComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\InstanceManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AchievementHandler.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\AiLogicComponent.h">
       <Filter>Header Files</Filter>
@@ -190,10 +202,28 @@
     <ClInclude Include="include\Component.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\ConcreteObserver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ConcreteSubject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="include\ControlComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\ControlSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CurrencyComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DecisionTree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DungeonMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DungeonTileFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Entity.h">
@@ -205,16 +235,13 @@
     <ClInclude Include="include\Factory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\GoldComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="include\GrassTileFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\HealthSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\HeartComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\HeartManagerComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\InputHandler.h">
@@ -223,13 +250,34 @@
     <ClInclude Include="include\Instance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\InstanceManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="include\LTimer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MenuComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MenuSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\MovementComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\MovementSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MusicComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Observer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Pickup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PickupFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\PositionComponent.h">
@@ -250,13 +298,28 @@
     <ClInclude Include="include\SeekComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\ShopInstance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SoundComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SoundSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="include\SpriteComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\StartInstance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\StateManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Subject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\System.h">
@@ -277,6 +340,9 @@
     <ClInclude Include="include\TownInstance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\TreeNodes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="include\WeaponComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -287,69 +353,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\WorldTileFactory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ButtonComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\MenuComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\MenuSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\InstanceManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\StartInstance.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\AchievementHandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ConcreteObserver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ConcreteSubject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Observer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Subject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\DecisionTree.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\TreeNodes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\SoundComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\SoundSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\MusicComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\DungeonMap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\DungeonTileFactory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\InstanceManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CurrencyComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Pickup.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\PickupFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

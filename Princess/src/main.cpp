@@ -18,7 +18,6 @@
 #include "TextRenderSystem.h"
 #include "ButtonComponent.h"
 #include "HealthSystem.h"
-#include "HeartComponent.h"
 #include "AISystem.h"
 #include "Princess.h"
 #include <chrono>
@@ -28,7 +27,6 @@
 #include "WorldMap.h"
 #include "DungeonMap.h"
 #include "TownInstance.h"
-#include "MenuSystem.h"
 #include "InstanceManager.h"
 #include "AchievementHandler.h"
 #include "SoundComponent.h"
@@ -156,7 +154,7 @@ int main()
 	systemManager.healthSystem->Active(true);
 
 	systemManager.menuSystem = new MenuSystem(listener, &state);
-	systemManager.menuSystem->Active(true);
+	systemManager.menuSystem->Active(false);
 
 	systemManager.buttonSystem = new ButtonSystem(listener);
 	systemManager.buttonSystem->Active(true);
@@ -228,8 +226,8 @@ int main()
 
 
 
-	//TownInstance t = TownInstance(&systemManager);
-	//t.Generate("jimmie");
+	TownInstance t = TownInstance(&systemManager);
+	t.Generate("jimmie");
 
 	//WorldMap* m = new WorldMap(&systemManager, &state);
 	//m->Generate(25, 25, 100);

@@ -17,7 +17,6 @@
 #include "ProjectileComponent.h"
 #include "CollisionSystem.h"
 #include "AttributesComponent.h"
-#include "HeartManagerComponent.h"
 #include "AISystem.h"
 #include "CollisionSystem.h"
 #include "HealthSystem.h"
@@ -45,17 +44,8 @@ public:
 
 	void Update(float deltaTime, std::vector<Entity*> players);
 
-
-	void Update(float deltaTime);
-
 private:
 	bool flag = false;
-	//RenderSystem *   RenderSystem;
-	//MovementSystem * MovementSystem;
-	//ControlSystem *  ControlSystem;
-
-	void Update();
-
 };
 #endif
 

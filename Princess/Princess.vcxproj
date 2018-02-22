@@ -49,6 +49,7 @@
     <ClCompile Include="src\Princess.cpp" />
     <ClCompile Include="src\Quad.cpp" />
     <ClCompile Include="src\RenderSystem.cpp" />
+    <ClCompile Include="src\ShopInstance.cpp" />
     <ClCompile Include="src\StartInstance.cpp" />
     <ClCompile Include="src\SoundSystem.cpp" />
     <ClCompile Include="src\Subject.cpp" />
@@ -90,16 +91,15 @@
     <ClInclude Include="include\Entity.h" />
     <ClInclude Include="include\EventListener.h" />
     <ClInclude Include="include\Factory.h" />
+    <ClInclude Include="include\GoldComponent.h" />
     <ClInclude Include="include\GrassTileFactory.h" />
     <ClInclude Include="include\HealthSystem.h" />
-    <ClInclude Include="include\HeartComponent.h" />
-    <ClInclude Include="include\HeartManagerComponent.h" />
     <ClInclude Include="include\InputHandler.h" />
     <ClInclude Include="include\Instance.h" />
     <ClInclude Include="include\InstanceManager.h" />
+    <ClInclude Include="include\LTimer.h" />
     <ClInclude Include="include\MenuComponent.h" />
     <ClInclude Include="include\MenuSystem.h" />
-    <ClInclude Include="include\LTimer.h" />
     <ClInclude Include="include\MovementComponent.h" />
     <ClInclude Include="include\MovementSystem.h" />
     <ClInclude Include="include\MusicComponent.h" />
@@ -112,6 +112,7 @@
     <ClInclude Include="include\Quad.h" />
     <ClInclude Include="include\RenderSystem.h" />
     <ClInclude Include="include\SeekComponent.h" />
+    <ClInclude Include="include\ShopInstance.h" />
     <ClInclude Include="include\SoundComponent.h" />
     <ClInclude Include="include\SoundSystem.h" />
     <ClInclude Include="include\SpriteComponent.h" />
