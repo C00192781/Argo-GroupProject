@@ -141,7 +141,7 @@ void BattleMap::Generate(std::string type)
 	for (int i = 0; i < 100; i++)
 	{
 		Entity* projectile = new Entity("Projectile");
-		projectile->AddComponent(new SpriteComponent("Arrow", 2, 0, 0, 0, 16, 8, 0));
+		projectile->AddComponent(new SpriteComponent("Arrow", 2, 0, 0, 0, 4, 4, 0));
 		projectile->AddComponent(new PositionComponent(SDL_Point{ -5000, -5000 }));
 		projectile->AddComponent(new ProjectileComponent(400));
 		projectile->AddComponent(new MovementComponent());
