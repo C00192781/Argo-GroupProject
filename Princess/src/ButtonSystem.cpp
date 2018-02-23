@@ -38,7 +38,18 @@ void ButtonSystem::Update()
 			}
 		}
 
-		if (m_buttonComponents.at(2)->Activated())
+		if (m_buttonComponents.at(3)->Activated()) //leave
+		{
+			m_eventListener->TownToWorld = true;
+
+			for (int i = 0; i < m_buttonComponents.size(); i++)
+			{ 
+			//deactivate buttons somehow
+			}
+
+		}
+
+		if (m_buttonComponents.at(2)->Activated()) //rumour
 		{
 
 
@@ -65,6 +76,7 @@ void ButtonSystem::Update()
 			int line_number = 0;
 			while (std::getline(file, line))
 			{
+		
 				for (int i = 0; i < number_of_lines_to_select; ++i)
 				{
 					if (line_number == line_indices[i]) {

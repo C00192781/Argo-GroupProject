@@ -653,13 +653,15 @@ void WorldMap::Load()
 	{
 		Entity* player = m_systemManager->collisionSystem->FindEntity("Player", 3);
 
+		player->Active(true);
+
 		if (player != nullptr)
 		{
 			CollisionComponent* pos = static_cast<CollisionComponent*>(player->FindComponent("collision"));
 
 			if (pos != nullptr)
 			{
-				CollisionComponent* townPos = static_cast<CollisionComponent*>(m_systemManager->collisionSystem->getCurrentDungeon()->FindComponent("collision"));
+				CollisionComponent* townPos = static_cast<CollisionComponent*>(m_systemManager->collisionSystem->getCurrentTown()->FindComponent("collision"));
 
 				if (townPos != nullptr)
 				{
