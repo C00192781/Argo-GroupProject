@@ -13,11 +13,12 @@ public:
 	bool S = false;
 	bool D = false;
 	bool Escape = false;
-
+	bool TownToWorld = false;
 	bool WorldToDungeon = false;
 	bool WorldToEncounter = false;
 	bool DungeonToWorld = false;
 	bool EncounterToWorld = false;
 	bool roll = false;
+	bool WorldToTown = false;
 };
 #endif

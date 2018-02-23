@@ -81,6 +81,19 @@ int main()
 	int countedFrames = 0;
 	fpsTimer.start();
 
+
+	ofstream myfile;
+	myfile.open("Rumours.txt");
+	myfile << "Claudette Perrick runs a fine alchemy shop.You should check out The Gilded Carafe.\n";
+	myfile << "Amantius Allectus was killed during a burglary. They say the house was ransacked.\n";
+	myfile << "Truth is, the Legion doesn't know who was behind the Emperor's murder. We've already ruled out the Dark Brotherhood. So is this something... worse?\n";
+	myfile << "Sensational.\n";
+	myfile << "The tide is turning, my friend. Bruma has been saved, and Martin Septim has claimed his birthright! Soon, all of Oblivion will tremble in fear!\n";
+	myfile << "Have you been near Rosentia Gallenus's house recently? Smells horrible... like she left some meat out to spoil.\n";
+
+	myfile.close();
+
+
 	ResourceManager *resourceManager = new ResourceManager(gameRenderer, "Resources");
 
 	resourceManager->AddTexture("Red", "Sprite_Red.png");

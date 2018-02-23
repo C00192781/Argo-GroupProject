@@ -5,6 +5,10 @@ InstanceManager::InstanceManager(SystemManager * sm, StateManager * s, ResourceM
 	m_listener = listener;
 	m_stateManager = s;
 
+	auto temp = new TownInstance(sm);
+	townInstance.push_back(temp);
+	//townInstance->push_back( new TownInstance(sm));
+
 	worldMap = new WorldMap(sm, s, listener);
 	battleMap = new BattleMap(sm, s, listener);
 	dungeonMap = new DungeonMap(sm, s, rm, listener);
@@ -23,14 +27,19 @@ void InstanceManager::Update(float deltaTime)
 	{
 		dungeonMap->Update(deltaTime);
 	}
-	else if(startInstance->Active())
+	else if (startInstance->Active())
 	{
 		startInstance->Update();
+	}
+	else if (townInstance.at(0)->Active())
+	{
+		townInstance.at(0)->Update();
 	}
 	else
 	{
 		battleMap->Update(deltaTime);
 	}
+
 
 	if (m_stateManager->StartGame)
 	{
@@ -67,6 +76,21 @@ void InstanceManager::Update(float deltaTime)
 		battleMap->Active(false);
 		m_listener->EncounterToWorld = false;
 	}
+	else if (m_listener->WorldToTown == true)
+	{
+		Generate("Town");
+		townInstance.at(0)->Load();
+		townInstance.at(0)->Active(true);
+		worldMap->Active(false);
+		m_listener->WorldToTown = false;
+	}
+	else if (m_listener->TownToWorld == true)
+	{
+		worldMap->Load();
+		worldMap->Active(true);
+		townInstance.at(0)->Active(false);
+		m_listener->TownToWorld = false;
+	}
 }
 
 void InstanceManager::Generate(std::string instanceID)
@@ -86,5 +110,13 @@ void InstanceManager::Generate(std::string instanceID)
 	else if (instanceID == "Menu")
 	{
 		
+	}
+	else if (instanceID == "Town")
+	{
+
+		townInstance.at(0)->Generate("jimmie");
+
+		//TownInstance t = TownInstance(&systemManager);
+		//t.Generate("jimmie");
 	}
 }

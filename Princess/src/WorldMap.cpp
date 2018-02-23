@@ -209,6 +209,7 @@ void WorldMap::Generate(int width, int height, int chaosFactor)
 				mapHolder.at(xHolder).at(yHolder) = "Town";
 				m_entities.push_back(factory.Town("WorldTurf", xHolder * (16 * m_systemManager->renderSystem->GetScale()), yHolder * (16 * m_systemManager->renderSystem->GetScale())));
 				m_systemManager->renderSystem->AddEntity(m_entities.back());
+				m_systemManager->collisionSystem->AddEntity(m_entities.back()); //TECH RIGHT HERE
 				done = true;
 			}
 			giveUp--;
@@ -228,7 +229,7 @@ void WorldMap::Generate(int width, int height, int chaosFactor)
 				mapHolder.at(xHolder).at(yHolder) = "Dungeon";
 				m_entities.push_back(factory.Dungeon("WorldTurf", xHolder * (16 * m_systemManager->renderSystem->GetScale()), yHolder * (16 * m_systemManager->renderSystem->GetScale())));
 				m_systemManager->renderSystem->AddEntity(m_entities.back());
-				m_systemManager->collisionSystem->AddEntity(m_entities.back());
+				m_systemManager->collisionSystem->AddEntity(m_entities.back()); //TECH RIGHT HERE
 				done = true;
 			}
 			giveUp--;
@@ -626,7 +627,7 @@ void WorldMap::Load()
 	// sets player's position to the start of the dungeon
 	if (m_listener->DungeonToWorld == true)
 	{
-		Entity* player = m_systemManager->collisionSystem->FindEntity("Player");
+		Entity* player = m_systemManager->collisionSystem->FindEntity("Player", 3);
 
 		if (player != nullptr)
 		{
@@ -645,6 +646,32 @@ void WorldMap::Load()
 			m_systemManager->collisionSystem->getCurrentDungeon()->Active(false);
 		}
 	}
+
+
+	// sets player's position to the start of the dungeon FGBJFDGFGD
+	if (m_listener->TownToWorld == true)
+	{
+		Entity* player = m_systemManager->collisionSystem->FindEntity("Player", 3);
+
+		player->Active(true);
+
+		if (player != nullptr)
+		{
+			CollisionComponent* pos = static_cast<CollisionComponent*>(player->FindComponent("collision"));
+
+			if (pos != nullptr)
+			{
+				CollisionComponent* townPos = static_cast<CollisionComponent*>(m_systemManager->collisionSystem->getCurrentTown()->FindComponent("collision"));
+
+				if (townPos != nullptr)
+				{
+					pos->setPosition(townPos->getX(), townPos->getY());
+				}
+			}
+
+			m_systemManager->collisionSystem->getCurrentTown()->Active(false);
+		}
+	} //SFSFNSDBFJSDBFSDB
 }
 
 void WorldMap::Update()
@@ -660,7 +687,7 @@ void WorldMap::Update()
 		{
 			if (movement->getMoving() == true)
 			{
-				if ((rand() % 10000) >= 9960)
+				if ((rand() % 10000) >= 9990)
 				{
 					PositionComponent* pos = static_cast<PositionComponent*>(player->FindComponent("PC"));
 
