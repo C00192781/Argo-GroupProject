@@ -37,7 +37,7 @@ void BattleMap::Generate(std::string type)
 	m_systemManager->healthSystem->SelectiveClear();
 
 	m_systemManager->healthSystem->Active(true);
-	m_systemManager->healthSystem->ActivateHearts();
+	//m_systemManager->healthSystem->ActivateHearts();
 
 	TileFactory * factory;
 
@@ -77,9 +77,32 @@ void BattleMap::Generate(std::string type)
 		}
 	}
 
-	int numOfEnemies = 2;//(rand() % 10) + 5;
+	int numOfEnemies = 5;//(rand() % 10) + 5;
 
 	BasicEnemy enemyFactory;
+
+	Princess princessFactory;
+
+	Entity* princess = nullptr;
+	//int randNum1 = rand() % 5;
+
+//	if (randNum1 == 0) {
+		princess = princessFactory.CharA("Pink", SDL_Point{ 408, 312 }, 0);
+	//}
+	//if (randNum1 == 1) {
+	//	princess = princessFactory.CharA("Pink", SDL_Point{ 408, 312 }, 1);
+	//}
+	//if (randNum1 == 2) {
+	//	princess = princessFactory.CharA("Pink", SDL_Point{ 408, 312 }, 2);
+	//}
+	//if (randNum1 == 3) {
+	//	princess = princessFactory.CharA("Pink", SDL_Point{ 408, 312 }, 3);
+	//}
+
+	m_systemManager->renderSystem->AddEntity(princess);
+	m_systemManager->movementSystem->AddEntity(princess);
+	m_systemManager->collisionSystem->AddEntity(princess);
+	m_systemManager->aiSystem->AddEntity(princess);
 
 	for (int i = 0; i < numOfEnemies; i++)
 	{
@@ -88,19 +111,19 @@ void BattleMap::Generate(std::string type)
 		Entity* enemy = nullptr;
 
 		if (randNum == 0) {
-			enemy = enemyFactory.CharA("Demon", SDL_Point{ rand() % 816, rand() % 624 }, 0);
+			enemy = enemyFactory.CharA("Blue", SDL_Point{ rand() % 816, rand() % 624 }, 0);
 		}
 		else if (randNum == 1)
 		{
-			enemy = enemyFactory.CharB("Demon", SDL_Point{ rand() % 816, rand() % 624 }, 0);
+			enemy = enemyFactory.CharA("Blue", SDL_Point{ rand() % 816, rand() % 624 }, 0);
 		}
 		else if (randNum == 2)
 		{
-			enemy = enemyFactory.CharC("Demon", SDL_Point{ rand() % 816, rand() % 624 }, 0);
+			enemy = enemyFactory.CharA("Blue", SDL_Point{ rand() % 816, rand() % 624 }, 0);
 		}
 		else if (randNum == 3)
 		{
-			enemy = enemyFactory.CharD("Demon", SDL_Point{ rand() % 816, rand() % 624 }, 0);
+			enemy = enemyFactory.CharA("Blue", SDL_Point{ rand() % 816, rand() % 624 }, 0);
 		}
 
 		// chance for spawner to not spawn anything
@@ -122,7 +145,7 @@ void BattleMap::Generate(std::string type)
 	for (int i = 0; i < 100; i++)
 	{
 		Entity* projectile = new Entity("Projectile");
-		projectile->AddComponent(new SpriteComponent("Arrow", 2, 0, 0, 0, 16, 8, 0));
+		projectile->AddComponent(new SpriteComponent("Arrow", 2, 0, 0, 0, 4, 4, 0));
 		projectile->AddComponent(new PositionComponent(SDL_Point{ -5000, -5000 }));
 		projectile->AddComponent(new ProjectileComponent(400));
 		projectile->AddComponent(new MovementComponent());
@@ -140,7 +163,16 @@ void BattleMap::Generate(std::string type)
 
 
 	// sets player's position to the start of the dungeon
-	Entity* player = m_systemManager->controlSystem->FindEntity("Player");
+
+//	Entity* player = m_systemManager->collisionSystem->FindEntity("Player");
+
+	Entity* player = m_systemManager->collisionSystem->FindEntity("Player", 3); //discern between players
+	Entity* player2 = m_systemManager->collisionSystem->FindEntity("Player", 2); //discern between players
+	Entity* player3 = m_systemManager->collisionSystem->FindEntity("Player", 1); //discern between players
+	Entity* player4 = m_systemManager->collisionSystem->FindEntity("Player", 0); //discern between players
+	player2->Active(true);
+	player3->Active(true);
+	player4->Active(true);
 
 	if (player != nullptr)
 	{
@@ -148,7 +180,39 @@ void BattleMap::Generate(std::string type)
 
 		if (pos != nullptr)
 		{
-			pos->setPosition(274, 208);
+			pos->setPosition(174, 108);
+		}
+	}
+
+	if (player2 != nullptr)
+	{
+		CollisionComponent* pos = static_cast<CollisionComponent*>(player2->FindComponent("collision"));
+
+		if (pos != nullptr)
+		{
+			pos->setPosition(324, 108);
+		}
+	}
+
+
+	if (player3 != nullptr)
+	{
+		CollisionComponent* pos = static_cast<CollisionComponent*>(player3->FindComponent("collision"));
+
+		if (pos != nullptr)
+		{
+			pos->setPosition(324, 348);
+		}
+	}
+
+
+	if (player4 != nullptr)
+	{
+		CollisionComponent* pos = static_cast<CollisionComponent*>(player4->FindComponent("collision"));
+
+		if (pos != nullptr)
+		{
+			pos->setPosition(174, 348);
 		}
 	}
 	
@@ -186,24 +250,3 @@ void BattleMap::Render()
 {
 
 }
-
-// *** this was at the bottom of generate ***
-//HeartManagerComponent* hUI = new HeartManagerComponent(HeartTypes::HEALTH);
-//player->AddComponent(hUI);
-//
-//HeartManagerComponent* aUI = new HeartManagerComponent(HeartTypes::ARMOUR);
-//player->AddComponent(aUI);
-
-//m_systemManager->healthSystem->AddEntity(player);
-//
-//m_systemManager->healthSystem->UpdateMaxHeartsUI(player, player);
-//m_systemManager->healthSystem->UpdateMaxArmourUI(player, player);
-
-//for (int c = 0; c < hUI->HeartsVector()->size(); c++)
-//{
-//	m_systemManager->renderSystem->AddEntity(hUI->HeartsVector()->at(c));
-//}
-//for (int i = 0; i < aUI->HeartsVector()->size(); i++)
-//{
-//	m_systemManager->renderSystem->AddEntity(aUI->HeartsVector()->at(i));
-//}

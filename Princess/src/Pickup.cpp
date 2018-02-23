@@ -3,8 +3,8 @@
 Entity* Pickup::PickupA(std::string ID, SDL_Point pos, int value)
 {
 	Entity *Pickup = new Entity("Chocolate");
-	Pickup->AddComponent(new SpriteComponent(ID, 2, 0, 0, 0, 16, 16, 0)); ////sprite id 
-	Pickup->AddComponent(new CollisionComponent(pos.x, pos.y, 16, 16, 2));
+	Pickup->AddComponent(new SpriteComponent(ID, 0, 0, 0, 0, 31, 31, 0)); ////sprite id 
+	Pickup->AddComponent(new CollisionComponent(pos.x, pos.y, 31, 31, 2));
 	Pickup->AddComponent(new PositionComponent(pos));
 	Pickup->AddComponent(new CurrencyComponent(value));
 
@@ -25,8 +25,8 @@ Entity* Pickup::PickupA(std::string ID, SDL_Point pos, int value)
 Entity* Pickup::PickupB(std::string ID, SDL_Point pos, int value)
 {
 	Entity *Pickup = new Entity("Jewels");
-	Pickup->AddComponent(new SpriteComponent(ID, 2, 0, 0, 0, 16, 16, 0)); ////sprite id 
-	Pickup->AddComponent(new CollisionComponent(pos.x, pos.y, 16, 16, 2));
+	Pickup->AddComponent(new SpriteComponent(ID, 0, 0, 0, 0, 31, 31, 0)); ////sprite id 
+	Pickup->AddComponent(new CollisionComponent(pos.x, pos.y, 31, 31, 2));
 	Pickup->AddComponent(new PositionComponent(pos));
 	Pickup->AddComponent(new CurrencyComponent(value));
 	//	Pickup->AddComponent(new eHPComp());
@@ -49,8 +49,8 @@ Entity* Pickup::PickupB(std::string ID, SDL_Point pos, int value)
 Entity* Pickup::PickupC(std::string ID, SDL_Point pos, int value)
 {
 	Entity *Pickup = new Entity("Gold");
-	Pickup->AddComponent(new SpriteComponent(ID, 2, 0, 0, 0, 16, 16, 0)); ////sprite id 
-	Pickup->AddComponent(new CollisionComponent(pos.x, pos.y, 16, 16, 2));
+	Pickup->AddComponent(new SpriteComponent(ID, 0, 0, 0, 0, 31, 31, 0)); ////sprite id 
+	Pickup->AddComponent(new CollisionComponent(pos.x, pos.y, 31, 31, 2));
 	Pickup->AddComponent(new PositionComponent(pos));
 	Pickup->AddComponent(new CurrencyComponent(value));
 	//	Pickup->AddComponent(new eHPComp());
@@ -73,8 +73,8 @@ Entity* Pickup::PickupC(std::string ID, SDL_Point pos, int value)
 Entity* Pickup::PickupD(std::string ID, SDL_Point pos, int value)
 {
 	Entity *Pickup = new Entity("Literature");
-	Pickup->AddComponent(new SpriteComponent(ID, 2, 0, 0, 0, 16, 16, 0)); ////sprite id 
-	Pickup->AddComponent(new CollisionComponent(pos.x, pos.y, 16, 16, 2));
+	Pickup->AddComponent(new SpriteComponent(ID, 0, 0, 0, 0, 31, 31, 0)); ////sprite id 
+	Pickup->AddComponent(new CollisionComponent(pos.x, pos.y, 31, 31, 2));
 	Pickup->AddComponent(new PositionComponent(pos));
 	//	Pickup->AddComponent(new eHPComp());
 	Pickup->AddComponent(new CurrencyComponent(value));

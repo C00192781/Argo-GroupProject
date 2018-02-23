@@ -2,9 +2,10 @@
 
 
 
-ShopInstance::ShopInstance(SystemManager* s)
+ShopInstance::ShopInstance(SystemManager* s, EventListener * e)
 {
 	m_systemManager = s;
+	m_listener = e;
 }
 
 ShopInstance::~ShopInstance()
@@ -13,6 +14,12 @@ ShopInstance::~ShopInstance()
 
 void ShopInstance::Generate(int luck)
 {
+
+	for (int i = 0; i < m_entities.size(); i++)
+	{
+		delete m_entities.at(i);
+	}
+	m_entities.clear();
 
 	int randHolder = rand() % 2;
 	if (randHolder >= 1)
@@ -105,7 +112,7 @@ void ShopInstance::Generate(int luck)
 	m_itemOneGold = rand() % 1000 + 50;
 	m_entities.push_back(new Entity("ItemCost1"));
 	m_entities.back()->AddComponent(new PositionComponent(SDL_Point{ 492, 100 }));
-	m_entities.back()->AddComponent(new TextComponent("ComicSans", std::to_string(m_itemOneGold) + " Gold", SDL_Color{ 255,255,255,255 }, 32 * 6, 16 * 3));
+	m_entities.back()->AddComponent(new TextComponent("munro", std::to_string(m_itemOneGold) + " Gold", SDL_Color{ 255,255,255,255 }, 32 * 6, 16 * 3));
 
 	randHolder = rand() % 2;
 	if (randHolder >= 1)
@@ -198,7 +205,7 @@ void ShopInstance::Generate(int luck)
 	m_itemTwoGold = rand() % 1000 + 50;
 	m_entities.push_back(new Entity("ItemCost2"));
 	m_entities.back()->AddComponent(new PositionComponent(SDL_Point{ 492, 250 }));
-	m_entities.back()->AddComponent(new TextComponent("ComicSans", std::to_string(m_itemTwoGold) + " Gold", SDL_Color{ 255,255,255,255 }, 32 * 6, 16 * 3));
+	m_entities.back()->AddComponent(new TextComponent("munro", std::to_string(m_itemTwoGold) + " Gold", SDL_Color{ 255,255,255,255 }, 32 * 6, 16 * 3));
 
 	randHolder = rand() % 2;
 	if (randHolder >= 1)
@@ -291,7 +298,7 @@ void ShopInstance::Generate(int luck)
 	m_itemThreeGold = rand() % 1000 + 50;
 	m_entities.push_back(new Entity("ItemCost2"));
 	m_entities.back()->AddComponent(new PositionComponent(SDL_Point{ 492, 400 }));
-	m_entities.back()->AddComponent(new TextComponent("ComicSans", std::to_string(m_itemThreeGold) + " Gold", SDL_Color{ 255,255,255,255 }, 32 * 6, 16 * 3));
+	m_entities.back()->AddComponent(new TextComponent("munro", std::to_string(m_itemThreeGold) + " Gold", SDL_Color{ 255,255,255,255 }, 32 * 6, 16 * 3));
 
 	m_entities.push_back(new Entity("Item1Button"));
 	SpriteComponent * sprite = new SpriteComponent("Button", 3, 0, 0, 0, 32, 16, 0);
@@ -300,14 +307,14 @@ void ShopInstance::Generate(int luck)
 	m_entities.back()->AddComponent(new PositionComponent(SDL_Point{ 100, 50 + 74 }));
 	m_buttonOne = new ButtonComponent(0, 0, 32 * 3, 16 * 3);
 	m_entities.back()->AddComponent(m_buttonOne);
-	m_entities.back()->AddComponent(new TextComponent("ComicSans", "Buy", SDL_Color{ 255,255,255,255 }, 32 * 3, 16 * 3));
+	m_entities.back()->AddComponent(new TextComponent("munro", "Buy", SDL_Color{ 255,255,255,255 }, 32 * 3, 16 * 3));
 
 	m_entities.push_back(new Entity("Item1"));
 	sprite = new SpriteComponent("Plate", 3, 0, 0, 0, 64, 32, 0);
 	sprite->Relative(true);
 	m_entities.back()->AddComponent(sprite);
 	m_entities.back()->AddComponent(new PositionComponent(SDL_Point{ 300, 100 }));
-	m_entities.back()->AddComponent(new TextComponent("ComicSans", m_itemNameOne, SDL_Color{ 255,255,255,255 }, 32 * 6, 16 * 3));
+	m_entities.back()->AddComponent(new TextComponent("munro", m_itemNameOne, SDL_Color{ 255,255,255,255 }, 32 * 6, 16 * 3));
 
 	m_entities.push_back(new Entity("Item2Button"));
 	sprite = new SpriteComponent("Button", 3, 0, 0, 0, 32, 16, 0);
@@ -316,14 +323,14 @@ void ShopInstance::Generate(int luck)
 	m_entities.back()->AddComponent(new PositionComponent(SDL_Point{ 100, 274 }));
 	m_buttonTwo = new ButtonComponent(0, 0, 32 * 3, 16 * 3);
 	m_entities.back()->AddComponent(m_buttonTwo);
-	m_entities.back()->AddComponent(new TextComponent("ComicSans", "Buy", SDL_Color{ 255,255,255,255 }, 32 * 3, 16 * 3));
+	m_entities.back()->AddComponent(new TextComponent("munro", "Buy", SDL_Color{ 255,255,255,255 }, 32 * 3, 16 * 3));
 
 	m_entities.push_back(new Entity("Item2"));
 	sprite = new SpriteComponent("Plate", 3, 0, 0, 0, 64, 32, 0);
 	sprite->Relative(true);
 	m_entities.back()->AddComponent(sprite);
 	m_entities.back()->AddComponent(new PositionComponent(SDL_Point{ 300, 250 }));
-	m_entities.back()->AddComponent(new TextComponent("ComicSans", m_itemNameTwo, SDL_Color{ 255,255,255,255 }, 32 * 6, 16 * 3));
+	m_entities.back()->AddComponent(new TextComponent("munro", m_itemNameTwo, SDL_Color{ 255,255,255,255 }, 32 * 6, 16 * 3));
 
 	m_entities.push_back(new Entity("Item3Button"));
 	sprite = new SpriteComponent("Button", 3, 0, 0, 0, 32, 16, 0);
@@ -332,18 +339,26 @@ void ShopInstance::Generate(int luck)
 	m_entities.back()->AddComponent(new PositionComponent(SDL_Point{ 100, 424 }));
 	m_buttonThree = new ButtonComponent(0, 0, 32 * 3, 16 * 3);
 	m_entities.back()->AddComponent(m_buttonThree);
-	m_entities.back()->AddComponent(new TextComponent("ComicSans", "Buy", SDL_Color{ 255,255,255,255 }, 32 * 3, 16 * 3));
+	m_entities.back()->AddComponent(new TextComponent("munro", "Buy", SDL_Color{ 255,255,255,255 }, 32 * 3, 16 * 3));
+
+	m_entities.push_back(new Entity("LeaveButton"));
+	sprite = new SpriteComponent("Button", 3, 0, 0, 0, 32, 16, 0);
+	sprite->Relative(true);
+	m_entities.back()->AddComponent(sprite);
+	m_entities.back()->AddComponent(new PositionComponent(SDL_Point{ 100, 524 }));
+	m_entities.back()->AddComponent(new ButtonComponent(0, 0, 32 * 3, 16 * 3));
+	m_entities.back()->AddComponent(new TextComponent("munro", "Leave", SDL_Color{ 255,255,255,255 }, 32 * 3, 16 * 3));
 
 	m_entities.push_back(new Entity("Item3"));
 	sprite = new SpriteComponent("Plate", 3, 0, 0, 0, 64, 32, 0);
 	sprite->Relative(true);
 	m_entities.back()->AddComponent(sprite);
 	m_entities.back()->AddComponent(new PositionComponent(SDL_Point{ 300, 400 }));
-	m_entities.back()->AddComponent(new TextComponent("ComicSans", m_itemNameThree, SDL_Color{ 255,255,255,255 }, 32 * 6, 16 * 3));
+	m_entities.back()->AddComponent(new TextComponent("munro", m_itemNameThree, SDL_Color{ 255,255,255,255 }, 32 * 6, 16 * 3));
 
 	m_entities.push_back(new Entity("Item3"));
 	m_entities.back()->AddComponent(new PositionComponent(SDL_Point{ 0, 0 }));
-	m_playerGoldText = new TextComponent("ComicSans", "Gold: " + std::to_string(m_playerGold), SDL_Color{ 255,255,255,255 }, 32 * 6, 16 * 3);
+	m_playerGoldText = new TextComponent("munro", "Gold: " + std::to_string(m_playerGold), SDL_Color{ 255,255,255,255 }, 32 * 6, 16 * 3);
 	m_entities.back()->AddComponent(m_playerGoldText);
 
 	Load();
@@ -380,16 +395,27 @@ void ShopInstance::Update(std::vector<Entity*> players)
 	{
 		if (players.at(i)->Control())
 		{
-			for (int j = 0; j < players.back()->GetComponents()->size(); j++)
+			for (int j = 0; j < players.at(i)->GetComponents()->size(); j++)
 			{
-				if (players.back()->GetComponents()->at(j)->Type() == "Gold")
+				if (players.at(i)->GetComponents()->at(j)->Type() == "currency")
 				{
-					m_playerGold = static_cast<GoldComponent*>(players.back()->GetComponents()->at(j))->Gold();
+					m_playerGold = static_cast<CurrencyComponent*>(players.at(i)->GetComponents()->at(j))->value();
 					m_playerGoldText->Text("Gold: " + std::to_string(m_playerGold));
 					break;
 				}
 			}
 			break;
+		}
+	}
+
+
+
+	for(int i = 0; i < m_entities.size(); i++)
+	{
+		if (m_entities.at(i)->ID() == "LeaveButton" && static_cast<ButtonComponent*>(m_entities.at(i)->FindComponent("ButtonC"))->Activated())
+		{
+			m_listener->ShopToTown = true;
+			static_cast<ButtonComponent*>(m_entities.at(i)->FindComponent("ButtonC"))->Activated(false);
 		}
 	}
 	if(m_timer <= 0)
@@ -401,13 +427,13 @@ void ShopInstance::Update(std::vector<Entity*> players)
 				if (players.at(i)->Control())
 				{
 					bool proceed = false;
-					for (int j = 0; j < players.back()->GetComponents()->size(); j++)
+					for (int j = 0; j < players.at(i)->GetComponents()->size(); j++)
 					{
-						if (players.back()->GetComponents()->at(j)->Type() == "Gold")
+						if (players.at(i)->GetComponents()->at(j)->Type() == "currency")
 						{
-							if (static_cast<GoldComponent*>(players.back()->GetComponents()->at(j))->Gold() >= m_itemOneGold)
+							if (static_cast<CurrencyComponent*>(players.at(i)->GetComponents()->at(j))->value() >= m_itemOneGold)
 							{
-								static_cast<GoldComponent*>(players.back()->GetComponents()->at(j))->Gold(static_cast<GoldComponent*>(players.back()->GetComponents()->at(j))->Gold() - m_itemOneGold);
+								static_cast<CurrencyComponent*>(players.at(i)->GetComponents()->at(j))->value(static_cast<CurrencyComponent*>(players.at(i)->GetComponents()->at(j))->value() - m_itemOneGold);
 								proceed = true;
 							}
 						}
@@ -416,9 +442,9 @@ void ShopInstance::Update(std::vector<Entity*> players)
 					{
 						if (m_weaponOneSwitch)
 						{
-							for (int j = 0; j < players.back()->GetComponents()->size(); j++)
+							for (int j = 0; j < players.at(i)->GetComponents()->size(); j++)
 							{
-								if (players.back()->GetComponents()->at(j)->Type() == "weapon")
+								if (players.at(i)->GetComponents()->at(j)->Type() == "weapon")
 								{
 									//delete players.at(i)->GetComponents()->at(j);
 									players.at(i)->GetComponents()->at(j) = m_weaponOne;
@@ -428,12 +454,12 @@ void ShopInstance::Update(std::vector<Entity*> players)
 						}
 						else
 						{
-							for (int j = 0; j < players.back()->GetComponents()->size(); j++)
+							for (int j = 0; j < players.at(i)->GetComponents()->size(); j++)
 							{
-								if (players.back()->GetComponents()->at(j)->Type() == "attribute")
+								if (players.at(i)->GetComponents()->at(j)->Type() == "attribute")
 								{
-									static_cast<AttributesComponent*>(players.back()->GetComponents()->at(j))->AdditiveArmour(m_armorOne);
-									static_cast<AttributesComponent*>(players.back()->GetComponents()->at(j))->AdditiveHealth(m_healthOne);
+									static_cast<AttributesComponent*>(players.at(i)->GetComponents()->at(j))->AdditiveArmour(m_armorOne);
+									static_cast<AttributesComponent*>(players.at(i)->GetComponents()->at(j))->AdditiveHealth(m_healthOne);
 									break;
 								}
 							}
@@ -450,13 +476,13 @@ void ShopInstance::Update(std::vector<Entity*> players)
 				if (players.at(i)->Control())
 				{
 					bool proceed = false;
-					for (int j = 0; j < players.back()->GetComponents()->size(); j++)
+					for (int j = 0; j < players.at(i)->GetComponents()->size(); j++)
 					{
-						if (players.back()->GetComponents()->at(j)->Type() == "Gold")
+						if (players.at(i)->GetComponents()->at(j)->Type() == "currency")
 						{
-							if (static_cast<GoldComponent*>(players.back()->GetComponents()->at(j))->Gold() >= m_itemTwoGold)
+							if (static_cast<CurrencyComponent*>(players.at(i)->GetComponents()->at(j))->value() >= m_itemTwoGold)
 							{
-								static_cast<GoldComponent*>(players.back()->GetComponents()->at(j))->Gold(static_cast<GoldComponent*>(players.back()->GetComponents()->at(j))->Gold() - m_itemTwoGold);
+								static_cast<CurrencyComponent*>(players.at(i)->GetComponents()->at(j))->value(static_cast<CurrencyComponent*>(players.at(i)->GetComponents()->at(j))->value() - m_itemTwoGold);
 								proceed = true;
 							}
 						}
@@ -465,9 +491,9 @@ void ShopInstance::Update(std::vector<Entity*> players)
 					{
 						if (m_weaponTwoSwitch)
 						{
-							for (int j = 0; j < players.back()->GetComponents()->size(); j++)
+							for (int j = 0; j < players.at(i)->GetComponents()->size(); j++)
 							{
-								if (players.back()->GetComponents()->at(j)->Type() == "weapon")
+								if (players.at(i)->GetComponents()->at(j)->Type() == "weapon")
 								{
 									//delete players.at(i)->GetComponents()->at(j);
 									players.at(i)->GetComponents()->at(j) = m_weaponTwo;
@@ -477,12 +503,12 @@ void ShopInstance::Update(std::vector<Entity*> players)
 						}
 						else
 						{
-							for (int j = 0; j < players.back()->GetComponents()->size(); j++)
+							for (int j = 0; j < players.at(i)->GetComponents()->size(); j++)
 							{
-								if (players.back()->GetComponents()->at(j)->Type() == "attribute")
+								if (players.at(i)->GetComponents()->at(j)->Type() == "attribute")
 								{
-									static_cast<AttributesComponent*>(players.back()->GetComponents()->at(j))->AdditiveArmour(m_armorTwo);
-									static_cast<AttributesComponent*>(players.back()->GetComponents()->at(j))->AdditiveHealth(m_healthTwo);
+									static_cast<AttributesComponent*>(players.at(i)->GetComponents()->at(j))->AdditiveArmour(m_armorTwo);
+									static_cast<AttributesComponent*>(players.at(i)->GetComponents()->at(j))->AdditiveHealth(m_healthTwo);
 									break;
 								}
 							}
@@ -499,13 +525,13 @@ void ShopInstance::Update(std::vector<Entity*> players)
 				if (players.at(i)->Control())
 				{
 					bool proceed = false;
-					for (int j = 0; j < players.back()->GetComponents()->size(); j++)
+					for (int j = 0; j < players.at(i)->GetComponents()->size(); j++)
 					{
-						if (players.back()->GetComponents()->at(j)->Type() == "Gold")
+						if (players.at(i)->GetComponents()->at(j)->Type() == "currency")
 						{
-							if (static_cast<GoldComponent*>(players.back()->GetComponents()->at(j))->Gold() >= m_itemThreeGold)
+							if (static_cast<CurrencyComponent*>(players.at(i)->GetComponents()->at(j))->value() >= m_itemThreeGold)
 							{
-								static_cast<GoldComponent*>(players.back()->GetComponents()->at(j))->Gold(static_cast<GoldComponent*>(players.back()->GetComponents()->at(j))->Gold() - m_itemThreeGold);
+								static_cast<CurrencyComponent*>(players.at(i)->GetComponents()->at(j))->value(static_cast<CurrencyComponent*>(players.at(i)->GetComponents()->at(j))->value() - m_itemThreeGold);
 								proceed = true;
 							}
 						}
@@ -514,9 +540,9 @@ void ShopInstance::Update(std::vector<Entity*> players)
 					{
 						if (m_weaponThreeSwitch)
 						{
-							for (int j = 0; j < players.back()->GetComponents()->size(); j++)
+							for (int j = 0; j < players.at(i)->GetComponents()->size(); j++)
 							{
-								if (players.back()->GetComponents()->at(j)->Type() == "weapon")
+								if (players.at(i)->GetComponents()->at(j)->Type() == "weapon")
 								{
 									//delete players.at(i)->GetComponents()->at(j);
 									players.at(i)->GetComponents()->at(j) = m_weaponThree;
@@ -526,12 +552,12 @@ void ShopInstance::Update(std::vector<Entity*> players)
 						}
 						else
 						{
-							for (int j = 0; j < players.back()->GetComponents()->size(); j++)
+							for (int j = 0; j < players.at(i)->GetComponents()->size(); j++)
 							{
-								if (players.back()->GetComponents()->at(j)->Type() == "attribute")
+								if (players.at(i)->GetComponents()->at(j)->Type() == "attribute")
 								{
-									static_cast<AttributesComponent*>(players.back()->GetComponents()->at(j))->AdditiveArmour(m_armorThree);
-									static_cast<AttributesComponent*>(players.back()->GetComponents()->at(j))->AdditiveHealth(m_healthThree);
+									static_cast<AttributesComponent*>(players.at(i)->GetComponents()->at(j))->AdditiveArmour(m_armorThree);
+									static_cast<AttributesComponent*>(players.at(i)->GetComponents()->at(j))->AdditiveHealth(m_healthThree);
 									break;
 								}
 							}

@@ -10,6 +10,7 @@ public:
 		m_xDest = 0;
 		m_yDest = 0;
 		m_distToDestination = 999999;
+		m_initialization = false;
 	};
 
 	SeekComponent(float x, float y)
@@ -18,6 +19,7 @@ public:
 		m_xDest = x;
 		m_yDest = y;
 		m_distToDestination = 999999;
+		m_initialization = false;
 	};
 
 	~SeekComponent() {};
@@ -37,9 +39,13 @@ public:
 	void setDistanceToDestination(float dist) { m_distToDestination = dist; };
 	float getDistanceToDestination() { return m_distToDestination; };
 
+	bool getInitialization() { return m_initialization; };
+	void setInitialization(bool initialization) { m_initialization = initialization; }
+
 private:
 	float m_xDest;
 	float m_yDest;
 
 	float m_distToDestination;
+	bool m_initialization;
 };

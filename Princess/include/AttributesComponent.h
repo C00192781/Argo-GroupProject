@@ -21,6 +21,10 @@ public:
 
 		m_movementSpeed = 10;
 		m_maxMovementSpeed = 10;
+
+		m_additiveArmour = 0;
+		m_additiveHealth = 0;
+		m_additiveMovementSpeed = 0;
 	};
 
 
@@ -28,6 +32,9 @@ public:
 	{ 
 		m_type = "attribute";
 		momento = new AttributesMomento(health, maxHealth, armour, maxArmour, movement, maxMovement, 0, 0, 0);
+		m_additiveArmour = 0;
+		m_additiveHealth = 0;
+		m_additiveMovementSpeed = 0;
 	};
 
 	~AttributesComponent()

@@ -22,14 +22,14 @@ void MovementSystem::Update(float deltaTime)
 			{
 				//cooldown on rolling
 				countedFrames[0] = 0;
-				cooldownFrames[0] = 120; //
+				cooldownFrames[0] = 60; //
 				m_rollEnd = true;
 				movementComponent->setLockedOrientation(false);
 			}
 
 			if (movementComponent != nullptr && positionComponent != nullptr && collisionComponent != nullptr)
 			{
-				if (m_entities.at(i)->ID() == "Player")
+				if (m_entities.at(i)->ID() == "Player" && m_entities.at(i)->Control())
 				{
 					SpriteComponent* temp = static_cast<SpriteComponent*>(m_entities.at(i)->FindComponent("SC"));
 					temp->Direction(0); //undo temporary roll animation
@@ -91,7 +91,15 @@ void MovementSystem::Update(float deltaTime)
 
 					if (movementComponent->getLockedOrientation() == false)
 					{
-						movementComponent->setOrientation((atan2((float)m_mouseY - (m_windowHeight / 2), (float)m_mouseX - (m_windowWidth / 2))) * (180 / 3.142) + 90);
+						if (m_eventListener->controllerActivated == false)
+						{
+							movementComponent->setOrientation((atan2((float)m_mouseY - (m_windowHeight / 2), (float)m_mouseX - (m_windowWidth / 2))) * (180 / 3.142) + 90);
+						}
+						else
+						{
+							float cosA = m_eventListener->RightStick;
+							movementComponent->setOrientation(cosA);
+						}
 					}
 
 				}

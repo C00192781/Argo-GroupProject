@@ -1,5 +1,6 @@
-#include "MenuSystem.h"
+//#include "MenuSystem.h"
 
+/*
 MenuSystem::MenuSystem(EventListener * listener, StateManager * states)
 {
 	m_eventListener = listener;
@@ -598,3 +599,4 @@ void MenuSystem::UnloadComponent(int x)
 {
 
 }
+*/

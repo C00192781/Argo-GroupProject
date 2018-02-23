@@ -25,6 +25,7 @@
     <ClCompile Include="External Dependencies\SimpleJSON\JSONValue.cpp" />
     <ClCompile Include="src\AchievementHandler.cpp" />
     <ClCompile Include="src\AISystem.cpp" />
+    <ClCompile Include="src\AStar.cpp" />
     <ClCompile Include="src\AttackSystem.cpp" />
     <ClCompile Include="src\BasicEnemy.cpp" />
     <ClCompile Include="src\BattleMap.cpp" />
@@ -46,7 +47,9 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MementoCaretaker.cpp" />
     <ClCompile Include="src\MenuSystem.cpp" />
+    <ClCompile Include="src\MenuInstance.cpp" />
     <ClCompile Include="src\MovementSystem.cpp" />
+    <ClCompile Include="src\OptionsInstance.cpp" />
     <ClCompile Include="src\Pickup.cpp" />
     <ClCompile Include="src\Princess.cpp" />
     <ClCompile Include="src\Quad.cpp" />
@@ -71,6 +74,7 @@
     <ClInclude Include="include\AchievementHandler.h" />
     <ClInclude Include="include\AiLogicComponent.h" />
     <ClInclude Include="include\AISystem.h" />
+    <ClInclude Include="include\AStar.h" />
     <ClInclude Include="include\AttackComponent.h" />
     <ClInclude Include="include\AttackSystem.h" />
     <ClInclude Include="include\AttributesComponent.h" />
@@ -97,6 +101,9 @@
     <ClInclude Include="include\Factory.h" />
     <ClInclude Include="include\GameOverInstance.h" />
     <ClInclude Include="include\GoldComponent.h" />
+    <ClInclude Include="include\Graph.h" />
+    <ClInclude Include="include\GraphArc.h" />
+    <ClInclude Include="include\GraphNode.h" />
     <ClInclude Include="include\GrassTileFactory.h" />
     <ClInclude Include="include\HealthSystem.h" />
     <ClInclude Include="include\InputHandler.h" />
@@ -105,11 +112,12 @@
     <ClInclude Include="include\MementoCaretaker.h" />
     <ClInclude Include="include\LTimer.h" />
     <ClInclude Include="include\MenuComponent.h" />
-    <ClInclude Include="include\MenuSystem.h" />
+    <ClInclude Include="include\MenuInstance.h" />
     <ClInclude Include="include\MovementComponent.h" />
     <ClInclude Include="include\MovementSystem.h" />
     <ClInclude Include="include\MusicComponent.h" />
     <ClInclude Include="include\Observer.h" />
+    <ClInclude Include="include\OptionsInstance.h" />
     <ClInclude Include="include\Pickup.h" />
     <ClInclude Include="include\PickupFactory.h" />
     <ClInclude Include="include\PositionComponent.h" />

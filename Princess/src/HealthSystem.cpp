@@ -147,15 +147,15 @@ void HealthSystem::PlayerOneUpdate()
 				{
 					if (i < healthHolder)
 					{
-						static_cast<SpriteComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->SheetX(0);
+						static_cast<SpriteComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->Direction(0);
 					}
 					else if ((float)i + 0.5 == (float)m_attributeComponents.at(0)->Health() / 2)
 					{
-						static_cast<SpriteComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->SheetX(1);
+						static_cast<SpriteComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->Direction(1);
 					}
 					else
 					{
-						static_cast<SpriteComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->SheetX(2);
+						static_cast<SpriteComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->Direction(2);
 					}
 					spriteGot = true;
 				}
@@ -163,12 +163,12 @@ void HealthSystem::PlayerOneUpdate()
 				{
 					if (i < 6)
 					{
-						static_cast<PositionComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->setX((i * 4) * 13);
+						static_cast<PositionComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->setX((i * 4) * 3);
 						static_cast<PositionComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->setY(0);
 					}
 					else
 					{
-						static_cast<PositionComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->setX(((i - 6) * 4) * 13);
+						static_cast<PositionComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->setX(((i - 6) * 4) * 3);
 						static_cast<PositionComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->setY(4 * 3);
 					}
 					positionGot = true;
@@ -197,22 +197,22 @@ void HealthSystem::PlayerOneUpdate()
 				{
 					if (i < 12 + armorHolder)
 					{
-						static_cast<SpriteComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->SheetX(0);
+						static_cast<SpriteComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->Direction(0);
 					}
 					else if ((float)i + 0.5 == 12 + (float)m_attributeComponents.at(0)->Armour() / 2)
 					{
-						static_cast<SpriteComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->SheetX(1);
+						static_cast<SpriteComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->Direction(1);
 					}
 					else
 					{
-						static_cast<SpriteComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->SheetX(2);
+						static_cast<SpriteComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->Direction(2);
 					}
 					spriteGot = true;
 				}
 				else if (m_player1Hearts.at(i)->GetComponents()->at(j)->Type() == "PC")
 				{
-					static_cast<PositionComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->setX(((i - 12) * 4) * 13);
-					static_cast<PositionComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->setY(20 * 3);
+					static_cast<PositionComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->setX(((i - 12) * 4) * 3);
+					static_cast<PositionComponent*>(m_player1Hearts.at(i)->GetComponents()->at(j))->setY(8 * 3);
 					positionGot = true;
 				}
 			}
@@ -223,7 +223,6 @@ void HealthSystem::PlayerOneUpdate()
 		}
 	}
 }
-
 void HealthSystem::PlayerTwoUpdate()
 {
 	int healthHolder = m_attributeComponents.at(1)->Health() / 2;

@@ -1,11 +1,12 @@
 #include "DungeonMap.h"
 
-DungeonMap::DungeonMap(SystemManager * sm, StateManager * s, ResourceManager * rm, EventListener *listener)
+DungeonMap::DungeonMap(SystemManager * sm, StateManager * s, ResourceManager * rm, EventListener *listener, AStar *aStar)
 {
 	m_systemManager = sm;
 	m_stateManager = s;
 	m_resourceManager = rm;
 	m_listener = listener;
+	m_aStar = aStar;
 
 	m_resourceManager->AddMap("DungeonMap1", "DungeonMap1.json");
 	m_resourceManager->AddMap("DungeonMap2", "DungeonMap2.json");
@@ -52,22 +53,27 @@ void DungeonMap::Generate()
 	if (randomMapNumber == 0)
 	{
 		mapName = "DungeonMap1";
+		m_aStar->setCurrentDungeon(1);
 	}
 	else if (randomMapNumber == 1)
 	{
 		mapName = "DungeonMap2";
+		m_aStar->setCurrentDungeon(2);
 	}
 	else if (randomMapNumber == 2)
 	{
 		mapName = "DungeonMap3";
+		m_aStar->setCurrentDungeon(3);
 	}
 	else if (randomMapNumber == 3)
 	{
 		mapName = "DungeonMap4";
+		m_aStar->setCurrentDungeon(4);
 	}
 	else
 	{
 		mapName = "DungeonMap5";
+		m_aStar->setCurrentDungeon(5);
 	}
 
 	DungeonTileFactory factory;
@@ -96,38 +102,16 @@ void DungeonMap::Generate()
 				m_startPoint = { j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 };
 
 				// sets player's position to the start of the dungeon
-				Entity* player = m_systemManager->controlSystem->FindEntity("Player");
 
-				/*
-				if (player->Control() == true)
-				{
-					for (int k = 0; k < player->GetComponents()->size(); k++)
-					{
-						
-						if (player->GetComponents()->at(k)->Type() == "HMC")
-						{
-							if (static_cast<HeartManagerComponent*>(player->GetComponents()->at(k))->HeartType() == HeartTypes::HEALTH)
-							{
-								m_systemManager->healthSystem->UpdateMaxHeartsUI(player, player);
-								for (int c = 0; c < static_cast<HeartManagerComponent*>(player->GetComponents()->at(k))->HeartsVector()->size(); c++)
-								{
-									m_systemManager->renderSystem->AddEntity(static_cast<HeartManagerComponent*>(player->GetComponents()->at(k))->HeartsVector()->at(c));
-								}
-							}
-							else if (static_cast<HeartManagerComponent*>(player->GetComponents()->at(k))->HeartType() == HeartTypes::ARMOUR)
-							{
-								m_systemManager->healthSystem->UpdateMaxArmourUI(player, player);
-								for (int c = 0; c < static_cast<HeartManagerComponent*>(player->GetComponents()->at(k))->HeartsVector()->size(); c++)
-								{
-									m_systemManager->renderSystem->AddEntity(static_cast<HeartManagerComponent*>(player->GetComponents()->at(k))->HeartsVector()->at(c));
-								}
-							}
-						}
-						
-					}
+			//	Entity* player = m_systemManager->collisionSystem->FindEntity("Player");
 
-				}
-				*/
+				Entity* player = m_systemManager->collisionSystem->FindEntity("Player", 3); //discern between players
+				Entity* player2 = m_systemManager->collisionSystem->FindEntity("Player", 2); //discern between players
+				Entity* player3 = m_systemManager->collisionSystem->FindEntity("Player", 1); //discern between players
+				Entity* player4 = m_systemManager->collisionSystem->FindEntity("Player", 0); //discern between players
+				player2->Active(true);
+				player3->Active(true);
+				player4->Active(true);
 				
 				if (player != nullptr)
 				{
@@ -140,10 +124,44 @@ void DungeonMap::Generate()
 				}
 
 
+
+				if (player2 != nullptr)
+				{
+					CollisionComponent* pos = static_cast<CollisionComponent*>(player2->FindComponent("collision"));
+
+					if (pos != nullptr)
+					{
+						pos->setPosition(m_startPoint.x + 50, m_startPoint.y);
+					}
+				}
+
+				if (player3 != nullptr)
+				{
+					CollisionComponent* pos = static_cast<CollisionComponent*>(player3->FindComponent("collision"));
+
+					if (pos != nullptr)
+					{
+						pos->setPosition(m_startPoint.x, m_startPoint.y +50);
+					}
+				}
+
+
+				if (player4 != nullptr)
+				{
+					CollisionComponent* pos = static_cast<CollisionComponent*>(player3->FindComponent("collision"));
+
+					if (pos != nullptr)
+					{
+						pos->setPosition(m_startPoint.x + 50, m_startPoint.y + 50);
+					}
+				}
+
+				//more player pos here 
 			}
 			else if (m_resourceManager->GetMapElement(mapName, i, j) == "E") //make a == "X" for pickups or w/e
 			{
-				if (m_enemies.size() < 2)
+			
+				if (m_enemies.size() < 6) //debug
 				{
 					m_entities.push_back(factory.Floor("DungeonTiles", j, i, m_systemManager->renderSystem->GetScale()));
 					m_systemManager->renderSystem->AddEntity(m_entities.back());
@@ -154,21 +172,24 @@ void DungeonMap::Generate()
 					Entity* pickup = nullptr;
 					//ADD SOME ITEM SPAWNS AROUND HERE
 					if (randNum == 0) {
-						enemy = enemyFactory.CharA("Demon", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
+						enemy = enemyFactory.CharA("Blue", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
+						pickup = pickupFactory.PickupA("Pickup", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 50);
 					}
 					else if (randNum == 1)
 					{
-						enemy = enemyFactory.CharB("Demon", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
+						enemy = enemyFactory.CharB("Blue", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
+						pickup = pickupFactory.PickupB("Pickup", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 100);
 					}
 					else if (randNum == 2)
 					{
-						enemy = enemyFactory.CharC("Demon", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
+						enemy = enemyFactory.CharC("Blue", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
+						pickup = pickupFactory.PickupC("Pickup", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 150);
 					}
 					else if (randNum == 3)
 					{
-						enemy = enemyFactory.CharD("Demon", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
+						enemy = enemyFactory.CharD("Blue", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
 
-						pickup = pickupFactory.PickupA("Red", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 5);
+						pickup = pickupFactory.PickupD("Pickup", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 200);
 					}
 
 					// chance for spawner to not spawn anything
@@ -194,6 +215,7 @@ void DungeonMap::Generate()
 						m_systemManager->collisionSystem->AddEntity(pickup);
 					}
 				}
+				
 			}
 		}
 	}
@@ -203,7 +225,7 @@ void DungeonMap::Generate()
 	for (int i = 0; i < 100; i++)
 	{
 		Entity* projectile = new Entity("Projectile");
-		projectile->AddComponent(new SpriteComponent("Arrow", 2, 0, 0, 0, 16, 8, 0));
+		projectile->AddComponent(new SpriteComponent("Arrow", 2, 0, 0, 0, 4, 4, 0));
 		projectile->AddComponent(new PositionComponent(SDL_Point{ -5000, -5000 }));
 		projectile->AddComponent(new ProjectileComponent(400));
 		projectile->AddComponent(new MovementComponent());
@@ -221,7 +243,7 @@ void DungeonMap::Generate()
 
 	std::cout << projectileEntities->size() << std::endl;
 
-	m_systemManager->healthSystem->ActivateHearts();
+	//m_systemManager->healthSystem->ActivateHearts();
 
 	m_systemManager->collisionSystem->updateBounds(SDL_Rect{0, 0, 16 * 24 * (int)m_systemManager->renderSystem->GetScale(), 16 * 24 * (int)m_systemManager->renderSystem->GetScale() });
 }
