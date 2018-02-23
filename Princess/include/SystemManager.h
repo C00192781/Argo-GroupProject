@@ -13,14 +13,15 @@
 #include "SoundSystem.h"
 #include "HealthSystem.h"
 #include "TextRenderSystem.h"
-#include "MenuSystem.h"
+//#include "MenuSystem.h"
 #include "NetworkSystem.h"
+#include "SoundSystem.h"
 
 class SystemManager
 {
 public:
 	SystemManager() {}
-	SystemManager(ResourceManager *resourceManager, SDL_Renderer* gameRenderer, EventListener *listener, std::vector<Entity*>* projectiles, StateManager* state);
+	SystemManager(ResourceManager *resourceManager, SDL_Renderer* gameRenderer, EventListener *listener, std::vector<Entity*>* projectiles, AStar* aStar);
 
 	RenderSystem *   renderSystem;
 	MovementSystem * movementSystem;
@@ -28,7 +29,6 @@ public:
 	AttackSystem* attackSystem;
 	CollisionSystem *collisionSystem;
 	HealthSystem * healthSystem;
-	MenuSystem * menuSystem;
 	AiSystem * aiSystem;
 	ButtonSystem * buttonSystem;
 	TextRenderSystem * textRenderSystem;
@@ -36,8 +36,9 @@ public:
 	NetworkSystem * networkSystem;
 
 	void Update(float deltaTime, std::vector<Entity*> players);
-
-
+	void Update() {};
+	void MassSelectiveClear();
+	void MassClear();
 	//void Update(float deltaTime);
 
 private:
@@ -45,8 +46,6 @@ private:
 	//RenderSystem *   RenderSystem;
 	//MovementSystem * MovementSystem;
 	//ControlSystem *  ControlSystem;
-
-	void Update() {};
 };
 #endif
 

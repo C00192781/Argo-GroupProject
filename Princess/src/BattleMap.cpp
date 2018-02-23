@@ -73,7 +73,7 @@ void BattleMap::Generate(std::string type)
 		}
 	}
 
-	int numOfEnemies = 2;//(rand() % 10) + 5;
+	int numOfEnemies = 5;//(rand() % 10) + 5;
 
 	BasicEnemy enemyFactory;
 
@@ -136,7 +136,15 @@ void BattleMap::Generate(std::string type)
 
 
 	// sets player's position to the start of the dungeon
-	Entity* player = m_systemManager->collisionSystem->FindEntity("Player");
+//	Entity* player = m_systemManager->collisionSystem->FindEntity("Player");
+
+	Entity* player = m_systemManager->collisionSystem->FindEntity("Player", 3); //discern between players
+	Entity* player2 = m_systemManager->collisionSystem->FindEntity("Player", 2); //discern between players
+	Entity* player3 = m_systemManager->collisionSystem->FindEntity("Player", 1); //discern between players
+	Entity* player4 = m_systemManager->collisionSystem->FindEntity("Player", 0); //discern between players
+	player2->Active(true);
+	player3->Active(true);
+	player4->Active(true);
 
 
 	if (player != nullptr)
@@ -145,7 +153,39 @@ void BattleMap::Generate(std::string type)
 
 		if (pos != nullptr)
 		{
-			pos->setPosition(274, 208);
+			pos->setPosition(174, 108);
+		}
+	}
+
+	if (player2 != nullptr)
+	{
+		CollisionComponent* pos = static_cast<CollisionComponent*>(player2->FindComponent("collision"));
+
+		if (pos != nullptr)
+		{
+			pos->setPosition(324, 108);
+		}
+	}
+
+
+	if (player3 != nullptr)
+	{
+		CollisionComponent* pos = static_cast<CollisionComponent*>(player3->FindComponent("collision"));
+
+		if (pos != nullptr)
+		{
+			pos->setPosition(324, 348);
+		}
+	}
+
+
+	if (player4 != nullptr)
+	{
+		CollisionComponent* pos = static_cast<CollisionComponent*>(player4->FindComponent("collision"));
+
+		if (pos != nullptr)
+		{
+			pos->setPosition(174, 348);
 		}
 	}
 

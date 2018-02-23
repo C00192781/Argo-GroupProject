@@ -1,6 +1,6 @@
 #include "SystemManager.h"
 
-SystemManager::SystemManager(ResourceManager *resourceManager, SDL_Renderer* gameRenderer, EventListener *listener, std::vector<Entity*>* projectiles, StateManager* state)
+SystemManager::SystemManager(ResourceManager *resourceManager, SDL_Renderer* gameRenderer, EventListener *listener, std::vector<Entity*>* projectiles, AStar* aStar)
 {
 	networkSystem = new NetworkSystem(listener);
 
@@ -25,14 +25,11 @@ SystemManager::SystemManager(ResourceManager *resourceManager, SDL_Renderer* gam
 	collisionSystem = new CollisionSystem(listener);
 	collisionSystem->Active(true);
 
-	aiSystem = new AiSystem();
+	aiSystem = new AiSystem(aStar);
 	aiSystem->Active(true);
 
 	healthSystem = new HealthSystem();
 	healthSystem->Active(true);
-
-	menuSystem = new MenuSystem(listener, state);
-	menuSystem->Active(true);
 
 	buttonSystem = new ButtonSystem(listener);
 	buttonSystem->Active(true);
@@ -57,8 +54,6 @@ void SystemManager::Update(float deltaTime, std::vector<Entity*> players)
 
 	if (healthSystem->Active()) { healthSystem->Update(deltaTime); }
 
-	if (menuSystem->Active()) { menuSystem->Update(); }
-
 	if (networkSystem->Active()) { networkSystem->Update(deltaTime); }
 
 	//if (soundSystem->Active()) { soundSystem->Update(); }
@@ -68,3 +63,30 @@ void SystemManager::Update(float deltaTime, std::vector<Entity*> players)
 	if (textRenderSystem->Active()) { textRenderSystem->Update(); }
 }
 
+void SystemManager::MassSelectiveClear()
+{
+	controlSystem->SelectiveClear();
+	attackSystem->SelectiveClear();
+	aiSystem->SelectiveClear();
+	collisionSystem->SelectiveClear();
+	movementSystem->SelectiveClear();
+	buttonSystem->SelectiveClear();
+	renderSystem->SelectiveClear();
+	textRenderSystem->SelectiveClear();
+	healthSystem->SelectiveClear();
+	soundSystem->SelectiveClear();
+}
+
+void SystemManager::MassClear()
+{
+	controlSystem->FullClear();
+	attackSystem->FullClear();
+	aiSystem->FullClear();
+	collisionSystem->FullClear();
+	movementSystem->FullClear();
+	buttonSystem->FullClear();
+	renderSystem->FullClear();
+	textRenderSystem->FullClear();
+	healthSystem->FullClear();
+	soundSystem->FullClear();
+}

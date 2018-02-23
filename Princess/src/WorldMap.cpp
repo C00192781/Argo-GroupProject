@@ -15,6 +15,13 @@ void WorldMap::Generate(int width, int height, int chaosFactor)
 {
 	m_active = true;
 
+	Entity* player2 = m_systemManager->collisionSystem->FindEntity("Player", 2); //discern between players
+	Entity* player3 = m_systemManager->collisionSystem->FindEntity("Player", 1); //discern between players
+	Entity* player4 = m_systemManager->collisionSystem->FindEntity("Player", 0); //discern between players
+	player2->Active(false);
+	player3->Active(false);
+	player4->Active(false);
+
 	for (int i = 0; i < m_entities.size(); i++)
 	{
 		delete m_entities.at(i);
@@ -202,6 +209,7 @@ void WorldMap::Generate(int width, int height, int chaosFactor)
 				mapHolder.at(xHolder).at(yHolder) = "Town";
 				m_entities.push_back(factory.Town("WorldTurf", xHolder * (16 * m_systemManager->renderSystem->GetScale()), yHolder * (16 * m_systemManager->renderSystem->GetScale())));
 				m_systemManager->renderSystem->AddEntity(m_entities.back());
+				m_systemManager->collisionSystem->AddEntity(m_entities.back()); //TECH RIGHT HERE
 				done = true;
 			}
 			giveUp--;
@@ -221,7 +229,7 @@ void WorldMap::Generate(int width, int height, int chaosFactor)
 				mapHolder.at(xHolder).at(yHolder) = "Dungeon";
 				m_entities.push_back(factory.Dungeon("WorldTurf", xHolder * (16 * m_systemManager->renderSystem->GetScale()), yHolder * (16 * m_systemManager->renderSystem->GetScale())));
 				m_systemManager->renderSystem->AddEntity(m_entities.back());
-				m_systemManager->collisionSystem->AddEntity(m_entities.back());
+				m_systemManager->collisionSystem->AddEntity(m_entities.back()); //TECH RIGHT HERE
 				done = true;
 			}
 			giveUp--;
@@ -587,8 +595,11 @@ void WorldMap::Load()
 	for (int i = 0; i < m_entities.size(); i++)
 	{
 		m_systemManager->renderSystem->AddEntity(m_entities.at(i));
-
 		if (m_entities.at(i)->ID() == "Dungeon")
+		{
+			m_systemManager->collisionSystem->AddEntity(m_entities.at(i));
+		}
+		else if (m_entities.at(i)->ID() == "Town")
 		{
 			m_systemManager->collisionSystem->AddEntity(m_entities.at(i));
 		}
@@ -597,7 +608,13 @@ void WorldMap::Load()
 	// sets player's position to the the previous location on the world map after random encounter
 	if (m_listener->EncounterToWorld == true)
 	{
-		Entity* player = m_systemManager->collisionSystem->FindEntity("Player");
+		Entity* player = m_systemManager->collisionSystem->FindEntity("Player", 3); //discern between players
+		Entity* player2 = m_systemManager->collisionSystem->FindEntity("Player", 2); //discern between players
+		Entity* player3 = m_systemManager->collisionSystem->FindEntity("Player", 1); //discern between players
+		Entity* player4 = m_systemManager->collisionSystem->FindEntity("Player", 0); //discern between players
+		player2->Active(false);
+		player3->Active(false);
+		player4->Active(false);
 
 		if (player != nullptr)
 		{
@@ -613,7 +630,7 @@ void WorldMap::Load()
 	// sets player's position to the start of the dungeon
 	if (m_listener->DungeonToWorld == true)
 	{
-		Entity* player = m_systemManager->collisionSystem->FindEntity("Player");
+		Entity* player = m_systemManager->collisionSystem->FindEntity("Player", 3);
 
 		if (player != nullptr)
 		{
@@ -633,13 +650,37 @@ void WorldMap::Load()
 		}
 	}
 
+	// sets player's position to the start of the dungeon FGBJFDGFGD
+	if (m_listener->TownToWorld == true)
+	{
+		Entity* player = m_systemManager->collisionSystem->FindEntity("Player", 3);
+
+		player->Active(true);
+
+		if (player != nullptr)
+		{
+			CollisionComponent* pos = static_cast<CollisionComponent*>(player->FindComponent("collision"));
+
+			if (pos != nullptr)
+			{
+				CollisionComponent* townPos = static_cast<CollisionComponent*>(m_systemManager->collisionSystem->getCurrentTown()->FindComponent("collision"));
+
+				if (townPos != nullptr)
+				{
+					pos->setPosition(townPos->getX(), townPos->getY());
+				}
+			}
+
+			m_systemManager->collisionSystem->getCurrentTown()->Active(false);
+		}
+	} //SFSFNSDBFJSDBFSDB
 	m_listener->ToWorldMap = true;
 }
 
 void WorldMap::Update()
 {
 	// sets player's position to the start of the dungeon
-	Entity* player = m_systemManager->movementSystem->FindEntity("Player");
+	Entity* player = m_systemManager->movementSystem->FindEntity("Player", 3); //discern between players
 
 	if (player != nullptr)
 	{
@@ -649,7 +690,7 @@ void WorldMap::Update()
 		{
 			if (movement->getMoving() == true)
 			{
-				//if ((rand() % 10000) >= 9950)
+				//if ((rand() % 10000) >= 9990)
 				//{
 				//	PositionComponent* pos = static_cast<PositionComponent*>(player->FindComponent("PC"));
 				//

@@ -6,7 +6,7 @@
 class TownInstance : public Instance
 {
 public:
-	TownInstance(SystemManager * sys);
+	TownInstance(SystemManager * sys, EventListener * e);
 	~TownInstance();
 
 	void Generate(std::string type);
@@ -17,6 +17,7 @@ public:
 private:
 
 	SystemManager * m_systemManager;
+	EventListener * m_eventListener;
 
 };
 #endif

@@ -1,7 +1,9 @@
 #include "ButtonSystem.h"
 
+
 ButtonSystem::ButtonSystem(EventListener * e)
 {
+
 	m_eventListener = e;
 	m_entities.push_back(new Entity("Null"));
 	delete m_entities.back();
@@ -18,7 +20,7 @@ void ButtonSystem::Update()
 	SDL_GetMouseState(&x, &y);
 	for (int i = 0; i < m_entities.size(); i++)
 	{
-		std::cout << x << "," << y << std::endl;
+		//std::cout << x << "," << y << std::endl;
 		SDL_Rect holderA = m_buttonComponents.at(i)->Rect();
 		holderA.x = m_positionComponents.at(i)->getX();
 		holderA.y = m_positionComponents.at(i)->getY();
@@ -35,10 +37,63 @@ void ButtonSystem::Update()
 				m_buttonComponents.at(i)->Activated(true);
 			}
 		}
-		else
-		{
-			m_buttonComponents.at(i)->Selected(false);
-		}
+
+		//if (m_buttonComponents.at(3)->Activated()) //leave
+		//{
+		//	m_eventListener->TownToWorld = true;
+		//
+		//	for (int i = 0; i < m_buttonComponents.size(); i++)
+		//	{ 
+		//	//deactivate buttons somehow
+		//	}
+		//
+		//}
+		//
+		//if (m_buttonComponents.at(2)->Activated()) //rumour
+		//{
+		//
+		//
+		//	int number_of_lines = 1;
+		//
+		//	// a vector to hold all the indices: 0 to number_of_lines
+		//	std::vector<int> line_indices(number_of_lines);
+		//	std::iota(begin(line_indices), end(line_indices), 0); // init line_indices
+		//
+		//														  // C++11 random library (should be preferred over rand()/srand())
+		//	std::random_device r;
+		//	std::seed_seq seed{ r(), r(), r(), r(), r(), r(), r(), r() };
+		//	std::mt19937 eng(seed);
+		//
+		//	// shuffle the line_indices:
+		//	std::shuffle(begin(line_indices), end(line_indices), eng);
+		//
+		//	int number_of_lines_to_select = 1;
+		//	assert(number_of_lines_to_select <= number_of_lines);
+		//
+		//	std::string line;
+		//	std::ifstream file("Rumours.txt");
+		//
+		//	int line_number = 0;
+		//	while (std::getline(file, line))
+		//	{
+		//
+		//		for (int i = 0; i < number_of_lines_to_select; ++i)
+		//		{
+		//			if (line_number == line_indices[i]) {
+		//				std::cout << line << '\n';
+		//
+		//			}
+		//		}
+		//		++line_number;
+		//	}
+		//
+		//
+		//}
+
+		//else
+		//{
+		//	m_buttonComponents.at(i)->Selected(false);
+		//}
 
 		if (m_buttonComponents.at(i)->Timer() <= 0 && m_buttonComponents.at(i)->Activated())
 		{

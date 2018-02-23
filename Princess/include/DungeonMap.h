@@ -7,7 +7,7 @@
 class DungeonMap : public Instance
 {
 public:
-	DungeonMap(SystemManager * sm, StateManager * s, ResourceManager *rm, EventListener *listener);
+	DungeonMap(SystemManager * sm, StateManager * s, ResourceManager *rm, EventListener *listener, AStar *aStar);
 	~DungeonMap();
 
 	void Update() {}
@@ -23,4 +23,5 @@ private:
 	std::vector<Entity*> m_enemies; // points to the enemies in collision system
 	std::vector<Entity*> m_pickups; // points to the pickups in collision system
 	float m_timeRemaining;
+	AStar * m_aStar;
 };
