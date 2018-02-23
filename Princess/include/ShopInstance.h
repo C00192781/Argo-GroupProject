@@ -2,7 +2,7 @@
 
 #include "Instance.h"
 #include "SystemManager.h"
-#include "GoldComponent.h"
+#include "CurrencyComponent.h"
 #include "WeaponComponent.h"
 
 class ShopInstance : public Instance

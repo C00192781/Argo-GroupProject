@@ -190,7 +190,7 @@ void CollisionSystem::filterCollisions(int entityIndex, int entityColIndex, int 
 						m_currentTown = m_collidableEntities.at(collidableIndex);
 					}
 				}
-				else if (m_collidableEntities.at(collidableIndex)->ID() == "Chocolate")
+				else if (m_collidableEntities.at(collidableIndex)->ID() == "Chocolate" || m_collidableEntities.at(collidableIndex)->ID() == "Jewels" || m_collidableEntities.at(collidableIndex)->ID() == "Gold" || m_collidableEntities.at(collidableIndex)->ID() == "Literature")
 				{
 					pickupCollision(collidableIndex, entityIndex); //I THINK
 				}
