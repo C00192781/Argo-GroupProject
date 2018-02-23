@@ -20,7 +20,23 @@ OptionsInstance::OptionsInstance(SystemManager* s, EventListener * listener, Sta
 	sprite = new SpriteComponent("Button", 3, 0, 0, 0, 32, 16, 0);
 	sprite->Relative(true);
 	m_entities.back()->AddComponent(sprite);
-	m_entities.back()->AddComponent(new PositionComponent(SDL_Point{ 450, 150 + 74 }));
+	m_entities.back()->AddComponent(new PositionComponent(SDL_Point{ 550, 150 + 74 }));
+	m_entities.back()->AddComponent(new ButtonComponent(0, 0, 32 * 3, 16 * 3));
+	m_entities.back()->AddComponent(new TextComponent("munro", "Vol -", SDL_Color{ 255,255,255,255 }, 32 * 3, 9999));
+
+	m_entities.push_back(new Entity("MusicUp"));
+	sprite = new SpriteComponent("Button", 3, 0, 0, 0, 32, 16, 0);
+	sprite->Relative(true);
+	m_entities.back()->AddComponent(sprite);
+	m_entities.back()->AddComponent(new PositionComponent(SDL_Point{ 250, 250 + 74 }));
+	m_entities.back()->AddComponent(new ButtonComponent(0, 0, 32 * 3, 16 * 3));
+	m_entities.back()->AddComponent(new TextComponent("munro", "Vol +", SDL_Color{ 255,255,255,255 }, 32 * 3, 9999));
+
+	m_entities.push_back(new Entity("MusicDown"));
+	sprite = new SpriteComponent("Button", 3, 0, 0, 0, 32, 16, 0);
+	sprite->Relative(true);
+	m_entities.back()->AddComponent(sprite);
+	m_entities.back()->AddComponent(new PositionComponent(SDL_Point{ 550, 250 + 74 }));
 	m_entities.back()->AddComponent(new ButtonComponent(0, 0, 32 * 3, 16 * 3));
 	m_entities.back()->AddComponent(new TextComponent("munro", "Vol -", SDL_Color{ 255,255,255,255 }, 32 * 3, 9999));
 
@@ -36,8 +52,12 @@ OptionsInstance::OptionsInstance(SystemManager* s, EventListener * listener, Sta
 	m_entities.back()->AddComponent(new PositionComponent(SDL_Point{ 350, 50 + 74 }));
 	m_entities.back()->AddComponent(new TextComponent("munro", "Options", SDL_Color{ 255,255,255,255 }, 9999 * 3, 16 * 3));
 
-	m_entities.push_back(new Entity("% Card"));
+	m_entities.push_back(new Entity("% Sound Card"));
 	m_entities.back()->AddComponent(new PositionComponent(SDL_Point{ 360, 150 + 74 }));
+	m_entities.back()->AddComponent(new TextComponent("munro", "100%", SDL_Color{ 255,255,255,255 }, 9999 * 3, 16 * 3));
+
+	m_entities.push_back(new Entity("% Music Card"));
+	m_entities.back()->AddComponent(new PositionComponent(SDL_Point{ 360, 250 + 74 }));
 	m_entities.back()->AddComponent(new TextComponent("munro", "100%", SDL_Color{ 255,255,255,255 }, 9999 * 3, 16 * 3));
 	Load();
 }
@@ -84,6 +104,44 @@ void OptionsInstance::Update()
 				m_eventListener->OptionsToMenu = true;
 				static_cast<ButtonComponent*>(m_entities.at(i)->FindComponent("ButtonC"))->Activated(false);
 				m_timer = 30;
+			}
+			if (m_entities.at(i)->ID() == "VolumnUp" && static_cast<ButtonComponent*>(m_entities.at(i)->FindComponent("ButtonC"))->Activated())
+			{
+				m_systemManager->soundSystem->SetSoundVolume(m_systemManager->soundSystem->GetSoundVolume() + 10);
+				static_cast<ButtonComponent*>(m_entities.at(i)->FindComponent("ButtonC"))->Activated(false);
+				m_timer = 30;
+			}
+			if (m_entities.at(i)->ID() == "VolumnDown" && static_cast<ButtonComponent*>(m_entities.at(i)->FindComponent("ButtonC"))->Activated())
+			{
+				m_systemManager->soundSystem->SetSoundVolume(m_systemManager->soundSystem->GetSoundVolume() - 10);
+				static_cast<ButtonComponent*>(m_entities.at(i)->FindComponent("ButtonC"))->Activated(false);
+				m_timer = 30;
+			}
+			if (m_entities.at(i)->ID() == "MusicUp" && static_cast<ButtonComponent*>(m_entities.at(i)->FindComponent("ButtonC"))->Activated())
+			{
+				if (m_systemManager->soundSystem->GetMusicVolume() < 100)
+				{
+					m_systemManager->soundSystem->SetMusicVolume(m_systemManager->soundSystem->GetMusicVolume() + 10);
+				}
+				static_cast<ButtonComponent*>(m_entities.at(i)->FindComponent("ButtonC"))->Activated(false);
+				m_timer = 30;
+			}
+			if (m_entities.at(i)->ID() == "MusicDown" && static_cast<ButtonComponent*>(m_entities.at(i)->FindComponent("ButtonC"))->Activated())
+			{
+				if (m_systemManager->soundSystem->GetMusicVolume()> 0)
+				{
+					m_systemManager->soundSystem->SetMusicVolume(m_systemManager->soundSystem->GetMusicVolume() - 10);
+				}
+				static_cast<ButtonComponent*>(m_entities.at(i)->FindComponent("ButtonC"))->Activated(false);
+				m_timer = 30;
+			}
+			if (m_entities.at(i)->ID() == "% Sound Card")
+			{
+				static_cast<TextComponent*>(m_entities.at(i)->FindComponent("TextComponent"))->Text("Sound " + std::to_string(m_systemManager->soundSystem->GetSoundVolume()));
+			}
+			if (m_entities.at(i)->ID() == "% Music Card")
+			{
+				static_cast<TextComponent*>(m_entities.at(i)->FindComponent("TextComponent"))->Text("Music "+std::to_string(m_systemManager->soundSystem->GetMusicVolume()));
 			}
 		}
 	}

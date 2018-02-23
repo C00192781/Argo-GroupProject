@@ -5,6 +5,7 @@
 #include "AttributesComponent.h"
 #include "SpriteComponent.h"
 #include "PositionComponent.h"
+#include "StateManager.h"
 
 class HealthSystem : public System
 {
@@ -16,10 +17,11 @@ private:
 
 	std::vector<AttributesComponent*> m_attributeComponents;
 
-	void DamageEntity(int& damageCaused, int& armour, int& health);
+	StateManager * m_stateManager;
+	//void DamageEntity(int& damageCaused, int& armour, int& health);
 	float timer;
 public:
-	HealthSystem();
+	HealthSystem(StateManager * sm);
 	~HealthSystem();
 	void AddEntity(Entity * e, std::string tag);
 	void Update() {};
@@ -28,7 +30,11 @@ public:
 	void PlayerTwoUpdate();
 	void PlayerThreeUpdate();
 	void PlayerFourUpdate();
+	void CheckIfAllDead();
 	void LoadComponent();
 	void UnloadComponent(int x);
+	void DeactivateHearts();
+	void ActivateHearts();
+	void HealAllEntities();
 };
 #endif

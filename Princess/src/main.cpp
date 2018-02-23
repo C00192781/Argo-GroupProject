@@ -167,16 +167,16 @@ int main()
 
 	std::vector<Entity*>* projectiles = new std::vector<Entity*>;
 
-	SystemManager systemManager(resourceManager, gameRenderer, listener, projectiles, aStar);
+	SystemManager systemManager(resourceManager, gameRenderer, listener, projectiles, aStar, state);
 
 	Entity * player = new Entity("Player");
 	player->Active(true);
 
-	systemManager.healthSystem->Active(true);
+	systemManager.healthSystem->Active(false);
 
 	player->AddComponent(new SpriteComponent("Red", 3, 1, 0, 0, 16, 16, 0));
 	player->AddComponent(new PositionComponent(SDL_Point{ 100, 380 }));
-	player->AddComponent(new AttributesComponent(20, 20, 1, 10, 100, 100));
+	player->AddComponent(new AttributesComponent(20, 20, 4, 10, 100, 100));
 	player->AddComponent(new MovementComponent());
 	player->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player->AddComponent(new NetworkIDComponent(0));
@@ -287,7 +287,7 @@ int main()
 	player4->Active(true);
 	player4->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
 	player4->AddComponent(new PositionComponent(SDL_Point{ 200, 380 }));
-	player4->AddComponent(new AttributesComponent(20, 20, 1, 10, 100, 100));
+	player4->AddComponent(new AttributesComponent(20, 20, 4, 10, 100, 100));
 	player4->AddComponent(new MovementComponent());
 	player4->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player4->AddComponent(new CollisionComponent(200, 380, 16, 16, 2));
@@ -326,24 +326,28 @@ int main()
 	systemManager.collisionSystem->AddEntity(player4);
 	systemManager.attackSystem->AddEntity(player4);
 	systemManager.networkSystem->AddEntity(player4);
+	systemManager.mementoSystem->AddEntity(player4);
 
 	systemManager.movementSystem->AddEntity(player3);
 	systemManager.renderSystem->AddEntity(player3);
 	systemManager.collisionSystem->AddEntity(player3);
 	systemManager.attackSystem->AddEntity(player3);
 	systemManager.networkSystem->AddEntity(player3);
+	systemManager.mementoSystem->AddEntity(player3);
 
 	systemManager.movementSystem->AddEntity(player2);
 	systemManager.renderSystem->AddEntity(player2);
 	systemManager.collisionSystem->AddEntity(player2);
 	systemManager.attackSystem->AddEntity(player2);
 	systemManager.networkSystem->AddEntity(player2);
-	
+	systemManager.mementoSystem->AddEntity(player2);
+
 	systemManager.movementSystem->AddEntity(player);
 	systemManager.renderSystem->AddEntity(player);
 	systemManager.collisionSystem->AddEntity(player);
 	systemManager.attackSystem->AddEntity(player);
 	systemManager.networkSystem->AddEntity(player);
+	systemManager.mementoSystem->AddEntity(player);
 
 	std::vector<Entity*> playerEntities;
 	playerEntities.push_back(player4);

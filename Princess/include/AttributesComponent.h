@@ -3,6 +3,7 @@
 
 #include <list>
 #include "Component.h"
+#include "AttributesMomento.h"
 #include <iostream>
 
 class AttributesComponent : public Component
@@ -29,7 +30,8 @@ public:
 
 	AttributesComponent(int health, int maxHealth, int armour, int maxArmour, int movement, int maxMovement) :m_health(health), m_maxHealth(maxHealth), m_armour(armour), m_maxArmour(maxArmour), m_movementSpeed(movement), m_maxMovementSpeed(maxMovement) 
 	{ 
-		m_type = "attribute"; 
+		m_type = "attribute";
+		momento = new AttributesMomento(health, maxHealth, armour, maxArmour, movement, maxMovement, 0, 0, 0);
 		m_additiveArmour = 0;
 		m_additiveHealth = 0;
 		m_additiveMovementSpeed = 0;
@@ -58,11 +60,32 @@ public:
 	int MaxMovementSpeed() { return m_maxMovementSpeed + m_additiveMovementSpeed; };
 	void MaxMovementSpeed(int movementSpeed) { m_maxMovementSpeed = movementSpeed; };
 
+	
+	void Save()
+	{
+		delete momento;
+		momento = new AttributesMomento(m_health, m_maxHealth, m_armour, m_maxArmour, m_movementSpeed, m_maxMovementSpeed, m_additiveArmour, m_additiveHealth,m_additiveMovementSpeed);
+	}
+
+	void Revert()
+	{
+		m_health = momento->Health();
+		m_maxHealth = momento->MaxHealth();
+		m_armour = momento->Armour();
+		m_maxArmour = momento->MaxArmour();
+		m_movementSpeed = momento->MovementSpeed();
+		m_maxMovementSpeed = momento->MaxMovementSpeed();
+		m_additiveArmour = momento->AdditiveArmour();
+		m_additiveHealth = momento->AdditiveHealth();
+		m_additiveMovementSpeed = momento->AdditiveMovementSpeed();
+	}
+
 	void AdditiveArmour(int x) { m_additiveArmour = x; };
 	int AdditiveArmour() { return m_additiveArmour; }
 	void AdditiveHealth(int x) { m_additiveHealth = x; };
 	int AdditiveHealth() { return m_additiveHealth; }
 	void AdditiveMovement(int x) { m_additiveMovementSpeed = x; };
+
 
 
 private:
@@ -76,6 +99,11 @@ private:
 
 	int m_movementSpeed;
 	int m_maxMovementSpeed;
+
+	//holds previous state of the object
+	AttributesMomento * momento;
+
 	int m_additiveMovementSpeed;
+
 };
 #endif

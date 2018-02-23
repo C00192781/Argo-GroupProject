@@ -1,6 +1,6 @@
 #include "SystemManager.h"
 
-SystemManager::SystemManager(ResourceManager *resourceManager, SDL_Renderer* gameRenderer, EventListener *listener, std::vector<Entity*>* projectiles, AStar* aStar)
+SystemManager::SystemManager(ResourceManager *resourceManager, SDL_Renderer* gameRenderer, EventListener *listener, std::vector<Entity*>* projectiles, AStar* aStar, StateManager &state)
 {
 	networkSystem = new NetworkSystem(listener);
 
@@ -28,7 +28,7 @@ SystemManager::SystemManager(ResourceManager *resourceManager, SDL_Renderer* gam
 	aiSystem = new AiSystem(aStar);
 	aiSystem->Active(true);
 
-	healthSystem = new HealthSystem();
+	healthSystem = new HealthSystem(&state);
 	healthSystem->Active(true);
 
 	buttonSystem = new ButtonSystem(listener);
@@ -36,6 +36,9 @@ SystemManager::SystemManager(ResourceManager *resourceManager, SDL_Renderer* gam
 
 	soundSystem = new SoundSystem(resourceManager);
 	soundSystem->Active(true);
+
+	mementoSystem = new MementoCaretaker(&state);
+	mementoSystem->Active(true);
 }
 
 void SystemManager::Update(float deltaTime, std::vector<Entity*> players)
@@ -60,6 +63,8 @@ void SystemManager::Update(float deltaTime, std::vector<Entity*> players)
 
 	if (renderSystem->Active()) { renderSystem->Update(); }
 
+	if (mementoSystem->Active()) { mementoSystem->Update(); }
+
 	if (textRenderSystem->Active()) { textRenderSystem->Update(); }
 }
 
@@ -76,6 +81,7 @@ void SystemManager::MassSelectiveClear()
 	healthSystem->SelectiveClear();
 	soundSystem->SelectiveClear();
 	networkSystem->SelectiveClear();
+	mementoSystem->SelectiveClear();
 }
 
 void SystemManager::MassClear()
@@ -91,4 +97,5 @@ void SystemManager::MassClear()
 	healthSystem->FullClear();
 	soundSystem->FullClear();
 	networkSystem->FullClear();
+	mementoSystem->FullClear();
 }

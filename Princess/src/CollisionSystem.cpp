@@ -217,7 +217,7 @@ void CollisionSystem::filterCollisions(int entityIndex, int entityColIndex, int 
 					if (projectileComponent->getShooterType() != "Player")
 					{
 						projectileCollision(entityIndex);
-						//playerCollision(collidableIndex);
+						playerCollision(collidableIndex);
 					}
 				}
 				else if (m_collidableEntities.at(collidableIndex)->ID() == "Princess")
@@ -259,7 +259,14 @@ void CollisionSystem::spellcasterCollision(int index)
 
 
 		//auto temp = m_collidableEntities.at(index)->FindComponent("eHP");
-		static_cast<AttributesComponent*>(hpComp)->Health((static_cast<AttributesComponent*>(hpComp)->Health() - 1));
+		if (static_cast<AttributesComponent*>(hpComp)->Armour() > 0)
+		{
+			static_cast<AttributesComponent*>(hpComp)->Armour((static_cast<AttributesComponent*>(hpComp)->Armour() - 1));
+		}
+		else
+		{
+			static_cast<AttributesComponent*>(hpComp)->Health((static_cast<AttributesComponent*>(hpComp)->Health() - 1));
+		}
 
 		if (static_cast<AttributesComponent*>(hpComp)->Health() < 1)
 		{
@@ -288,13 +295,21 @@ void CollisionSystem::playerCollision(int index)
 		if (static_cast<MovementComponent*>(moveComp)->getRolling() == false)
 		{
 			//auto temp = m_collidableEntities.at(index)->FindComponent("eHP");
-			static_cast<AttributesComponent*>(hpComp)->Health((static_cast<AttributesComponent*>(hpComp)->Health() - 1));
+
+			if (static_cast<AttributesComponent*>(hpComp)->Armour() > 0)
+			{
+				static_cast<AttributesComponent*>(hpComp)->Armour((static_cast<AttributesComponent*>(hpComp)->Armour() - 1));
+			}
+			else
+			{
+				static_cast<AttributesComponent*>(hpComp)->Health((static_cast<AttributesComponent*>(hpComp)->Health() - 1));
+			}
 
 			if (static_cast<AttributesComponent*>(hpComp)->Health() < 1)
 			{
 				m_collidableEntities.at(index)->Active(false);
 			}
-			std::cout << "player SLAPPED" << std::endl;
+			std::cout << "player SLAPPED" << static_cast<AttributesComponent*>(hpComp)->Armour() << static_cast<AttributesComponent*>(hpComp)->Health() << std::endl;
 		}
 		else
 		{

@@ -39,12 +39,15 @@
     <ClCompile Include="src\DungeonMap.cpp" />
     <ClCompile Include="src\DungeonTileFactory.cpp" />
     <ClCompile Include="src\Entity.cpp" />
+    <ClCompile Include="src\GameOverInstance.cpp" />
     <ClCompile Include="src\GrassTileFactory.cpp" />
     <ClCompile Include="src\HealthSystem.cpp" />
     <ClCompile Include="src\InputHandler.cpp" />
     <ClCompile Include="src\InstanceManager.cpp" />
     <ClCompile Include="src\LTimer.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\MementoCaretaker.cpp" />
+    <ClCompile Include="src\MenuSystem.cpp" />
     <ClCompile Include="src\MenuInstance.cpp" />
     <ClCompile Include="src\MovementSystem.cpp" />
     <ClCompile Include="src\NetworkSystem.cpp" />
@@ -78,6 +81,7 @@
     <ClInclude Include="include\AttackComponent.h" />
     <ClInclude Include="include\AttackSystem.h" />
     <ClInclude Include="include\AttributesComponent.h" />
+    <ClInclude Include="include\AttributesMomento.h" />
     <ClInclude Include="include\BasicEnemy.h" />
     <ClInclude Include="include\BattleMap.h" />
     <ClInclude Include="include\ButtonComponent.h" />
@@ -93,12 +97,14 @@
     <ClInclude Include="include\ControlComponent.h" />
     <ClInclude Include="include\ControlSystem.h" />
     <ClInclude Include="include\CurrencyComponent.h" />
+    <ClInclude Include="include\CurrencyMomento.h" />
     <ClInclude Include="include\DecisionTree.h" />
     <ClInclude Include="include\DungeonMap.h" />
     <ClInclude Include="include\DungeonTileFactory.h" />
     <ClInclude Include="include\Entity.h" />
     <ClInclude Include="include\EventListener.h" />
     <ClInclude Include="include\Factory.h" />
+    <ClInclude Include="include\GameOverInstance.h" />
     <ClInclude Include="include\GoldComponent.h" />
     <ClInclude Include="include\Graph.h" />
     <ClInclude Include="include\GraphArc.h" />
@@ -108,6 +114,7 @@
     <ClInclude Include="include\InputHandler.h" />
     <ClInclude Include="include\Instance.h" />
     <ClInclude Include="include\InstanceManager.h" />
+    <ClInclude Include="include\MementoCaretaker.h" />
     <ClInclude Include="include\LTimer.h" />
     <ClInclude Include="include\MenuComponent.h" />
     <ClInclude Include="include\MenuInstance.h" />

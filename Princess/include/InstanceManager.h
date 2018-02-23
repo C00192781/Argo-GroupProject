@@ -7,6 +7,7 @@
 #include "TownInstance.h"
 #include "EventListener.h"
 #include "StartInstance.h"
+#include "GameOverInstance.h"
 #include "MenuInstance.h"
 #include "OptionsInstance.h"
 #include "ShopInstance.h"
@@ -22,7 +23,7 @@ public:
 	WorldMap *worldMap;
 	BattleMap* battleMap;
 	DungeonMap* dungeonMap;
-	StartInstance* startInstance;
+	GameOverInstance* gameOverInstance;
 	TownInstance* townInstance;
 	ShopInstance* shopInstance;
 	SystemManager* systemManager;

@@ -18,7 +18,7 @@ InstanceManager::InstanceManager(SystemManager * sm, StateManager * s, ResourceM
 	worldMap = new WorldMap(sm, s, listener);
 	battleMap = new BattleMap(sm, s, listener);
 	dungeonMap = new DungeonMap(sm, s, rm, listener, aStar);
-	startInstance = new StartInstance(sm, s);
+	gameOverInstance = new GameOverInstance(sm, s);
 
 	menu = new MenuInstance(sm, listener, s, entities);
 	options = new OptionsInstance(sm, listener, s);
@@ -43,15 +43,15 @@ void InstanceManager::Update(float deltaTime)
 		dungeonMap->Update(deltaTime);
 		m_aStar->setCurrentMapType("Dungeon");
 	}
-	else if (startInstance->Active())
-	{
-		startInstance->Update();
-	}
+	//else if (startInstance->Active())
+	//{
+	//	startInstance->Update();
+	//}
 	else if (townInstance->Active())
 	{
 		townInstance->Update();
 	}
-	else if(shopInstance->Active())
+	else if (shopInstance->Active())
 	{
 		shopInstance->Update(m_players);
 	}
@@ -63,10 +63,27 @@ void InstanceManager::Update(float deltaTime)
 	{
 		options->Update();
 	}
+	else if (gameOverInstance->Active())
+	{
+		gameOverInstance->Update(deltaTime);
+	}
 	else
 	{
 		battleMap->Update(deltaTime);
 		m_aStar->setCurrentMapType("Battle");
+	}
+
+	if (m_stateManager->ReturnToWorld)
+	{
+		if (battleMap->Active())
+		{
+			m_listener->EncounterToWorld = true;
+		}
+		else if (dungeonMap->Active())
+		{
+			m_listener->DungeonToWorld = true;
+		}
+		gameOverInstance->Active(false);
 	}
 
 	if (m_listener->MenuToWorld)
@@ -120,7 +137,7 @@ void InstanceManager::Update(float deltaTime)
 		{
 			Reset();
 			Generate("World");
-			startInstance->Active(false);
+			//startInstance->Active(false);
 			worldMap->Active(true);
 			m_stateManager->StartGame = false;
 		}
@@ -154,6 +171,12 @@ void InstanceManager::Update(float deltaTime)
 			worldMap->Active(true);
 			battleMap->Active(false);
 			m_listener->EncounterToWorld = false;
+		}
+		else if (m_stateManager->GameOver)
+		{
+			Generate("GameOver");
+			gameOverInstance->Active(true);
+			m_stateManager->GameOver = false;
 		}
 		else if (m_listener->WorldToTown == true)
 		{
@@ -212,6 +235,10 @@ void InstanceManager::Generate(std::string instanceID)
 		options->Active(false);
 		menu->Load();
 		menu->Active(true);
+	}
+	else if (instanceID == "GameOver")
+	{
+		gameOverInstance->Generate();
 	}
 	else if (instanceID == "Town")
 	{

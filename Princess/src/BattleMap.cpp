@@ -34,6 +34,10 @@ void BattleMap::Generate(std::string type)
 	m_systemManager->movementSystem->SelectiveClear();
 	m_systemManager->collisionSystem->SelectiveClear();
 	m_systemManager->aiSystem->SelectiveClear();
+	m_systemManager->healthSystem->SelectiveClear();
+
+	m_systemManager->healthSystem->Active(true);
+	//m_systemManager->healthSystem->ActivateHearts();
 
 	TileFactory * factory;
 
@@ -159,6 +163,7 @@ void BattleMap::Generate(std::string type)
 
 
 	// sets player's position to the start of the dungeon
+
 //	Entity* player = m_systemManager->collisionSystem->FindEntity("Player");
 
 	Entity* player = m_systemManager->collisionSystem->FindEntity("Player", 3); //discern between players
@@ -168,7 +173,6 @@ void BattleMap::Generate(std::string type)
 	player2->Active(true);
 	player3->Active(true);
 	player4->Active(true);
-
 
 	if (player != nullptr)
 	{
@@ -211,6 +215,7 @@ void BattleMap::Generate(std::string type)
 			pos->setPosition(174, 348);
 		}
 	}
+	
 
 	m_timeRemaining = 2;
 	m_active = true;
@@ -234,9 +239,9 @@ void BattleMap::Update(float deltaTime)
 	if (m_enemies.empty())
 	{
 		m_timeRemaining -= deltaTime;
-
 		if (m_timeRemaining <= 0)
 		{
+			m_systemManager->healthSystem->Active(false);
 			m_listener->EncounterToWorld = true;
 		}
 	}
@@ -245,24 +250,3 @@ void BattleMap::Render()
 {
 
 }
-
-// *** this was at the bottom of generate ***
-//HeartManagerComponent* hUI = new HeartManagerComponent(HeartTypes::HEALTH);
-//player->AddComponent(hUI);
-//
-//HeartManagerComponent* aUI = new HeartManagerComponent(HeartTypes::ARMOUR);
-//player->AddComponent(aUI);
-
-//m_systemManager->healthSystem->AddEntity(player);
-//
-//m_systemManager->healthSystem->UpdateMaxHeartsUI(player, player);
-//m_systemManager->healthSystem->UpdateMaxArmourUI(player, player);
-
-//for (int c = 0; c < hUI->HeartsVector()->size(); c++)
-//{
-//	m_systemManager->renderSystem->AddEntity(hUI->HeartsVector()->at(c));
-//}
-//for (int i = 0; i < aUI->HeartsVector()->size(); i++)
-//{
-//	m_systemManager->renderSystem->AddEntity(aUI->HeartsVector()->at(i));
-//}

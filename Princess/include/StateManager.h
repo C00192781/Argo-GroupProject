@@ -13,5 +13,9 @@ public:
 	bool increaseSound = false;
 	bool decreaseMusic = false;
 	bool increaseMusic = false;
+	bool SaveGame = false;
+	bool LoadGame = false;
+	bool GameOver = false;
+	bool ReturnToWorld = false;
 };
 #endif

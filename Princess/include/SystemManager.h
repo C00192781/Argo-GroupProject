@@ -16,12 +16,13 @@
 //#include "MenuSystem.h"
 #include "NetworkSystem.h"
 #include "SoundSystem.h"
+#include "MementoCaretaker.h"
 
 class SystemManager
 {
 public:
 	SystemManager() {}
-	SystemManager(ResourceManager *resourceManager, SDL_Renderer* gameRenderer, EventListener *listener, std::vector<Entity*>* projectiles, AStar* aStar);
+	SystemManager(ResourceManager *resourceManager, SDL_Renderer* gameRenderer, EventListener *listener, std::vector<Entity*>* projectiles, AStar* aStar, StateManager &state);
 
 	RenderSystem *   renderSystem;
 	MovementSystem * movementSystem;
@@ -34,6 +35,7 @@ public:
 	TextRenderSystem * textRenderSystem;
 	SoundSystem * soundSystem;
 	NetworkSystem * networkSystem;
+	MementoCaretaker * mementoSystem;
 
 	void Update(float deltaTime, std::vector<Entity*> players);
 	void Update() {};

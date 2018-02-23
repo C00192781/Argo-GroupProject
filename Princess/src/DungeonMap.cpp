@@ -23,7 +23,6 @@ void DungeonMap::Generate()
 {
 	m_timeRemaining = 5;
 	m_active = true;
-
 	for (int i = 0; i < m_entities.size(); i++)
 	{
 		delete m_entities.at(i);
@@ -44,6 +43,9 @@ void DungeonMap::Generate()
 	m_systemManager->movementSystem->SelectiveClear();
 	m_systemManager->collisionSystem->SelectiveClear();
 	m_systemManager->aiSystem->SelectiveClear();
+	m_systemManager->healthSystem->SelectiveClear();
+
+	m_systemManager->healthSystem->Active(true);
 
 	int randomMapNumber = rand() % 5;
 	std::string mapName;
@@ -105,6 +107,7 @@ void DungeonMap::Generate()
 				m_startPoint = { j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 };
 
 				// sets player's position to the start of the dungeon
+
 			//	Entity* player = m_systemManager->collisionSystem->FindEntity("Player");
 
 				Entity* player = m_systemManager->collisionSystem->FindEntity("Player", 3); //discern between players
@@ -124,6 +127,7 @@ void DungeonMap::Generate()
 						pos->setPosition(m_startPoint.x, m_startPoint.y);
 					}
 				}
+
 
 
 				if (player2 != nullptr)
@@ -162,7 +166,7 @@ void DungeonMap::Generate()
 			else if (m_resourceManager->GetMapElement(mapName, i, j) == "E") //make a == "X" for pickups or w/e
 			{
 			
-				if (m_enemies.size() < 6) //debug
+				if (m_enemies.size() < 10)
 				{
 					m_entities.push_back(factory.Floor("DungeonTiles", j, i, m_systemManager->renderSystem->GetScale()));
 					m_systemManager->renderSystem->AddEntity(m_entities.back());
@@ -216,7 +220,6 @@ void DungeonMap::Generate()
 						m_systemManager->collisionSystem->AddEntity(pickup);
 					}
 				}
-				
 			}
 		}
 	}
@@ -243,6 +246,8 @@ void DungeonMap::Generate()
 	}
 
 	std::cout << projectileEntities->size() << std::endl;
+
+	//m_systemManager->healthSystem->ActivateHearts();
 
 	m_systemManager->collisionSystem->updateBounds(SDL_Rect{0, 0, 16 * 24 * (int)m_systemManager->renderSystem->GetScale(), 16 * 24 * (int)m_systemManager->renderSystem->GetScale() });
 }
@@ -463,7 +468,10 @@ void DungeonMap::Update(float deltaTime)
 
 		if (m_timeRemaining <= 0)
 		{
+			m_systemManager->healthSystem->Active(false);
 			m_listener->DungeonToWorld = true;
 		}
 	}
+
+	
 }

@@ -128,6 +128,9 @@
     <ClCompile Include="src\InstanceManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\MementoCaretaker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\Pickup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -135,6 +138,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ShopInstance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameOverInstance.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\AStar.cpp">
@@ -356,6 +362,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\WorldTileFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AttributesMomento.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MementoCaretaker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GameOverInstance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CurrencyMomento.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\AStar.h">

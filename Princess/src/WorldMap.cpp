@@ -14,6 +14,7 @@ WorldMap::~WorldMap()
 void WorldMap::Generate(int width, int height, int chaosFactor)
 {
 	m_active = true;
+	m_systemManager->healthSystem->Active(false);
 
 	Entity* player2 = m_systemManager->collisionSystem->FindEntity("Player", 2); //discern between players
 	Entity* player3 = m_systemManager->collisionSystem->FindEntity("Player", 1); //discern between players
@@ -31,6 +32,7 @@ void WorldMap::Generate(int width, int height, int chaosFactor)
 	m_systemManager->controlSystem->SelectiveClear();
 	m_systemManager->renderSystem->SelectiveClear();
 	m_systemManager->movementSystem->SelectiveClear();
+	m_systemManager->healthSystem->SelectiveClear();
 
 	WorldTileFactory factory;
 
@@ -584,6 +586,7 @@ void WorldMap::ApplyRock(std::vector<std::vector<std::string>>* map, int x, int 
 void WorldMap::Load()
 {
 	m_active = true;
+	m_systemManager->healthSystem->Active(false);
 
 	m_systemManager->controlSystem->SelectiveClear();
 	m_systemManager->renderSystem->SelectiveClear();
@@ -591,6 +594,7 @@ void WorldMap::Load()
 	m_systemManager->collisionSystem->SelectiveClear();
 	m_systemManager->attackSystem->SelectiveClear();
 	m_systemManager->aiSystem->SelectiveClear();
+	m_systemManager->textRenderSystem->SelectiveClear();
 
 
 	Entity* aplayer = m_systemManager->collisionSystem->FindEntity("Player", 3);
@@ -643,7 +647,9 @@ void WorldMap::Load()
 			{
 				pos->setPosition(m_randomEncounterLocation.x, m_randomEncounterLocation.y);
 			}
+			m_systemManager->healthSystem->HealAllEntities();
 		}
+		//m_systemManager->healthSystem->DeactivateHearts();
 	}
 
 	// sets player's position to the start of the dungeon
@@ -666,7 +672,14 @@ void WorldMap::Load()
 			}
 
 			m_systemManager->collisionSystem->getCurrentDungeon()->Active(false);
+			m_systemManager->healthSystem->HealAllEntities();
 		}
+		//m_systemManager->healthSystem->DeactivateHearts();
+	}
+	if (m_listener->DungeonToWorld == true && m_stateManager->ReturnToWorld == true)
+	{
+		m_systemManager->collisionSystem->getCurrentDungeon()->Active(true);
+		//m_systemManager->healthSystem->DeactivateHearts();
 	}
 
 	// sets player's position to the start of the dungeon FGBJFDGFGD

@@ -151,10 +151,11 @@ void MenuInstance::Update()
 				static_cast<ButtonComponent*>(m_entities.at(i)->FindComponent("ButtonC"))->Activated(false);
 				m_timer = 30;
 
-				m_players.at(0)->Control(true);
-				m_systemManager->controlSystem->AddEntity(m_players.at(0));
+				m_players.at(3)->Control(true);
+				m_systemManager->controlSystem->AddEntity(m_players.at(3));
+				m_players.at(0)->Active(true);
 
-				for (int i = 1; i < m_players.size(); i++)
+				for (int i = 0; i < m_players.size() - 1; i++)
 				{
 					m_players.at(i)->AddComponent(new AiLogicComponent());
 					m_players.at(i)->AddComponent(new SeekComponent());

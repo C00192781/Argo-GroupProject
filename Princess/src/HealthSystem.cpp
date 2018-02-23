@@ -1,11 +1,12 @@
 #include "HealthSystem.h"
 
-HealthSystem::HealthSystem()
+HealthSystem::HealthSystem(StateManager * sm)
 {
 	timer = 0;
 	m_entities.push_back(new Entity("Null"));
 	delete m_entities.back();
 	m_entities.clear();
+	m_stateManager = sm;
 }
 
 HealthSystem::~HealthSystem()
@@ -31,6 +32,61 @@ void HealthSystem::UnloadComponent(int x)
 	//m_spriteComponent.erase(m_spriteComponent.begin() + x);
 	//m_positionComponent.shrink_to_fit();
 	//m_spriteComponent.shrink_to_fit();
+}
+
+void HealthSystem::DeactivateHearts()
+{
+	for (int i = 0; i < m_player1Hearts.size(); i++)
+	{
+		m_player1Hearts.at(i)->Active(false);
+	}
+	for (int i = 0; i < m_player2Hearts.size(); i++)
+	{
+		m_player2Hearts.at(i)->Active(false);
+	}
+	for (int i = 0; i < m_player3Hearts.size(); i++)
+	{
+		m_player3Hearts.at(i)->Active(false);
+	}
+	for (int i = 0; i < m_player4Hearts.size(); i++)
+	{
+		m_player4Hearts.at(i)->Active(false);
+	}
+	
+}
+
+void HealthSystem::ActivateHearts()
+{
+	for (int i = 0; i < m_player1Hearts.size(); i++)
+	{
+		m_player1Hearts.at(i)->Active(true);
+	}
+	for (int i = 0; i < m_player2Hearts.size(); i++)
+	{
+		m_player2Hearts.at(i)->Active(true);
+	}
+	for (int i = 0; i < m_player3Hearts.size(); i++)
+	{
+		m_player3Hearts.at(i)->Active(true);
+	}
+	for (int i = 0; i < m_player4Hearts.size(); i++)
+	{
+		m_player4Hearts.at(i)->Active(true);
+	}
+
+}
+
+void HealthSystem::HealAllEntities()
+{
+	for (int i = 0; i < m_entities.size(); i++)
+	{
+		if (m_entities.at(i)->FindComponent("attribute") != nullptr)
+		{
+			AttributesComponent *  ac = static_cast<AttributesComponent*>(m_entities.at(i)->FindComponent("attribute"));
+			ac->Health(ac->MaxHealth());
+			ac->Armour(ac->MaxArmour());
+		}
+	}
 }
 
 void HealthSystem::AddEntity(Entity * e, std::string tag)
@@ -64,6 +120,8 @@ void HealthSystem::Update(float deltaTime)
 	if (m_entities.size() > 1) { PlayerTwoUpdate(); }
 	if (m_entities.size() > 2) { PlayerThreeUpdate(); }
 	if (m_entities.size() > 3) { PlayerFourUpdate(); }
+	
+	CheckIfAllDead();
 }
 
 void HealthSystem::PlayerOneUpdate()
@@ -165,7 +223,6 @@ void HealthSystem::PlayerOneUpdate()
 		}
 	}
 }
-
 void HealthSystem::PlayerTwoUpdate()
 {
 	int healthHolder = m_attributeComponents.at(1)->Health() / 2;
@@ -464,4 +521,34 @@ void HealthSystem::PlayerFourUpdate()
 			m_player4Hearts.at(i)->Active(false);
 		}
 	}
+}
+
+void HealthSystem::CheckIfAllDead()
+{
+	bool allDead;
+	if (m_entities.size() > 0)
+	{
+		allDead = true;
+		for (int i = 0; i < m_entities.size(); i++)
+		{
+			if (m_entities.at(i)->Active() == true)
+			{
+				allDead = false;
+				break;
+			}
+		}
+		if (allDead == true)
+		{
+			m_stateManager->GameOver = true;
+			for (int i = 0; i < m_entities.size(); i++)
+			{
+				m_entities.at(i)->Active(true);
+			}
+		}
+	}
+	else
+	{
+		allDead = false;
+	}
+
 }

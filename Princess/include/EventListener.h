@@ -66,6 +66,7 @@ public:
 	bool connectFromMenu = false;
 
 	bool roll = false;
+
 	bool WorldToTown = false;
 	bool TownToShop = false;
 	bool ShopToTown = false;
