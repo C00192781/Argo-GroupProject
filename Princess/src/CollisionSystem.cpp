@@ -111,11 +111,6 @@ void CollisionSystem::Update()
 										break;
 									}
 								}
-
-								if (m_entities.at(i)->ID() == "Princess")
-								{
-									int q = 5;
-								}
 				
 								filterCollisions(i, collisionKey1, j, collisionKey2);
 							}
@@ -225,6 +220,15 @@ void CollisionSystem::filterCollisions(int entityIndex, int entityColIndex, int 
 						playerCollision(collidableIndex);
 					}
 				}
+				else if (m_collidableEntities.at(collidableIndex)->ID() == "Princess")
+				{
+					ProjectileComponent* projectileComponent = static_cast<ProjectileComponent*>(m_entities.at(entityIndex)->FindComponent("PJ"));
+					if (projectileComponent->getShooterType() != "Player")
+					{
+						projectileCollision(entityIndex);
+						princessCollision(collidableIndex);
+					}
+				}
 			}
 		}
 	}
@@ -296,6 +300,35 @@ void CollisionSystem::playerCollision(int index)
 		{
 			std::cout << "player DODGED FSDBFSJKDFSD" << std::endl;
 		}
+	}
+	/*auto tar = m_entities.at(j)->FindComponent("PC");
+	tarX = static_cast<PositionComponent*>(tar)->getX();*/
+}
+
+
+
+void CollisionSystem::princessCollision(int index)
+{
+
+	auto hpComp = m_collidableEntities.at(index)->FindComponent("attribute");
+
+	auto moveComp = m_collidableEntities.at(index)->FindComponent("movement");
+
+
+
+	if (hpComp != nullptr)
+	{
+
+		//auto temp = m_collidableEntities.at(index)->FindComponent("eHP");
+		static_cast<AttributesComponent*>(hpComp)->Health((static_cast<AttributesComponent*>(hpComp)->Health() - 1));
+
+		if (static_cast<AttributesComponent*>(hpComp)->Health() < 1)
+		{
+			m_collidableEntities.at(index)->Active(false);
+		}
+		std::cout << "PRINCESS SLAPPED" << std::endl;
+	
+
 	}
 	/*auto tar = m_entities.at(j)->FindComponent("PC");
 	tarX = static_cast<PositionComponent*>(tar)->getX();*/

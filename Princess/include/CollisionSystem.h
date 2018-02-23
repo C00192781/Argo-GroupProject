@@ -24,7 +24,7 @@ public:
 	void UnloadComponent(int x);
 
 	void Update();
-
+	void princessCollision(int index);
 	void updateBounds(SDL_Rect bounds);
 	Entity* getCurrentDungeon() { return m_currentDungeon; }
 	Entity* getCurrentTown() { return m_currentTown; }

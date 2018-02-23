@@ -8,7 +8,7 @@ Entity* Princess::CharA(std::string ID, SDL_Point pos, int personality)
 	princess->AddComponent(new PositionComponent(pos));
 	princess->AddComponent(new MovementComponent(100));
 	princess->AddComponent(new SeekComponent());
-	princess->AddComponent(new AttributesComponent());
+	princess->AddComponent(new AttributesComponent(1, 1, 1, 10, 100, 100));
 	princess->AddComponent(new CollisionComponent(pos.x, pos.y, 16, 16, 2));
 
 	//princess->AddComponent(new AttributesComponent(10, 10, 0, 0, 80, 80));
