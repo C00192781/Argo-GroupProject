@@ -40,7 +40,7 @@ MenuInstance::MenuInstance(SystemManager* s, EventListener * listener, StateMana
 
 	m_entities.push_back(new Entity("TitleCard"));
 	m_entities.back()->AddComponent(new PositionComponent(SDL_Point{ 280, 50 + 74 }));
-	m_entities.back()->AddComponent(new TextComponent("munro", "Princess C'est Deus", SDL_Color{ 255,255,255,255 }, 9999 * 3, 16 * 3));
+	m_entities.back()->AddComponent(new TextComponent("munro", "Princess C'est Douce", SDL_Color{ 255,255,255,255 }, 9999 * 3, 16 * 3));
 	Load();
 }
 
@@ -54,6 +54,25 @@ void MenuInstance::Load()
 	m_systemManager->renderSystem->SelectiveClear();
 	m_systemManager->buttonSystem->SelectiveClear();
 	m_systemManager->textRenderSystem->SelectiveClear();
+
+
+	Entity* player = m_systemManager->collisionSystem->FindEntity("Player", 3);
+
+	player->Active(false);
+
+	Entity* player2 = m_systemManager->collisionSystem->FindEntity("Player", 2);
+
+	player2->Active(false);
+
+
+	Entity* player3 = m_systemManager->collisionSystem->FindEntity("Player", 1);
+
+	player3->Active(false);
+
+
+	Entity* player4 = m_systemManager->collisionSystem->FindEntity("Player", 0);
+
+	player4->Active(false);
 
 	for (int i = 0; i < m_entities.size(); i++)
 	{
