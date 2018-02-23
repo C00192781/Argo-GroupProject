@@ -19,14 +19,13 @@ void SystemManager::Update(float deltaTime, std::vector<Entity*> players)
 
 	if (buttonSystem->Active()) { buttonSystem->Update(); }
 
-	if (renderSystem->Active()) { renderSystem->Update(); }
-
-	if (textRenderSystem->Active()) { textRenderSystem->Update(); }
-
 	if (healthSystem->Active()) { healthSystem->Update(deltaTime); }
 
 	if (soundSystem->Active()) { soundSystem->Update(); }
 
+	if (renderSystem->Active()) { renderSystem->Update(); }
+
+	if (textRenderSystem->Active()) { textRenderSystem->Update(); }
 }
 
 void SystemManager::MassSelectiveClear()

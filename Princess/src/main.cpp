@@ -31,8 +31,6 @@
 #include "AchievementHandler.h"
 #include "SoundComponent.h"
 #include "SoundSystem.h"
-#include "MenuInstance.h"
-#include "OptionsInstance.h"
 
 int GAME_SCALE = 3;
 
@@ -93,8 +91,9 @@ int main()
 	resourceManager->AddTexture("ArmourSheet", "armourSpriteSheet.png");
 	resourceManager->AddTexture("WorldTurf", "World_Turfs.png");
 	resourceManager->AddTexture("Button", "Button.png");
+	resourceManager->AddTexture("Pickup", "Pickup.png");
 
-	resourceManager->AddFont("munro", "munro.ttf", 32);
+	resourceManager->AddFont("ComicSans", "ComicSans.ttf", 32);
 
 	resourceManager->AddTexture("StartGameButton", "StartGameButton.png");
 	resourceManager->AddTexture("OptionsButton", "OptionsButton.png");
@@ -108,12 +107,12 @@ int main()
 
 	resourceManager->AddTexture("Achievement", "PlaceholderAchievement.png");
 	resourceManager->AddTexture("Achievement2", "PlaceholderAchievement2.png");
-	
+
 	resourceManager->AddMusic("Test", "kevin.mp3");
 	resourceManager->AddSound("Scream", "test.wav");
 	resourceManager->AddSound("Placeholder", "placeholder.wav");
-	
-	resourceManager->AddFont("munro", "munro.ttf", 32);
+
+	resourceManager->AddFont("ComicSans", "ComicSans.ttf", 32);
 
 	Mix_AllocateChannels(6);
 
@@ -157,39 +156,85 @@ int main()
 
 	systemManager.buttonSystem = new ButtonSystem(listener);
 	systemManager.buttonSystem->Active(true);
-	
+
 	systemManager.soundSystem = new SoundSystem(resourceManager);
 	systemManager.soundSystem->Active(true);
 
+
+
 	Entity * player = new Entity("Player");
 	player->Active(true);
-	player->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
-	player->AddComponent(new PositionComponent(SDL_Point{ 500, 380 }));
-	player->AddComponent(new AttributesComponent(3, 3, 1, 10, 100, 100));
+
+	player->AddComponent(new SpriteComponent("Red", 3, 1, 0, 0, 16, 16, 0));
+	player->AddComponent(new PositionComponent(SDL_Point{ 100, 380 }));
+	player->AddComponent(new AttributesComponent(15, 5, 1, 10, 100, 100));
 	player->AddComponent(new MovementComponent());
 	player->AddComponent(new WeaponComponent(WeaponType::RANGE));
-	player->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
-	player->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
-	player->AddComponent(new SeekComponent()); //and this if AI is to control that player
-	player->AddComponent(new CurrencyComponent());
-	player->AddComponent(new SoundComponent("Scream", "play", false, 1, 30, 50));
-	player->AddComponent(new MusicComponent("Test", "play", true, 0, 100));
+	player->AddComponent(new CollisionComponent(100, 380, 16, 16, 2));
 	player->Transient(true);
+	player->AddComponent(new CurrencyComponent());
+	player->Control(true); //enable only if the client controlled player
+						   //player->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
+						   //player->AddComponent(new SeekComponent()); //and this if AI is to control that player
+						   //player->AddComponent(new SoundComponent("Placeholder", "play", true, 0, 0, 80));
+						   //player->Control(true);
+
 
 	Entity * player2 = new Entity("Player");
 	player2->Active(true);
-
-	player2->AddComponent(new SpriteComponent("Red", 3, 1, 0, 0, 16, 16, 0));
-	player2->AddComponent(new PositionComponent(SDL_Point{ 100, 100 }));
-	player2->AddComponent(new AttributesComponent(5, 5, 1, 10, 100, 100));
+	player2->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
+	player2->AddComponent(new PositionComponent(SDL_Point{ 250, 380 }));
+	player2->AddComponent(new AttributesComponent(15, 3, 1, 10, 100, 100));
 	player2->AddComponent(new MovementComponent());
 	player2->AddComponent(new WeaponComponent(WeaponType::RANGE));
-	player2->AddComponent(new CollisionComponent(100, 300, 16, 16, 2));
-	player2->Transient(true);
+	player2->AddComponent(new CollisionComponent(250, 380, 16, 16, 2));
+	player2->AddComponent(new AiLogicComponent()); //add this if AI is to control that player2
+	player2->AddComponent(new SeekComponent()); //and this if AI is to control that player2
 	player2->AddComponent(new CurrencyComponent());
-	player2->Control(true); //enable only if the client controlled player
-							//player2->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
-							//player2->AddComponent(new SeekComponent()); //and this if AI is to control that player
+	player2->AddComponent(new SoundComponent("Scream", "play", false, 1, 30, 50));
+	player2->AddComponent(new MusicComponent("Test", "play", true, 0, 100));
+	player2->Transient(true);
+
+	Entity * player3 = new Entity("Player");
+	player3->Active(true);
+	player3->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
+	player3->AddComponent(new PositionComponent(SDL_Point{ 300, 380 }));
+	player3->AddComponent(new AttributesComponent(15, 3, 1, 10, 100, 100));
+	player3->AddComponent(new MovementComponent());
+	player3->AddComponent(new WeaponComponent(WeaponType::RANGE));
+	player3->AddComponent(new CollisionComponent(300, 380, 16, 16, 2));
+	player3->AddComponent(new AiLogicComponent()); //add this if AI is to control that player3
+	player3->AddComponent(new SeekComponent()); //and this if AI is to control that player3
+	player3->AddComponent(new CurrencyComponent());
+	player3->AddComponent(new SoundComponent("Scream", "play", false, 1, 30, 50));
+	player3->AddComponent(new MusicComponent("Test", "play", true, 0, 100));
+	player3->Transient(true);
+
+
+	Entity * player4 = new Entity("Player");
+	player4->Active(true);
+	player4->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
+	player4->AddComponent(new PositionComponent(SDL_Point{ 200, 380 }));
+	player4->AddComponent(new AttributesComponent(15, 3, 1, 10, 100, 100));
+	player4->AddComponent(new MovementComponent());
+	player4->AddComponent(new WeaponComponent(WeaponType::RANGE));
+	player4->AddComponent(new CollisionComponent(200, 380, 16, 16, 2));
+	player4->AddComponent(new AiLogicComponent()); //add this if AI is to control that player4
+	player4->AddComponent(new SeekComponent()); //and this if AI is to control that player4
+	player4->AddComponent(new CurrencyComponent());
+	player4->AddComponent(new SoundComponent("Scream", "play", false, 1, 30, 50));
+	player4->AddComponent(new MusicComponent("Test", "play", true, 0, 100));
+	player4->Transient(true);
+
+	systemManager.movementSystem->AddEntity(player4);
+	systemManager.renderSystem->AddEntity(player4);
+	systemManager.collisionSystem->AddEntity(player4);
+	systemManager.attackSystem->AddEntity(player4);
+
+	systemManager.movementSystem->AddEntity(player3);
+	systemManager.renderSystem->AddEntity(player3);
+	systemManager.collisionSystem->AddEntity(player3);
+	systemManager.attackSystem->AddEntity(player3);
 
 
 	systemManager.movementSystem->AddEntity(player2);
@@ -197,7 +242,7 @@ int main()
 	systemManager.collisionSystem->AddEntity(player2);
 	systemManager.attackSystem->AddEntity(player2);
 
-	
+
 	systemManager.movementSystem->AddEntity(player);
 	systemManager.renderSystem->AddEntity(player);
 	systemManager.collisionSystem->AddEntity(player);
@@ -213,19 +258,38 @@ int main()
 	{
 		systemManager.controlSystem->AddEntity(player2);
 	}
+	else if (player3->Control())
+	{
+		systemManager.controlSystem->AddEntity(player3);
+	}
+	else if (player4->Control())
+	{
+		systemManager.controlSystem->AddEntity(player4);
+	}
+
 
 
 	std::vector<Entity*> playerEntities;
-	playerEntities.push_back(player);
+
+
+
+	playerEntities.push_back(player4);
+	playerEntities.push_back(player3);
 	playerEntities.push_back(player2);
+	playerEntities.push_back(player);
+
+
+	//TownInstance t = TownInstance(&systemManager);
+	//t.Generate("jimmie");
+
+	//WorldMap* m = new WorldMap(&systemManager, &state);
+	//m->Generate(25, 25, 100);
 
 	systemManager.soundSystem->AddEntity(player); //local client player only?
 
 	AchievementHandler *achievements = new AchievementHandler(&systemManager);
 
-	//InstanceManager instanceManager(&systemManager, &state, resourceManager, listener);
-
-	OptionsInstance menu = OptionsInstance(&systemManager, listener, &state);
+	InstanceManager instanceManager(&systemManager, &state, resourceManager, listener);
 
 	while (state.ExitGame == false)
 	{
@@ -239,7 +303,7 @@ int main()
 		//Set text to be rendered
 		if (avgFPS > 1)
 		{
-		//	cout << "FPS (With Cap) " << avgFPS << endl;;
+			//			cout << "FPS (With Cap) " << avgFPS << endl;;
 		}
 		//update ren
 		++countedFrames;
@@ -267,8 +331,8 @@ int main()
 			SDL_RenderClear(gameRenderer);
 
 			systemManager.Update(deltaTime, playerEntities);
-			//instanceManager.Update(deltaTime);
-			//systemManager.Update(deltaTime);
+			instanceManager.Update(deltaTime);
+			//	systemManager.Update(deltaTime);
 
 			SDL_RenderPresent(gameRenderer);
 		}
