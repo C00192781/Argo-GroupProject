@@ -682,7 +682,6 @@ void WorldMap::Load()
 		//m_systemManager->healthSystem->DeactivateHearts();
 	}
 
-
 	// sets player's position to the start of the dungeon FGBJFDGFGD
 	if (m_listener->TownToWorld == true)
 	{
@@ -722,6 +721,7 @@ void WorldMap::Load()
 			m_systemManager->collisionSystem->getCurrentTown()->Active(false);
 		}
 	} //SFSFNSDBFJSDBFSDB
+	m_listener->ToWorldMap = true;
 }
 
 void WorldMap::Update()
@@ -737,15 +737,19 @@ void WorldMap::Update()
 		{
 			if (movement->getMoving() == true)
 			{
-				if ((rand() % 10000) >= 9900)
+				if ((rand() % 10000) >= 9990)
 				{
-					PositionComponent* pos = static_cast<PositionComponent*>(player->FindComponent("PC"));
-
-					if (pos != nullptr)
+					if (m_listener->connected == false)
 					{
-						m_randomEncounterLocation = { (int)pos->getX(), (int)pos->getY() };
+						PositionComponent* pos = static_cast<PositionComponent*>(player->FindComponent("PC"));
+
+						if (pos != nullptr)
+						{
+							m_randomEncounterLocation = { (int)pos->getX(), (int)pos->getY() };
+						}
+
+						m_listener->WorldToEncounter = true;
 					}
-					m_listener->WorldToEncounter = true;
 				}
 			}
 		}

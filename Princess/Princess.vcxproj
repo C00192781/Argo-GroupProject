@@ -30,6 +30,7 @@
     <ClCompile Include="src\BasicEnemy.cpp" />
     <ClCompile Include="src\BattleMap.cpp" />
     <ClCompile Include="src\ButtonSystem.cpp" />
+    <ClCompile Include="src\Client.cpp" />
     <ClCompile Include="src\CollisionSystem.cpp" />
     <ClCompile Include="src\ConcreteObserver.cpp" />
     <ClCompile Include="src\ConcreteSubject.cpp" />
@@ -49,7 +50,9 @@
     <ClCompile Include="src\MenuSystem.cpp" />
     <ClCompile Include="src\MenuInstance.cpp" />
     <ClCompile Include="src\MovementSystem.cpp" />
+    <ClCompile Include="src\NetworkSystem.cpp" />
     <ClCompile Include="src\OptionsInstance.cpp" />
+    <ClCompile Include="src\Packet.cpp" />
     <ClCompile Include="src\Pickup.cpp" />
     <ClCompile Include="src\Princess.cpp" />
     <ClCompile Include="src\Quad.cpp" />
@@ -84,6 +87,8 @@
     <ClInclude Include="include\ButtonComponent.h" />
     <ClInclude Include="include\ButtonSystem.h" />
     <ClInclude Include="include\Character.h" />
+    <ClInclude Include="include\Client.h" />
+    <ClInclude Include="include\ClientInfo.h" />
     <ClInclude Include="include\CollisionComponent.h" />
     <ClInclude Include="include\CollisionSystem.h" />
     <ClInclude Include="include\Component.h" />
@@ -116,8 +121,12 @@
     <ClInclude Include="include\MovementComponent.h" />
     <ClInclude Include="include\MovementSystem.h" />
     <ClInclude Include="include\MusicComponent.h" />
+    <ClInclude Include="include\NetworkIDComponent.h" />
+    <ClInclude Include="include\NetworkSystem.h" />
     <ClInclude Include="include\Observer.h" />
     <ClInclude Include="include\OptionsInstance.h" />
+    <ClInclude Include="include\Packet.h" />
+    <ClInclude Include="include\PacketType.h" />
     <ClInclude Include="include\Pickup.h" />
     <ClInclude Include="include\PickupFactory.h" />
     <ClInclude Include="include\PositionComponent.h" />
@@ -214,7 +223,7 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)src;$(SolutionDir)External Dependencies\SDL2\lib\x64;$(SolutionDir)External Dependencies\ResourceManager;$(SolutionDir)External Dependencies\SimpleJSON</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;SDL2_net.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

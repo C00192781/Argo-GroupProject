@@ -1,26 +1,20 @@
 #ifndef _SYSTEMMANAGER_H
 #define _SYSTEMMANAGER_H
 
-#include "ResourceManager.h"
-#include "renderSystem.h"
-#include "ControlSystem.h"
+#include <iostream>
+
 #include "MovementSystem.h"
+#include "RenderSystem.h"
+#include "ControlSystem.h"
+#include "ButtonSystem.h"
 #include "AttackSystem.h"
 #include "CollisionSystem.h"
 #include "AISystem.h"
-#include "CollisionSystem.h"
+#include "SoundSystem.h"
 #include "HealthSystem.h"
-#include "ButtonSystem.h"
 #include "TextRenderSystem.h"
-#include "PositionComponent.h"
-#include "SpriteComponent.h"
-#include "ProjectileComponent.h"
-#include "CollisionSystem.h"
-#include "AttributesComponent.h"
-#include "AISystem.h"
-#include "CollisionSystem.h"
-#include "HealthSystem.h"
-#include "SoundComponent.h"
+//#include "MenuSystem.h"
+#include "NetworkSystem.h"
 #include "SoundSystem.h"
 #include "MementoCaretaker.h"
 
@@ -28,7 +22,7 @@ class SystemManager
 {
 public:
 	SystemManager() {}
-	SystemManager(ResourceManager *resourceManager, SDL_Renderer* gameRenderer, EventListener *listener, std::vector<Entity*>* projectiles);
+	SystemManager(ResourceManager *resourceManager, SDL_Renderer* gameRenderer, EventListener *listener, std::vector<Entity*>* projectiles, AStar* aStar, StateManager &state);
 
 	RenderSystem *   renderSystem;
 	MovementSystem * movementSystem;
@@ -40,15 +34,20 @@ public:
 	ButtonSystem * buttonSystem;
 	TextRenderSystem * textRenderSystem;
 	SoundSystem * soundSystem;
+	NetworkSystem * networkSystem;
 	MementoCaretaker * mementoSystem;
 
 	void Update(float deltaTime, std::vector<Entity*> players);
-
+	void Update() {};
 	void MassSelectiveClear();
 	void MassClear();
+	//void Update(float deltaTime);
 
 private:
 	bool flag = false;
+	//RenderSystem *   RenderSystem;
+	//MovementSystem * MovementSystem;
+	//ControlSystem *  ControlSystem;
 };
 #endif
 

@@ -17,6 +17,7 @@ public:
 	{
 		m_type = "currency";
 		m_value = value;
+		momento = new CurrencyMomento(m_value);
 	};
 
 	~CurrencyComponent() {};

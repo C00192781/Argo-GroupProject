@@ -448,6 +448,7 @@ void ShopInstance::Update(std::vector<Entity*> players)
 								{
 									//delete players.at(i)->GetComponents()->at(j);
 									players.at(i)->GetComponents()->at(j) = m_weaponOne;
+									m_listener->ChangedWeapon = true;
 									break;
 								}
 							}
@@ -460,6 +461,7 @@ void ShopInstance::Update(std::vector<Entity*> players)
 								{
 									static_cast<AttributesComponent*>(players.at(i)->GetComponents()->at(j))->AdditiveArmour(m_armorOne);
 									static_cast<AttributesComponent*>(players.at(i)->GetComponents()->at(j))->AdditiveHealth(m_healthOne);
+									m_listener->ChangedArmor = true;
 									break;
 								}
 							}
@@ -497,6 +499,7 @@ void ShopInstance::Update(std::vector<Entity*> players)
 								{
 									//delete players.at(i)->GetComponents()->at(j);
 									players.at(i)->GetComponents()->at(j) = m_weaponTwo;
+									m_listener->ChangedWeapon = true;
 									break;
 								}
 							}
@@ -509,6 +512,7 @@ void ShopInstance::Update(std::vector<Entity*> players)
 								{
 									static_cast<AttributesComponent*>(players.at(i)->GetComponents()->at(j))->AdditiveArmour(m_armorTwo);
 									static_cast<AttributesComponent*>(players.at(i)->GetComponents()->at(j))->AdditiveHealth(m_healthTwo);
+									m_listener->ChangedArmor = true;
 									break;
 								}
 							}
@@ -546,6 +550,7 @@ void ShopInstance::Update(std::vector<Entity*> players)
 								{
 									//delete players.at(i)->GetComponents()->at(j);
 									players.at(i)->GetComponents()->at(j) = m_weaponThree;
+									m_listener->ChangedWeapon = true;
 									break;
 								}
 							}
@@ -558,6 +563,7 @@ void ShopInstance::Update(std::vector<Entity*> players)
 								{
 									static_cast<AttributesComponent*>(players.at(i)->GetComponents()->at(j))->AdditiveArmour(m_armorThree);
 									static_cast<AttributesComponent*>(players.at(i)->GetComponents()->at(j))->AdditiveHealth(m_healthThree);
+									m_listener->ChangedArmor = true;
 									break;
 								}
 							}

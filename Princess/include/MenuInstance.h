@@ -14,6 +14,7 @@ class MenuInstance : public Instance
 {
 public:
 	MenuInstance(SystemManager* s, EventListener * listerner , StateManager * state);
+	MenuInstance(SystemManager* s, EventListener * listerner, StateManager * state, std::vector<Entity*> players);
 	~MenuInstance();
 	void Load();
 	void Update();
@@ -24,6 +25,9 @@ private:
 	EventListener * m_eventListener;
 	StateManager * m_states;
 	SystemManager * m_system;
+	std::vector<Entity*> m_players;
 	int m_timer = 0;
+
+	void connect();
 };
 #endif

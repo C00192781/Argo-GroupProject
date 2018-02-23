@@ -9,7 +9,6 @@ void MovementSystem::Update(float deltaTime)
 	{
 		if (m_entities.at(i)->Active())
 		{
-
 			PositionComponent* positionComponent = static_cast<PositionComponent*>(m_entities.at(i)->FindComponent("PC"));
 			CollisionComponent* collisionComponent = static_cast<CollisionComponent*>(m_entities.at(i)->FindComponent("collision"));
 			MovementComponent* movementComponent = static_cast<MovementComponent*>(m_entities.at(i)->FindComponent("movement"));
@@ -107,7 +106,7 @@ void MovementSystem::Update(float deltaTime)
 				if (movementComponent->getLockedOrientation() == false)
 				{
 					collisionComponent->setPosition(collisionComponent->getX() + movementComponent->getXVelocity() * deltaTime,
-					collisionComponent->getY() + movementComponent->getYVelocity() * deltaTime);
+						collisionComponent->getY() + movementComponent->getYVelocity() * deltaTime);
 				}
 			}
 		}//end active

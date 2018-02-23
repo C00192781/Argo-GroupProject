@@ -48,6 +48,23 @@ public:
 	bool WorldToEncounter = false;
 	bool DungeonToWorld = false;
 	bool EncounterToWorld = false;
+	
+	bool ToDungeon1 = false;
+	bool ToDungeon2 = false;
+	bool ToDungeon3 = false;
+	bool ToDungeon4 = false;
+	bool ToDungeon5 = false;
+	bool ToWorldMap = false;
+	bool ToTown = false;
+
+	bool ChangedWeapon = false;
+	bool ChangedArmor = false;
+
+	bool host = false;
+	bool connected = false;
+
+	bool connectFromMenu = false;
+
 	bool roll = false;
 
 	bool WorldToTown = false;

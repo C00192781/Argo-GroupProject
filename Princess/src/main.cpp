@@ -23,7 +23,13 @@
 #include <chrono>
 #include "SystemManager.h"
 #include "InstanceManager.h"
+#include "SystemManager.h"
+#include "StateManager.h"
+#include "ResourceManager.h"
 #include "LTimer.h"
+#include "AchievementHandler.h"
+#include <chrono>
+#include <time.h>
 #include "WorldMap.h"
 #include "DungeonMap.h"
 #include "TownInstance.h"
@@ -161,45 +167,7 @@ int main()
 
 	std::vector<Entity*>* projectiles = new std::vector<Entity*>;
 
-	SystemManager systemManager(resourceManager, gameRenderer, listener, projectiles);
-
-	systemManager.controlSystem = new ControlSystem(listener);
-	systemManager.controlSystem->Active(true);
-
-	systemManager.movementSystem = new MovementSystem(816, 624, listener);
-
-	systemManager.movementSystem->Active(true);
-
-	systemManager.renderSystem = new RenderSystem(resourceManager, gameRenderer);
-	systemManager.renderSystem->Active(true);
-	systemManager.renderSystem->SetScale(GAME_SCALE);
-	systemManager.renderSystem->Camera(true);
-	systemManager.renderSystem->Camera(816, 624);
-
-	systemManager.textRenderSystem = new TextRenderSystem(resourceManager, gameRenderer);
-	systemManager.textRenderSystem->Active(true);
-
-	systemManager.attackSystem = new AttackSystem(projectiles);
-	systemManager.attackSystem->Active(true);
-
-	systemManager.collisionSystem = new CollisionSystem(listener);
-	systemManager.collisionSystem->Active(true);
-
-	systemManager.aiSystem = new AiSystem(aStar);
-	systemManager.aiSystem->Active(true);
-
-	systemManager.healthSystem = new HealthSystem(&state);
-	systemManager.healthSystem->Active(false);
-
-	systemManager.buttonSystem = new ButtonSystem(listener);
-	systemManager.buttonSystem->Active(true);
-
-	systemManager.soundSystem = new SoundSystem(resourceManager);
-	systemManager.soundSystem->Active(true);
-
-
-	systemManager.mementoSystem = new MementoCaretaker(&state);
-	systemManager.mementoSystem->Active(true);
+	SystemManager systemManager(resourceManager, gameRenderer, listener, projectiles, aStar, state);
 
 	Entity * player = new Entity("Player");
 	player->Active(true);
@@ -211,14 +179,11 @@ int main()
 	player->AddComponent(new AttributesComponent(20, 20, 4, 10, 100, 100));
 	player->AddComponent(new MovementComponent());
 	player->AddComponent(new WeaponComponent(WeaponType::RANGE));
+	player->AddComponent(new NetworkIDComponent(0));
 	player->AddComponent(new CollisionComponent(100, 380, 16, 16, 2));
 	player->Transient(true);
 	player->AddComponent(new CurrencyComponent());
-	player->Control(true); //enable only if the client controlled player
-						   //player->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
-						   //player->AddComponent(new SeekComponent()); //and this if AI is to control that player
-						   //player->AddComponent(new SoundComponent("Placeholder", "play", true, 0, 0, 80));
-						   //player->Control(true);
+
 	systemManager.healthSystem->AddEntity(player, "???");
 	for (int i = 0; i < 12; i++)
 	{
@@ -249,11 +214,12 @@ int main()
 	player2->AddComponent(new MovementComponent());
 	player2->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player2->AddComponent(new CollisionComponent(250, 380, 16, 16, 2));
-	player2->AddComponent(new AiLogicComponent()); //add this if AI is to control that player2
-	player2->AddComponent(new SeekComponent()); //and this if AI is to control that player2
+	//player2->AddComponent(new AiLogicComponent()); //add this if AI is to control that player2
+	//player2->AddComponent(new SeekComponent()); //and this if AI is to control that player2
 	player2->AddComponent(new CurrencyComponent());
 	player2->AddComponent(new SoundComponent("Scream", "play", false, 1, 30, 50));
 	player2->AddComponent(new MusicComponent("Test", "play", true, 0, 100));
+	player2->AddComponent(new NetworkIDComponent(1));
 	player2->Transient(true);
 
 	systemManager.healthSystem->AddEntity(player2, "???");
@@ -286,11 +252,12 @@ int main()
 	player3->AddComponent(new MovementComponent());
 	player3->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player3->AddComponent(new CollisionComponent(300, 380, 16, 16, 2));
-	player3->AddComponent(new AiLogicComponent()); //add this if AI is to control that player3
-	player3->AddComponent(new SeekComponent()); //and this if AI is to control that player3
+	//player3->AddComponent(new AiLogicComponent()); //add this if AI is to control that player3
+	//player3->AddComponent(new SeekComponent()); //and this if AI is to control that player3
 	player3->AddComponent(new CurrencyComponent());
 	player3->AddComponent(new SoundComponent("Scream", "play", false, 1, 30, 50));
 	player3->AddComponent(new MusicComponent("Test", "play", true, 0, 100));
+	player3->AddComponent(new NetworkIDComponent(2));
 	player3->Transient(true);
 
 	systemManager.healthSystem->AddEntity(player3, "???");
@@ -324,11 +291,12 @@ int main()
 	player4->AddComponent(new MovementComponent());
 	player4->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player4->AddComponent(new CollisionComponent(200, 380, 16, 16, 2));
-	player4->AddComponent(new AiLogicComponent()); //add this if AI is to control that player4
-	player4->AddComponent(new SeekComponent()); //and this if AI is to control that player4
+	//player4->AddComponent(new AiLogicComponent()); //add this if AI is to control that player4
+	//player4->AddComponent(new SeekComponent()); //and this if AI is to control that player4
 	player4->AddComponent(new CurrencyComponent());
 	player4->AddComponent(new SoundComponent("Scream", "play", false, 1, 30, 50));
 	player4->AddComponent(new MusicComponent("Test", "play", true, 0, 100));
+	player4->AddComponent(new NetworkIDComponent(3));
 	player4->Transient(true);
 
 	systemManager.healthSystem->AddEntity(player4, "???");
@@ -357,72 +325,41 @@ int main()
 	systemManager.renderSystem->AddEntity(player4);
 	systemManager.collisionSystem->AddEntity(player4);
 	systemManager.attackSystem->AddEntity(player4);
+	systemManager.networkSystem->AddEntity(player4);
 	systemManager.mementoSystem->AddEntity(player4);
 
 	systemManager.movementSystem->AddEntity(player3);
 	systemManager.renderSystem->AddEntity(player3);
 	systemManager.collisionSystem->AddEntity(player3);
 	systemManager.attackSystem->AddEntity(player3);
+	systemManager.networkSystem->AddEntity(player3);
 	systemManager.mementoSystem->AddEntity(player3);
-
 
 	systemManager.movementSystem->AddEntity(player2);
 	systemManager.renderSystem->AddEntity(player2);
 	systemManager.collisionSystem->AddEntity(player2);
 	systemManager.attackSystem->AddEntity(player2);
+	systemManager.networkSystem->AddEntity(player2);
 	systemManager.mementoSystem->AddEntity(player2);
 
 	systemManager.movementSystem->AddEntity(player);
 	systemManager.renderSystem->AddEntity(player);
 	systemManager.collisionSystem->AddEntity(player);
 	systemManager.attackSystem->AddEntity(player);
+	systemManager.networkSystem->AddEntity(player);
 	systemManager.mementoSystem->AddEntity(player);
 
-	
-	std::vector<Entity*> players;
-	players.push_back(player);
-	players.push_back(player2);
-	players.push_back(player3);
-	players.push_back(player4);
-
-	if (player->Control())
-	{
-		systemManager.controlSystem->AddEntity(player);
-	}
-	else if (player2->Control())
-	{
-		systemManager.controlSystem->AddEntity(player2);
-	}
-	else if (player3->Control())
-	{
-		systemManager.controlSystem->AddEntity(player3);
-	}
-	else if (player4->Control())
-	{
-		systemManager.controlSystem->AddEntity(player4);
-	}
-
 	std::vector<Entity*> playerEntities;
-
-
-
 	playerEntities.push_back(player4);
 	playerEntities.push_back(player3);
 	playerEntities.push_back(player2);
 	playerEntities.push_back(player);
 
-
-	//TownInstance t = TownInstance(&systemManager);
-	//t.Generate("jimmie");
-
-	//WorldMap* m = new WorldMap(&systemManager, &state);
-	//m->Generate(25, 25, 100);
-
 	systemManager.soundSystem->AddEntity(player); //local client player only?
 
 	AchievementHandler *achievements = new AchievementHandler(&systemManager);
 
-	InstanceManager instanceManager(&systemManager, &state, resourceManager, listener, aStar, players);
+	InstanceManager instanceManager(&systemManager, &state, resourceManager, listener, aStar, playerEntities);
 
 	while (state.ExitGame == false)
 	{
@@ -463,9 +400,8 @@ int main()
 			SDL_SetRenderDrawColor(gameRenderer, 0, 0, 0, 0);
 			SDL_RenderClear(gameRenderer);
 
-			systemManager.Update(deltaTime, playerEntities);
 			instanceManager.Update(deltaTime);
-			//	systemManager.Update(deltaTime);
+			systemManager.Update(deltaTime, playerEntities);
 
 			SDL_RenderPresent(gameRenderer);
 		}

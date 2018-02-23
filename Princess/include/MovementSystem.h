@@ -8,7 +8,6 @@
 #include "SpriteComponent.h"
 #include "EventListener.h"
 
-
 class MovementSystem : public System
 {
 public:
@@ -19,10 +18,10 @@ public:
 		m_windowWidth = windowWidth;
 		m_windowHeight = windowHeight;
 		m_eventListener = e;
-
 	}
 	void Update() {}
 	void Update(float deltaTime);
+
 private:
 	void LoadComponent();
 	void UnloadComponent(int x);
@@ -48,5 +47,4 @@ private:
 	std::vector<CollisionComponent*> m_collisionComponent;
 
 	EventListener *m_eventListener;
-
 };

@@ -11,6 +11,7 @@
 #include "MenuInstance.h"
 #include "OptionsInstance.h"
 #include "ShopInstance.h"
+#include "SystemManager.h"
 #include <vector>
 
 class InstanceManager
@@ -31,6 +32,7 @@ public:
 
 	void Update(float deltaTime);
 	void Generate(string instanceID);
+	void GenerateFromServer();
 	void Reset();
 private:
 	EventListener *m_listener;

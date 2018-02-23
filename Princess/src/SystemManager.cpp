@@ -1,8 +1,44 @@
 #include "SystemManager.h"
 
-SystemManager::SystemManager(ResourceManager *resourceManager, SDL_Renderer* gameRenderer, EventListener *listener, std::vector<Entity*>* projectiles)
+SystemManager::SystemManager(ResourceManager *resourceManager, SDL_Renderer* gameRenderer, EventListener *listener, std::vector<Entity*>* projectiles, AStar* aStar, StateManager &state)
 {
+	networkSystem = new NetworkSystem(listener);
 
+	controlSystem = new ControlSystem(listener);
+	controlSystem->Active(true);
+
+	movementSystem = new MovementSystem(816, 624, listener);
+	movementSystem->Active(true);
+
+	renderSystem = new RenderSystem(resourceManager, gameRenderer);
+	renderSystem->Active(true);
+	renderSystem->SetScale(3);
+	renderSystem->Camera(true);
+	renderSystem->Camera(816, 624);
+
+	textRenderSystem = new TextRenderSystem(resourceManager, gameRenderer);
+	textRenderSystem->Active(true);
+
+	attackSystem = new AttackSystem(projectiles);
+	attackSystem->Active(true);
+
+	collisionSystem = new CollisionSystem(listener);
+	collisionSystem->Active(true);
+
+	aiSystem = new AiSystem(aStar);
+	aiSystem->Active(true);
+
+	healthSystem = new HealthSystem(&state);
+	healthSystem->Active(true);
+
+	buttonSystem = new ButtonSystem(listener);
+	buttonSystem->Active(true);
+
+	soundSystem = new SoundSystem(resourceManager);
+	soundSystem->Active(true);
+
+	mementoSystem = new MementoCaretaker(&state);
+	mementoSystem->Active(true);
 }
 
 void SystemManager::Update(float deltaTime, std::vector<Entity*> players)
@@ -21,7 +57,9 @@ void SystemManager::Update(float deltaTime, std::vector<Entity*> players)
 
 	if (healthSystem->Active()) { healthSystem->Update(deltaTime); }
 
-	if (soundSystem->Active()) { soundSystem->Update(); }
+	if (networkSystem->Active()) { networkSystem->Update(deltaTime); }
+
+	//if (soundSystem->Active()) { soundSystem->Update(); }
 
 	if (renderSystem->Active()) { renderSystem->Update(); }
 
@@ -42,6 +80,7 @@ void SystemManager::MassSelectiveClear()
 	textRenderSystem->SelectiveClear();
 	healthSystem->SelectiveClear();
 	soundSystem->SelectiveClear();
+	networkSystem->SelectiveClear();
 	mementoSystem->SelectiveClear();
 }
 
@@ -57,5 +96,6 @@ void SystemManager::MassClear()
 	textRenderSystem->FullClear();
 	healthSystem->FullClear();
 	soundSystem->FullClear();
+	networkSystem->FullClear();
 	mementoSystem->FullClear();
 }
