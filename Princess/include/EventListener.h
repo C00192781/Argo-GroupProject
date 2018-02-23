@@ -20,5 +20,10 @@ public:
 	bool EncounterToWorld = false;
 	bool roll = false;
 	bool WorldToTown = false;
+	bool TownToShop = false;
+	bool ShopToTown = false;
+	bool MenuToWorld = false;
+	bool MenuToOptions = false;
+	bool OptionsToMenu = false;
 };
 #endif

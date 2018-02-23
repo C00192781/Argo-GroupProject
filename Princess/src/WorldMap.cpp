@@ -595,8 +595,11 @@ void WorldMap::Load()
 	for (int i = 0; i < m_entities.size(); i++)
 	{
 		m_systemManager->renderSystem->AddEntity(m_entities.at(i));
-
 		if (m_entities.at(i)->ID() == "Dungeon")
+		{
+			m_systemManager->collisionSystem->AddEntity(m_entities.at(i));
+		}
+		else if (m_entities.at(i)->ID() == "Town")
 		{
 			m_systemManager->collisionSystem->AddEntity(m_entities.at(i));
 		}

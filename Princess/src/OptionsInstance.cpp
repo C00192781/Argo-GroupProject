@@ -75,7 +75,22 @@ void OptionsInstance::Load()
 
 void OptionsInstance::Update()
 {
-
+	if (m_timer <= 0)
+	{
+		for (int i = 0; i < m_entities.size(); i++)
+		{
+			if (m_entities.at(i)->ID() == "Exit" && static_cast<ButtonComponent*>(m_entities.at(i)->FindComponent("ButtonC"))->Activated())
+			{
+				m_eventListener->OptionsToMenu = true;
+				static_cast<ButtonComponent*>(m_entities.at(i)->FindComponent("ButtonC"))->Activated(false);
+				m_timer = 30;
+			}
+		}
+	}
+	else
+	{
+		m_timer--;
+	}
 }
 
 void OptionsInstance::LoadComponent()

@@ -24,6 +24,6 @@ private:
 	EventListener * m_eventListener;
 	StateManager * m_states;
 	SystemManager * m_system;
-
+	int m_timer = 0;
 };
 #endif

@@ -2,9 +2,10 @@
 
 
 
-ShopInstance::ShopInstance(SystemManager* s)
+ShopInstance::ShopInstance(SystemManager* s, EventListener * e)
 {
 	m_systemManager = s;
+	m_listener = e;
 }
 
 ShopInstance::~ShopInstance()
@@ -13,6 +14,12 @@ ShopInstance::~ShopInstance()
 
 void ShopInstance::Generate(int luck)
 {
+
+	for (int i = 0; i < m_entities.size(); i++)
+	{
+		delete m_entities.at(i);
+	}
+	m_entities.clear();
 
 	int randHolder = rand() % 2;
 	if (randHolder >= 1)
@@ -334,6 +341,14 @@ void ShopInstance::Generate(int luck)
 	m_entities.back()->AddComponent(m_buttonThree);
 	m_entities.back()->AddComponent(new TextComponent("munro", "Buy", SDL_Color{ 255,255,255,255 }, 32 * 3, 16 * 3));
 
+	m_entities.push_back(new Entity("LeaveButton"));
+	sprite = new SpriteComponent("Button", 3, 0, 0, 0, 32, 16, 0);
+	sprite->Relative(true);
+	m_entities.back()->AddComponent(sprite);
+	m_entities.back()->AddComponent(new PositionComponent(SDL_Point{ 100, 524 }));
+	m_entities.back()->AddComponent(new ButtonComponent(0, 0, 32 * 3, 16 * 3));
+	m_entities.back()->AddComponent(new TextComponent("munro", "Leave", SDL_Color{ 255,255,255,255 }, 32 * 3, 16 * 3));
+
 	m_entities.push_back(new Entity("Item3"));
 	sprite = new SpriteComponent("Plate", 3, 0, 0, 0, 64, 32, 0);
 	sprite->Relative(true);
@@ -390,6 +405,14 @@ void ShopInstance::Update(std::vector<Entity*> players)
 				}
 			}
 			break;
+		}
+	}
+	for(int i = 0; i < m_entities.size(); i++)
+	{
+		if (m_entities.at(i)->ID() == "LeaveButton" && static_cast<ButtonComponent*>(m_entities.at(i)->FindComponent("ButtonC"))->Activated())
+		{
+			m_listener->ShopToTown = true;
+			static_cast<ButtonComponent*>(m_entities.at(i)->FindComponent("ButtonC"))->Activated(false);
 		}
 	}
 	if(m_timer <= 0)

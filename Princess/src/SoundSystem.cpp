@@ -60,7 +60,6 @@ void SoundSystem::Update()
 				(*it)->setActive(false);
 			}
 		}
-
 		if ((*it)->getMode() == "pause" && (*it)->getActive() == true)
 		{
 			if (Mix_Playing((*it)->getChannel()) == 1)
