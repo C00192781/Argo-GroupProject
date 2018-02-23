@@ -16,7 +16,7 @@ class InstanceManager
 {
 public:
 
-	InstanceManager(SystemManager * sm, StateManager * s, ResourceManager *rm, EventListener *listener, std::vector<Entity*> entities);
+	InstanceManager(SystemManager * sm, StateManager * s, ResourceManager *rm, EventListener *listener, AStar * aStar, std::vector<Entity*> entities);
 
 	WorldMap *worldMap;
 	BattleMap* battleMap;
@@ -34,6 +34,8 @@ public:
 private:
 	EventListener *m_listener;
 	StateManager *m_stateManager;
+
+	AStar *m_aStar;
 
 	std::vector<Entity*> m_players;
 	Entity * m_musicBox;

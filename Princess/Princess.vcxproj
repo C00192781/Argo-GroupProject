@@ -25,6 +25,7 @@
     <ClCompile Include="External Dependencies\SimpleJSON\JSONValue.cpp" />
     <ClCompile Include="src\AchievementHandler.cpp" />
     <ClCompile Include="src\AISystem.cpp" />
+    <ClCompile Include="src\AStar.cpp" />
     <ClCompile Include="src\AttackSystem.cpp" />
     <ClCompile Include="src\BasicEnemy.cpp" />
     <ClCompile Include="src\BattleMap.cpp" />
@@ -70,6 +71,7 @@
     <ClInclude Include="include\AchievementHandler.h" />
     <ClInclude Include="include\AiLogicComponent.h" />
     <ClInclude Include="include\AISystem.h" />
+    <ClInclude Include="include\AStar.h" />
     <ClInclude Include="include\AttackComponent.h" />
     <ClInclude Include="include\AttackSystem.h" />
     <ClInclude Include="include\AttributesComponent.h" />
@@ -93,6 +95,9 @@
     <ClInclude Include="include\EventListener.h" />
     <ClInclude Include="include\Factory.h" />
     <ClInclude Include="include\GoldComponent.h" />
+    <ClInclude Include="include\Graph.h" />
+    <ClInclude Include="include\GraphArc.h" />
+    <ClInclude Include="include\GraphNode.h" />
     <ClInclude Include="include\GrassTileFactory.h" />
     <ClInclude Include="include\HealthSystem.h" />
     <ClInclude Include="include\InputHandler.h" />

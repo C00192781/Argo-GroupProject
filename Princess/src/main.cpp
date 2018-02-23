@@ -31,6 +31,7 @@
 #include "AchievementHandler.h"
 #include "SoundComponent.h"
 #include "SoundSystem.h"
+#include "AStar.h"
 
 int GAME_SCALE = 3;
 
@@ -148,6 +149,8 @@ int main()
 
 	Mix_AllocateChannels(6);
 
+	AStar *aStar = new AStar();
+
 	EventListener *listener = new EventListener();
 
 	InputHandler *input = new InputHandler(listener, e);
@@ -180,7 +183,7 @@ int main()
 	systemManager.collisionSystem = new CollisionSystem(listener);
 	systemManager.collisionSystem->Active(true);
 
-	systemManager.aiSystem = new AiSystem();
+	systemManager.aiSystem = new AiSystem(aStar);
 	systemManager.aiSystem->Active(true);
 
 	systemManager.healthSystem = new HealthSystem();
@@ -411,7 +414,7 @@ int main()
 
 	AchievementHandler *achievements = new AchievementHandler(&systemManager);
 
-	InstanceManager instanceManager(&systemManager, &state, resourceManager, listener, players);
+	InstanceManager instanceManager(&systemManager, &state, resourceManager, listener, aStar, players);
 
 	while (state.ExitGame == false)
 	{

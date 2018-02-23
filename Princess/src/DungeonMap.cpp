@@ -1,11 +1,12 @@
 #include "DungeonMap.h"
 
-DungeonMap::DungeonMap(SystemManager * sm, StateManager * s, ResourceManager * rm, EventListener *listener)
+DungeonMap::DungeonMap(SystemManager * sm, StateManager * s, ResourceManager * rm, EventListener *listener, AStar *aStar)
 {
 	m_systemManager = sm;
 	m_stateManager = s;
 	m_resourceManager = rm;
 	m_listener = listener;
+	m_aStar = aStar;
 
 	m_resourceManager->AddMap("DungeonMap1", "DungeonMap1.json");
 	m_resourceManager->AddMap("DungeonMap2", "DungeonMap2.json");
@@ -50,22 +51,27 @@ void DungeonMap::Generate()
 	if (randomMapNumber == 0)
 	{
 		mapName = "DungeonMap1";
+		m_aStar->setCurrentDungeon(1);
 	}
 	else if (randomMapNumber == 1)
 	{
 		mapName = "DungeonMap2";
+		m_aStar->setCurrentDungeon(2);
 	}
 	else if (randomMapNumber == 2)
 	{
 		mapName = "DungeonMap3";
+		m_aStar->setCurrentDungeon(3);
 	}
 	else if (randomMapNumber == 3)
 	{
 		mapName = "DungeonMap4";
+		m_aStar->setCurrentDungeon(4);
 	}
 	else
 	{
 		mapName = "DungeonMap5";
+		m_aStar->setCurrentDungeon(5);
 	}
 
 	DungeonTileFactory factory;
