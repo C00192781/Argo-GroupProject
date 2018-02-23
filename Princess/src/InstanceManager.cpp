@@ -20,7 +20,7 @@ InstanceManager::InstanceManager(SystemManager * sm, StateManager * s, ResourceM
 	dungeonMap = new DungeonMap(sm, s, rm, listener, aStar);
 	startInstance = new StartInstance(sm, s);
 
-	menu = new MenuInstance(sm, listener, s);
+	menu = new MenuInstance(sm, listener, s, &m_players);
 	options = new OptionsInstance(sm, listener, s);
 
 	m_musicBox = new Entity("MusicBox");
@@ -67,6 +67,32 @@ void InstanceManager::Update(float deltaTime)
 	{
 		battleMap->Update(deltaTime);
 		m_aStar->setCurrentMapType("Battle");
+	}
+
+	if (m_listener->MenuToWorld)
+	{
+		Reset();
+		worldMap->Generate(25, 25, 100);
+		worldMap->Load();
+		worldMap->Active(true);
+		menu->Active(false);
+		m_listener->MenuToWorld = false;
+	}
+	else if (m_listener->MenuToOptions)
+	{
+		Reset();
+		options->Load();
+		options->Active(true);
+		menu->Active(false);
+		m_listener->MenuToOptions = false;
+	}
+	else if (m_listener->OptionsToMenu)
+	{
+		Reset();
+		menu->Load();
+		menu->Active(true);
+		options->Active(false);
+		m_listener->OptionsToMenu = false;
 	}
 
 	//if (m_stateManager->StartGame)
@@ -162,31 +188,6 @@ void InstanceManager::Update(float deltaTime)
 			shopInstance->Active(false);
 			m_listener->ShopToTown = false;
 		}
-		else if (m_listener->MenuToWorld)
-		{
-			Reset();
-			worldMap->Generate(25, 25, 100);
-			worldMap->Load();
-			worldMap->Active(true);
-			menu->Active(false);
-			m_listener->MenuToWorld = false;
-		}
-		else if (m_listener->MenuToOptions)
-		{
-			Reset();
-			options->Load();
-			options->Active(true);
-			menu->Active(false);
-			m_listener->MenuToOptions = false;
-		}
-		else if (m_listener->OptionsToMenu)
-		{
-			Reset();
-			menu->Load();
-			menu->Active(true);
-			options->Active(false);
-			m_listener->OptionsToMenu = false;
-		}
 	}
 
 	else if (m_listener->host == false && m_listener->connected == true)
@@ -226,6 +227,7 @@ void InstanceManager::GenerateFromServer()
 {
 	if (m_listener->ToDungeon1 == true)
 	{
+		Reset();
 		dungeonMap->Generate("DungeonMap1");
 		worldMap->Active(false);
 		dungeonMap->Active(true);
@@ -233,6 +235,7 @@ void InstanceManager::GenerateFromServer()
 	}
 	else if (m_listener->ToDungeon2 == true)
 	{
+		Reset();
 		dungeonMap->Generate("DungeonMap2");
 		worldMap->Active(false);
 		dungeonMap->Active(true);
@@ -240,6 +243,7 @@ void InstanceManager::GenerateFromServer()
 	}
 	else if (m_listener->ToDungeon3 == true)
 	{
+		Reset();
 		dungeonMap->Generate("DungeonMap3");
 		worldMap->Active(false);
 		dungeonMap->Active(true);
@@ -247,6 +251,7 @@ void InstanceManager::GenerateFromServer()
 	}
 	else if (m_listener->ToDungeon4 == true)
 	{
+		Reset();
 		dungeonMap->Generate("DungeonMap4");
 		worldMap->Active(false);
 		dungeonMap->Active(true);
@@ -254,6 +259,7 @@ void InstanceManager::GenerateFromServer()
 	}
 	else if (m_listener->ToDungeon5 == true)
 	{
+		Reset();
 		dungeonMap->Generate("DungeonMap5");
 		worldMap->Active(false);
 		dungeonMap->Active(true);
@@ -261,6 +267,7 @@ void InstanceManager::GenerateFromServer()
 	}
 	else if (m_listener->ToWorldMap == true)
 	{
+		Reset();
 		worldMap->Load();
 		worldMap->Active(true);
 		dungeonMap->Active(false);

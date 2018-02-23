@@ -75,6 +75,7 @@ void SystemManager::MassSelectiveClear()
 	textRenderSystem->SelectiveClear();
 	healthSystem->SelectiveClear();
 	soundSystem->SelectiveClear();
+	networkSystem->SelectiveClear();
 }
 
 void SystemManager::MassClear()
@@ -89,4 +90,5 @@ void SystemManager::MassClear()
 	textRenderSystem->FullClear();
 	healthSystem->FullClear();
 	soundSystem->FullClear();
+	networkSystem->FullClear();
 }

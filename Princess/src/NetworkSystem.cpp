@@ -9,22 +9,22 @@ NetworkSystem::NetworkSystem()
 	m_isHost = false;
 	m_id = -1;
 
-	if (connectToServer())
-	{
-		init();
-		srand(getServerSeed());
-		m_active = true;
-
-		if (m_id == 0)
-		{
-			m_isHost = true;
-		}
-	}
-	else
-	{
-		srand(time(NULL));
-		m_active = false;
-	}
+	// (connectToServer())
+	//
+	//nit();
+	//rand(getServerSeed());
+	//_active = true;
+	//
+	//f (m_id == 0)
+	//
+	//m_isHost = true;
+	//
+	//
+	//se
+	//
+	//rand(time(NULL));
+	//_active = false;
+	//
 
 	m_maxTimeTilNextPacket = 0.002;
 	m_timeTilNextPacket = 0;
@@ -39,22 +39,22 @@ NetworkSystem::NetworkSystem(EventListener *listener)
 	m_isHost = false;
 	m_id = -1;
 
-	if (connectToServer())
-	{
-		init();
-		srand(getServerSeed());
-		m_active = true;
-
-		if (m_id == 0)
-		{
-			m_isHost = true;
-		}
-	}
-	else
-	{
-		srand(time(NULL));
-		m_active = false;
-	}
+	//if (connectToServer())
+	//{
+	//	init();
+	//	srand(getServerSeed());
+	//	m_active = true;
+	//
+	//	if (m_id == 0)
+	//	{
+	//		m_isHost = true;
+	//	}
+	//}
+	//else
+	//{
+	//	srand(time(NULL));
+	//	m_active = false;
+	//}
 
 	m_maxTimeTilNextPacket = 0.002;
 	m_timeTilNextPacket = 0;
@@ -73,16 +73,19 @@ void NetworkSystem::Update(float deltaTime)
 		for (int i = 0; i < m_entities.size(); i++)
 		{
 			PositionComponent* positionComponent = static_cast<PositionComponent*>(m_entities.at(i)->FindComponent("PC"));
+			MovementComponent* movementComponent = static_cast<MovementComponent*>(m_entities.at(i)->FindComponent("movement"));
 			ControlComponent* controlComponent = static_cast<ControlComponent*>(m_entities.at(i)->FindComponent("control"));
 			NetworkIDComponent* networkIDComponent = static_cast<NetworkIDComponent*>(m_entities.at(i)->FindComponent("network"));
 
-			if (m_entities.at(i)->ID() == "Player" && networkIDComponent->getID() == m_id)
+			if (m_entities.at(i)->ID() == "Player" && networkIDComponent->getID() == m_id && movementComponent->getMoving() == true)
 			{
 				Packet packet;
 
 				packet << (Uint8)PacketType::UPDATEPLAYERS << m_id << positionComponent->getX() << positionComponent->getY();
 
 				send(packet);
+
+				std::cout << positionComponent->getX() << std::endl;
 			}
 
 			if (m_isHost == true)

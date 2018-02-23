@@ -10,6 +10,7 @@
 #include "NetworkIDComponent.h"
 #include "CollisionComponent.h"
 #include "EventListener.h"
+#include "MovementComponent.h"
 
 class NetworkSystem : public System
 {

@@ -323,13 +323,13 @@ int main()
 	systemManager.renderSystem->AddEntity(player4);
 	systemManager.collisionSystem->AddEntity(player4);
 	systemManager.attackSystem->AddEntity(player4);
-	systemManager.networkSystem->AddEntity(player);
+	systemManager.networkSystem->AddEntity(player4);
 
 	systemManager.movementSystem->AddEntity(player3);
 	systemManager.renderSystem->AddEntity(player3);
 	systemManager.collisionSystem->AddEntity(player3);
 	systemManager.attackSystem->AddEntity(player3);
-	systemManager.networkSystem->AddEntity(player);
+	systemManager.networkSystem->AddEntity(player3);
 
 	systemManager.movementSystem->AddEntity(player2);
 	systemManager.renderSystem->AddEntity(player2);
@@ -349,60 +349,60 @@ int main()
 	players.push_back(player3);
 	players.push_back(player4);
 
-	if (systemManager.networkSystem->getConnected() == true)
-	{
-		if (systemManager.networkSystem->getID() == 0)
-		{
-			player->Control(true);
-			//player2->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
-			//player2->AddComponent(new SeekComponent()); //and this if AI is to control that player
-		}
-		else if (systemManager.networkSystem->getID() == 1)
-		{
-			player2->Control(true); //enable only if the client controlled player
-									//player->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
-									//player->AddComponent(new SeekComponent()); //and this if AI is to control that player
-		}
-		else if (systemManager.networkSystem->getID() == 2)
-		{
-			player3->Control(true); //enable only if the client controlled player
-									//player->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
-									//player->AddComponent(new SeekComponent()); //and this if AI is to control that player
-		}
-		else
-		{
-			player4->Control(true); //enable only if the client controlled player
-									//player->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
-									//player->AddComponent(new SeekComponent()); //and this if AI is to control that player
-		}
-	}
-	else
-	{
-		player->Control(true);
-		player2->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
-		player2->AddComponent(new SeekComponent()); //and this if AI is to control that player
-		player3->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
-		player3->AddComponent(new SeekComponent()); //and this if AI is to control that player
-		player4->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
-		player4->AddComponent(new SeekComponent()); //and this if AI is to control that player
-	}
-
-	if (player->Control())
-	{
-		systemManager.controlSystem->AddEntity(player);
-	}
-	else if (player2->Control())
-	{
-		systemManager.controlSystem->AddEntity(player2);
-	}
-	else if (player3->Control())
-	{
-		systemManager.controlSystem->AddEntity(player3);
-	}
-	else if (player4->Control())
-	{
-		systemManager.controlSystem->AddEntity(player4);
-	}
+	//if (systemManager.networkSystem->getConnected() == true)
+	//{
+	//	if (systemManager.networkSystem->getID() == 0)
+	//	{
+	//		player->Control(true);
+	//		//player2->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
+	//		//player2->AddComponent(new SeekComponent()); //and this if AI is to control that player
+	//	}
+	//	else if (systemManager.networkSystem->getID() == 1)
+	//	{
+	//		player2->Control(true); //enable only if the client controlled player
+	//								//player->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
+	//								//player->AddComponent(new SeekComponent()); //and this if AI is to control that player
+	//	}
+	//	else if (systemManager.networkSystem->getID() == 2)
+	//	{
+	//		player3->Control(true); //enable only if the client controlled player
+	//								//player->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
+	//								//player->AddComponent(new SeekComponent()); //and this if AI is to control that player
+	//	}
+	//	else
+	//	{
+	//		player4->Control(true); //enable only if the client controlled player
+	//								//player->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
+	//								//player->AddComponent(new SeekComponent()); //and this if AI is to control that player
+	//	}
+	//}
+	//else
+	//{
+	//	player->Control(true);
+	//	player2->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
+	//	player2->AddComponent(new SeekComponent()); //and this if AI is to control that player
+	//	player3->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
+	//	player3->AddComponent(new SeekComponent()); //and this if AI is to control that player
+	//	player4->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
+	//	player4->AddComponent(new SeekComponent()); //and this if AI is to control that player
+	//}
+	//
+	//if (player->Control())
+	//{
+	//	systemManager.controlSystem->AddEntity(player);
+	//}
+	//else if (player2->Control())
+	//{
+	//	systemManager.controlSystem->AddEntity(player2);
+	//}
+	//else if (player3->Control())
+	//{
+	//	systemManager.controlSystem->AddEntity(player3);
+	//}
+	//else if (player4->Control())
+	//{
+	//	systemManager.controlSystem->AddEntity(player4);
+	//}
 
 
 

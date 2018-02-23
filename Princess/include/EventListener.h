@@ -29,6 +29,8 @@ public:
 	bool host = false;
 	bool connected = false;
 
+	bool connectFromMenu = false;
+
 	bool roll = false;
 	bool WorldToTown = false;
 	bool TownToShop = false;
