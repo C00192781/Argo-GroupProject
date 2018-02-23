@@ -57,7 +57,7 @@ public:
 	void Save()
 	{
 		delete momento;
-		momento = new AttributesMomento(m_health, m_maxHealth, m_armour, m_maxArmour, m_movementSpeed, m_maxMovementSpeed);
+		momento = new AttributesMomento(m_health, m_maxHealth, m_armour, m_maxArmour, m_movementSpeed, m_maxMovementSpeed, m_additiveArmour, m_additiveHealth,m_additiveMovementSpeed);
 	}
 
 	void Revert()
