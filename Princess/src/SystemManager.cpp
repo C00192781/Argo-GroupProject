@@ -7,7 +7,7 @@ SystemManager::SystemManager(ResourceManager *resourceManager, SDL_Renderer* gam
 	controlSystem = new ControlSystem(listener);
 	controlSystem->Active(true);
 
-	movementSystem = new MovementSystem(816, 624);
+	movementSystem = new MovementSystem(816, 624, listener);
 	movementSystem->Active(true);
 
 	renderSystem = new RenderSystem(resourceManager, gameRenderer);

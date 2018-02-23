@@ -395,11 +395,11 @@ void ShopInstance::Update(std::vector<Entity*> players)
 	{
 		if (players.at(i)->Control())
 		{
-			for (int j = 0; j < players.back()->GetComponents()->size(); j++)
+			for (int j = 0; j < players.at(i)->GetComponents()->size(); j++)
 			{
-				if (players.back()->GetComponents()->at(j)->Type() == "Gold")
+				if (players.at(i)->GetComponents()->at(j)->Type() == "currency")
 				{
-					m_playerGold = static_cast<GoldComponent*>(players.back()->GetComponents()->at(j))->Gold();
+					m_playerGold = static_cast<CurrencyComponent*>(players.at(i)->GetComponents()->at(j))->value();
 					m_playerGoldText->Text("Gold: " + std::to_string(m_playerGold));
 					break;
 				}
@@ -407,6 +407,9 @@ void ShopInstance::Update(std::vector<Entity*> players)
 			break;
 		}
 	}
+
+
+
 	for(int i = 0; i < m_entities.size(); i++)
 	{
 		if (m_entities.at(i)->ID() == "LeaveButton" && static_cast<ButtonComponent*>(m_entities.at(i)->FindComponent("ButtonC"))->Activated())
@@ -424,13 +427,13 @@ void ShopInstance::Update(std::vector<Entity*> players)
 				if (players.at(i)->Control())
 				{
 					bool proceed = false;
-					for (int j = 0; j < players.back()->GetComponents()->size(); j++)
+					for (int j = 0; j < players.at(i)->GetComponents()->size(); j++)
 					{
-						if (players.back()->GetComponents()->at(j)->Type() == "Gold")
+						if (players.at(i)->GetComponents()->at(j)->Type() == "currency")
 						{
-							if (static_cast<GoldComponent*>(players.back()->GetComponents()->at(j))->Gold() >= m_itemOneGold)
+							if (static_cast<CurrencyComponent*>(players.at(i)->GetComponents()->at(j))->value() >= m_itemOneGold)
 							{
-								static_cast<GoldComponent*>(players.back()->GetComponents()->at(j))->Gold(static_cast<GoldComponent*>(players.back()->GetComponents()->at(j))->Gold() - m_itemOneGold);
+								static_cast<CurrencyComponent*>(players.at(i)->GetComponents()->at(j))->value(static_cast<CurrencyComponent*>(players.at(i)->GetComponents()->at(j))->value() - m_itemOneGold);
 								proceed = true;
 							}
 						}
@@ -439,9 +442,9 @@ void ShopInstance::Update(std::vector<Entity*> players)
 					{
 						if (m_weaponOneSwitch)
 						{
-							for (int j = 0; j < players.back()->GetComponents()->size(); j++)
+							for (int j = 0; j < players.at(i)->GetComponents()->size(); j++)
 							{
-								if (players.back()->GetComponents()->at(j)->Type() == "weapon")
+								if (players.at(i)->GetComponents()->at(j)->Type() == "weapon")
 								{
 									//delete players.at(i)->GetComponents()->at(j);
 									players.at(i)->GetComponents()->at(j) = m_weaponOne;
@@ -452,12 +455,13 @@ void ShopInstance::Update(std::vector<Entity*> players)
 						}
 						else
 						{
-							for (int j = 0; j < players.back()->GetComponents()->size(); j++)
+							for (int j = 0; j < players.at(i)->GetComponents()->size(); j++)
 							{
-								if (players.back()->GetComponents()->at(j)->Type() == "attribute")
+								if (players.at(i)->GetComponents()->at(j)->Type() == "attribute")
 								{
-									static_cast<AttributesComponent*>(players.back()->GetComponents()->at(j))->AdditiveArmour(m_armorOne);
-									static_cast<AttributesComponent*>(players.back()->GetComponents()->at(j))->AdditiveHealth(m_healthOne);
+									static_cast<AttributesComponent*>(players.at(i)->GetComponents()->at(j))->AdditiveArmour(m_armorOne);
+									static_cast<AttributesComponent*>(players.at(i)->GetComponents()->at(j))->AdditiveHealth(m_healthOne);
+									m_listener->ChangedArmor = true;
 									break;
 								}
 							}
@@ -474,13 +478,13 @@ void ShopInstance::Update(std::vector<Entity*> players)
 				if (players.at(i)->Control())
 				{
 					bool proceed = false;
-					for (int j = 0; j < players.back()->GetComponents()->size(); j++)
+					for (int j = 0; j < players.at(i)->GetComponents()->size(); j++)
 					{
-						if (players.back()->GetComponents()->at(j)->Type() == "Gold")
+						if (players.at(i)->GetComponents()->at(j)->Type() == "currency")
 						{
-							if (static_cast<GoldComponent*>(players.back()->GetComponents()->at(j))->Gold() >= m_itemTwoGold)
+							if (static_cast<CurrencyComponent*>(players.at(i)->GetComponents()->at(j))->value() >= m_itemTwoGold)
 							{
-								static_cast<GoldComponent*>(players.back()->GetComponents()->at(j))->Gold(static_cast<GoldComponent*>(players.back()->GetComponents()->at(j))->Gold() - m_itemTwoGold);
+								static_cast<CurrencyComponent*>(players.at(i)->GetComponents()->at(j))->value(static_cast<CurrencyComponent*>(players.at(i)->GetComponents()->at(j))->value() - m_itemTwoGold);
 								proceed = true;
 							}
 						}
@@ -489,9 +493,9 @@ void ShopInstance::Update(std::vector<Entity*> players)
 					{
 						if (m_weaponTwoSwitch)
 						{
-							for (int j = 0; j < players.back()->GetComponents()->size(); j++)
+							for (int j = 0; j < players.at(i)->GetComponents()->size(); j++)
 							{
-								if (players.back()->GetComponents()->at(j)->Type() == "weapon")
+								if (players.at(i)->GetComponents()->at(j)->Type() == "weapon")
 								{
 									//delete players.at(i)->GetComponents()->at(j);
 									players.at(i)->GetComponents()->at(j) = m_weaponTwo;
@@ -502,12 +506,13 @@ void ShopInstance::Update(std::vector<Entity*> players)
 						}
 						else
 						{
-							for (int j = 0; j < players.back()->GetComponents()->size(); j++)
+							for (int j = 0; j < players.at(i)->GetComponents()->size(); j++)
 							{
-								if (players.back()->GetComponents()->at(j)->Type() == "attribute")
+								if (players.at(i)->GetComponents()->at(j)->Type() == "attribute")
 								{
-									static_cast<AttributesComponent*>(players.back()->GetComponents()->at(j))->AdditiveArmour(m_armorTwo);
-									static_cast<AttributesComponent*>(players.back()->GetComponents()->at(j))->AdditiveHealth(m_healthTwo);
+									static_cast<AttributesComponent*>(players.at(i)->GetComponents()->at(j))->AdditiveArmour(m_armorTwo);
+									static_cast<AttributesComponent*>(players.at(i)->GetComponents()->at(j))->AdditiveHealth(m_healthTwo);
+									m_listener->ChangedArmor = true;
 									break;
 								}
 							}
@@ -524,13 +529,13 @@ void ShopInstance::Update(std::vector<Entity*> players)
 				if (players.at(i)->Control())
 				{
 					bool proceed = false;
-					for (int j = 0; j < players.back()->GetComponents()->size(); j++)
+					for (int j = 0; j < players.at(i)->GetComponents()->size(); j++)
 					{
-						if (players.back()->GetComponents()->at(j)->Type() == "Gold")
+						if (players.at(i)->GetComponents()->at(j)->Type() == "currency")
 						{
-							if (static_cast<GoldComponent*>(players.back()->GetComponents()->at(j))->Gold() >= m_itemThreeGold)
+							if (static_cast<CurrencyComponent*>(players.at(i)->GetComponents()->at(j))->value() >= m_itemThreeGold)
 							{
-								static_cast<GoldComponent*>(players.back()->GetComponents()->at(j))->Gold(static_cast<GoldComponent*>(players.back()->GetComponents()->at(j))->Gold() - m_itemThreeGold);
+								static_cast<CurrencyComponent*>(players.at(i)->GetComponents()->at(j))->value(static_cast<CurrencyComponent*>(players.at(i)->GetComponents()->at(j))->value() - m_itemThreeGold);
 								proceed = true;
 							}
 						}
@@ -539,9 +544,9 @@ void ShopInstance::Update(std::vector<Entity*> players)
 					{
 						if (m_weaponThreeSwitch)
 						{
-							for (int j = 0; j < players.back()->GetComponents()->size(); j++)
+							for (int j = 0; j < players.at(i)->GetComponents()->size(); j++)
 							{
-								if (players.back()->GetComponents()->at(j)->Type() == "weapon")
+								if (players.at(i)->GetComponents()->at(j)->Type() == "weapon")
 								{
 									//delete players.at(i)->GetComponents()->at(j);
 									players.at(i)->GetComponents()->at(j) = m_weaponThree;
@@ -552,12 +557,13 @@ void ShopInstance::Update(std::vector<Entity*> players)
 						}
 						else
 						{
-							for (int j = 0; j < players.back()->GetComponents()->size(); j++)
+							for (int j = 0; j < players.at(i)->GetComponents()->size(); j++)
 							{
-								if (players.back()->GetComponents()->at(j)->Type() == "attribute")
+								if (players.at(i)->GetComponents()->at(j)->Type() == "attribute")
 								{
-									static_cast<AttributesComponent*>(players.back()->GetComponents()->at(j))->AdditiveArmour(m_armorThree);
-									static_cast<AttributesComponent*>(players.back()->GetComponents()->at(j))->AdditiveHealth(m_healthThree);
+									static_cast<AttributesComponent*>(players.at(i)->GetComponents()->at(j))->AdditiveArmour(m_armorThree);
+									static_cast<AttributesComponent*>(players.at(i)->GetComponents()->at(j))->AdditiveHealth(m_healthThree);
+									m_listener->ChangedArmor = true;
 									break;
 								}
 							}

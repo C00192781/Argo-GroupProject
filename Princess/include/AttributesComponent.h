@@ -59,7 +59,9 @@ public:
 	void MaxMovementSpeed(int movementSpeed) { m_maxMovementSpeed = movementSpeed; };
 
 	void AdditiveArmour(int x) { m_additiveArmour = x; };
+	int AdditiveArmour() { return m_additiveArmour; }
 	void AdditiveHealth(int x) { m_additiveHealth = x; };
+	int AdditiveHealth() { return m_additiveHealth; }
 	void AdditiveMovement(int x) { m_additiveMovementSpeed = x; };
 
 

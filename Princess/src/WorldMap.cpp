@@ -592,6 +592,25 @@ void WorldMap::Load()
 	m_systemManager->attackSystem->SelectiveClear();
 	m_systemManager->aiSystem->SelectiveClear();
 
+
+	Entity* aplayer = m_systemManager->collisionSystem->FindEntity("Player", 3);
+
+	aplayer->Active(true);
+
+	Entity* aplayer2 = m_systemManager->collisionSystem->FindEntity("Player", 2);
+
+	aplayer2->Active(false);
+
+
+	Entity* aplayer3 = m_systemManager->collisionSystem->FindEntity("Player", 1);
+
+	aplayer3->Active(false);
+
+
+	Entity* aplayer4 = m_systemManager->collisionSystem->FindEntity("Player", 0);
+
+	aplayer4->Active(false);
+
 	for (int i = 0; i < m_entities.size(); i++)
 	{
 		m_systemManager->renderSystem->AddEntity(m_entities.at(i));
@@ -657,6 +676,21 @@ void WorldMap::Load()
 
 		player->Active(true);
 
+		Entity* player2 = m_systemManager->collisionSystem->FindEntity("Player", 2);
+
+		player2->Active(false);
+
+
+		Entity* player3 = m_systemManager->collisionSystem->FindEntity("Player", 1);
+
+		player3->Active(false);
+
+
+		Entity* player4 = m_systemManager->collisionSystem->FindEntity("Player", 0);
+
+		player4->Active(false);
+
+
 		if (player != nullptr)
 		{
 			CollisionComponent* pos = static_cast<CollisionComponent*>(player->FindComponent("collision"));
@@ -690,17 +724,20 @@ void WorldMap::Update()
 		{
 			if (movement->getMoving() == true)
 			{
-				//if ((rand() % 10000) >= 9990)
-				//{
-				//	PositionComponent* pos = static_cast<PositionComponent*>(player->FindComponent("PC"));
-				//
-				//	if (pos != nullptr)
-				//	{
-				//		m_randomEncounterLocation = { (int)pos->getX(), (int)pos->getY() };
-				//	}
-				//
-				//	m_listener->WorldToEncounter = true;
-				//}
+				if ((rand() % 10000) >= 9990)
+				{
+					if (m_listener->connected == false)
+					{
+						PositionComponent* pos = static_cast<PositionComponent*>(player->FindComponent("PC"));
+
+						if (pos != nullptr)
+						{
+							m_randomEncounterLocation = { (int)pos->getX(), (int)pos->getY() };
+						}
+
+						m_listener->WorldToEncounter = true;
+					}
+				}
 			}
 		}
 	}

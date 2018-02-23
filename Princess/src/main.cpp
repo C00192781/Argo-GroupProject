@@ -104,6 +104,8 @@ int main()
 	ResourceManager *resourceManager = new ResourceManager(gameRenderer, "Resources");
 
 	resourceManager->AddTexture("Red", "Sprite_Red.png");
+	resourceManager->AddTexture("Blue", "Sprite_Blue.png");
+	resourceManager->AddTexture("Pink", "Sprite_Pink.png");
 	resourceManager->AddTexture("Demon", "demon.png");
 	resourceManager->AddTexture("Turf", "Turfs.png");
 	resourceManager->AddTexture("Arrow", "Arrow.png");
@@ -208,7 +210,7 @@ int main()
 	player2->Active(true);
 	player2->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
 	player2->AddComponent(new PositionComponent(SDL_Point{ 250, 380 }));
-	player2->AddComponent(new AttributesComponent(4, 4, 4, 10, 100, 100));
+	player2->AddComponent(new AttributesComponent(20, 20, 4, 10, 100, 100));
 	player2->AddComponent(new MovementComponent());
 	player2->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player2->AddComponent(new CollisionComponent(250, 380, 16, 16, 2));
@@ -246,7 +248,7 @@ int main()
 	player3->Active(true);
 	player3->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
 	player3->AddComponent(new PositionComponent(SDL_Point{ 300, 380 }));
-	player3->AddComponent(new AttributesComponent(4, 4, 4, 10, 100, 100));
+	player3->AddComponent(new AttributesComponent(20, 20, 4, 10, 100, 100));
 	player3->AddComponent(new MovementComponent());
 	player3->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player3->AddComponent(new CollisionComponent(300, 380, 16, 16, 2));
@@ -285,7 +287,7 @@ int main()
 	player4->Active(true);
 	player4->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
 	player4->AddComponent(new PositionComponent(SDL_Point{ 200, 380 }));
-	player4->AddComponent(new AttributesComponent(4, 4, 1, 10, 100, 100));
+	player4->AddComponent(new AttributesComponent(20, 20, 1, 10, 100, 100));
 	player4->AddComponent(new MovementComponent());
 	player4->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player4->AddComponent(new CollisionComponent(200, 380, 16, 16, 2));
@@ -342,85 +344,12 @@ int main()
 	systemManager.collisionSystem->AddEntity(player);
 	systemManager.attackSystem->AddEntity(player);
 	systemManager.networkSystem->AddEntity(player);
-	
-	//std::vector<Entity*> players;
-	//players.push_back(player);
-	//players.push_back(player2);
-	//players.push_back(player3);
-	//players.push_back(player4);
-
-	//if (systemManager.networkSystem->getConnected() == true)
-	//{
-	//	if (systemManager.networkSystem->getID() == 0)
-	//	{
-	//		player->Control(true);
-	//		//player2->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
-	//		//player2->AddComponent(new SeekComponent()); //and this if AI is to control that player
-	//	}
-	//	else if (systemManager.networkSystem->getID() == 1)
-	//	{
-	//		player2->Control(true); //enable only if the client controlled player
-	//								//player->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
-	//								//player->AddComponent(new SeekComponent()); //and this if AI is to control that player
-	//	}
-	//	else if (systemManager.networkSystem->getID() == 2)
-	//	{
-	//		player3->Control(true); //enable only if the client controlled player
-	//								//player->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
-	//								//player->AddComponent(new SeekComponent()); //and this if AI is to control that player
-	//	}
-	//	else
-	//	{
-	//		player4->Control(true); //enable only if the client controlled player
-	//								//player->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
-	//								//player->AddComponent(new SeekComponent()); //and this if AI is to control that player
-	//	}
-	//}
-	//else
-	//{
-	//	player->Control(true);
-	//	player2->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
-	//	player2->AddComponent(new SeekComponent()); //and this if AI is to control that player
-	//	player3->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
-	//	player3->AddComponent(new SeekComponent()); //and this if AI is to control that player
-	//	player4->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
-	//	player4->AddComponent(new SeekComponent()); //and this if AI is to control that player
-	//}
-	//
-	//if (player->Control())
-	//{
-	//	systemManager.controlSystem->AddEntity(player);
-	//}
-	//else if (player2->Control())
-	//{
-	//	systemManager.controlSystem->AddEntity(player2);
-	//}
-	//else if (player3->Control())
-	//{
-	//	systemManager.controlSystem->AddEntity(player3);
-	//}
-	//else if (player4->Control())
-	//{
-	//	systemManager.controlSystem->AddEntity(player4);
-	//}
-
-
 
 	std::vector<Entity*> playerEntities;
-
-
-
 	playerEntities.push_back(player4);
 	playerEntities.push_back(player3);
 	playerEntities.push_back(player2);
 	playerEntities.push_back(player);
-
-
-	//TownInstance t = TownInstance(&systemManager);
-	//t.Generate("jimmie");
-
-	//WorldMap* m = new WorldMap(&systemManager, &state);
-	//m->Generate(25, 25, 100);
 
 	systemManager.soundSystem->AddEntity(player); //local client player only?
 

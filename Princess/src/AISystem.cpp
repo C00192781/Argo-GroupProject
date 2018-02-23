@@ -193,38 +193,24 @@ void AiSystem::Update()
 
 void AiSystem::Wander(int entityIndex, int pcKey, int mcKey, int seekKey, int attributeKey)
 {
-	time_t t;
 
-	srand((unsigned)time(&t));
+	srand(time(NULL));
 
-	int temp = m_time * 1000;
 
-	int mod1 = rand() % 100;
+	int mod1 = rand() % 800;
 
-	int mod2 = rand() % 80;
+	int mod2 = rand() % 600;
 
-	if (temp % 22 == 0 || temp % 23 == 0)
-	{
+//	cout << "mod1 " << mod1 << endl;
 
-		if (mod1 % 2 == 0)
-		{
-			static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->setXDestination(400 + mod1);
-		}
-		else
-		{
-			static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->setXDestination(400 - mod1);
-		}
 
-		if (mod2 % 2 == 0)
-		{
-			static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->setYDestination(300 + mod2);
-		}
-		else
-		{
-			static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->setYDestination(300 - mod2);
-		}
+	
+	static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->setXDestination(mod2);
 
-	}
+	static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->setYDestination(mod2);
+
+
+	
 
 	//std::cout << "X: " << static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->getXDestination() << "  Y: " << static_cast<SeekComponent*>(m_entities.at(entityIndex)->GetComponents()->at(seekKey))->getYDestination() << std::endl;
 
@@ -531,7 +517,7 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 
 	for (int i = 0; i < m_entities.size(); i++)
 	{
-		if (m_entities.at(i)->ID() != "Player")
+		if (m_entities.at(i)->ID() != "Player" && m_entities.at(i)->ID() != "Princess")
 		{
 			MovementComponent* movementComponent = static_cast<MovementComponent*>(m_entities.at(i)->FindComponent("movement"));
 			
@@ -746,8 +732,15 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 				}	//end active enemy things
 
 			}
+
 		} //end not player
 
+
+		else if (m_entities.at(i)->ID() == "Princess")
+		{
+			//do princess things
+			Wander(i, m_entities.at(i)->FindComponentIndex("PC") , m_entities.at(i)->FindComponentIndex("movement"), m_entities.at(i)->FindComponentIndex("seek"), m_entities.at(i)->FindComponentIndex("attribute"));
+		}
 	}
 
 	m_playerEntities.clear();

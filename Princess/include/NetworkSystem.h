@@ -12,6 +12,7 @@
 #include "EventListener.h"
 #include "MovementComponent.h"
 #include "WeaponComponent.h"
+#include "AttributesComponent.h"
 
 class NetworkSystem : public System
 {

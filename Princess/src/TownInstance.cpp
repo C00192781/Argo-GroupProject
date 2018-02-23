@@ -65,6 +65,26 @@ void TownInstance::Update()
 {
 	for (int i = 0; i < m_entities.size(); i++)
 	{
+
+		Entity* player = m_systemManager->collisionSystem->FindEntity("Player", 3);
+
+		player->Active(false);
+
+		Entity* player2 = m_systemManager->collisionSystem->FindEntity("Player", 2);
+
+		player2->Active(false);
+
+
+		Entity* player3 = m_systemManager->collisionSystem->FindEntity("Player", 1);
+
+		player3->Active(false);
+
+
+		Entity* player4 = m_systemManager->collisionSystem->FindEntity("Player", 0);
+
+		player4->Active(false);
+
+
 		if (m_entities.at(i)->ID() == "ShopButton" && static_cast<ButtonComponent*>(m_entities.at(i)->FindComponent("ButtonC"))->Activated())
 		{
 			m_eventListener->TownToShop = true;

@@ -43,6 +43,7 @@ void NetworkSystem::Update(float deltaTime)
 			ControlComponent* controlComponent = static_cast<ControlComponent*>(m_entities.at(i)->FindComponent("control"));
 			NetworkIDComponent* networkIDComponent = static_cast<NetworkIDComponent*>(m_entities.at(i)->FindComponent("network"));
 			WeaponComponent* weaponComponent = static_cast<WeaponComponent*>(m_entities.at(i)->FindComponent("weapon"));
+			AttributesComponent* attributeComponent = static_cast<AttributesComponent*>(m_entities.at(i)->FindComponent("attribute"));
 
 			if (m_entities.at(i)->ID() == "Player" && networkIDComponent->getID() == m_id && movementComponent->getMoving() == true)
 			{
@@ -60,9 +61,19 @@ void NetworkSystem::Update(float deltaTime)
 				packet << (Uint8)PacketType::UPDATEWEAPON << m_id << (int)weaponComponent->getWeaponType() << weaponComponent->getDamage() << weaponComponent->getRange() << weaponComponent->getAttackSpeed();
 
 				send(packet);
-				std::cout << "AYYYYY" << std::endl;
  
 				m_listener->ChangedWeapon = false;
+			}
+
+			if (m_listener->ChangedArmor == true)
+			{
+				Packet packet;
+
+				packet << (Uint8)PacketType::UPDATEATTRIBUTES << m_id << attributeComponent->AdditiveHealth() << attributeComponent->AdditiveArmour();
+
+				send(packet);
+
+				m_listener->ChangedArmor = false;
 			}
 
 			if (m_isHost == true)
@@ -273,7 +284,35 @@ void NetworkSystem::listen()
 						weaponComponent->setRange(range);
 						weaponComponent->setAttackSpeed(attackSpeed);
 
-						std::cout << "Weapon changed" << std::endl;
+						break;
+					}
+				}
+			}
+		}
+		else if (packetType == (Uint8)PacketType::UPDATEATTRIBUTES)
+		{
+			int id;
+			int health;
+			int armour;
+
+			packet >> id;
+			packet >> health;
+			packet >> armour;
+
+			for (int i = 0; i < m_entities.size(); i++)
+			{
+				if (m_entities.at(i)->ID() == "Player")
+				{
+					NetworkIDComponent* networkIDComponent = static_cast<NetworkIDComponent*>(m_entities.at(i)->FindComponent("network"));
+
+					if (networkIDComponent->getID() == id)
+					{
+						AttributesComponent* attributeComponent = static_cast<AttributesComponent*>(m_entities.at(i)->FindComponent("attribute"));
+
+						attributeComponent->AdditiveHealth(health);
+						attributeComponent->AdditiveArmour(armour);
+
+						std::cout << "OKAY WE RECEIVED IT" << std::endl;
 
 						break;
 					}

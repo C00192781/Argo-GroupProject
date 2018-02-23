@@ -173,21 +173,24 @@ void DungeonMap::Generate()
 					Entity* pickup = nullptr;
 					//ADD SOME ITEM SPAWNS AROUND HERE
 					if (randNum == 0) {
-						enemy = enemyFactory.CharA("Demon", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
+						enemy = enemyFactory.CharA("Blue", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
+						pickup = pickupFactory.PickupA("Pickup", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 50);
 					}
 					else if (randNum == 1)
 					{
-						enemy = enemyFactory.CharB("Demon", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
+						enemy = enemyFactory.CharB("Blue", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
+						pickup = pickupFactory.PickupB("Pickup", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 100);
 					}
 					else if (randNum == 2)
 					{
-						enemy = enemyFactory.CharC("Demon", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
+						enemy = enemyFactory.CharC("Blue", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
+						pickup = pickupFactory.PickupC("Pickup", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 150);
 					}
 					else if (randNum == 3)
 					{
-						enemy = enemyFactory.CharD("Demon", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
+						enemy = enemyFactory.CharD("Blue", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 0);
 
-						pickup = pickupFactory.PickupA("Pickup", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 5);
+						pickup = pickupFactory.PickupD("Pickup", SDL_Point{ j * (int)m_systemManager->renderSystem->GetScale() * 16, i * (int)m_systemManager->renderSystem->GetScale() * 16 }, 200);
 					}
 
 					// chance for spawner to not spawn anything
@@ -223,7 +226,7 @@ void DungeonMap::Generate()
 	for (int i = 0; i < 100; i++)
 	{
 		Entity* projectile = new Entity("Projectile");
-		projectile->AddComponent(new SpriteComponent("Arrow", 2, 0, 0, 0, 16, 8, 0));
+		projectile->AddComponent(new SpriteComponent("Arrow", 2, 0, 0, 0, 4, 4, 0));
 		projectile->AddComponent(new PositionComponent(SDL_Point{ -5000, -5000 }));
 		projectile->AddComponent(new ProjectileComponent(400));
 		projectile->AddComponent(new MovementComponent());

@@ -246,7 +246,7 @@ void Server::handlePacket(Uint32 &ip, Uint16 &port, Uint8 &packetType, Packet &p
 		{
 			removeClient(id);
 		}
-		else if (packetType == (Uint8)PacketType::UPDATEPLAYERS || packetType == (Uint8)PacketType::UPDATEINSTANCE || packetType == (Uint8)PacketType::UPDATEWEAPON)
+		else if (packetType == (Uint8)PacketType::UPDATEPLAYERS || packetType == (Uint8)PacketType::UPDATEINSTANCE || packetType == (Uint8)PacketType::UPDATEWEAPON || packetType == (Uint8)PacketType::UPDATEATTRIBUTES)
 		{
 			sendToOtherClients(packet, id);
 		}

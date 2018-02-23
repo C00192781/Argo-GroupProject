@@ -8,13 +8,13 @@ public:
 	CurrencyComponent()
 	{
 		m_type = "currency";
-		m_value = 0;
+		m_value = 1000;
 	};
 
 	CurrencyComponent(int value)
 	{
 		m_type = "currency";
-		m_value = value;
+		m_value = 1000;
 	};
 
 	~CurrencyComponent() {};
