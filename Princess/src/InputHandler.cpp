@@ -4,7 +4,7 @@ void InputHandler::ControllerInit()
 {
 	SDL_Init(SDL_INIT_JOYSTICK);
 	MaxJoysticks = SDL_NumJoysticks();
-	
+
 	if (MaxJoysticks > 0)
 	{
 		m_eventListener->controllerActivated = true;
@@ -29,7 +29,7 @@ void InputHandler::ControllerInit()
 	}
 }
 
-void InputHandler::handleInput() 
+void InputHandler::handleInput()
 {
 	for (int ControllerIndex = 0; ControllerIndex < MAX_CONTROLLERS; ControllerIndex++)
 	{

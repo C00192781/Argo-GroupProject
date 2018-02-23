@@ -165,6 +165,7 @@ int main()
 	systemManager.controlSystem->Active(true);
 
 	systemManager.movementSystem = new MovementSystem(816, 624, listener);
+
 	systemManager.movementSystem->Active(true);
 
 	systemManager.renderSystem = new RenderSystem(resourceManager, gameRenderer);
