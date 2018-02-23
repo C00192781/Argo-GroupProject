@@ -176,7 +176,7 @@ void CollisionSystem::filterCollisions(int entityIndex, int entityColIndex, int 
 			//	spellcasterCollision(collidableIndex); //swapped for spell id, WHO CARES IF A PLAYER WALKS INTO AN AI IF THEYRE NOT SHOOTING EACH OTHER
 				if (m_collidableEntities.at(collidableIndex)->ID() == "Dungeon")
 				{
-					if (m_listener->Space)
+					if (m_listener->Space || m_listener->AButton)
 					{
 						m_listener->WorldToDungeon = true;
 						m_currentDungeon = m_collidableEntities.at(collidableIndex);
@@ -184,7 +184,7 @@ void CollisionSystem::filterCollisions(int entityIndex, int entityColIndex, int 
 				}
 				if (m_collidableEntities.at(collidableIndex)->ID() == "Town")
 				{
-					if (m_listener->Space)
+					if (m_listener->Space || m_listener->AButton)
 					{
 						m_listener->WorldToTown = true;
 						m_currentTown = m_collidableEntities.at(collidableIndex);

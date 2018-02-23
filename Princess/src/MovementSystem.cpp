@@ -91,7 +91,15 @@ void MovementSystem::Update(float deltaTime)
 
 					if (movementComponent->getLockedOrientation() == false)
 					{
-						movementComponent->setOrientation((atan2((float)m_mouseY - (m_windowHeight / 2), (float)m_mouseX - (m_windowWidth / 2))) * (180 / 3.142) + 90);
+						if (m_eventListener->controllerActivated == false)
+						{
+							movementComponent->setOrientation((atan2((float)m_mouseY - (m_windowHeight / 2), (float)m_mouseX - (m_windowWidth / 2))) * (180 / 3.142) + 90);
+						}
+						else
+						{
+							float cosA = m_eventListener->RightStick;
+							movementComponent->setOrientation(cosA);
+						}
 					}
 
 				}
