@@ -190,7 +190,7 @@ void CollisionSystem::filterCollisions(int entityIndex, int entityColIndex, int 
 						m_currentTown = m_collidableEntities.at(collidableIndex);
 					}
 				}
-				else if (m_collidableEntities.at(collidableIndex)->ID() == "Chocolate")
+				else if (m_collidableEntities.at(collidableIndex)->ID() == "Chocolate" || m_collidableEntities.at(collidableIndex)->ID() == "Jewels" || m_collidableEntities.at(collidableIndex)->ID() == "Gold" || m_collidableEntities.at(collidableIndex)->ID() == "Literature")
 				{
 					pickupCollision(collidableIndex, entityIndex); //I THINK
 				}
@@ -218,6 +218,15 @@ void CollisionSystem::filterCollisions(int entityIndex, int entityColIndex, int 
 					{
 						projectileCollision(entityIndex);
 						playerCollision(collidableIndex);
+					}
+				}
+				else if (m_collidableEntities.at(collidableIndex)->ID() == "Princess")
+				{
+					ProjectileComponent* projectileComponent = static_cast<ProjectileComponent*>(m_entities.at(entityIndex)->FindComponent("PJ"));
+					if (projectileComponent->getShooterType() != "Player")
+					{
+						projectileCollision(entityIndex);
+						princessCollision(collidableIndex);
 					}
 				}
 			}
@@ -291,6 +300,35 @@ void CollisionSystem::playerCollision(int index)
 		{
 			std::cout << "player DODGED FSDBFSJKDFSD" << std::endl;
 		}
+	}
+	/*auto tar = m_entities.at(j)->FindComponent("PC");
+	tarX = static_cast<PositionComponent*>(tar)->getX();*/
+}
+
+
+
+void CollisionSystem::princessCollision(int index)
+{
+
+	auto hpComp = m_collidableEntities.at(index)->FindComponent("attribute");
+
+	auto moveComp = m_collidableEntities.at(index)->FindComponent("movement");
+
+
+
+	if (hpComp != nullptr)
+	{
+
+		//auto temp = m_collidableEntities.at(index)->FindComponent("eHP");
+		static_cast<AttributesComponent*>(hpComp)->Health((static_cast<AttributesComponent*>(hpComp)->Health() - 1));
+
+		if (static_cast<AttributesComponent*>(hpComp)->Health() < 1)
+		{
+			m_collidableEntities.at(index)->Active(false);
+		}
+		std::cout << "PRINCESS SLAPPED" << std::endl;
+	
+
 	}
 	/*auto tar = m_entities.at(j)->FindComponent("PC");
 	tarX = static_cast<PositionComponent*>(tar)->getX();*/

@@ -98,6 +98,8 @@ int main()
 	ResourceManager *resourceManager = new ResourceManager(gameRenderer, "Resources");
 
 	resourceManager->AddTexture("Red", "Sprite_Red.png");
+	resourceManager->AddTexture("Blue", "Sprite_Blue.png");
+	resourceManager->AddTexture("Pink", "Sprite_Pink.png");
 	resourceManager->AddTexture("Demon", "demon.png");
 	resourceManager->AddTexture("Turf", "Turfs.png");
 	resourceManager->AddTexture("Arrow", "Arrow.png");
@@ -240,7 +242,7 @@ int main()
 	player2->Active(true);
 	player2->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
 	player2->AddComponent(new PositionComponent(SDL_Point{ 250, 380 }));
-	player2->AddComponent(new AttributesComponent(4, 4, 4, 10, 100, 100));
+	player2->AddComponent(new AttributesComponent(20, 20, 4, 10, 100, 100));
 	player2->AddComponent(new MovementComponent());
 	player2->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player2->AddComponent(new CollisionComponent(250, 380, 16, 16, 2));
@@ -277,7 +279,7 @@ int main()
 	player3->Active(true);
 	player3->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
 	player3->AddComponent(new PositionComponent(SDL_Point{ 300, 380 }));
-	player3->AddComponent(new AttributesComponent(4, 4, 4, 10, 100, 100));
+	player3->AddComponent(new AttributesComponent(20, 20, 4, 10, 100, 100));
 	player3->AddComponent(new MovementComponent());
 	player3->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player3->AddComponent(new CollisionComponent(300, 380, 16, 16, 2));
@@ -315,7 +317,7 @@ int main()
 	player4->Active(true);
 	player4->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
 	player4->AddComponent(new PositionComponent(SDL_Point{ 200, 380 }));
-	player4->AddComponent(new AttributesComponent(4, 4, 1, 10, 100, 100));
+	player4->AddComponent(new AttributesComponent(20, 20, 1, 10, 100, 100));
 	player4->AddComponent(new MovementComponent());
 	player4->AddComponent(new WeaponComponent(WeaponType::RANGE));
 	player4->AddComponent(new CollisionComponent(200, 380, 16, 16, 2));
