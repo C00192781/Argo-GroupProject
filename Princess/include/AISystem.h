@@ -11,12 +11,13 @@
 #include "AttributesComponent.h"
 #include "BasicEnemy.h"
 #include "DecisionTree.h"
+#include "AStar.h"
 
 #include "WeaponComponent.h"
 class AiSystem : public System
 {
 public:
-	AiSystem();
+	AiSystem(AStar * aStar);
 	~AiSystem();
 	void Update();
 	void Update(float deltaTime, std::vector<Entity*> players);
@@ -40,7 +41,7 @@ private:
 
 
 	DecisionTree* m_decisionTree = new DecisionTree(15, 5, 5, 5, 50, 50, 100); //debug values, overwrite in update -> pathNode
-
+	AStar *m_aStar;
 
 	std::vector<AiLogicComponent*> m_aiLogicComponent;
 	std::vector<SpriteComponent*> m_spriteComponent;

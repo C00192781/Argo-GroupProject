@@ -13,7 +13,7 @@ class InstanceManager
 {
 public:
 
-	InstanceManager(SystemManager * sm, StateManager * s, ResourceManager *rm, EventListener *listener);
+	InstanceManager(SystemManager * sm, StateManager * s, ResourceManager *rm, EventListener *listener, AStar * aStar);
 
 	WorldMap *worldMap;
 	BattleMap* battleMap;
@@ -27,4 +27,5 @@ public:
 private:
 	EventListener *m_listener;
 	StateManager *m_stateManager;
+	AStar *m_aStar;
 };

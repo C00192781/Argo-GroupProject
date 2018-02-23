@@ -1,13 +1,14 @@
 #include "InstanceManager.h"
 
-InstanceManager::InstanceManager(SystemManager * sm, StateManager * s, ResourceManager *rm, EventListener *listener)
+InstanceManager::InstanceManager(SystemManager * sm, StateManager * s, ResourceManager *rm, EventListener *listener, AStar * aStar)
 {
 	m_listener = listener;
 	m_stateManager = s;
 
+	m_aStar = aStar;
 	worldMap = new WorldMap(sm, s, listener);
 	battleMap = new BattleMap(sm, s, listener);
-	dungeonMap = new DungeonMap(sm, s, rm, listener);
+	dungeonMap = new DungeonMap(sm, s, rm, listener, aStar);
 	startInstance = new StartInstance(sm, s);
 
 	Generate("World");
@@ -18,10 +19,12 @@ void InstanceManager::Update(float deltaTime)
 	if (worldMap->Active())
 	{
 		worldMap->Update();
+		m_aStar->setCurrentMapType("World");
 	}
 	else if (dungeonMap->Active())
 	{
 		dungeonMap->Update(deltaTime);
+		m_aStar->setCurrentMapType("Dungeon");
 	}
 	else if(startInstance->Active())
 	{
@@ -30,6 +33,7 @@ void InstanceManager::Update(float deltaTime)
 	else
 	{
 		battleMap->Update(deltaTime);
+		m_aStar->setCurrentMapType("Battle");
 	}
 
 	if (m_stateManager->StartGame)
