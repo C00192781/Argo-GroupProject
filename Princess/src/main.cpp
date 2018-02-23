@@ -98,6 +98,8 @@ int main()
 	ResourceManager *resourceManager = new ResourceManager(gameRenderer, "Resources");
 
 	resourceManager->AddTexture("Red", "Sprite_Red.png");
+	resourceManager->AddTexture("Blue", "Sprite_Blue.png");
+	resourceManager->AddTexture("Pink", "Sprite_Pink.png");
 	resourceManager->AddTexture("Demon", "demon.png");
 	resourceManager->AddTexture("Turf", "Turfs.png");
 	resourceManager->AddTexture("Arrow", "Arrow.png");

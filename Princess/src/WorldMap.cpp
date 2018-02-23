@@ -724,7 +724,7 @@ void WorldMap::Update()
 		{
 			if (movement->getMoving() == true)
 			{
-				if ((rand() % 10000) >= 9990)
+				if ((rand() % 10000) >= 9900)
 				{
 					PositionComponent* pos = static_cast<PositionComponent*>(player->FindComponent("PC"));
 

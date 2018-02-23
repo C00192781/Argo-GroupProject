@@ -111,6 +111,11 @@ void CollisionSystem::Update()
 										break;
 									}
 								}
+
+								if (m_entities.at(i)->ID() == "Princess")
+								{
+									int q = 5;
+								}
 				
 								filterCollisions(i, collisionKey1, j, collisionKey2);
 							}

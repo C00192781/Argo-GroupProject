@@ -77,6 +77,29 @@ void BattleMap::Generate(std::string type)
 
 	BasicEnemy enemyFactory;
 
+	Princess princessFactory;
+
+	Entity* princess = nullptr;
+	//int randNum1 = rand() % 5;
+
+//	if (randNum1 == 0) {
+		princess = princessFactory.CharA("Pink", SDL_Point{ 408, 312 }, 0);
+	//}
+	//if (randNum1 == 1) {
+	//	princess = princessFactory.CharA("Pink", SDL_Point{ 408, 312 }, 1);
+	//}
+	//if (randNum1 == 2) {
+	//	princess = princessFactory.CharA("Pink", SDL_Point{ 408, 312 }, 2);
+	//}
+	//if (randNum1 == 3) {
+	//	princess = princessFactory.CharA("Pink", SDL_Point{ 408, 312 }, 3);
+	//}
+
+	m_systemManager->renderSystem->AddEntity(princess);
+	m_systemManager->movementSystem->AddEntity(princess);
+	m_systemManager->collisionSystem->AddEntity(princess);
+	m_systemManager->aiSystem->AddEntity(princess);
+
 	for (int i = 0; i < numOfEnemies; i++)
 	{
 		int randNum = rand() % 5;
@@ -84,19 +107,19 @@ void BattleMap::Generate(std::string type)
 		Entity* enemy = nullptr;
 
 		if (randNum == 0) {
-			enemy = enemyFactory.CharA("Demon", SDL_Point{ rand() % 816, rand() % 624 }, 0);
+			enemy = enemyFactory.CharA("Blue", SDL_Point{ rand() % 816, rand() % 624 }, 0);
 		}
 		else if (randNum == 1)
 		{
-			enemy = enemyFactory.CharB("Demon", SDL_Point{ rand() % 816, rand() % 624 }, 0);
+			enemy = enemyFactory.CharA("Blue", SDL_Point{ rand() % 816, rand() % 624 }, 0);
 		}
 		else if (randNum == 2)
 		{
-			enemy = enemyFactory.CharC("Demon", SDL_Point{ rand() % 816, rand() % 624 }, 0);
+			enemy = enemyFactory.CharA("Blue", SDL_Point{ rand() % 816, rand() % 624 }, 0);
 		}
 		else if (randNum == 3)
 		{
-			enemy = enemyFactory.CharD("Demon", SDL_Point{ rand() % 816, rand() % 624 }, 0);
+			enemy = enemyFactory.CharA("Blue", SDL_Point{ rand() % 816, rand() % 624 }, 0);
 		}
 
 		// chance for spawner to not spawn anything
