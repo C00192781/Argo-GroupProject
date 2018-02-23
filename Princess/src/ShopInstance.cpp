@@ -445,6 +445,7 @@ void ShopInstance::Update(std::vector<Entity*> players)
 								{
 									//delete players.at(i)->GetComponents()->at(j);
 									players.at(i)->GetComponents()->at(j) = m_weaponOne;
+									m_listener->ChangedWeapon = true;
 									break;
 								}
 							}
@@ -494,6 +495,7 @@ void ShopInstance::Update(std::vector<Entity*> players)
 								{
 									//delete players.at(i)->GetComponents()->at(j);
 									players.at(i)->GetComponents()->at(j) = m_weaponTwo;
+									m_listener->ChangedWeapon = true;
 									break;
 								}
 							}
@@ -543,6 +545,7 @@ void ShopInstance::Update(std::vector<Entity*> players)
 								{
 									//delete players.at(i)->GetComponents()->at(j);
 									players.at(i)->GetComponents()->at(j) = m_weaponThree;
+									m_listener->ChangedWeapon = true;
 									break;
 								}
 							}

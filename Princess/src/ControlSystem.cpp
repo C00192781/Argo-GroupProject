@@ -27,7 +27,6 @@ void ControlSystem::Update()
 
 				movementComponent->setMoving(true);
 				totalPlayerMovement += 1;
-				std::cout << "Okay";
 			}
 			if (m_eventListener->A)
 			{

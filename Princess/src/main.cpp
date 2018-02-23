@@ -343,11 +343,11 @@ int main()
 	systemManager.attackSystem->AddEntity(player);
 	systemManager.networkSystem->AddEntity(player);
 	
-	std::vector<Entity*> players;
-	players.push_back(player);
-	players.push_back(player2);
-	players.push_back(player3);
-	players.push_back(player4);
+	//std::vector<Entity*> players;
+	//players.push_back(player);
+	//players.push_back(player2);
+	//players.push_back(player3);
+	//players.push_back(player4);
 
 	//if (systemManager.networkSystem->getConnected() == true)
 	//{
@@ -426,7 +426,7 @@ int main()
 
 	AchievementHandler *achievements = new AchievementHandler(&systemManager);
 
-	InstanceManager instanceManager(&systemManager, &state, resourceManager, listener, aStar, players);
+	InstanceManager instanceManager(&systemManager, &state, resourceManager, listener, aStar, playerEntities);
 
 	while (state.ExitGame == false)
 	{

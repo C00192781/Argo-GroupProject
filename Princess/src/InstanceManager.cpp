@@ -20,7 +20,7 @@ InstanceManager::InstanceManager(SystemManager * sm, StateManager * s, ResourceM
 	dungeonMap = new DungeonMap(sm, s, rm, listener, aStar);
 	startInstance = new StartInstance(sm, s);
 
-	menu = new MenuInstance(sm, listener, s, &m_players);
+	menu = new MenuInstance(sm, listener, s, entities);
 	options = new OptionsInstance(sm, listener, s);
 
 	m_musicBox = new Entity("MusicBox");
@@ -95,13 +95,25 @@ void InstanceManager::Update(float deltaTime)
 		m_listener->OptionsToMenu = false;
 	}
 
-	//if (m_stateManager->StartGame)
-	//{
-	//	Generate("World");
-	//	startInstance->Active(false);
-	//	worldMap->Active(true);
-	//	m_stateManager->StartGame = false;
-	//}
+	if (m_listener->TownToShop == true)
+	{
+		Reset();
+		shopInstance->Generate(1);
+		shopInstance->Active(true);
+		townInstance->Active(false);
+		worldMap->Active(false);
+		m_listener->TownToShop = false;
+	}
+	else if (m_listener->ShopToTown == true)
+	{
+		Reset();
+		Generate("Town");
+		townInstance->Generate("j");
+		townInstance->Active(true);
+		shopInstance->Active(false);
+		m_listener->ShopToTown = false;
+	}
+
 	if ((m_listener->host == true && m_listener->connected == true) || (m_listener->host == false && m_listener->connected == false))
 	{
 		if (m_stateManager->StartGame)
@@ -156,6 +168,7 @@ void InstanceManager::Update(float deltaTime)
 			townInstance->Active(true);
 			worldMap->Active(false);
 			m_listener->WorldToTown = false;
+			m_listener->ToTown = true;
 		}
 		else if (m_listener->TownToWorld == true)
 		{
@@ -169,24 +182,7 @@ void InstanceManager::Update(float deltaTime)
 			worldMap->Active(true);
 			townInstance->Active(false);
 			m_listener->TownToWorld = false;
-		}
-		else if (m_listener->TownToShop == true)
-		{
-			Reset();
-			shopInstance->Generate(1);
-			shopInstance->Active(true);
-			townInstance->Active(false);
-			worldMap->Active(false);
-			m_listener->TownToShop = false;
-		}
-		else if (m_listener->ShopToTown == true)
-		{
-			Reset();
-			Generate("Town");
-			townInstance->Generate("j");
-			townInstance->Active(true);
-			shopInstance->Active(false);
-			m_listener->ShopToTown = false;
+			m_listener->ToWorldMap = true;
 		}
 	}
 
@@ -267,12 +263,33 @@ void InstanceManager::GenerateFromServer()
 	}
 	else if (m_listener->ToWorldMap == true)
 	{
+		m_listener->TownToWorld = false;
 		Reset();
+		systemManager->soundSystem->FullClear();
+		musicStuff->setActive(false);
+		musicStuff->setIdentifier("Overworld3");
+		musicStuff->setPlay();
+		systemManager->soundSystem->AddEntity(m_musicBox);
 		worldMap->Load();
 		worldMap->Active(true);
 		dungeonMap->Active(false);
 		battleMap->Active(false);
+		townInstance->Active(false);
 		m_listener->ToWorldMap = false;
+	}
+	else if (m_listener->ToTown == true)
+	{
+		Reset();
+		systemManager->soundSystem->FullClear();
+		musicStuff->setActive(false);
+		musicStuff->setIdentifier("Town1");
+		musicStuff->setPlay();
+		systemManager->soundSystem->AddEntity(m_musicBox);
+		Generate("Town");
+		townInstance->Generate("j");
+		townInstance->Active(true);
+		worldMap->Active(false);
+		m_listener->ToTown = false;
 	}
 }
 

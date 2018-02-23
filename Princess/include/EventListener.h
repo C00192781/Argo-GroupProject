@@ -25,6 +25,9 @@ public:
 	bool ToDungeon4 = false;
 	bool ToDungeon5 = false;
 	bool ToWorldMap = false;
+	bool ToTown = false;
+
+	bool ChangedWeapon = false;
 
 	bool host = false;
 	bool connected = false;

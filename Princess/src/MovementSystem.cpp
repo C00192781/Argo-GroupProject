@@ -99,14 +99,8 @@ void MovementSystem::Update(float deltaTime)
 				{
 					if (m_entities.at(i)->ID() == "Player")
 					{
-						std::cout << "Player" << std::endl;
-
 						if (m_entities.at(i)->Control())
 						{
-							std::cout << "Cotton Eye Joe" << std::endl;
-							std::cout << "Cotton Eye Joe" << std::endl;
-							std::cout << "Cotton Eye Joe" << std::endl;
-							std::cout << "Cotton Eye Joe" << std::endl;
 							std::cout << "Cotton Eye Joe" << std::endl;
 						}
 					}

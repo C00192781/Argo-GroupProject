@@ -44,7 +44,7 @@ MenuInstance::MenuInstance(SystemManager* s, EventListener * listener, StateMana
 	Load();
 }
 
-MenuInstance::MenuInstance(SystemManager* s, EventListener * listener, StateManager * states, std::vector<Entity*>* players)
+MenuInstance::MenuInstance(SystemManager* s, EventListener * listener, StateManager * states, std::vector<Entity*> players)
 {
 	m_systemManager = s;
 	m_eventListener = listener;
@@ -132,13 +132,13 @@ void MenuInstance::Update()
 				static_cast<ButtonComponent*>(m_entities.at(i)->FindComponent("ButtonC"))->Activated(false);
 				m_timer = 30;
 
-				m_players->at(0)->Control(true);
-				m_systemManager->controlSystem->AddEntity(m_players->at(0));
+				m_players.at(0)->Control(true);
+				m_systemManager->controlSystem->AddEntity(m_players.at(0));
 
-				for (int i = 1; i < m_players->size(); i++)
+				for (int i = 1; i < m_players.size(); i++)
 				{
-					m_players->at(i)->AddComponent(new AiLogicComponent());
-					m_players->at(i)->AddComponent(new SeekComponent());
+					m_players.at(i)->AddComponent(new AiLogicComponent());
+					m_players.at(i)->AddComponent(new SeekComponent());
 				}
 			}
 			if (m_entities.at(i)->ID() == "JoinButton" && static_cast<ButtonComponent*>(m_entities.at(i)->FindComponent("ButtonC"))->Activated())
@@ -179,17 +179,15 @@ void MenuInstance::connect()
 		m_eventListener->connected = m_systemManager->networkSystem->getConnected();
 
 		NetworkIDComponent* n = nullptr;
-		for (int i = 0; i < m_players->size(); i++)
+		for (int i = 0; i < m_players.size(); i++)
 		{
-			n = static_cast<NetworkIDComponent*>(m_players->at(i)->FindComponent("network"));
-
-			std::cout << "LUL" << std::endl;
+			n = static_cast<NetworkIDComponent*>(m_players.at(i)->FindComponent("network"));
 
 			if (m_systemManager->networkSystem->getID() == n->getID())
 			{
-				m_players->at(i)->Control(true);
-				m_systemManager->controlSystem->AddEntity(m_players->at(i));
-				m_players->at(i)->Active(true);
+				m_players.at(i)->Control(true);
+				m_systemManager->controlSystem->AddEntity(m_players.at(i));
+				m_players.at(i)->Active(true);
 				break;
 			}
 		}

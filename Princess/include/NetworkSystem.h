@@ -11,6 +11,7 @@
 #include "CollisionComponent.h"
 #include "EventListener.h"
 #include "MovementComponent.h"
+#include "WeaponComponent.h"
 
 class NetworkSystem : public System
 {

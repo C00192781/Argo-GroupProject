@@ -9,23 +9,6 @@ NetworkSystem::NetworkSystem()
 	m_isHost = false;
 	m_id = -1;
 
-	// (connectToServer())
-	//
-	//nit();
-	//rand(getServerSeed());
-	//_active = true;
-	//
-	//f (m_id == 0)
-	//
-	//m_isHost = true;
-	//
-	//
-	//se
-	//
-	//rand(time(NULL));
-	//_active = false;
-	//
-
 	m_maxTimeTilNextPacket = 0.002;
 	m_timeTilNextPacket = 0;
 }
@@ -38,23 +21,6 @@ NetworkSystem::NetworkSystem(EventListener *listener)
 	m_packetSize = std::numeric_limits<Uint8>::max();
 	m_isHost = false;
 	m_id = -1;
-
-	//if (connectToServer())
-	//{
-	//	init();
-	//	srand(getServerSeed());
-	//	m_active = true;
-	//
-	//	if (m_id == 0)
-	//	{
-	//		m_isHost = true;
-	//	}
-	//}
-	//else
-	//{
-	//	srand(time(NULL));
-	//	m_active = false;
-	//}
 
 	m_maxTimeTilNextPacket = 0.002;
 	m_timeTilNextPacket = 0;
@@ -76,6 +42,7 @@ void NetworkSystem::Update(float deltaTime)
 			MovementComponent* movementComponent = static_cast<MovementComponent*>(m_entities.at(i)->FindComponent("movement"));
 			ControlComponent* controlComponent = static_cast<ControlComponent*>(m_entities.at(i)->FindComponent("control"));
 			NetworkIDComponent* networkIDComponent = static_cast<NetworkIDComponent*>(m_entities.at(i)->FindComponent("network"));
+			WeaponComponent* weaponComponent = static_cast<WeaponComponent*>(m_entities.at(i)->FindComponent("weapon"));
 
 			if (m_entities.at(i)->ID() == "Player" && networkIDComponent->getID() == m_id && movementComponent->getMoving() == true)
 			{
@@ -84,8 +51,18 @@ void NetworkSystem::Update(float deltaTime)
 				packet << (Uint8)PacketType::UPDATEPLAYERS << m_id << positionComponent->getX() << positionComponent->getY();
 
 				send(packet);
+			}
 
-				std::cout << positionComponent->getX() << std::endl;
+			if (m_listener->ChangedWeapon == true)
+			{
+				Packet packet;
+
+				packet << (Uint8)PacketType::UPDATEWEAPON << m_id << (int)weaponComponent->getWeaponType() << weaponComponent->getDamage() << weaponComponent->getRange() << weaponComponent->getAttackSpeed();
+
+				send(packet);
+				std::cout << "AYYYYY" << std::endl;
+ 
+				m_listener->ChangedWeapon = false;
 			}
 
 			if (m_isHost == true)
@@ -143,6 +120,15 @@ void NetworkSystem::Update(float deltaTime)
 
 					send(packet);
 					m_listener->ToWorldMap = false;
+				}
+				else if (m_listener->ToTown == true)
+				{
+					Packet packet;
+
+					packet << (Uint8)PacketType::UPDATEINSTANCE << "Town";
+
+					send(packet);
+					m_listener->ToTown = false;
 				}
 			}
 		}
@@ -239,8 +225,59 @@ void NetworkSystem::listen()
 			}
 			else if (string == "World")
 			{
-				std::cout << "WORLD" << std::endl;
 				m_listener->ToWorldMap = true;
+			}
+			else if (string == "Town")
+			{
+				m_listener->ToTown = true;
+			}
+		}
+		else if (packetType == (Uint8)PacketType::UPDATEWEAPON)
+		{
+			int id;
+			int type;
+			int damage;
+			int range;
+			int attackSpeed;
+
+			packet >> id;
+			packet >> type;
+			packet >> damage;
+			packet >> range;
+			packet >> attackSpeed;
+
+			for (int i = 0; i < m_entities.size(); i++)
+			{
+				if (m_entities.at(i)->ID() == "Player")
+				{
+					NetworkIDComponent* networkIDComponent = static_cast<NetworkIDComponent*>(m_entities.at(i)->FindComponent("network"));
+
+					if (networkIDComponent->getID() == id)
+					{
+						WeaponComponent* weaponComponent = static_cast<WeaponComponent*>(m_entities.at(i)->FindComponent("weapon"));
+
+						if (type == 0)
+						{
+							weaponComponent->setWeaponType(WeaponType::MELEE);
+						}
+						else if (type == 1)
+						{
+							weaponComponent->setWeaponType(WeaponType::RANGE);
+						}
+						else
+						{
+							weaponComponent->setWeaponType(WeaponType::STAFF);
+						}
+
+						weaponComponent->setDamage(damage);
+						weaponComponent->setRange(range);
+						weaponComponent->setAttackSpeed(attackSpeed);
+
+						std::cout << "Weapon changed" << std::endl;
+
+						break;
+					}
+				}
 			}
 		}
 	}
