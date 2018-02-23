@@ -48,30 +48,32 @@ void DungeonMap::Generate()
 	int randomMapNumber = rand() % 5;
 	std::string mapName;
 
-	mapName = "DungeonMap1";
-	m_aStar->setCurrentDungeon(1);
-
-	/*if (randomMapNumber == 0)
+	if (randomMapNumber == 0)
 	{
 		mapName = "DungeonMap1";
+		m_aStar->setCurrentDungeon(1);
 	}
 	else if (randomMapNumber == 1)
 	{
 		mapName = "DungeonMap2";
+		m_aStar->setCurrentDungeon(2);
 	}
 	else if (randomMapNumber == 2)
 	{
 		mapName = "DungeonMap3";
+		m_aStar->setCurrentDungeon(3);
 	}
 	else if (randomMapNumber == 3)
 	{
 		mapName = "DungeonMap4";
+		m_aStar->setCurrentDungeon(4);
 	}
 	else
 	{
 		mapName = "DungeonMap5";
+		m_aStar->setCurrentDungeon(5);
 	}
-*/
+
 	DungeonTileFactory factory;
 	BasicEnemy enemyFactory;
 	Pickup pickupFactory;

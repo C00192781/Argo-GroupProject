@@ -43,6 +43,8 @@ AiSystem::AiSystem(AStar * aStar)
 	m_decisionTree->AddNode1(m_decisionTree->m_RootNode->NewBranch2->NewBranch2, 7, 15);
 
 	m_aStar = aStar;
+	currentPlayer = 0;
+	timer = 0;
 }
 
 
@@ -337,6 +339,7 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 	}
 
 	m_time = deltaTime;
+	timer++;
 
 	//std::vector<Entity*> m_playerAIEntities;
 
@@ -611,7 +614,7 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 						m_decisionTree->calculatePathNodes(m_decisionTree->m_RootNode, dist, 1, 2, selfRange, 300); //make target HP and self HP gettable later,  hardcoded values for test purpose only.
 
 					}
-					int decision = 10;
+					int decision = m_decisionTree->getDecision();
 					//	cout << "decision: " << decision << endl;
 					   // = 10;
 
@@ -634,14 +637,13 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 
 					else if (decision == 10 || decision == 11) //if hp adv and out of range
 					{
+						int tw = m_entities.at(i)->FindComponentIndex("PC"); //note:move index finding to spawn, 
+						int tx = m_entities.at(i)->FindComponentIndex("movement");
+						int ty = m_entities.at(i)->FindComponentIndex("seek");
+						int tz = m_entities.at(i)->FindComponentIndex("attribute");
+						
 						if (m_aStar->getCurrentMapType() == "Dungeon")
 						{
-							int tw = m_entities.at(i)->FindComponentIndex("PC"); //note:move index finding to spawn, 
-							int tx = m_entities.at(i)->FindComponentIndex("movement");
-							int ty = m_entities.at(i)->FindComponentIndex("seek");
-							int tz = m_entities.at(i)->FindComponentIndex("attribute");
-
-
 							float playerX = 0;
 							float playerY = 0;
 
@@ -656,9 +658,15 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 
 								Vec2f currentPosition = Vec2f{ x,y };
 
-								if (m_playerEntities.at(j)->ID() == "Player")
+								if (timer == 0)
 								{
-									auto tar = m_playerEntities.at(j)->FindComponent("PC");
+									currentPlayer = rand() % (m_playerEntities.size()-1); 
+									static_cast<SeekComponent*>(m_entities.at(i)->GetComponents()->at(ty))->setInitialization(false);
+								}
+								
+								if (m_playerEntities.at(currentPlayer)->ID() == "Player")
+								{
+									auto tar = m_playerEntities.at(currentPlayer)->FindComponent("PC");
 
 									playerX = static_cast<PositionComponent*>(tar)->getX();
 									playerY = static_cast<PositionComponent*>(tar)->getY();
@@ -674,9 +682,7 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 								if (static_cast<SeekComponent*>(m_entities.at(i)->GetComponents()->at(ty))->getInitialization() == false)
 								{
 									Vec2f initialTarget = m_aStar->searchNearestWaypoint(currentPosition);
-									std::cout << initialTarget.x << " " << initialTarget.y << " dfsdfsdf sdf " << std::endl;
 									targetNode = m_aStar->getPosition(&player, &initialTarget);
-									std::cout << targetNode.x << " " << targetNode.y << std::endl;
 									static_cast<SeekComponent*>(m_entities.at(i)->GetComponents()->at(ty))->setXDestination(targetNode.x);
 									static_cast<SeekComponent*>(m_entities.at(i)->GetComponents()->at(ty))->setYDestination(targetNode.y);
 									static_cast<SeekComponent*>(m_entities.at(i)->GetComponents()->at(ty))->setInitialization(true);
@@ -691,31 +697,27 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 									targetNode = m_aStar->getPosition(&player, &targetNode);
 									static_cast<SeekComponent*>(m_entities.at(i)->GetComponents()->at(ty))->setXDestination(targetNode.x);
 									static_cast<SeekComponent*>(m_entities.at(i)->GetComponents()->at(ty))->setYDestination(targetNode.y);
-									//timer = 0;
 								}
 
-								if (distanceToOverallTarget < distanceToNode)
+								if (distanceToOverallTarget < distanceToNode || distanceToOverallTarget < 100)
 								{
 									targetNodeX = playerX;
 									targetNodeY = playerY;
-								}
-
-								if (distanceToNode > 130)
-								{
-									targetNodeX = playerX;
-									targetNodeY = playerY;
-								//	/*timer++;
-								//	if (timer >= 60)
-								//	{
-								//		targetNode = m_aStar->getPosition(&player, &targetNode);
-								//	}
-								//	timer = 0;*/
 								}
 							}
-
 							seek(i, tw, tx, ty, tz, targetNodeX, targetNodeY, 0, m_entities.at(i)->ID()); //refactor x and y to take in princess position or whatever player or whatever
 						}																			  //seek
+						else
+						{
+							static_cast<SeekComponent*>(m_entities.at(i)->GetComponents()->at(ty))->setInitialization(false);
+							seek(i, tw, tx, ty, tz, tarX, tarY, 0, m_entities.at(i)->ID());
+						}
+						if (timer >= 240)
+						{
+							timer = 0;
+						}
 					}
+
 
 					else if (decision == 12 || decision == 13) //if no hp adv and out of range
 					{

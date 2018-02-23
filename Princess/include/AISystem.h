@@ -60,5 +60,7 @@ private:
 	int m_MAXHEALTH;
 
 	float m_time;
+	int timer;
+	int currentPlayer;
 };
 #endif

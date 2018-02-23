@@ -106,7 +106,22 @@ void AStar::setCurrentDungeon(int dungeon)
 	if (currentDungeon == 1)
 	{
 		GraphSetUp("nodes.txt", "arcs.txt", 56);
-
+	}
+	else if (currentDungeon == 2)
+	{
+		GraphSetUp("nodes2.txt", "arcs2.txt", 18);
+	}
+	else if (currentDungeon == 3)
+	{
+		GraphSetUp("nodes3.txt", "arcs3.txt", 21);
+	}
+	else if (currentDungeon == 4)
+	{
+		GraphSetUp("nodes4.txt", "arcs4.txt", 38);
+	}
+	else if (currentDungeon == 5)
+	{
+		GraphSetUp("nodes5.txt", "arcs5.txt", 6);
 	}
 }
 
@@ -137,7 +152,7 @@ void AStar::GraphSetUp(std::string nodes, std::string arcs, int num)
 	ifstream myfile;
 	float posX = 0;
 	float posY = 0;
-	myfile.open(nodes);
+	myfile.open("AStarTextFiles/" + nodes);
 
 	while (myfile >> temp >> posX >> posY)
 	{
@@ -148,7 +163,7 @@ void AStar::GraphSetUp(std::string nodes, std::string arcs, int num)
 	}
 	myfile.close();
 
-	myfile.open(arcs);
+	myfile.open("AStarTextFiles/" + arcs);
 	int from, to, weight;
 	while (myfile >> from >> to >> weight)
 	{
