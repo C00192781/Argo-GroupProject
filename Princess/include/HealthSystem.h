@@ -35,5 +35,6 @@ public:
 	void UnloadComponent(int x);
 	void DeactivateHearts();
 	void ActivateHearts();
+	void HealAllEntities();
 };
 #endif

@@ -40,6 +40,18 @@ void HealthSystem::DeactivateHearts()
 	{
 		m_player1Hearts.at(i)->Active(false);
 	}
+	for (int i = 0; i < m_player2Hearts.size(); i++)
+	{
+		m_player2Hearts.at(i)->Active(false);
+	}
+	for (int i = 0; i < m_player3Hearts.size(); i++)
+	{
+		m_player3Hearts.at(i)->Active(false);
+	}
+	for (int i = 0; i < m_player4Hearts.size(); i++)
+	{
+		m_player4Hearts.at(i)->Active(false);
+	}
 	
 }
 
@@ -49,7 +61,32 @@ void HealthSystem::ActivateHearts()
 	{
 		m_player1Hearts.at(i)->Active(true);
 	}
+	for (int i = 0; i < m_player2Hearts.size(); i++)
+	{
+		m_player2Hearts.at(i)->Active(true);
+	}
+	for (int i = 0; i < m_player3Hearts.size(); i++)
+	{
+		m_player3Hearts.at(i)->Active(true);
+	}
+	for (int i = 0; i < m_player4Hearts.size(); i++)
+	{
+		m_player4Hearts.at(i)->Active(true);
+	}
 
+}
+
+void HealthSystem::HealAllEntities()
+{
+	for (int i = 0; i < m_entities.size(); i++)
+	{
+		if (m_entities.at(i)->FindComponent("attribute") != nullptr)
+		{
+			AttributesComponent *  ac = static_cast<AttributesComponent*>(m_entities.at(i)->FindComponent("attribute"));
+			ac->Health = ac->MaxHealth;
+			ac->Armour = ac->MaxArmour;
+		}
+	}
 }
 
 void HealthSystem::AddEntity(Entity * e, std::string tag)

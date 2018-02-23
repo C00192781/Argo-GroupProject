@@ -611,6 +611,7 @@ void WorldMap::Load()
 			{
 				pos->setPosition(m_randomEncounterLocation.x, m_randomEncounterLocation.y);
 			}
+			m_systemManager->healthSystem->HealAllEntities();
 		}
 		m_systemManager->healthSystem->DeactivateHearts();
 	}
@@ -635,6 +636,7 @@ void WorldMap::Load()
 			}
 
 			m_systemManager->collisionSystem->getCurrentDungeon()->Active(false);
+			m_systemManager->healthSystem->HealAllEntities();
 		}
 		m_systemManager->healthSystem->DeactivateHearts();
 	}
