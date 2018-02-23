@@ -83,8 +83,8 @@ void HealthSystem::HealAllEntities()
 		if (m_entities.at(i)->FindComponent("attribute") != nullptr)
 		{
 			AttributesComponent *  ac = static_cast<AttributesComponent*>(m_entities.at(i)->FindComponent("attribute"));
-			ac->Health = ac->MaxHealth;
-			ac->Armour = ac->MaxArmour;
+			ac->Health(ac->MaxHealth());
+			ac->Armour(ac->MaxArmour());
 		}
 	}
 }
@@ -116,18 +116,10 @@ void HealthSystem::AddEntity(Entity * e, std::string tag)
 
 void HealthSystem::Update(float deltaTime)
 {
-	//if (m_entities.size() > 0) { PlayerOneUpdate(); }
-	//if (m_entities.size() > 1) { PlayerTwoUpdate(); }
-	//if (m_entities.size() > 2) { PlayerThreeUpdate(); }
-	//if (m_entities.size() > 3) { PlayerFourUpdate(); }
-
-	for (int i = 0; i < m_entities.size(); i++)
-	{
-		if (m_entities.at(i)->Control() == true)
-		{
-			PlayerOneUpdate();
-		}
-	}
+	if (m_entities.size() > 0) { PlayerOneUpdate(); }
+	if (m_entities.size() > 1) { PlayerTwoUpdate(); }
+	if (m_entities.size() > 2) { PlayerThreeUpdate(); }
+	if (m_entities.size() > 3) { PlayerFourUpdate(); }
 	
 	CheckIfAllDead();
 }

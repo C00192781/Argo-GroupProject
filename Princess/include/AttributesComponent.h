@@ -27,7 +27,7 @@ public:
 	AttributesComponent(int health, int maxHealth, int armour, int maxArmour, int movement, int maxMovement) :m_health(health), m_maxHealth(maxHealth), m_armour(armour), m_maxArmour(maxArmour), m_movementSpeed(movement), m_maxMovementSpeed(maxMovement) 
 	{ 
 		m_type = "attribute";
-		momento = new AttributesMomento(health, maxHealth, armour, maxArmour, movement, maxMovement);
+		momento = new AttributesMomento(health, maxHealth, armour, maxArmour, movement, maxMovement, 0, 0, 0);
 	};
 
 	~AttributesComponent()
