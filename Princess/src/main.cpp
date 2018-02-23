@@ -31,6 +31,8 @@
 #include "AchievementHandler.h"
 #include "SoundComponent.h"
 #include "SoundSystem.h"
+#include "MenuInstance.h"
+#include "OptionsInstance.h"
 
 int GAME_SCALE = 3;
 
@@ -92,7 +94,7 @@ int main()
 	resourceManager->AddTexture("WorldTurf", "World_Turfs.png");
 	resourceManager->AddTexture("Button", "Button.png");
 
-	resourceManager->AddFont("ComicSans", "ComicSans.ttf", 32);
+	resourceManager->AddFont("munro", "munro.ttf", 32);
 
 	resourceManager->AddTexture("StartGameButton", "StartGameButton.png");
 	resourceManager->AddTexture("OptionsButton", "OptionsButton.png");
@@ -111,7 +113,7 @@ int main()
 	resourceManager->AddSound("Scream", "test.wav");
 	resourceManager->AddSound("Placeholder", "placeholder.wav");
 	
-	resourceManager->AddFont("ComicSans", "ComicSans.ttf", 32);
+	resourceManager->AddFont("munro", "munro.ttf", 32);
 
 	Mix_AllocateChannels(6);
 
@@ -153,16 +155,11 @@ int main()
 	systemManager.healthSystem = new HealthSystem();
 	systemManager.healthSystem->Active(true);
 
-	systemManager.menuSystem = new MenuSystem(listener, &state);
-	systemManager.menuSystem->Active(false);
-
 	systemManager.buttonSystem = new ButtonSystem(listener);
 	systemManager.buttonSystem->Active(true);
 	
 	systemManager.soundSystem = new SoundSystem(resourceManager);
 	systemManager.soundSystem->Active(true);
-
-
 
 	Entity * player = new Entity("Player");
 	player->Active(true);
@@ -178,8 +175,6 @@ int main()
 	player->AddComponent(new SoundComponent("Scream", "play", false, 1, 30, 50));
 	player->AddComponent(new MusicComponent("Test", "play", true, 0, 100));
 	player->Transient(true);
-		//player->AddComponent(new SoundComponent("Placeholder", "play", true, 0, 0, 80));
-		//player->Control(true);
 
 	Entity * player2 = new Entity("Player");
 	player2->Active(true);
@@ -224,19 +219,13 @@ int main()
 	playerEntities.push_back(player);
 	playerEntities.push_back(player2);
 
-
-
-	TownInstance t = TownInstance(&systemManager);
-	t.Generate("jimmie");
-
-	//WorldMap* m = new WorldMap(&systemManager, &state);
-	//m->Generate(25, 25, 100);
-
 	systemManager.soundSystem->AddEntity(player); //local client player only?
 
 	AchievementHandler *achievements = new AchievementHandler(&systemManager);
 
-	InstanceManager instanceManager(&systemManager, &state, resourceManager, listener);
+	//InstanceManager instanceManager(&systemManager, &state, resourceManager, listener);
+
+	OptionsInstance menu = OptionsInstance(&systemManager, listener, &state);
 
 	while (state.ExitGame == false)
 	{
@@ -278,8 +267,8 @@ int main()
 			SDL_RenderClear(gameRenderer);
 
 			systemManager.Update(deltaTime, playerEntities);
-			instanceManager.Update(deltaTime);
-		//	systemManager.Update(deltaTime);
+			//instanceManager.Update(deltaTime);
+			//systemManager.Update(deltaTime);
 
 			SDL_RenderPresent(gameRenderer);
 		}

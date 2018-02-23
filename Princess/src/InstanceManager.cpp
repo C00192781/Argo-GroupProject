@@ -10,7 +10,7 @@ InstanceManager::InstanceManager(SystemManager * sm, StateManager * s, ResourceM
 	dungeonMap = new DungeonMap(sm, s, rm, listener);
 	startInstance = new StartInstance(sm, s);
 
-	Generate("Start");
+	Generate("Menu");
 }
 
 void InstanceManager::Update(float deltaTime)
@@ -83,7 +83,7 @@ void InstanceManager::Generate(std::string instanceID)
 	{
 		battleMap->Generate("");
 	}
-	else if (instanceID == "Start")
+	else if (instanceID == "Menu")
 	{
 		startInstance->Generate();
 	}

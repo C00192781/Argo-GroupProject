@@ -7,6 +7,8 @@
 #include "TownInstance.h"
 #include "EventListener.h"
 #include "StartInstance.h"
+#include "MenuInstance.h"
+#include "OptionsInstance.h"
 #include <vector>
 
 class InstanceManager

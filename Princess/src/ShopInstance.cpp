@@ -105,7 +105,7 @@ void ShopInstance::Generate(int luck)
 	m_itemOneGold = rand() % 1000 + 50;
 	m_entities.push_back(new Entity("ItemCost1"));
 	m_entities.back()->AddComponent(new PositionComponent(SDL_Point{ 492, 100 }));
-	m_entities.back()->AddComponent(new TextComponent("ComicSans", std::to_string(m_itemOneGold) + " Gold", SDL_Color{ 255,255,255,255 }, 32 * 6, 16 * 3));
+	m_entities.back()->AddComponent(new TextComponent("munro", std::to_string(m_itemOneGold) + " Gold", SDL_Color{ 255,255,255,255 }, 32 * 6, 16 * 3));
 
 	randHolder = rand() % 2;
 	if (randHolder >= 1)
@@ -198,7 +198,7 @@ void ShopInstance::Generate(int luck)
 	m_itemTwoGold = rand() % 1000 + 50;
 	m_entities.push_back(new Entity("ItemCost2"));
 	m_entities.back()->AddComponent(new PositionComponent(SDL_Point{ 492, 250 }));
-	m_entities.back()->AddComponent(new TextComponent("ComicSans", std::to_string(m_itemTwoGold) + " Gold", SDL_Color{ 255,255,255,255 }, 32 * 6, 16 * 3));
+	m_entities.back()->AddComponent(new TextComponent("munro", std::to_string(m_itemTwoGold) + " Gold", SDL_Color{ 255,255,255,255 }, 32 * 6, 16 * 3));
 
 	randHolder = rand() % 2;
 	if (randHolder >= 1)
@@ -291,7 +291,7 @@ void ShopInstance::Generate(int luck)
 	m_itemThreeGold = rand() % 1000 + 50;
 	m_entities.push_back(new Entity("ItemCost2"));
 	m_entities.back()->AddComponent(new PositionComponent(SDL_Point{ 492, 400 }));
-	m_entities.back()->AddComponent(new TextComponent("ComicSans", std::to_string(m_itemThreeGold) + " Gold", SDL_Color{ 255,255,255,255 }, 32 * 6, 16 * 3));
+	m_entities.back()->AddComponent(new TextComponent("munro", std::to_string(m_itemThreeGold) + " Gold", SDL_Color{ 255,255,255,255 }, 32 * 6, 16 * 3));
 
 	m_entities.push_back(new Entity("Item1Button"));
 	SpriteComponent * sprite = new SpriteComponent("Button", 3, 0, 0, 0, 32, 16, 0);
@@ -300,14 +300,14 @@ void ShopInstance::Generate(int luck)
 	m_entities.back()->AddComponent(new PositionComponent(SDL_Point{ 100, 50 + 74 }));
 	m_buttonOne = new ButtonComponent(0, 0, 32 * 3, 16 * 3);
 	m_entities.back()->AddComponent(m_buttonOne);
-	m_entities.back()->AddComponent(new TextComponent("ComicSans", "Buy", SDL_Color{ 255,255,255,255 }, 32 * 3, 16 * 3));
+	m_entities.back()->AddComponent(new TextComponent("munro", "Buy", SDL_Color{ 255,255,255,255 }, 32 * 3, 16 * 3));
 
 	m_entities.push_back(new Entity("Item1"));
 	sprite = new SpriteComponent("Plate", 3, 0, 0, 0, 64, 32, 0);
 	sprite->Relative(true);
 	m_entities.back()->AddComponent(sprite);
 	m_entities.back()->AddComponent(new PositionComponent(SDL_Point{ 300, 100 }));
-	m_entities.back()->AddComponent(new TextComponent("ComicSans", m_itemNameOne, SDL_Color{ 255,255,255,255 }, 32 * 6, 16 * 3));
+	m_entities.back()->AddComponent(new TextComponent("munro", m_itemNameOne, SDL_Color{ 255,255,255,255 }, 32 * 6, 16 * 3));
 
 	m_entities.push_back(new Entity("Item2Button"));
 	sprite = new SpriteComponent("Button", 3, 0, 0, 0, 32, 16, 0);
@@ -316,14 +316,14 @@ void ShopInstance::Generate(int luck)
 	m_entities.back()->AddComponent(new PositionComponent(SDL_Point{ 100, 274 }));
 	m_buttonTwo = new ButtonComponent(0, 0, 32 * 3, 16 * 3);
 	m_entities.back()->AddComponent(m_buttonTwo);
-	m_entities.back()->AddComponent(new TextComponent("ComicSans", "Buy", SDL_Color{ 255,255,255,255 }, 32 * 3, 16 * 3));
+	m_entities.back()->AddComponent(new TextComponent("munro", "Buy", SDL_Color{ 255,255,255,255 }, 32 * 3, 16 * 3));
 
 	m_entities.push_back(new Entity("Item2"));
 	sprite = new SpriteComponent("Plate", 3, 0, 0, 0, 64, 32, 0);
 	sprite->Relative(true);
 	m_entities.back()->AddComponent(sprite);
 	m_entities.back()->AddComponent(new PositionComponent(SDL_Point{ 300, 250 }));
-	m_entities.back()->AddComponent(new TextComponent("ComicSans", m_itemNameTwo, SDL_Color{ 255,255,255,255 }, 32 * 6, 16 * 3));
+	m_entities.back()->AddComponent(new TextComponent("munro", m_itemNameTwo, SDL_Color{ 255,255,255,255 }, 32 * 6, 16 * 3));
 
 	m_entities.push_back(new Entity("Item3Button"));
 	sprite = new SpriteComponent("Button", 3, 0, 0, 0, 32, 16, 0);
@@ -332,18 +332,18 @@ void ShopInstance::Generate(int luck)
 	m_entities.back()->AddComponent(new PositionComponent(SDL_Point{ 100, 424 }));
 	m_buttonThree = new ButtonComponent(0, 0, 32 * 3, 16 * 3);
 	m_entities.back()->AddComponent(m_buttonThree);
-	m_entities.back()->AddComponent(new TextComponent("ComicSans", "Buy", SDL_Color{ 255,255,255,255 }, 32 * 3, 16 * 3));
+	m_entities.back()->AddComponent(new TextComponent("munro", "Buy", SDL_Color{ 255,255,255,255 }, 32 * 3, 16 * 3));
 
 	m_entities.push_back(new Entity("Item3"));
 	sprite = new SpriteComponent("Plate", 3, 0, 0, 0, 64, 32, 0);
 	sprite->Relative(true);
 	m_entities.back()->AddComponent(sprite);
 	m_entities.back()->AddComponent(new PositionComponent(SDL_Point{ 300, 400 }));
-	m_entities.back()->AddComponent(new TextComponent("ComicSans", m_itemNameThree, SDL_Color{ 255,255,255,255 }, 32 * 6, 16 * 3));
+	m_entities.back()->AddComponent(new TextComponent("munro", m_itemNameThree, SDL_Color{ 255,255,255,255 }, 32 * 6, 16 * 3));
 
 	m_entities.push_back(new Entity("Item3"));
 	m_entities.back()->AddComponent(new PositionComponent(SDL_Point{ 0, 0 }));
-	m_playerGoldText = new TextComponent("ComicSans", "Gold: " + std::to_string(m_playerGold), SDL_Color{ 255,255,255,255 }, 32 * 6, 16 * 3);
+	m_playerGoldText = new TextComponent("munro", "Gold: " + std::to_string(m_playerGold), SDL_Color{ 255,255,255,255 }, 32 * 6, 16 * 3);
 	m_entities.back()->AddComponent(m_playerGoldText);
 
 	Load();
