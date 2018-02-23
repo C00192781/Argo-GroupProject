@@ -6,7 +6,7 @@ public:
 	StartInstance(SystemManager * sm, StateManager * s);
 	~StartInstance();
 	void Generate();
-	void Update();
+	void Update() {};
 private:
 
 };

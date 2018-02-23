@@ -36,6 +36,7 @@ public:
 	bool getActive() { return m_active; }
 	bool getVolumeSetter() { return m_volumeSetter; }
 	int getVolume() { return m_volume; }
+	void setIdentifier(std::string x) { m_identifier = x; };
 
 private:
 	Mix_Music *m_music;

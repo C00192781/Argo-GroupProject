@@ -20,10 +20,20 @@ public:
 
 		m_movementSpeed = 10;
 		m_maxMovementSpeed = 10;
+
+		m_additiveArmour = 0;
+		m_additiveHealth = 0;
+		m_additiveMovementSpeed = 0;
 	};
 
 
-	AttributesComponent(int health, int maxHealth, int armour, int maxArmour, int movement, int maxMovement) :m_health(health), m_maxHealth(maxHealth), m_armour(armour), m_maxArmour(maxArmour), m_movementSpeed(movement), m_maxMovementSpeed(maxMovement) { m_type = "attribute"; };
+	AttributesComponent(int health, int maxHealth, int armour, int maxArmour, int movement, int maxMovement) :m_health(health), m_maxHealth(maxHealth), m_armour(armour), m_maxArmour(maxArmour), m_movementSpeed(movement), m_maxMovementSpeed(maxMovement) 
+	{ 
+		m_type = "attribute"; 
+		m_additiveArmour = 0;
+		m_additiveHealth = 0;
+		m_additiveMovementSpeed = 0;
+	};
 
 	~AttributesComponent()
 	{

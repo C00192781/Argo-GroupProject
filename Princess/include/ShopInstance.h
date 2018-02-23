@@ -5,10 +5,10 @@
 #include "GoldComponent.h"
 #include "WeaponComponent.h"
 
-class ShopInstance : Instance
+class ShopInstance : public Instance
 {
 public:
-	ShopInstance(SystemManager* s);
+	ShopInstance(SystemManager* s, EventListener * e);
 	~ShopInstance();
 
 	void Generate(int luck);
@@ -53,6 +53,8 @@ private:
 	bool m_weaponThreeSwitch;
 
 	int m_timer = 0;
+
+	EventListener * m_listener;
 
 };
 

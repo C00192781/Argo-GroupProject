@@ -20,7 +20,6 @@
 #include "AISystem.h"
 #include "CollisionSystem.h"
 #include "HealthSystem.h"
-#include "MenuSystem.h"
 #include "SoundComponent.h"
 #include "SoundSystem.h"
 
@@ -36,13 +35,15 @@ public:
 	AttackSystem* attackSystem;
 	CollisionSystem *collisionSystem;
 	HealthSystem * healthSystem;
-	MenuSystem * menuSystem;
 	AiSystem * aiSystem;
 	ButtonSystem * buttonSystem;
 	TextRenderSystem * textRenderSystem;
 	SoundSystem * soundSystem;
 
 	void Update(float deltaTime, std::vector<Entity*> players);
+
+	void MassSelectiveClear();
+	void MassClear();
 
 private:
 	bool flag = false;

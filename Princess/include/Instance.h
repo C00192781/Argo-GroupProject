@@ -19,6 +19,7 @@ public:
 	std::string ID() { return m_id; };
 	bool Active() { return m_active; }
 	void Active(bool active) { m_active = active; }
+	void Clear() { m_systemManager->MassSelectiveClear(); };
 
 protected:
 	std::string m_id;

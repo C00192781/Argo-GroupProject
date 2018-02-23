@@ -19,8 +19,6 @@ void SystemManager::Update(float deltaTime, std::vector<Entity*> players)
 
 	if (buttonSystem->Active()) { buttonSystem->Update(); }
 
-
-
 	if (healthSystem->Active()) { healthSystem->Update(deltaTime); }
 
 	if (soundSystem->Active()) { soundSystem->Update(); }
@@ -30,3 +28,30 @@ void SystemManager::Update(float deltaTime, std::vector<Entity*> players)
 	if (textRenderSystem->Active()) { textRenderSystem->Update(); }
 }
 
+void SystemManager::MassSelectiveClear()
+{
+	controlSystem->SelectiveClear();
+	attackSystem->SelectiveClear();
+	aiSystem->SelectiveClear();
+	collisionSystem->SelectiveClear();
+	movementSystem->SelectiveClear();
+	buttonSystem->SelectiveClear();
+	renderSystem->SelectiveClear();
+	textRenderSystem->SelectiveClear();
+	healthSystem->SelectiveClear();
+	soundSystem->SelectiveClear();
+}
+
+void SystemManager::MassClear()
+{
+	controlSystem->FullClear();
+	attackSystem->FullClear();
+	aiSystem->FullClear();
+	collisionSystem->FullClear();
+	movementSystem->FullClear();
+	buttonSystem->FullClear();
+	renderSystem->FullClear();
+	textRenderSystem->FullClear();
+	healthSystem->FullClear();
+	soundSystem->FullClear();
+}

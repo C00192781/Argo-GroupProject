@@ -1,17 +1,34 @@
 #include "InstanceManager.h"
 
-InstanceManager::InstanceManager(SystemManager * sm, StateManager * s, ResourceManager *rm, EventListener *listener, AStar * aStar)
+
+InstanceManager::InstanceManager(SystemManager * sm, StateManager * s, ResourceManager *rm, EventListener *listener, AStar * aStar, std::vector<Entity*> entities)
 {
 	m_listener = listener;
 	m_stateManager = s;
 
 	m_aStar = aStar;
+
+	systemManager = sm;
+
+	m_players = entities;
+
+	townInstance = new TownInstance(sm, listener);
+	shopInstance = new ShopInstance(sm, listener);
+
 	worldMap = new WorldMap(sm, s, listener);
 	battleMap = new BattleMap(sm, s, listener);
 	dungeonMap = new DungeonMap(sm, s, rm, listener, aStar);
 	startInstance = new StartInstance(sm, s);
 
-	Generate("World");
+	menu = new MenuInstance(sm, listener, s);
+	options = new OptionsInstance(sm, listener, s);
+
+	m_musicBox = new Entity("MusicBox");
+	musicStuff = new MusicComponent("Overworld3", "play", true, 99999999, 100);
+	m_musicBox->AddComponent(musicStuff);
+	systemManager->soundSystem->AddEntity(m_musicBox);
+
+	Generate("Menu");
 }
 
 void InstanceManager::Update(float deltaTime)
@@ -26,18 +43,34 @@ void InstanceManager::Update(float deltaTime)
 		dungeonMap->Update(deltaTime);
 		m_aStar->setCurrentMapType("Dungeon");
 	}
-	else if(startInstance->Active())
+	else if (startInstance->Active())
 	{
 		startInstance->Update();
+	}
+	else if (townInstance->Active())
+	{
+		townInstance->Update();
+	}
+	else if(shopInstance->Active())
+	{
+		shopInstance->Update(m_players);
+	}
+	else if (menu->Active())
+	{
+		menu->Update();
+	}
+	else if (options->Active())
+	{
+		options->Update();
 	}
 	else
 	{
 		battleMap->Update(deltaTime);
 		m_aStar->setCurrentMapType("Battle");
 	}
-
 	if (m_stateManager->StartGame)
 	{
+		Reset();
 		Generate("World");
 		startInstance->Active(false);
 		worldMap->Active(true);
@@ -45,6 +78,7 @@ void InstanceManager::Update(float deltaTime)
 	}
 	else if (m_listener->WorldToDungeon == true)
 	{
+		Reset();
 		Generate("Dungeon");
 		worldMap->Active(false);
 		dungeonMap->Active(true);
@@ -52,6 +86,7 @@ void InstanceManager::Update(float deltaTime)
 	}
 	else if (m_listener->WorldToEncounter == true)
 	{
+		Reset();
 		Generate("Battle");
 		worldMap->Active(false);
 		battleMap->Active(true);
@@ -59,6 +94,7 @@ void InstanceManager::Update(float deltaTime)
 	}
 	else if (m_listener->DungeonToWorld == true)
 	{
+		Reset();
 		worldMap->Load();
 		worldMap->Active(true);
 		dungeonMap->Active(false);
@@ -70,6 +106,76 @@ void InstanceManager::Update(float deltaTime)
 		worldMap->Active(true);
 		battleMap->Active(false);
 		m_listener->EncounterToWorld = false;
+	}
+	else if (m_listener->WorldToTown == true)
+	{
+		Reset();
+		systemManager->soundSystem->FullClear();
+		musicStuff->setActive(false);
+		musicStuff->setIdentifier("Town1");
+		musicStuff->setPlay();
+		systemManager->soundSystem->AddEntity(m_musicBox);
+		Generate("Town");
+		townInstance->Generate("j");
+		townInstance->Active(true);
+		worldMap->Active(false);
+		m_listener->WorldToTown = false;
+	}
+	else if (m_listener->TownToWorld == true)
+	{
+		Reset();
+		systemManager->soundSystem->FullClear();
+		musicStuff->setActive(false);
+		musicStuff->setIdentifier("Overworld3");
+		musicStuff->setPlay();
+		systemManager->soundSystem->AddEntity(m_musicBox);
+		worldMap->Load();
+		worldMap->Active(true);
+		townInstance->Active(false);
+		m_listener->TownToWorld = false;
+	}
+	else if (m_listener->TownToShop == true)
+	{
+		Reset();
+		shopInstance->Generate(1);
+		shopInstance->Active(true);
+		townInstance->Active(false);
+		worldMap->Active(false);
+		m_listener->TownToShop = false;
+	}
+	else if (m_listener->ShopToTown == true)
+	{
+		Reset();
+		Generate("Town");
+		townInstance->Generate("j");
+		townInstance->Active(true);
+		shopInstance->Active(false);
+		m_listener->ShopToTown = false;
+	}
+	else if (m_listener->MenuToWorld)
+	{
+		Reset();
+		worldMap->Generate(25, 25, 100);
+		worldMap->Load();
+		worldMap->Active(true);
+		menu->Active(false);
+		m_listener->MenuToWorld = false;
+	}
+	else if (m_listener->MenuToOptions)
+	{
+		Reset();
+		options->Load();
+		options->Active(true);
+		menu->Active(false);
+		m_listener->MenuToOptions = false;
+	}
+	else if (m_listener->OptionsToMenu)
+	{
+		Reset();
+		menu->Load();
+		menu->Active(true);
+		options->Active(false);
+		m_listener->OptionsToMenu = false;
 	}
 }
 
@@ -87,8 +193,20 @@ void InstanceManager::Generate(std::string instanceID)
 	{
 		battleMap->Generate("");
 	}
-	else if (instanceID == "Start")
+	else if (instanceID == "Menu")
 	{
-		startInstance->Generate();
+		menu->Active(false);
+		options->Active(false);
+		menu->Load();
+		menu->Active(true);
 	}
+	else if (instanceID == "Town")
+	{
+		townInstance->Generate("jimmie");
+	}
+}
+
+void InstanceManager::Reset()
+{
+	systemManager->MassSelectiveClear();
 }

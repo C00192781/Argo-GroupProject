@@ -661,6 +661,7 @@ void AiSystem::Update(float deltaTime, std::vector<Entity*> players)
 								if (timer == 0)
 								{
 									currentPlayer = rand() % (m_playerEntities.size()-1); 
+									
 									static_cast<SeekComponent*>(m_entities.at(i)->GetComponents()->at(ty))->setInitialization(false);
 								}
 								
