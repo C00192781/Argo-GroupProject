@@ -68,6 +68,9 @@ public:
 		m_maxArmour = momento->MaxArmour();
 		m_movementSpeed = momento->MovementSpeed();
 		m_maxMovementSpeed = momento->MaxMovementSpeed();
+		m_additiveArmour = momento->AdditiveArmour();
+		m_additiveHealth = momento->AdditiveHealth();
+		m_additiveMovementSpeed = momento->AdditiveMovementSpeed();
 	}
 
 	void AdditiveArmour(int x) { m_additiveArmour = x; };
