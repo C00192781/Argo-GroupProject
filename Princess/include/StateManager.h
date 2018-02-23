@@ -4,8 +4,14 @@
 class StateManager
 {
 public:
-	bool Manu = false;
+	bool MainMenu = false;
 	bool Options = false;
 	bool Battle = false;
+	bool StartGame = false;
+	bool ExitGame = false;
+	bool decreaseSound = false;
+	bool increaseSound = false;
+	bool decreaseMusic = false;
+	bool increaseMusic = false;
 };
 #endif

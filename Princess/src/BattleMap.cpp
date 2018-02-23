@@ -2,10 +2,12 @@
 
 
 
-BattleMap::BattleMap(SystemManager * sm, SDL_Renderer * sdlr, StateManager * s)
+BattleMap::BattleMap(SystemManager * sm, StateManager * s, EventListener* listener)
 {
 	m_systemManager = sm;
 	m_stateManager = s;
+	m_listener = listener;
+	m_timeRemaining = 2;
 }
 
 BattleMap::~BattleMap()
@@ -18,41 +20,33 @@ void BattleMap::Generate(std::string type)
 	{
 		delete m_entities.at(i);
 	}
+
+	for (int i = 0; i < m_enemies.size(); i++)
+	{
+		delete m_enemies.at(i);
+	}
 	m_entities.clear();
+	m_enemies.clear();
 	m_entities.shrink_to_fit();
-	m_systemManager->ControlSystem->SelectiveClear();
-	m_systemManager->RenderSystem->SelectiveClear();
-	m_systemManager->MovementSystem->SelectiveClear();
-	m_systemManager->AiSystem->SelectiveClear();
-	m_systemManager->healthSystem->SelectiveClear();
-	delete m_factory;
+	m_enemies.shrink_to_fit();
+	m_systemManager->controlSystem->SelectiveClear();
+	m_systemManager->renderSystem->SelectiveClear();
+	m_systemManager->movementSystem->SelectiveClear();
+	m_systemManager->collisionSystem->SelectiveClear();
+	m_systemManager->aiSystem->SelectiveClear();
+
+	TileFactory * factory;
 
 	if (type == "Grassland")
 	{
-		m_factory = new GrassTileFactory();
+		factory = new GrassTileFactory();
 	}
-
-	std::vector<Entity*>* projectileEntities = m_systemManager->ProjectileSystem->getEntities();
-	
-	for (int i = 0; i < 50; i++)
+	else
 	{
-		Entity* projectile = new Entity("Projectile");
-		projectile->AddComponent(new SpriteComponent("Arrow", 2, 0, 0, 0, 16, 8, 0));
-		projectile->AddComponent(new PositionComponent(SDL_Point{ -5000, -5000 }));
-		projectile->AddComponent(new ProjectileComponent(4.9, "Player", 5.0f, 3.0f, 700.0f, false));
-		projectile->AddComponent(new MovementComponent());
-		projectile->AddComponent(new CollisionComponent());
-		projectileEntities->push_back(projectile);
+		factory = new GrassTileFactory();
 	}
-	for (auto i = projectileEntities->begin(), end = projectileEntities->end(); i != end; i++)
-	{
-		m_systemManager->RenderSystem->AddEntity((*i));
-		m_systemManager->MovementSystem->AddEntity((*i));
-		m_systemManager->CollisionSystem->AddEntity((*i));
-		//m_systemManager->ControlSystem->AddEntity((*i));
-	}
-	//std::cout << projectileEntities->size() << std::endl;
-
+	std::vector<Entity*>* projectileEntities = m_systemManager->attackSystem->getProjectiles();
+	projectileEntities->clear();
 
 	for (int i = 0; i < 17; i++)
 	{
@@ -61,83 +55,191 @@ void BattleMap::Generate(std::string type)
 			int rando = rand() % 100;
 			if (rando <= 80)
 			{
-				m_entities.push_back(m_factory->GroundA("Turf", i * (16 * m_systemManager->RenderSystem->GetScale()), j * (16 * m_systemManager->RenderSystem->GetScale())));
+				m_entities.push_back(factory->GroundA("Turf", i * (16 * m_systemManager->renderSystem->GetScale()), j * (16 * m_systemManager->renderSystem->GetScale())));
 			}
 			else if (rando <= 90)
 			{
-				m_entities.push_back(m_factory->GroundB("Turf", i * (16 * m_systemManager->RenderSystem->GetScale()), j * (16 * m_systemManager->RenderSystem->GetScale())));
-			}																			
-			else if (rando <= 95)														
-			{																			
-				m_entities.push_back(m_factory->GroundC("Turf", i * (16 * m_systemManager->RenderSystem->GetScale()), j * (16 * m_systemManager->RenderSystem->GetScale())));
-			}																			
-			else																		
-			{																			
-				m_entities.push_back(m_factory->GroundD("Turf", i * (16 * m_systemManager->RenderSystem->GetScale()), j * (16 * m_systemManager->RenderSystem->GetScale())));
+				m_entities.push_back(factory->GroundB("Turf", i * (16 * m_systemManager->renderSystem->GetScale()), j * (16 * m_systemManager->renderSystem->GetScale())));
 			}
-			m_systemManager->RenderSystem->AddEntity(m_entities.back());
+			else if (rando <= 95)
+			{
+				m_entities.push_back(factory->GroundC("Turf", i * (16 * m_systemManager->renderSystem->GetScale()), j * (16 * m_systemManager->renderSystem->GetScale())));
+			}
+			else
+			{
+				m_entities.push_back(factory->GroundD("Turf", i * (16 * m_systemManager->renderSystem->GetScale()), j * (16 * m_systemManager->renderSystem->GetScale())));
+			}
+			m_systemManager->renderSystem->AddEntity(m_entities.back());
 		}
 	}
 
-	m_systemManager->AiSystem->Spawn();
+	int numOfEnemies = 5;//(rand() % 10) + 5;
 
-	auto aiEntities = m_systemManager->AiSystem->getEntities(); //get and add AI entities to be rendered
-	
+	BasicEnemy enemyFactory;
 
-
-	for (auto i = aiEntities.begin(), end = aiEntities.end(); i != end; i++)
+	for (int i = 0; i < numOfEnemies; i++)
 	{
-		m_systemManager->RenderSystem->AddEntity((*i));
-		m_systemManager->MovementSystem->AddEntity((*i)); //consider tag discrimination here
+		int randNum = rand() % 5;
+
+		Entity* enemy = nullptr;
+
+		if (randNum == 0) {
+			enemy = enemyFactory.CharA("Demon", SDL_Point{ rand() % 816, rand() % 624 }, 0);
+		}
+		else if (randNum == 1)
+		{
+			enemy = enemyFactory.CharB("Demon", SDL_Point{ rand() % 816, rand() % 624 }, 0);
+		}
+		else if (randNum == 2)
+		{
+			enemy = enemyFactory.CharC("Demon", SDL_Point{ rand() % 816, rand() % 624 }, 0);
+		}
+		else if (randNum == 3)
+		{
+			enemy = enemyFactory.CharD("Demon", SDL_Point{ rand() % 816, rand() % 624 }, 0);
+		}
+
+		// chance for spawner to not spawn anything
+		if (enemy != nullptr)
+		{
+			enemy->Active(true);
+
+			m_enemies.push_back(enemy);
+			m_systemManager->renderSystem->AddEntity(enemy);
+			m_systemManager->movementSystem->AddEntity(enemy);
+			m_systemManager->collisionSystem->AddEntity(enemy);
+			m_systemManager->aiSystem->AddEntity(enemy);
+
+
+			m_systemManager->attackSystem->AddEntity(enemy);
+		}
 	}
 	
-	//Entity * player = new Entity("Player");
-	Entity * player = new Entity("Player");
-	player->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
-	player->AddComponent(new PositionComponent(SDL_Point{ 100, 300 }));
-	player->AddComponent(new AttributesComponent());
-	player->AddComponent(new MovementComponent(3));
-	player->AddComponent(new CollisionComponent());
-	player->AddComponent(new AttributesComponent());
-	//RenderSystem * r = new RenderSystem(resourceManager, gameRenderer);
-	//r->AddEntity(player);
-
-	m_systemManager->ControlSystem->AddEntity(player);
-	m_systemManager->MovementSystem->AddEntity(player);
-	//m_systemManager->RenderSystem->AddEntity(player);
-	m_systemManager->ProjectileSystem->AddEntity(player);
-	m_systemManager->CollisionSystem->AddEntity(player);
-	//m_systemManager->healthSystem->AddEntity(player);
-
-	AttributesComponent* ac = new AttributesComponent();
-	player->AddComponent(ac);
-
-	HeartManagerComponent* hUI = new HeartManagerComponent(HeartTypes::HEALTH);
-	player->AddComponent(hUI);
-
-	HeartManagerComponent* aUI = new HeartManagerComponent(HeartTypes::ARMOUR);
-	player->AddComponent(aUI);
-
-	m_systemManager->healthSystem->AddEntity(player);
-	m_systemManager->RenderSystem->AddEntity(player);
-
-	m_systemManager->healthSystem->UpdateMaxHeartsUI(player, player);
-	m_systemManager->healthSystem->UpdateMaxArmourUI(player, player);
-
-	for (int c = 0; c < hUI->HeartsVector()->size(); c++)
+	for (int i = 0; i < 100; i++)
 	{
-		m_systemManager->RenderSystem->AddEntity(hUI->HeartsVector()->at(c));
+		Entity* projectile = new Entity("Projectile");
+		projectile->AddComponent(new SpriteComponent("Arrow", 2, 0, 0, 0, 16, 8, 0));
+		projectile->AddComponent(new PositionComponent(SDL_Point{ -5000, -5000 }));
+		projectile->AddComponent(new ProjectileComponent(400));
+		projectile->AddComponent(new MovementComponent());
+		projectile->AddComponent(new CollisionComponent(-5000, -5000, 10, 10, 2));
+		projectile->Active(false);
+		projectileEntities->push_back(projectile);
 	}
-	for (int i = 0; i < aUI->HeartsVector()->size(); i++)
+	for (auto i = projectileEntities->begin(), end = projectileEntities->end(); i != end; i++)
 	{
-		m_systemManager->RenderSystem->AddEntity(aUI->HeartsVector()->at(i));
+		m_systemManager->renderSystem->AddEntity((*i));
+		m_systemManager->movementSystem->AddEntity((*i));
+		m_systemManager->collisionSystem->AddEntity((*i));
+		m_systemManager->attackSystem->AddEntity((*i));
 	}
+
+
+	// sets player's position to the start of the dungeon
+//	Entity* player = m_systemManager->collisionSystem->FindEntity("Player");
+
+	Entity* player = m_systemManager->collisionSystem->FindEntity("Player", 3); //discern between players
+	Entity* player2 = m_systemManager->collisionSystem->FindEntity("Player", 2); //discern between players
+	Entity* player3 = m_systemManager->collisionSystem->FindEntity("Player", 1); //discern between players
+	Entity* player4 = m_systemManager->collisionSystem->FindEntity("Player", 0); //discern between players
+	player2->Active(true);
+	player3->Active(true);
+	player4->Active(true);
+
+
+	if (player != nullptr)
+	{
+		CollisionComponent* pos = static_cast<CollisionComponent*>(player->FindComponent("collision"));
+
+		if (pos != nullptr)
+		{
+			pos->setPosition(174, 108);
+		}
+	}
+
+	if (player2 != nullptr)
+	{
+		CollisionComponent* pos = static_cast<CollisionComponent*>(player2->FindComponent("collision"));
+
+		if (pos != nullptr)
+		{
+			pos->setPosition(324, 108);
+		}
+	}
+
+
+	if (player3 != nullptr)
+	{
+		CollisionComponent* pos = static_cast<CollisionComponent*>(player3->FindComponent("collision"));
+
+		if (pos != nullptr)
+		{
+			pos->setPosition(324, 348);
+		}
+	}
+
+
+	if (player4 != nullptr)
+	{
+		CollisionComponent* pos = static_cast<CollisionComponent*>(player4->FindComponent("collision"));
+
+		if (pos != nullptr)
+		{
+			pos->setPosition(174, 348);
+		}
+	}
+
+	m_timeRemaining = 2;
+	m_active = true;
+
+	delete factory;
 }
-void BattleMap::Update()
+void BattleMap::Update(float deltaTime)
 {
+	for (int i = 0; i < m_enemies.size();)
+	{
+		if (m_enemies.at(i)->Active() == false)
+		{
+			m_enemies.erase(m_enemies.begin() + i);
+		}
+		else
+		{
+			i++;
+		}
+	}
 
+	if (m_enemies.empty())
+	{
+		m_timeRemaining -= deltaTime;
+
+		if (m_timeRemaining <= 0)
+		{
+			m_listener->EncounterToWorld = true;
+		}
+	}
 }
 void BattleMap::Render()
 {
 
 }
+
+// *** this was at the bottom of generate ***
+//HeartManagerComponent* hUI = new HeartManagerComponent(HeartTypes::HEALTH);
+//player->AddComponent(hUI);
+//
+//HeartManagerComponent* aUI = new HeartManagerComponent(HeartTypes::ARMOUR);
+//player->AddComponent(aUI);
+
+//m_systemManager->healthSystem->AddEntity(player);
+//
+//m_systemManager->healthSystem->UpdateMaxHeartsUI(player, player);
+//m_systemManager->healthSystem->UpdateMaxArmourUI(player, player);
+
+//for (int c = 0; c < hUI->HeartsVector()->size(); c++)
+//{
+//	m_systemManager->renderSystem->AddEntity(hUI->HeartsVector()->at(c));
+//}
+//for (int i = 0; i < aUI->HeartsVector()->size(); i++)
+//{
+//	m_systemManager->renderSystem->AddEntity(aUI->HeartsVector()->at(i));
+//}

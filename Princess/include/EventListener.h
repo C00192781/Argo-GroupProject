@@ -15,9 +15,7 @@ public:
 	bool D = false;
 	bool Escape = false;
 
-
-	// Controller
-	// Triggers 
+	// Controller Triggers 
 	// range of 0 to 32767
 	int LeftTrigger = 0;
 	int RightTrigger = 0;
@@ -45,5 +43,17 @@ public:
 
 	bool controllerActivated = false;
 
+	bool TownToWorld = false;
+	bool WorldToDungeon = false;
+	bool WorldToEncounter = false;
+	bool DungeonToWorld = false;
+	bool EncounterToWorld = false;
+	bool roll = false;
+	bool WorldToTown = false;
+	bool TownToShop = false;
+	bool ShopToTown = false;
+	bool MenuToWorld = false;
+	bool MenuToOptions = false;
+	bool OptionsToMenu = false;
 };
 #endif

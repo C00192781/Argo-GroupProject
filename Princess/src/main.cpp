@@ -10,23 +10,49 @@
 #include "StateManager.h"
 #include "PositionComponent.h"
 #include "SpriteComponent.h"
-#include "ProjectileSystem.h"
 #include "ProjectileComponent.h"
 #include "CollisionComponent.h"
 #include "CollisionSystem.h"
 #include "AttributesComponent.h"
+#include "TextComponent.h"
+#include "TextRenderSystem.h"
+#include "ButtonComponent.h"
 #include "HealthSystem.h"
-#include "HeartComponent.h"
-#include "AIsystem.h"
+#include "AISystem.h"
 #include "Princess.h"
 #include <chrono>
 #include "SystemManager.h"
+#include "InstanceManager.h"
+#include "LTimer.h"
+#include "WorldMap.h"
+#include "DungeonMap.h"
+#include "TownInstance.h"
+#include "InstanceManager.h"
+#include "AchievementHandler.h"
+#include "SoundComponent.h"
+#include "SoundSystem.h"
+#include "AStar.h"
+
+int GAME_SCALE = 3;
 
 int main()
 {
 	SDL_Window* gameWindow = SDL_CreateWindow("TEST", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 816, 624, SDL_WINDOW_SHOWN);
 	SDL_Renderer* gameRenderer = SDL_CreateRenderer(gameWindow, -1, SDL_RENDERER_PRESENTVSYNC);
 	SDL_Event *e = new SDL_Event();
+
+	bool running = true;
+
+	if (Mix_OpenAudio(22050, AUDIO_S16, 2, 1024) == -1) //Check return type
+	{
+		printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+	}
+	else
+	{
+		Mix_VolumeMusic(MIX_MAX_VOLUME);
+	}
+
+
 	unsigned int lastTime = 0;
 	float deltaTime = 0;
 	unsigned int currentTime = 0;
@@ -36,6 +62,39 @@ int main()
 
 	srand(time(NULL));
 
+	const int SCREEN_FPS = 800;
+
+	const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
+
+	//Set text color as black
+	SDL_Color textColor = { 0, 0, 0, 255 };
+
+	//The frames per second timer
+	LTimer fpsTimer;
+
+	//The frames per second cap timer
+	LTimer capTimer;
+
+	//In memory text stream
+	std::stringstream timeText;
+
+	//Start counting frames per second
+	int countedFrames = 0;
+	fpsTimer.start();
+
+
+	ofstream myfile;
+	myfile.open("Rumours.txt");
+	myfile << "Claudette Perrick runs a fine alchemy shop.You should check out The Gilded Carafe.\n";
+	myfile << "Amantius Allectus was killed during a burglary. They say the house was ransacked.\n";
+	myfile << "Truth is, the Legion doesn't know who was behind the Emperor's murder. We've already ruled out the Dark Brotherhood. So is this something... worse?\n";
+	myfile << "Sensational.\n";
+	myfile << "The tide is turning, my friend. Bruma has been saved, and Martin Septim has claimed his birthright! Soon, all of Oblivion will tremble in fear!\n";
+	myfile << "Have you been near Rosentia Gallenus's house recently? Smells horrible... like she left some meat out to spoil.\n";
+
+	myfile.close();
+
+
 	ResourceManager *resourceManager = new ResourceManager(gameRenderer, "Resources");
 
 	resourceManager->AddTexture("Red", "Sprite_Red.png");
@@ -44,104 +103,364 @@ int main()
 	resourceManager->AddTexture("Arrow", "Arrow.png");
 	resourceManager->AddTexture("HeartsSheet", "heartSpriteSheet.png");
 	resourceManager->AddTexture("ArmourSheet", "armourSpriteSheet.png");
+	resourceManager->AddTexture("WorldTurf", "World_Turfs.png");
+	resourceManager->AddTexture("Button", "Button.png");
+	resourceManager->AddTexture("Pickup", "Pickup.png");
+
+	resourceManager->AddFont("ComicSans", "ComicSans.ttf", 32);
+
+	resourceManager->AddTexture("StartGameButton", "StartGameButton.png");
+	resourceManager->AddTexture("OptionsButton", "OptionsButton.png");
+	resourceManager->AddTexture("ExitGameButton", "ExitGameButton.png");
+
+	resourceManager->AddTexture("LeftArrowButton", "LeftArrow.png");
+	resourceManager->AddTexture("RightArrowButton", "RightArrow.png");
+	resourceManager->AddTexture("MainMenuButton", "ReturnMainMenu.png");
+	resourceManager->AddTexture("SoundText", "sound.png");
+	resourceManager->AddTexture("MusicText", "music.png");
+
+	resourceManager->AddTexture("Hearts", "Hearts.png");
+	resourceManager->AddTexture("Armors", "Armors.png");
+
+	resourceManager->AddTexture("Achievement", "PlaceholderAchievement.png");
+	resourceManager->AddTexture("Achievement2", "PlaceholderAchievement2.png");
+
+	resourceManager->AddMusic("Test", "kevin.mp3");
+	resourceManager->AddMusic("Dungeon1", "Dungeon of Stuff.wav");
+	resourceManager->AddMusic("Dungeon2", "Dungeon of Mystery.wav");
+	resourceManager->AddMusic("Dungeon3", "FinalDungeonMusic.wav");
+	resourceManager->AddMusic("Town1", "Town1.wav");
+	resourceManager->AddMusic("Town2", "Town2.wav");
+	resourceManager->AddMusic("Town3", "Town3.wav");
+	resourceManager->AddMusic("Overworld1", "Overworld1.wav");
+	resourceManager->AddMusic("Overworld2", "Overworld2.wav");
+	resourceManager->AddMusic("Overworld3", "Overworld3.wav");
+	resourceManager->AddMusic("TitleMusic", "TitleMusicOfDestructionTimes.wav");
+	resourceManager->AddSound("Scream", "test.wav");
+	resourceManager->AddSound("Placeholder", "placeholder.wav");
+
+	resourceManager->AddTexture("Plate", "Plate.png");
+	resourceManager->AddTexture("Bow", "Bow.png");
+	resourceManager->AddTexture("Sword", "Sword.png");
+	resourceManager->AddTexture("Wand", "Wand.png");
+	resourceManager->AddTexture("Armor", "Armor.png");
+
+	resourceManager->AddFont("munro", "munro.ttf", 32);
+
+	Mix_AllocateChannels(6);
+
+	AStar *aStar = new AStar();
 
 	EventListener *listener = new EventListener();
 
-	InputHandler *input = new InputHandler(listener);
+	InputHandler *input = new InputHandler(listener, e);
 
-	StateManager state;
-	
-	std::vector<Entity*>* projectiles = new std::vector<Entity*>();
+	StateManager state = StateManager();
+
+	std::vector<Entity*>* projectiles = new std::vector<Entity*>;
+
+	SystemManager systemManager(resourceManager, gameRenderer, listener, projectiles);
+
+	systemManager.controlSystem = new ControlSystem(listener);
+	systemManager.controlSystem->Active(true);
+
+	systemManager.movementSystem = new MovementSystem(816, 624, listener);
+	systemManager.movementSystem->Active(true);
+
+	systemManager.renderSystem = new RenderSystem(resourceManager, gameRenderer);
+	systemManager.renderSystem->Active(true);
+	systemManager.renderSystem->SetScale(GAME_SCALE);
+	systemManager.renderSystem->Camera(true);
+	systemManager.renderSystem->Camera(816, 624);
+
+	systemManager.textRenderSystem = new TextRenderSystem(resourceManager, gameRenderer);
+	systemManager.textRenderSystem->Active(true);
+
+	systemManager.attackSystem = new AttackSystem(projectiles);
+	systemManager.attackSystem->Active(true);
 
 
-	SystemManager systemManager;
-	systemManager.ControlSystem = new ControlSystem(listener);
-	systemManager.ControlSystem->Active(true);
-	systemManager.MovementSystem = new MovementSystem();
-	systemManager.MovementSystem->Active(true);
-	systemManager.RenderSystem = new RenderSystem(resourceManager, gameRenderer);
-	systemManager.RenderSystem->Active(true);
-	systemManager.RenderSystem->SetScale(3);
-	systemManager.ProjectileSystem = new ProjectileSystem();
-	systemManager.ProjectileSystem->Active(true);
-	systemManager.CollisionSystem = new CollisionSystem();
-	systemManager.CollisionSystem->Active(true);
+	systemManager.collisionSystem = new CollisionSystem(listener);
+	systemManager.collisionSystem->Active(true);
 
-	systemManager.AiSystem = new AiSystem();
-	systemManager.AiSystem->Active(true);
+	systemManager.aiSystem = new AiSystem(aStar);
+	systemManager.aiSystem->Active(true);
 
 	systemManager.healthSystem = new HealthSystem();
 	systemManager.healthSystem->Active(true);
 
-	BattleMap map1 = BattleMap(&systemManager, gameRenderer, &state);
-	map1.Generate("Grassland");
+	systemManager.buttonSystem = new ButtonSystem(listener);
+	systemManager.buttonSystem->Active(true);
 
-	//Entity * player = new Entity("Player");
-	//player->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
-	//player->AddComponent(new PositionComponent(SDL_Point{100, 300}));
-	//player->AddComponent(new AttributesComponent());
-	//player->AddComponent(new MovementComponent(3));
-	//player->AddComponent(new CollisionComponent());
-	//player->AddComponent(new AttributesComponent());
-	////RenderSystem * r = new RenderSystem(resourceManager, gameRenderer);
-	////r->AddEntity(player);
+	systemManager.soundSystem = new SoundSystem(resourceManager);
+	systemManager.soundSystem->Active(true);
 
-	//systemManager.ControlSystem->AddEntity(player);
-	//systemManager.MovementSystem->AddEntity(player);
-	//systemManager.RenderSystem->AddEntity(player);
-	//systemManager.ProjectileSystem->AddEntity(player);
-	//systemManager.CollisionSystem->AddEntity(player);
-	//systemManager.healthSystem->AddEntity(player);
+	Entity * player = new Entity("Player");
+	player->Active(true);
 
-	bool heartTest = true;
+	systemManager.healthSystem->Active(true);
 
-	//RenderSystem * r = new RenderSystem(resourceManager, gameRenderer);
-
-	//princess->AddComponent(new SpriteComponent(ID, 0, 1, 0, 0, 16, 16, 0)); //textid
-	////Entity *meleeEnemy = new Entity("Melee Enemy");
-	////meleeEnemy->AddComponent(new SpriteComponent("Demon", 0, 0, 0, 0, 16, 16, 0));
-	////meleeEnemy->AddComponent(new PositionComponent(SDL_Point{ 550,500 }));
-	////meleeEnemy->AddComponent(new MovementComponent(120));
-	////meleeEnemy->AddComponent(new SeekComponent(600, 600));
-	////meleeEnemy->AddComponent(new AttackComponent(1, 1, 1));
-
-	////systemManager.AiSystems->AddEntity(meleeEnemy);
-	////systemManager.RenderSystem->AddEntity(meleeEnemy);
-	////systemManager.MovementSystem->AddEntity(meleeEnemy);
-
-
-	Quadtree* quad = new Quadtree(0, SDL_Rect{0,0  , 816, 624 });
-
-	while (1 != 0)
+	player->AddComponent(new SpriteComponent("Red", 3, 1, 0, 0, 16, 16, 0));
+	player->AddComponent(new PositionComponent(SDL_Point{ 100, 380 }));
+	player->AddComponent(new AttributesComponent(20, 20, 1, 10, 100, 100));
+	player->AddComponent(new MovementComponent());
+	player->AddComponent(new WeaponComponent(WeaponType::RANGE));
+	player->AddComponent(new CollisionComponent(100, 380, 16, 16, 2));
+	player->Transient(true);
+	player->AddComponent(new CurrencyComponent());
+	player->Control(true); //enable only if the client controlled player
+						   //player->AddComponent(new AiLogicComponent()); //add this if AI is to control that player
+						   //player->AddComponent(new SeekComponent()); //and this if AI is to control that player
+						   //player->AddComponent(new SoundComponent("Placeholder", "play", true, 0, 0, 80));
+						   //player->Control(true);
+	systemManager.healthSystem->AddEntity(player, "???");
+	for (int i = 0; i < 12; i++)
 	{
-		currentTime = SDL_GetTicks();
-		SDL_PollEvent(e);
-		if (currentTime > lastTime)
+		Entity* heart = new Entity("Heart");
+		heart->Transient(true);
+		heart->AddComponent(new PositionComponent());
+		heart->AddComponent(new SpriteComponent("Hearts", 5, 0, 0, 0, 4, 4, 0));
+		static_cast<SpriteComponent*>(heart->GetComponents()->back())->Relative(true);
+		systemManager.healthSystem->AddEntity(heart, "PH1");
+		systemManager.renderSystem->AddEntity(heart);
+	}
+	for (int i = 0; i < 6; i++)
+	{
+		Entity* heart = new Entity("Heart");
+		heart->Transient(true);
+		heart->AddComponent(new PositionComponent());
+		heart->AddComponent(new SpriteComponent("Armors", 5, 0, 0, 0, 4, 4, 0));
+		static_cast<SpriteComponent*>(heart->GetComponents()->back())->Relative(true);
+		systemManager.healthSystem->AddEntity(heart, "PH1");
+		systemManager.renderSystem->AddEntity(heart);
+	}
+
+	Entity * player2 = new Entity("Player");
+	player2->Active(true);
+	player2->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
+	player2->AddComponent(new PositionComponent(SDL_Point{ 250, 380 }));
+	player2->AddComponent(new AttributesComponent(4, 4, 4, 10, 100, 100));
+	player2->AddComponent(new MovementComponent());
+	player2->AddComponent(new WeaponComponent(WeaponType::RANGE));
+	player2->AddComponent(new CollisionComponent(250, 380, 16, 16, 2));
+	player2->AddComponent(new AiLogicComponent()); //add this if AI is to control that player2
+	player2->AddComponent(new SeekComponent()); //and this if AI is to control that player2
+	player2->AddComponent(new CurrencyComponent());
+	player2->AddComponent(new SoundComponent("Scream", "play", false, 1, 30, 50));
+	player2->AddComponent(new MusicComponent("Test", "play", true, 0, 100));
+	player2->Transient(true);
+
+	systemManager.healthSystem->AddEntity(player2, "???");
+	for (int i = 0; i < 12; i++)
+	{
+		Entity* heart = new Entity("Heart");
+		heart->Transient(true);
+		heart->AddComponent(new PositionComponent());
+		heart->AddComponent(new SpriteComponent("Hearts", 5, 0, 0, 0, 4, 4, 0));
+		static_cast<SpriteComponent*>(heart->GetComponents()->back())->Relative(true);
+		systemManager.healthSystem->AddEntity(heart, "PH2");
+		systemManager.renderSystem->AddEntity(heart);
+	}
+	for (int i = 0; i < 6; i++)
+	{
+		Entity* heart = new Entity("Heart");
+		heart->Transient(true);
+		heart->AddComponent(new PositionComponent());
+		heart->AddComponent(new SpriteComponent("Armors", 5, 0, 0, 0, 4, 4, 0));
+		static_cast<SpriteComponent*>(heart->GetComponents()->back())->Relative(true);
+		systemManager.healthSystem->AddEntity(heart, "PH2");
+		systemManager.renderSystem->AddEntity(heart);
+	}
+
+	Entity * player3 = new Entity("Player");
+	player3->Active(true);
+	player3->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
+	player3->AddComponent(new PositionComponent(SDL_Point{ 300, 380 }));
+	player3->AddComponent(new AttributesComponent(4, 4, 4, 10, 100, 100));
+	player3->AddComponent(new MovementComponent());
+	player3->AddComponent(new WeaponComponent(WeaponType::RANGE));
+	player3->AddComponent(new CollisionComponent(300, 380, 16, 16, 2));
+	player3->AddComponent(new AiLogicComponent()); //add this if AI is to control that player3
+	player3->AddComponent(new SeekComponent()); //and this if AI is to control that player3
+	player3->AddComponent(new CurrencyComponent());
+	player3->AddComponent(new SoundComponent("Scream", "play", false, 1, 30, 50));
+	player3->AddComponent(new MusicComponent("Test", "play", true, 0, 100));
+	player3->Transient(true);
+
+	systemManager.healthSystem->AddEntity(player3, "???");
+	for (int i = 0; i < 12; i++)
+	{
+		Entity* heart = new Entity("Heart");
+		heart->Transient(true);
+		heart->AddComponent(new PositionComponent());
+		heart->AddComponent(new SpriteComponent("Hearts", 5, 0, 0, 0, 4, 4, 0));
+		static_cast<SpriteComponent*>(heart->GetComponents()->back())->Relative(true);
+		systemManager.healthSystem->AddEntity(heart, "PH3");
+		systemManager.renderSystem->AddEntity(heart);
+	}
+	for (int i = 0; i < 6; i++)
+	{
+		Entity* heart = new Entity("Heart");
+		heart->Transient(true);
+		heart->AddComponent(new PositionComponent());
+		heart->AddComponent(new SpriteComponent("Armors", 5, 0, 0, 0, 4, 4, 0));
+		static_cast<SpriteComponent*>(heart->GetComponents()->back())->Relative(true);
+		systemManager.healthSystem->AddEntity(heart, "PH3");
+		systemManager.renderSystem->AddEntity(heart);
+	}
+
+
+	Entity * player4 = new Entity("Player");
+	player4->Active(true);
+	player4->AddComponent(new SpriteComponent("Red", 2, 1, 0, 0, 16, 16, 0));
+	player4->AddComponent(new PositionComponent(SDL_Point{ 200, 380 }));
+	player4->AddComponent(new AttributesComponent(4, 4, 1, 10, 100, 100));
+	player4->AddComponent(new MovementComponent());
+	player4->AddComponent(new WeaponComponent(WeaponType::RANGE));
+	player4->AddComponent(new CollisionComponent(200, 380, 16, 16, 2));
+	player4->AddComponent(new AiLogicComponent()); //add this if AI is to control that player4
+	player4->AddComponent(new SeekComponent()); //and this if AI is to control that player4
+	player4->AddComponent(new CurrencyComponent());
+	player4->AddComponent(new SoundComponent("Scream", "play", false, 1, 30, 50));
+	player4->AddComponent(new MusicComponent("Test", "play", true, 0, 100));
+	player4->Transient(true);
+
+	systemManager.healthSystem->AddEntity(player4, "???");
+	for (int i = 0; i < 12; i++)
+	{
+		Entity* heart = new Entity("Heart");
+		heart->Transient(true);
+		heart->AddComponent(new PositionComponent());
+		heart->AddComponent(new SpriteComponent("Hearts", 5, 0, 0, 0, 4, 4, 0));
+		static_cast<SpriteComponent*>(heart->GetComponents()->back())->Relative(true);
+		systemManager.healthSystem->AddEntity(heart, "PH4");
+		systemManager.renderSystem->AddEntity(heart);
+	}
+	for (int i = 0; i < 6; i++)
+	{
+		Entity* heart = new Entity("Heart");
+		heart->Transient(true);
+		heart->AddComponent(new PositionComponent());
+		heart->AddComponent(new SpriteComponent("Armors", 5, 0, 0, 0, 4, 4, 0));
+		static_cast<SpriteComponent*>(heart->GetComponents()->back())->Relative(true);
+		systemManager.healthSystem->AddEntity(heart, "PH4");
+		systemManager.renderSystem->AddEntity(heart);
+	}
+
+	systemManager.movementSystem->AddEntity(player4);
+	systemManager.renderSystem->AddEntity(player4);
+	systemManager.collisionSystem->AddEntity(player4);
+	systemManager.attackSystem->AddEntity(player4);
+
+	systemManager.movementSystem->AddEntity(player3);
+	systemManager.renderSystem->AddEntity(player3);
+	systemManager.collisionSystem->AddEntity(player3);
+	systemManager.attackSystem->AddEntity(player3);
+
+
+	systemManager.movementSystem->AddEntity(player2);
+	systemManager.renderSystem->AddEntity(player2);
+	systemManager.collisionSystem->AddEntity(player2);
+	systemManager.attackSystem->AddEntity(player2);
+
+
+	systemManager.movementSystem->AddEntity(player);
+	systemManager.renderSystem->AddEntity(player);
+	systemManager.collisionSystem->AddEntity(player);
+	systemManager.attackSystem->AddEntity(player);
+	
+	std::vector<Entity*> players;
+	players.push_back(player);
+	players.push_back(player2);
+	players.push_back(player3);
+	players.push_back(player4);
+
+	if (player->Control())
+	{
+		systemManager.controlSystem->AddEntity(player);
+	}
+	else if (player2->Control())
+	{
+		systemManager.controlSystem->AddEntity(player2);
+	}
+	else if (player3->Control())
+	{
+		systemManager.controlSystem->AddEntity(player3);
+	}
+	else if (player4->Control())
+	{
+		systemManager.controlSystem->AddEntity(player4);
+	}
+
+
+
+	std::vector<Entity*> playerEntities;
+
+
+
+	playerEntities.push_back(player4);
+	playerEntities.push_back(player3);
+	playerEntities.push_back(player2);
+	playerEntities.push_back(player);
+
+
+	//TownInstance t = TownInstance(&systemManager);
+	//t.Generate("jimmie");
+
+	//WorldMap* m = new WorldMap(&systemManager, &state);
+	//m->Generate(25, 25, 100);
+
+	systemManager.soundSystem->AddEntity(player); //local client player only?
+
+	AchievementHandler *achievements = new AchievementHandler(&systemManager);
+
+	InstanceManager instanceManager(&systemManager, &state, resourceManager, listener, aStar, players);
+
+	while (state.ExitGame == false)
+	{
+		//Calculate and correct fps
+		int avgFPS = countedFrames / (fpsTimer.getTicks() / 1000.f);
+		if (avgFPS > 2000000)
 		{
-			deltaTime = ((float)(currentTime - lastTime)) / 1000;
-
-			input->handleInput(*e);
-
-			lastTime = currentTime;
+			avgFPS = 0;
 		}
-		auto aiSystemEntities = systemManager.AiSystem->getEntities();
 
-		quad->clear();
-		quad->init();
-		for (int i = 0; i < aiSystemEntities.size(); i++)
+		//Set text to be rendered
+		if (avgFPS > 1)
 		{
-			quad->insert(aiSystemEntities.at(i));
+			//			cout << "FPS (With Cap) " << avgFPS << endl;;
 		}
+		//update ren
+		++countedFrames;
 
-		input->handleInput(*e);
-		map1.Update();
+		//If frame finished early
+		int frameTicks = capTimer.getTicks();
 
-		SDL_SetRenderDrawColor(gameRenderer, 255, 255, 255, 0);
-		SDL_RenderClear(gameRenderer);
+		if (frameTicks < SCREEN_TICKS_PER_FRAME)
+		{
+			//Wait remaining time
+			SDL_Delay(SCREEN_TICKS_PER_FRAME - frameTicks);
 
-		systemManager.Update(deltaTime);
+			currentTime = SDL_GetTicks();
+			if (currentTime > lastTime)
+			{
+				deltaTime = ((float)(currentTime - lastTime)) / 1000;
 
-		SDL_RenderPresent(gameRenderer);
+				input->handleInput();
+				achievements->HandleAchievements();
+
+				lastTime = currentTime;
+			}
+
+			SDL_SetRenderDrawColor(gameRenderer, 0, 0, 0, 0);
+			SDL_RenderClear(gameRenderer);
+
+			systemManager.Update(deltaTime, playerEntities);
+			instanceManager.Update(deltaTime);
+			//	systemManager.Update(deltaTime);
+
+			SDL_RenderPresent(gameRenderer);
+		}
 	}
 
 	SDL_RenderPresent(gameRenderer);

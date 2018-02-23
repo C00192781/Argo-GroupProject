@@ -12,6 +12,8 @@ public:
 	~System() {};
 
 	void AddEntity(Entity * e);
+	Entity* FindEntity(std::string id);
+	Entity* FindEntity(std::string id, int index);
 	void RemoveEntity(std::string id);
 	void SelectiveClear();
 	void FullClear();
@@ -21,6 +23,9 @@ public:
 	void Active(bool x) { m_active = x; };
 
 protected:
+
+	virtual void LoadComponent() = 0;
+	virtual void UnloadComponent(int x) = 0;
 
 	std::vector<Entity*> m_entities;
 	bool m_active;
