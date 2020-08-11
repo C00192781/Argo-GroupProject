@@ -2,6 +2,7 @@
 
 #include <SDL.h>
 #include <vector>
+#include <string>
 #include "PacketType.h"
 
 class Packet
